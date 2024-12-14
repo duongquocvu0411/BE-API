@@ -1,0 +1,11 @@
+database DEMO.sql 
+ là database dùng để demo 
++ Hướng dẫn setung
+ b1: mở sqlserve
+b2: new database (tên tự chọn)
+b3: import file DEMO.sql vào xong extens 
+b4: mỡ project api
+b5: vào file appsettings.cs
+- chỉnh sửa Database= tên database vừa tạo 
+ "Issuer": tên database vừa tạo 
+ "Audience": tên database vừa tạo 

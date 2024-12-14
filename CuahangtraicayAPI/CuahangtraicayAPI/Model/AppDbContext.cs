@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using CuahangtraicayAPI.Model;
-using CuahangtraicayAPI.Model;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

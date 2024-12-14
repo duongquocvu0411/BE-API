@@ -1,0 +1,5 @@
+phiên bản react dom @19
+
+npm i tên_thư viên ----legacy-peer-deps   // ép buộc cài đặt bất chấp xung đột:
+
+

@@ -140,3 +140,4 @@ E:\BE\do an\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes
 E:\BE\do an\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 E:\BE\do an\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 E:\BE\do an\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\CuahangtraicayAPI.xml
+E:\BE\do an\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\CuahangtraicayAPI.sourcelink.json
