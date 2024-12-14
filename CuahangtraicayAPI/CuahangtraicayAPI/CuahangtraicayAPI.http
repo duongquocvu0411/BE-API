@@ -1,0 +1,6 @@
+@CuahangtraicayAPI_HostAddress = http://localhost:5091
+
+GET {{CuahangtraicayAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,513 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\tenfooters.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\tenfooters.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\tencuahang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\tencuahang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\sanphamsale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\sanphamsale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\sanphamdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\sanphamdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\sanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\sanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\menufooter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\menufooter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\lienhe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\lienhe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\khachhang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\khachhang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\hoadonchitiet_sanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\hoadonchitiet_sanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\hoadonchitiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\hoadonchitiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\hinhanhsanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\hinhanhsanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\gioithieuimg.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\gioithieuimg.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\gioithieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\gioithieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\footerimgs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\footerimgs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\footer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\footer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\diachichitiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\diachichitiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\danhmucsanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\danhmucsanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\danhgiakhachhangs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\danhgiakhachhangs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\dactrung.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\dactrung.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\chitiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\chitiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\basemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\basemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\bannerts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\bannerts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\bannerimages .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\bannerimages .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\be\\do an\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Program.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Program.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Program.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:06:04.053Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\appsettings.json",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\appsettings.json",
+              "RelativeToolTip": "CuahangtraicayAPI\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-14T05:06:01.15Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TenFooters.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\TenFooters.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\TenFooters.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\TenFooters.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\TenFooters.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:48.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Tencuahang.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Tencuahang.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Tencuahang.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Tencuahang.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Tencuahang.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:42.897Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Sanphamsale.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Sanphamsale.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Sanphamsale.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Sanphamsale.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Sanphamsale.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:36.78Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SanPhamDetail.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\SanPhamDetail.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\SanPhamDetail.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\SanPhamDetail.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\SanPhamDetail.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:30.558Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Sanpham.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Sanpham.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Sanpham.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Sanpham.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Sanpham.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:25.998Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MenuFooter.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\MenuFooter.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\MenuFooter.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\MenuFooter.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\MenuFooter.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:21.187Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Menu.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Menu.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Menu.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Menu.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Menu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:16.295Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Lienhe.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Lienhe.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Lienhe.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Lienhe.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Lienhe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:11.242Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "KhachHang.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\KhachHang.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\KhachHang.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\KhachHang.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\KhachHang.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:06.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "HoaDonChiTiet_SanPham.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HoaDonChiTiet_SanPham.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\HoaDonChiTiet_SanPham.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HoaDonChiTiet_SanPham.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\HoaDonChiTiet_SanPham.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:05:02.042Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "HoaDonChiTiet.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HoaDonChiTiet.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\HoaDonChiTiet.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HoaDonChiTiet.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\HoaDonChiTiet.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:57.821Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "HoaDon.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HoaDon.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\HoaDon.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HoaDon.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\HoaDon.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:52.935Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "HinhAnhSanPham.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HinhAnhSanPham.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\HinhAnhSanPham.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HinhAnhSanPham.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\HinhAnhSanPham.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:48.001Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "GioithieuImg.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\GioithieuImg.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\GioithieuImg.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\GioithieuImg.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\GioithieuImg.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:43.435Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Gioithieu.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Gioithieu.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Gioithieu.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Gioithieu.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Gioithieu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:37.905Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "FooterImgs.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\FooterImgs.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\FooterImgs.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\FooterImgs.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\FooterImgs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:32.517Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Footer.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Footer.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Footer.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Footer.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Footer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:27.874Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Diachichitiet.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Diachichitiet.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Diachichitiet.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Diachichitiet.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Diachichitiet.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:22.813Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Danhmucsanpham.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Danhmucsanpham.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Danhmucsanpham.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Danhmucsanpham.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Danhmucsanpham.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:16.939Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "danhgiakhachhangs.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\danhgiakhachhangs.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\danhgiakhachhangs.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\danhgiakhachhangs.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\danhgiakhachhangs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:08.984Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Dactrung.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Dactrung.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Dactrung.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Dactrung.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Dactrung.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:04:01.171Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ChiTiet.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\ChiTiet.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\ChiTiet.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\ChiTiet.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\ChiTiet.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:03:50.337Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "BaseModel.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\BaseModel.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\BaseModel.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\BaseModel.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\BaseModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:03:44.912Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Bannerts.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Bannerts.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Bannerts.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Bannerts.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Bannerts.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:03:39.363Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "BannerImages .cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\BannerImages .cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\BannerImages .cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\BannerImages .cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\BannerImages .cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:03:34.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:03:26.288Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "Admin.cs",
+              "DocumentMoniker": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Admin.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Admin.cs",
+              "ToolTip": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Admin.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Admin.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-14T05:03:20.294Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
