@@ -14,15 +14,6 @@ namespace CuahangtraicayAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-
-            // Cấu hình CORS để cho phép kết nối từ frontend ở localhost:3000
             var API = "allApi";
             builder.Services.AddCors(ots =>
             {
@@ -35,6 +26,7 @@ namespace CuahangtraicayAPI
 
                 });
             });
+
             // Thêm dịch vụ cho các controller và cấu hình JSON để bỏ qua vòng lặp
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
@@ -114,12 +106,6 @@ namespace CuahangtraicayAPI
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
             // Kiểm tra môi trường và kích hoạt Swagger UI
             if (app.Environment.IsDevelopment())
             {
@@ -127,15 +113,13 @@ namespace CuahangtraicayAPI
                 app.UseSwaggerUI(c =>
                 {
 
-                    c.DefaultModelsExpandDepth(-1);
+                    c.DefaultModelsExpandDepth(-1); // Đây là dòng cấu hình ẩn Schemas
 
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });
             }
 
-            // Thêm middleware cho CORS và xác thực/ủy quyền
-            //app.UseCors("AllowLocalhost3000");
-            //app.UseCors("AllowNetlify");
+         
             app.UseCors("allApi");
             app.UseHttpsRedirection();
             app.UseAuthentication();
@@ -143,8 +127,8 @@ namespace CuahangtraicayAPI
             app.UseStaticFiles();
             app.MapControllers();
 
-
             app.Run();
+
         }
     }
 }

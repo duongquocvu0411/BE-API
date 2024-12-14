@@ -42,6 +42,13 @@ const SiderbarAdmin = () => {
       </a>
       <div id="collapseStoreManagement" className="collapse" data-bs-parent="#sidebar">
         <div className="bg-white py-2 collapse-inner rounded">
+        <Link
+            className={`collapse-item ${vitriRoute.pathname === '/admin/Tenwebsiters' ? 'active' : ''}`}
+            to="/admin/Tenwebsiters"
+          >
+            <i className="fas fa-utensils"></i> {/* Changed to utensils for menu */}
+            Quản lý Tên website
+          </Link>
           <Link
             className={`collapse-item ${vitriRoute.pathname === '/admin/menu' ? 'active' : ''}`}
             to="/admin/menu"

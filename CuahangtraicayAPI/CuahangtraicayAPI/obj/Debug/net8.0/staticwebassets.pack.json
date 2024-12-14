@@ -813,12 +813,24 @@
       "PackagePath": "staticwebassets\\menuFooter\\638697117503036786_payment.png"
     },
     {
+      "Id": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638697917789400085_payment.png",
+      "PackagePath": "staticwebassets\\menuFooter\\638697917789400085_payment.png"
+    },
+    {
       "Id": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\banner-fruits.jpg",
       "PackagePath": "staticwebassets\\menuFooter\\banner-fruits.jpg"
     },
     {
       "Id": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\best-product-2.jpg",
       "PackagePath": "staticwebassets\\menuFooter\\best-product-2.jpg"
+    },
+    {
+      "Id": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\0a287c55-8129-4909-9621-acd7a9b7979b.webp",
+      "PackagePath": "staticwebassets\\tenwebsite\\0a287c55-8129-4909-9621-acd7a9b7979b.webp"
+    },
+    {
+      "Id": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\favicontraicay.jpg",
+      "PackagePath": "staticwebassets\\tenwebsite\\favicontraicay.jpg"
     },
     {
       "Id": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638670143006019693_tải xuống.jpg",
@@ -1075,6 +1087,10 @@
     {
       "Id": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638697716167811392_best-product-2.jpg",
       "PackagePath": "staticwebassets\\upload\\638697716167811392_best-product-2.jpg"
+    },
+    {
+      "Id": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638697783443673874_avatar.jpg",
+      "PackagePath": "staticwebassets\\upload\\638697783443673874_avatar.jpg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.CuahangtraicayAPI.Microsoft.AspNetCore.StaticWebAssets.props",

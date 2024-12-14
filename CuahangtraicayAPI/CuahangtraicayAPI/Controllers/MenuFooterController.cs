@@ -25,7 +25,13 @@ namespace CuahangtraicayAPI.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
-        // POST: api/MenuFooter/upload-image
+        /// <summary>
+        /// Tải lên một tệp hình ảnh để sử dụng trong menu footer.
+        /// Lưu tệp vào thư mục `wwwroot/menuFooter` và trả về URL của tệp.
+        /// </summary>
+        /// <param name="upload">Tệp được tải lên.</param>
+        /// <returns>URL của hình ảnh đã tải lên hoặc thông báo lỗi nếu thất bại.</returns>
+
         [HttpPost("upload-image")]
 
         public async Task<IActionResult> UploadImage(IFormFile upload)
@@ -61,7 +67,12 @@ namespace CuahangtraicayAPI.Controllers
                 return StatusCode(500, new { uploaded = false, error = new { message = "Lỗi khi tải lên tệp", details = ex.Message } });
             }
         }
-        // GET: api/MenuFooter
+
+        /// <summary>
+        /// Lấy danh sách tất cả các mục menu footer, sắp xếp theo thứ tự hiển thị.
+        /// </summary>
+        /// <returns>Danh sách các mục menu footer.</returns>
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MenuFooter>>> GetMenuFooters()
         {
@@ -72,7 +83,12 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(MenuFooter);
         }
 
-        // GET: api/MenuFooter/5
+        /// <summary>
+        /// Lấy thông tin chi tiết của một mục menu footer dựa theo ID.
+        /// </summary>
+        /// <param name="id">ID của mục menu footer cần lấy.</param>
+        /// <returns>Chi tiết mục menu footer hoặc lỗi 404 nếu không tìm thấy.</returns>
+
         [HttpGet("{id}")]
         public async Task<ActionResult<MenuFooter>> GetMenuFooter(int id)
         {
@@ -94,7 +110,12 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(menuFooterDto);
         }
 
-        // POST: api/MenuFooter
+        /// <summary>
+        /// Tạo một mục menu footer mới với tiêu đề, nội dung và thứ tự hiển thị được cung cấp.
+        /// </summary>
+        /// <param name="menuFooterCreateDto">Dữ liệu DTO chứa thông tin tiêu đề, nội dung, thứ tự hiển thị của menu footer.</param>
+        /// <returns>Mục menu footer vừa được tạo.</returns>
+
         [HttpPost]
         //[Authorize]
         public async Task<ActionResult<MenuFooter>> PostMenuFooter(MenuFooterCreateDto menuFooterCreateDto)
@@ -121,7 +142,13 @@ namespace CuahangtraicayAPI.Controllers
             return CreatedAtAction("GetMenuFooter", new { id = menuFooter.Id }, menuFooterDto);
         }
 
-        // PUT: api/MenuFooter/5
+        /// <summary>
+        /// Cập nhật thông tin của một mục menu footer dựa trên ID.
+        /// </summary>
+        /// <param name="id">ID của mục menu footer cần cập nhật.</param>
+        /// <param name="menuFooterUpdateDto">Dữ liệu DTO chứa thông tin cần cập nhật.</param>
+        /// <returns>Không trả về nội dung nếu cập nhật thành công, hoặc lỗi nếu không tìm thấy mục menu footer.</returns>
+
         [HttpPut("{id}")]
         //[Authorize]
         public async Task<IActionResult> PutMenuFooter(int id, MenuFooterUpdateDto menuFooterUpdateDto)
@@ -148,7 +175,12 @@ namespace CuahangtraicayAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/MenuFooter/5
+        /// <summary>
+        /// Xóa một mục menu footer dựa trên ID.
+        /// </summary>
+        /// <param name="id">ID của mục menu footer cần xóa.</param>
+        /// <returns>Trạng thái thành công hoặc lỗi nếu không tìm thấy mục menu footer.</returns>
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMenuFooter(int id)
         {

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "jL4c4brFEFmftxjOUWTv2cx7n0ER33aKBS/8la6swCU=",
+  "Hash": "kvGSm3B+8j5+Di51GK3pXs/Xxg/YqDqHxyaK14MeprU=",
   "Source": "CuahangtraicayAPI",
   "BasePath": "_content/CuahangtraicayAPI",
   "Mode": "Default",
@@ -3874,6 +3874,25 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638697117503036786_payment.png"
     },
     {
+      "Identity": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638697917789400085_payment.png",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "menuFooter/638697917789400085_payment.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\menuFooter\\638697917789400085_payment.png"
+    },
+    {
       "Identity": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\banner-fruits.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
@@ -3910,6 +3929,44 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\menuFooter\\best-product-2.jpg"
+    },
+    {
+      "Identity": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\0a287c55-8129-4909-9621-acd7a9b7979b.webp",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "tenwebsite/0a287c55-8129-4909-9621-acd7a9b7979b.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\tenwebsite\\0a287c55-8129-4909-9621-acd7a9b7979b.webp"
+    },
+    {
+      "Identity": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\favicontraicay.jpg",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "tenwebsite/favicontraicay.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\tenwebsite\\favicontraicay.jpg"
     },
     {
       "Identity": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638670143006019693_tải xuống.jpg",
@@ -5126,6 +5183,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\upload\\638697716167811392_best-product-2.jpg"
+    },
+    {
+      "Identity": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638697783443673874_avatar.jpg",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "upload/638697783443673874_avatar.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\upload\\638697783443673874_avatar.jpg"
     }
   ]
 }

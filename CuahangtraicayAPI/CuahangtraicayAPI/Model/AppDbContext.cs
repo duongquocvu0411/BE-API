@@ -36,6 +36,7 @@ public class AppDbContext : DbContext
     public DbSet<GioithieuImg> GioithieuImg { get; set; }
     public DbSet<MenuFooter> MenuFooters { get; set; }
     public DbSet<Footer> Footers { get; set; }
+    public DbSet<TenwebSite> TenwebSites { get; set; }
 
 
 

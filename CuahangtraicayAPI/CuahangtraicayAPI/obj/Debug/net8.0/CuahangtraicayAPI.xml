@@ -207,6 +207,95 @@
             </summary>
             <returns> lấy danh sách địa chỉ chi tiết đang có status : "đang sử dụng"</returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.FooterController.GetFooter">
+            <summary>
+            Lấy danh sách tất cả các Footer.
+            </summary>
+            <returns>Danh sách các Footer.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.FooterController.GetActiveFooters">
+            <summary>
+            Lấy danh sách các Footer đang hoạt động (TrangThai = 1).
+            </summary>
+            <returns>Danh sách Footer đang hoạt động.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.FooterController.GetFooter(System.Int32)">
+            <summary>
+            Lấy thông tin chi tiết của một Footer theo ID.
+            </summary>
+            <param name="id">ID của Footer cần lấy thông tin.</param>
+            <returns>Thông tin chi tiết của Footer.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.FooterController.CreateFooter(CuahangtraicayAPI.DTO.FooterDto.FooterCreateDto)">
+            <summary>
+            Tạo mới một Footer.
+            </summary>
+            <param name="dto">Dữ liệu để tạo Footer mới.</param>
+            <returns>Footer vừa được tạo.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.FooterController.UpdateFooter(System.Int32,CuahangtraicayAPI.DTO.FooterDto.FooterUpdateDto)">
+            <summary>
+            Cập nhật thông tin của một Footer.
+            </summary>
+            <param name="id">ID của Footer cần cập nhật.</param>
+            <param name="footerDto">Dữ liệu cần cập nhật.</param>
+            <returns>Trạng thái cập nhật.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.FooterController.DeleteFooter(System.Int32)">
+            <summary>
+            Xóa một Footer.
+            </summary>
+            <param name="id">ID của Footer cần xóa.</param>
+            <returns>Trạng thái xóa.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.GioithieuController.GetAllGioithieu">
+            <summary>
+            Lấy danh sách tất cả các mục giới thiệu, bao gồm thông tin hình ảnh liên quan.
+            </summary>
+            <returns>Danh sách các mục giới thiệu.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.GioithieuController.GetActiveGioithieu">
+            <summary>
+            Lấy danh sách các mục giới thiệu đang hoạt động (Trang_thai = 1), bao gồm thông tin hình ảnh liên quan.
+            </summary>
+            <returns>Danh sách các mục giới thiệu đang hoạt động.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.GioithieuController.GetGioithieu(System.Int32)">
+            <summary>
+            Lấy thông tin chi tiết của một mục giới thiệu, bao gồm thông tin hình ảnh liên quan, dựa trên ID.
+            </summary>
+            <param name="id">ID của mục giới thiệu cần lấy thông tin.</param>
+            <returns>Thông tin chi tiết của mục giới thiệu.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.GioithieuController.CreateGioithieu(CuahangtraicayAPI.DTO.GioithieuCreateDTO)">
+            <summary>
+            Tạo mới một mục giới thiệu, bao gồm việc tải lên hình ảnh liên quan.
+            </summary>
+            <param name="dto">Dữ liệu để tạo mục giới thiệu mới (bao gồm tiêu đề, nội dung và hình ảnh).</param>
+            <returns>Mục giới thiệu vừa được tạo.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.GioithieuController.UpdateGioithieu(System.Int32,CuahangtraicayAPI.DTO.GioithieuUpdateDTO)">
+            <summary>
+            Cập nhật thông tin của một mục giới thiệu, bao gồm việc thêm mới hình ảnh nếu cần.
+            </summary>
+            <param name="id">ID của mục giới thiệu cần cập nhật.</param>
+            <param name="gioithieuUpdateDTO">Dữ liệu cần cập nhật (bao gồm tiêu đề, nội dung, trạng thái và hình ảnh mới).</param>
+            <returns>Trạng thái cập nhật.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.GioithieuController.DeleteGioithieu(System.Int32)">
+            <summary>
+            Xóa một mục giới thiệu, bao gồm tất cả các hình ảnh liên quan.
+            </summary>
+            <param name="id">ID của mục giới thiệu cần xóa.</param>
+            <returns>Trạng thái xóa.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.GioithieuController.DeleteImage(System.Int32)">
+            <summary>
+            Xóa một hình ảnh của mục giới thiệu dựa trên ID của hình ảnh.
+            </summary>
+            <param name="imageId">ID của hình ảnh cần xóa.</param>
+            <returns>Trạng thái xóa hình ảnh.</returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.HoaDonController.GetHoaDons">
             <summary>
             Lấy danh sách hóa đơn
@@ -333,6 +422,49 @@
             Xóa Menu {id}
             </summary>
             <returns>Xóa Menu {id}</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.MenuFooterController.UploadImage(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Tải lên một tệp hình ảnh để sử dụng trong menu footer.
+            Lưu tệp vào thư mục `wwwroot/menuFooter` và trả về URL của tệp.
+            </summary>
+            <param name="upload">Tệp được tải lên.</param>
+            <returns>URL của hình ảnh đã tải lên hoặc thông báo lỗi nếu thất bại.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.MenuFooterController.GetMenuFooters">
+            <summary>
+            Lấy danh sách tất cả các mục menu footer, sắp xếp theo thứ tự hiển thị.
+            </summary>
+            <returns>Danh sách các mục menu footer.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.MenuFooterController.GetMenuFooter(System.Int32)">
+            <summary>
+            Lấy thông tin chi tiết của một mục menu footer dựa theo ID.
+            </summary>
+            <param name="id">ID của mục menu footer cần lấy.</param>
+            <returns>Chi tiết mục menu footer hoặc lỗi 404 nếu không tìm thấy.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.MenuFooterController.PostMenuFooter(CuahangtraicayAPI.DTO.MenuFooterDTO.MenuFooterCreateDto)">
+            <summary>
+            Tạo một mục menu footer mới với tiêu đề, nội dung và thứ tự hiển thị được cung cấp.
+            </summary>
+            <param name="menuFooterCreateDto">Dữ liệu DTO chứa thông tin tiêu đề, nội dung, thứ tự hiển thị của menu footer.</param>
+            <returns>Mục menu footer vừa được tạo.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.MenuFooterController.PutMenuFooter(System.Int32,CuahangtraicayAPI.DTO.MenuFooterDTO.MenuFooterUpdateDto)">
+            <summary>
+            Cập nhật thông tin của một mục menu footer dựa trên ID.
+            </summary>
+            <param name="id">ID của mục menu footer cần cập nhật.</param>
+            <param name="menuFooterUpdateDto">Dữ liệu DTO chứa thông tin cần cập nhật.</param>
+            <returns>Không trả về nội dung nếu cập nhật thành công, hoặc lỗi nếu không tìm thấy mục menu footer.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.MenuFooterController.DeleteMenuFooter(System.Int32)">
+            <summary>
+            Xóa một mục menu footer dựa trên ID.
+            </summary>
+            <param name="id">ID của mục menu footer cần xóa.</param>
+            <returns>Trạng thái thành công hoặc lỗi nếu không tìm thấy mục menu footer.</returns>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.SanphamController.GetSanphams">
             <summary>
@@ -490,6 +622,55 @@
             Xóa Hình ảnh icon của Footer {imageId}
             </summary>
             <returns>Xóa Hình ảnh icon của Footer {imageId}</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.GetAll">
+            <summary>
+            Lấy danh sách tất cả các Website.
+            </summary>
+            <returns>Danh sách Website.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.GetById(System.Int32)">
+            <summary>
+            Lấy thông tin chi tiết của Website dựa trên ID.
+            </summary>
+            <param name="id">ID của Website.</param>
+            <returns>Thông tin chi tiết của Website.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.GetActiveItems">
+            <summary>
+            Lấy danh sách các Website đang hoạt động (TrangThai = 1).
+            </summary>
+            <returns>Danh sách Website đang hoạt động.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.Create(CuahangtraicayAPI.DTO.TenwebSiteDTO.CreateTenWebSiteDto)">
+            <summary>
+            Tạo mới một Website.
+            </summary>
+            <param name="createDto">Dữ liệu của Website cần tạo.</param>
+            <returns>Website vừa được tạo.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.Update(System.Int32,CuahangtraicayAPI.DTO.TenwebSiteDTO.UpdateTenWebSiteDto)">
+            <summary>
+            Cập nhật thông tin của một Website.
+            </summary>
+            <param name="id">ID của Website cần cập nhật.</param>
+            <param name="updateDto">Dữ liệu cần cập nhật.</param>
+            <returns>Trạng thái cập nhật.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.Delete(System.Int32)">
+            <summary>
+            Xóa một Website.
+            </summary>
+            <param name="id">ID của Website cần xóa.</param>
+            <returns>Trạng thái xóa.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.SetTenwebsiter(System.Int32,CuahangtraicayAPI.DTO.TenwebSiteDTO.SetTenwebSiteDto)">
+            <summary>
+            Đặt trạng thái Website được sử dụng (TrangThai = 1) và các Website khác về trạng thái không hoạt động (TrangThai = 0).
+            </summary>
+            <param name="id">ID của Website cần đặt làm sử dụng.</param>
+            <param name="setDto">Thông tin người thực hiện cập nhật.</param>
+            <returns>Trạng thái cập nhật.</returns>
         </member>
     </members>
 </doc>

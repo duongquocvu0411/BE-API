@@ -7,47 +7,48 @@ import Footer from '../Footer';
 import HeaderAdmin from '../HeaderAdmin';
 import SiderbarAdmin from '../SidebarAdmin';
 import { nanoid } from 'nanoid';
-import ModalBanner from './../modla/ModalBanner';
 
-const Banners = () => {
-  const [banners, setBanners] = useState([]);
+import ModalTenwebSitersAdmin from '../modla/ModalTenwebsitersAdmin';
+
+const TenwebSitersAdmin = () => {
+  const [Tenwebsite, setTenwebsite] = useState([]);
   const [dangtai, setDangtai] = useState(false);
   const [trangHienTai, setTrangHienTai] = useState(1);
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xác nhận xóa
-  const [bannerXoa, setBannerXoa] = useState(null); // Lưu thông tin banner cần xóa
+  const [WebsiteXoa, setWebsiteXoa] = useState(null); // Lưu thông tin Website cần xóa
 
-  const bannersMoiTrang = 4;
+  const TenwebsiteMoiTrang = 4;
 
-  // Logic tìm kiếm banners
+  // Logic tìm kiếm Tenwebsite
   const [timKiem, setTimKiem] = useState('');
-  const bannersDaLoc = banners.filter((banner) =>
-    banner.tieude.toLowerCase().includes(timKiem.toLowerCase())
+  const TenwebsiteDaLoc = Tenwebsite.filter((Website) =>
+    Website.tieu_de.toLowerCase().includes(timKiem.toLowerCase())
   );
 
   // Logic phân trang
-  const viTriBannerCuoi = trangHienTai * bannersMoiTrang;
-  const viTriBannerDau = viTriBannerCuoi - bannersMoiTrang;
-  const bannersTheoTrang = bannersDaLoc.slice(viTriBannerDau, viTriBannerCuoi);
-  const tongSoTrang = Math.ceil(bannersDaLoc.length / bannersMoiTrang);
+  const viTriWebsiteCuoi = trangHienTai * TenwebsiteMoiTrang;
+  const viTriWebsiteDau = viTriWebsiteCuoi - TenwebsiteMoiTrang;
+  const TenwebsiteTheoTrang = TenwebsiteDaLoc.slice(viTriWebsiteDau, viTriWebsiteCuoi);
+  const tongSoTrang = Math.ceil(TenwebsiteDaLoc.length / TenwebsiteMoiTrang);
 
   const phanTrang = (soTrang) => setTrangHienTai(soTrang);
 
   const [hienThiModal, setHienThiModal] = useState(false);
   const [chinhSua, setChinhSua] = useState(false);
-  const [bannerHienTai, setBannerHienTai] = useState(null);
+  const [WebsiteHienTai, setWebsiteHienTai] = useState(null);
 
   useEffect(() => {
-    layDanhSachBanners();
+    layDanhSachTenwebsite();
   }, []);
 
-  const layDanhSachBanners = async () => {
+  const layDanhSachTenwebsite = async () => {
     setDangtai(true);
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/banners`);
-      setBanners(response.data);
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Tenwebsite`);
+      setTenwebsite(response.data);
     } catch (error) {
-      console.error('Lỗi khi lấy danh sách banners:', error);
-      toast.error('Có lỗi khi lấy danh sách banners!', {
+      console.error('Lỗi khi lấy danh sách Tenwebsite:', error);
+      toast.error('Có lỗi khi lấy danh sách Tenwebsite!', {
         position: 'top-right',
         autoClose: 3000,
       });
@@ -56,51 +57,51 @@ const Banners = () => {
     }
   };
 
-  const moModalThemBanner = () => {
+  const moModalThemWebsite = () => {
     setChinhSua(false);
-    setBannerHienTai(null);
+    setWebsiteHienTai(null);
     setHienThiModal(true);
   };
 
-  const moModalSuaBanner = (banner) => {
+  const moModalSuaWebsite = (Website) => {
     setChinhSua(true);
-    setBannerHienTai(banner);
+    setWebsiteHienTai(Website);
     setHienThiModal(true);
   };
 
-  const xoaBanner = async (id, tieude) => {
+  const xoaWebsite = async (id, tieude) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
     try {
-      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/banners/${id}`,
+      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/Tenwebsite/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Thêm token vào header
           },
         });
-      toast.success(`Xóa banner "${tieude}" thành công!`, {
+      toast.success(`Xóa Website "${tieude}" thành công!`, {
         position: 'top-right',
         autoClose: 3000,
       });
-      layDanhSachBanners();
+      layDanhSachTenwebsite();
       setTrangHienTai(1);
     } catch (error) {
-      console.error('Lỗi khi xóa banner:', error);
-      toast.error('Không thể xóa banner!', {
+      console.error('Lỗi khi xóa Website:', error);
+      toast.error('Không thể xóa Website!', {
         position: 'top-right',
         autoClose: 3000,
       });
     }
   };
-  const suDungBanners = async (id) => {
+  const suDungTenwebsite = async (id) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
     try {
       // Gọi API với token trong headers
       await axios.post(
-        `${process.env.REACT_APP_BASEURL}/api/Banners/setTrangthai/${id}`,
+        `${process.env.REACT_APP_BASEURL}/api/Tenwebsite/setTrangthai/${id}`,
         {}, // Body rỗng vì không có dữ liệu gửi đi
         {
           headers: {
@@ -116,7 +117,7 @@ const Banners = () => {
       });
 
       // Lấy lại danh sách cửa hàng sau khi cập nhật
-      layDanhSachBanners();
+      layDanhSachTenwebsite();
     } catch (error) {
       console.error("Có lỗi khi sử dụng tên cửa hàng", error);
 
@@ -129,19 +130,51 @@ const Banners = () => {
   };
 
 
-  const handleHienThiModalXoa = (banner) => {
-    setBannerXoa(banner); // Lưu banner cần xóa
+  const handleHienThiModalXoa = (Website) => {
+    setWebsiteXoa(Website); // Lưu Website cần xóa
     setShowModalXoa(true); // Hiển thị modal xác nhận
   };
   const handleDongModalXoa = () => {
     setShowModalXoa(false);
-    setBannerXoa(null); // Reset thông tin banner
+    setWebsiteXoa(null); // Reset thông tin Website
   };
   const handleXacNhanXoa = async () => {
-    if (bannerXoa) {
-      await xoaBanner(bannerXoa.id, bannerXoa.tieude); // Gọi hàm xóa banner
+    if (WebsiteXoa) {
+      await xoaWebsite(WebsiteXoa.id, WebsiteXoa.tieu_de); // Gọi hàm xóa Website
     }
     setShowModalXoa(false);
+  };
+
+  const suDungTenWebsite = async (id) => {
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+    const updatedBy = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+
+    try {
+      // Gọi API với token trong headers và updatedBy trong body
+      await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/TenWebSite/setTenwebsiter/${id}`,
+        { updatedBy: updatedBy }, // Gửi updatedBy trong body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.success("Cửa hàng đã được đánh dấu là đang sử dụng", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+
+      layDanhSachTenwebsite();
+    } catch (error) {
+      console.error("Có lỗi khi sử dụng tên cửa hàng", error);
+      toast.error("Có lỗi khi sử dụng tên cửa hàng", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
   };
 
   return (
@@ -157,14 +190,14 @@ const Banners = () => {
             <div className="container-fluid">
               <div className="row mb-2">
                 <div className="col-sm-6">
-                  <h1 className="h3 mb-0 text-gray-800">Danh sách banners</h1>
+                  <h1 className="h3 mb-0 text-gray-800">Danh sách Tenwebsite</h1>
                 </div>
                 <div className="col-sm-6">
                   <ol className="breadcrumb float-sm-right">
                     <li className="breadcrumb-item">
                       <Link to="/admin/trangchu">Home</Link>
                     </li>
-                    <li className="breadcrumb-item active">Danh sách banners</li>
+                    <li className="breadcrumb-item active">Danh sách Tenwebsite</li>
                   </ol>
                 </div>
               </div>
@@ -175,13 +208,13 @@ const Banners = () => {
           <div className="container-fluid mb-3">
             <div className="row">
               <div className="col-12 col-md-6 col-lg-4 mb-3">
-                <label htmlFor="searchBanner" className="form-label">Tìm kiếm banners:</label>
+                <label htmlFor="searchWebsite" className="form-label">Tìm kiếm Tenwebsite:</label>
                 <div className="input-group">
                   <input
-                    id="searchBanner"
+                    id="searchWebsite"
                     type="text"
                     className="form-control"
-                    placeholder="Nhập tiêu đề banner..."
+                    placeholder="Nhập tiêu đề Website..."
                     value={timKiem}
                     onChange={(e) => setTimKiem(e.target.value)}
                   />
@@ -197,9 +230,9 @@ const Banners = () => {
           <div className="container-fluid">
             <div className="card shadow mb-4">
               <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 className="m-0 font-weight-bold text-primary">Danh sách banners</h6>
-                <Button variant="primary" onClick={moModalThemBanner} className="btn-lg">
-                  <i className="fas fa-plus-circle"></i> Thêm banner
+                <h6 className="m-0 font-weight-bold text-primary">Danh sách Tenwebsite</h6>
+                <Button variant="primary" onClick={moModalThemWebsite} className="btn-lg">
+                  <i className="fas fa-plus-circle"></i> Thêm Website
                 </Button>
               </div>
               <div className="card-body table-responsive p-0" style={{ maxHeight: '400px' }}>
@@ -212,53 +245,52 @@ const Banners = () => {
                   <table className="table table-bordered table-hover table-striped">
                     <thead className="thead-dark">
                       <tr>
-                        <th>STT</th>
-                        <th>Tiêu đề</th>
-                        <th>Phụ đề</th>
-                        <th>Hình ảnh</th>
-                        <th>Chức năng</th>
+                        <th scope="col">STT</th>
+                        <th scope="col">Tiêu đề</th>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col">Đã cập nhật Bởi</th>
+                        <th scope="col">Chức năng</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {bannersTheoTrang.map((banner, index) => (
+                      {TenwebsiteTheoTrang.map((Website, index) => (
                         <tr key={nanoid()} className="hover-effect">
-                          <td>{viTriBannerDau + index + 1}</td>
-                          <td>{banner.tieude}</td>
-                          <td>{banner.phude}</td>
+                          <td>{viTriWebsiteDau + index + 1}</td>
+                          <td>{Website.tieu_de}</td>
+                          <td>{Website.favicon?.length > 0 ? (
+                            <img
+                              src={`${process.env.REACT_APP_BASEURL}/${Website.favicon}`}
+                              alt="Website"
+                              style={{ width: '100px', height: '50px', objectFit: 'cover' }}
+                            />
+                          ) : (
+                            'Không có hình ảnh'
+                          )}</td>
                           <td>
-                            {banner.bannerImages?.length > 0 ? (
-                              <img
-                                src={`${process.env.REACT_APP_BASEURL}/${banner.bannerImages[0].imagePath}`}
-                                alt="Banner"
-                                style={{ width: '100px', height: '50px', objectFit: 'cover' }}
-                              />
-                            ) : (
-                              'Không có hình ảnh'
-                            )}
+                            {Website.updatedBy}
                           </td>
                           <td>
                             <Button
                               variant="primary me-2"
-                              onClick={() => moModalSuaBanner(banner)}
-                              title="Chỉnh sửa banner"
+                              onClick={() => moModalSuaWebsite(Website)}
+                              title="Chỉnh sửa Website"
                             >
                               <i className="fas fa-edit"></i>
                             </Button>
                             <Button
                               variant="danger"
-                              onClick={() => handleHienThiModalXoa(banner)}
-                              title="Xóa banner"
+                              onClick={() => handleHienThiModalXoa(Website)}
+                              title="Xóa Website"
                             >
                               <i className="fas fa-trash"></i>
                             </Button>
-                            {banner.trangthai !== 'đang sử dụng' && (
+
+                            {Website.trangThai !== 1 && (
                               <Button
                                 variant="success"
-                                onClick={() => suDungBanners(banner.id)}
-                                className="btn btn-sm btn-success"
-                                title="Sử dụng banner"
+                                onClick={() => suDungTenWebsite(Website.id)}
                               >
-                                <i className="fas fa-check"></i> Sử dụng
+                                Sử dụng
                               </Button>
                             )}
                           </td>
@@ -266,7 +298,7 @@ const Banners = () => {
                       ))}
                     </tbody>
                   </table>
-                )} 
+                )}
               </div>
 
               {/* Pagination */}
@@ -292,15 +324,15 @@ const Banners = () => {
         <Footer />
       </div>
 
-      <ModalBanner
+      <ModalTenwebSitersAdmin
         show={hienThiModal}
         handleClose={() => setHienThiModal(false)}
         isEdit={chinhSua}
-        banner={bannerHienTai}
-        fetchBanners={layDanhSachBanners}
+        Website={WebsiteHienTai}
+        fetchTenwebsite={layDanhSachTenwebsite}
       />
 
-      
+
       <Modal
         show={showModalXoa}
         onHide={handleDongModalXoa}
@@ -315,9 +347,9 @@ const Banners = () => {
         <Modal.Body>
           <div className="text-center">
             <i className="fas fa-trash-alt fa-4x text-danger mb-3"></i>
-            <h5 className="mb-3">Bạn có chắc chắn muốn xóa banner?</h5>
+            <h5 className="mb-3">Bạn có chắc chắn muốn xóa Website?</h5>
             <p className="text-muted">
-              <strong>{bannerXoa?.tieude}</strong>
+              <strong>{WebsiteXoa?.tieude}</strong>
             </p>
             <p className="text-muted">Hành động này không thể hoàn tác.</p>
           </div>
@@ -337,4 +369,4 @@ const Banners = () => {
   );
 };
 
-export default Banners;
+export default TenwebSitersAdmin;

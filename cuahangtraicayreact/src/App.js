@@ -28,6 +28,7 @@ import TenFooterAdmin from "./component/admin/page/TenFooterAdmin";
 import GioithieuAdmin from "./component/admin/page/GioithieuAdmin";
 import MenuFooter from "./component/admin/page/MenuFooter";
 import QuanlyFooter from "./component/admin/page/QuanlyFooter";
+import TenwebSitersAdmin from "./component/admin/page/TenwebSitersAdmin";
 // import MenuFooter from "./component/admin/page/MenuFooter";
 
 function App() {
@@ -169,6 +170,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <QuanlyFooter />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/Tenwebsiters"
+              element={
+                <ProtectedRoute>
+                  <TenwebSitersAdmin />
                 </ProtectedRoute>
               }
             />

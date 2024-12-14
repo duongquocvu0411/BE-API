@@ -21,7 +21,11 @@ namespace CuahangtraicayAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Gioithieu
+        /// <summary>
+        /// Lấy danh sách tất cả các mục giới thiệu, bao gồm thông tin hình ảnh liên quan.
+        /// </summary>
+        /// <returns>Danh sách các mục giới thiệu.</returns>
+
         [HttpGet]
         public async Task<ActionResult> GetAllGioithieu()
         {
@@ -39,7 +43,12 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(gioithieuList);
         }
 
-        // GET: api/Gioithieu/active
+
+        /// <summary>
+        /// Lấy danh sách các mục giới thiệu đang hoạt động (Trang_thai = 1), bao gồm thông tin hình ảnh liên quan.
+        /// </summary>
+        /// <returns>Danh sách các mục giới thiệu đang hoạt động.</returns>
+
         [HttpGet("active")]
         public async Task<ActionResult> GetActiveGioithieu()
         {
@@ -61,7 +70,12 @@ namespace CuahangtraicayAPI.Controllers
         }
 
 
-        // GET: api/Gioithieu/5
+
+        /// <summary>
+        /// Lấy thông tin chi tiết của một mục giới thiệu, bao gồm thông tin hình ảnh liên quan, dựa trên ID.
+        /// </summary>
+        /// <param name="id">ID của mục giới thiệu cần lấy thông tin.</param>
+        /// <returns>Thông tin chi tiết của mục giới thiệu.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult> GetGioithieu(int id)
         {
@@ -75,7 +89,12 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(gioithieu);
         }
 
-        // POST: api/Gioithieu
+        /// <summary>
+        /// Tạo mới một mục giới thiệu, bao gồm việc tải lên hình ảnh liên quan.
+        /// </summary>
+        /// <param name="dto">Dữ liệu để tạo mục giới thiệu mới (bao gồm tiêu đề, nội dung và hình ảnh).</param>
+        /// <returns>Mục giới thiệu vừa được tạo.</returns>
+
         [HttpPost]
         public async Task<ActionResult> CreateGioithieu([FromForm] GioithieuCreateDTO dto)
         {
@@ -126,7 +145,13 @@ namespace CuahangtraicayAPI.Controllers
             return CreatedAtAction(nameof(GetGioithieu), new { id = gioithieu.Id }, gioithieu);
         }
 
-        // PUT: api/Gioithieu/5
+        /// <summary>
+        /// Cập nhật thông tin của một mục giới thiệu, bao gồm việc thêm mới hình ảnh nếu cần.
+        /// </summary>
+        /// <param name="id">ID của mục giới thiệu cần cập nhật.</param>
+        /// <param name="gioithieuUpdateDTO">Dữ liệu cần cập nhật (bao gồm tiêu đề, nội dung, trạng thái và hình ảnh mới).</param>
+        /// <returns>Trạng thái cập nhật.</returns>
+
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateGioithieu(int id, [FromForm] GioithieuUpdateDTO gioithieuUpdateDTO)
         {
@@ -180,7 +205,12 @@ namespace CuahangtraicayAPI.Controllers
         }
 
 
-        // DELETE: api/Gioithieu/5
+        /// <summary>
+        /// Xóa một mục giới thiệu, bao gồm tất cả các hình ảnh liên quan.
+        /// </summary>
+        /// <param name="id">ID của mục giới thiệu cần xóa.</param>
+        /// <returns>Trạng thái xóa.</returns>
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGioithieu(int id)
         {
@@ -200,27 +230,34 @@ namespace CuahangtraicayAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Xóa một hình ảnh của mục giới thiệu dựa trên ID của hình ảnh.
+        /// </summary>
+        /// <param name="imageId">ID của hình ảnh cần xóa.</param>
+        /// <returns>Trạng thái xóa hình ảnh.</returns>
+
+
         [HttpDelete("DeleteImage/{imageId}")]
-public async Task<ActionResult> DeleteImage(int imageId)
-{
-    var gioithieuImg = await _context.GioithieuImg.FindAsync(imageId);
+        public async Task<ActionResult> DeleteImage(int imageId)
+        {
+            var gioithieuImg = await _context.GioithieuImg.FindAsync(imageId);
     
-    if (gioithieuImg == null)
-    {
-        return NotFound();
-    }
+            if (gioithieuImg == null)
+            {
+                return NotFound();
+            }
 
-    // Xóa file hình ảnh khỏi thư mục (nếu cần)
-    var filePath = Path.Combine(_imageDirectory, Path.GetFileName(gioithieuImg.URL_image.TrimStart('/')));
-    if (System.IO.File.Exists(filePath))
-    {
-        System.IO.File.Delete(filePath);
-    }
+            // Xóa file hình ảnh khỏi thư mục (nếu cần)
+            var filePath = Path.Combine(_imageDirectory, Path.GetFileName(gioithieuImg.URL_image.TrimStart('/')));
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
 
-    _context.GioithieuImg.Remove(gioithieuImg);
-    await _context.SaveChangesAsync();
+            _context.GioithieuImg.Remove(gioithieuImg);
+            await _context.SaveChangesAsync();
 
-    return NoContent();
-}
+            return NoContent();
+        }
     }
 }

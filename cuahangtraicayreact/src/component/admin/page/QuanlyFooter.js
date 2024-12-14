@@ -117,7 +117,7 @@ const QuanlyFooter = () => {
   const handleDongModalXoa = () => {
     setFooterXoa(null); // Reset thông tin Footer cần xóa
     setShowModalXoa(false); // Đóng modal xóa
-  };
+  }; 
 
   const handleXacNhanXoa = async () => {
     if (FooterXoa) {
