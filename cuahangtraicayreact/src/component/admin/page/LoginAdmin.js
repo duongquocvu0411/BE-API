@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Helmet } from 'react-helmet';
+import { Helmet,HelmetProvider } from 'react-helmet-async';
 
 const Login = () => {
   const [tenDangNhap, setTenDangNhap] = useState('');
@@ -92,12 +92,14 @@ const Login = () => {
 
   return (
     <div className="container d-flex vh-100">
-       <Helmet>
+ <HelmetProvider>
+      <Helmet>
         <title>{thongTinWebsite.tieu_de || "Tên website mặc định"}</title>
         {thongTinWebsite.favicon && (
           <link rel="icon" type="image/x-icon" href={thongTinWebsite.favicon} />
         )}
       </Helmet>
+    </HelmetProvider>
        <ul className="bubbles">
       <li></li>
       <li></li>

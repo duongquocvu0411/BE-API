@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\gioithieu\" />
+    <Folder Include="wwwroot\sanpham\" />
     <Folder Include="wwwroot\tenwebsite\" />
   </ItemGroup>
 

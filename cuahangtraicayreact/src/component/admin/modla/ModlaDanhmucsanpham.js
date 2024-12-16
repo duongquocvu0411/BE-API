@@ -11,21 +11,26 @@ const ModlaAdddanhsachsanpham = ({ show, handleClose, isEdit, danhmuc, fetchdanh
     if (isEdit && danhmuc) {
       setName(danhmuc.name);
 
-    } else {
+    } else { 
       setName('');
 
     }
   }, [isEdit, danhmuc]);
   const handleSubmit = async () => {
+    const fom ={
+      name
+    }
     try {
       // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
       const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
       const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+      const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
       if (isEdit) {
         // Cập nhật danh mục hiện tại
+        fom.updated_By = loggedInUser;
         await axios.put(
-          `${process.env.REACT_APP_BASEURL}/api/danhmucsanpham/${danhmuc.id}`,
-          { name }
+          `${process.env.REACT_APP_BASEURL}/api/danhmucsanpham/${danhmuc.id}`,fom
+      
           ,
           {
             headers: {
@@ -45,9 +50,11 @@ const ModlaAdddanhsachsanpham = ({ show, handleClose, isEdit, danhmuc, fetchdanh
 
       } else {
         // Thêm mới danh mục
+        fom.created_By = loggedInUser;
+        fom.updated_By = loggedInUser;
         await axios.post(
-          `${process.env.REACT_APP_BASEURL}/api/danhmucsanpham`,
-          { name }
+          `${process.env.REACT_APP_BASEURL}/api/danhmucsanpham`,fom
+          
           ,
           {
             headers: {

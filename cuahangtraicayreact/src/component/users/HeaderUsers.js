@@ -5,7 +5,8 @@ import axios from 'axios';
 import ScrollToTop from 'react-scroll-to-top';
 import { toast } from "react-toastify";
 import ChatBot from "react-chatbotify";
-import { Helmet } from "react-helmet";
+
+import { HelmetProvider,Helmet } from "react-helmet-async";
 
 const HeaderUsers = () => {
   const vitriRoute = useLocation();
@@ -103,12 +104,14 @@ const HeaderUsers = () => {
 
   return (
     <>
+      <HelmetProvider>
       <Helmet>
         <title>{thongTinWebsite.tieu_de || "Tên website mặc định"}</title>
         {thongTinWebsite.favicon && (
           <link rel="icon" type="image/x-icon" href={thongTinWebsite.favicon} />
         )}
       </Helmet>
+    </HelmetProvider>
 
       <div className="container-fluid fixed-top">
         <div className="container topbar bg-primary">

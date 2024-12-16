@@ -112,27 +112,29 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize]
         public async Task<ActionResult<Sanpham>> PostSanpham([FromForm] SanphamDTO.SanphamCreateRequest request)
         {
+            // Tạo đối tượng sản phẩm mới
             var sanpham = new Sanpham
             {
                 Tieude = request.Tieude,
                 Giatien = request.Giatien,
                 Trangthai = request.Trangthai,
                 don_vi_tinh = request.DonViTinh,
-                danhmucsanpham_id = request.DanhmucsanphamId
+                danhmucsanpham_id = request.DanhmucsanphamId,
+                CreatedBy = request.Created_By,
+                UpdatedBy = request.Updated_By,
             };
 
             // Lưu hình ảnh chính nếu có
             if (request.Hinhanh != null)
             {
                 var fileExtension = Path.GetExtension(request.Hinhanh.FileName); // Lấy đuôi file
-                var imagePath = Path.Combine(_environment.WebRootPath, "image", Guid.NewGuid().ToString() + fileExtension); // Tạo tên file mới giữ lại đuôi
+                var imagePath = Path.Combine(_environment.WebRootPath, "sanpham", Guid.NewGuid().ToString() + fileExtension); // Tạo tên file mới giữ lại đuôi
                 using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
                     await request.Hinhanh.CopyToAsync(stream);
                 }
-                sanpham.Hinhanh = Path.Combine("image", Path.GetFileName(imagePath)); // Lưu đường dẫn file mới
+                sanpham.Hinhanh = Path.Combine("sanpham", Path.GetFileName(imagePath)); // Lưu đường dẫn file mới
             }
-
 
             // Lưu chi tiết sản phẩm nếu có
             if (request.ChiTiet != null)
@@ -140,24 +142,11 @@ namespace CuahangtraicayAPI.Controllers
                 sanpham.ChiTiet = new ChiTiet
                 {
                     mo_ta_chung = request.ChiTiet.MoTaChung,
-                   
                     bai_viet = request.ChiTiet.BaiViet
                 };
             }
 
-            if (request.Hinhanh != null)
-            {
-                var fileExtension = Path.GetExtension(request.Hinhanh.FileName); // Lấy đuôi file
-                var imagePath = Path.Combine(_environment.WebRootPath, "image", Guid.NewGuid().ToString() + fileExtension); // Tạo tên file mới giữ lại đuôi
-                using (var stream = new FileStream(imagePath, FileMode.Create))
-                {
-                    await request.Hinhanh.CopyToAsync(stream);
-                }
-                sanpham.Hinhanh = Path.Combine("image", Path.GetFileName(imagePath)); // Lưu đường dẫn file mới
-            }
-
-
-            // Lưu hình ảnh phụ nếu có
+            // Lưu ảnh phụ nếu có
             if (request.Images != null)
             {
                 foreach (var image in request.Images)
@@ -182,7 +171,7 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-
+            // Lưu thông tin sản phẩm vào cơ sở dữ liệu
             _context.Sanpham.Add(sanpham);
             await _context.SaveChangesAsync();
 
@@ -192,10 +181,8 @@ namespace CuahangtraicayAPI.Controllers
                 var sale = new Sanphamsale
                 {
                     sanpham_id = sanpham.Id,
-                    //Giasale = request.Sale.Giasale ?? 0,
-                    //Trangthai = request.Sale.Trangthai ?? "Không áp dụng",
                     giasale = request.Sale.Giasale, // Gán giá trị mặc định nếu không có Giasale
-                    trangthai = request.Sale.Trangthai, // Mặc định trạng thái là 'inactive'
+                    trangthai = request.Sale.Trangthai ?? "Không áp dụng", // Mặc định trạng thái là 'Không áp dụng'
                     thoigianbatdau = request.Sale.Thoigianbatdau,
                     thoigianketthuc = request.Sale.Thoigianketthuc
                 };
@@ -203,6 +190,7 @@ namespace CuahangtraicayAPI.Controllers
                 await _context.SaveChangesAsync();
             }
 
+            // Trả về kết quả với mã 201 (Created) và thông tin sản phẩm vừa tạo
             return CreatedAtAction(nameof(GetSanphams), new { id = sanpham.Id }, sanpham);
         }
 
@@ -233,27 +221,18 @@ namespace CuahangtraicayAPI.Controllers
             if (!string.IsNullOrEmpty(request.Trangthai)) sanpham.Trangthai = request.Trangthai;
             if (!string.IsNullOrEmpty(request.DonViTinh)) sanpham.don_vi_tinh = request.DonViTinh;
             if (request.DanhmucsanphamId != 0) sanpham.danhmucsanpham_id = request.DanhmucsanphamId;
-
-            // Cập nhật hình ảnh chính
-            //if (request.Hinhanh != null)
-            //{
-            //    var imagePath = Path.Combine(_environment.WebRootPath, "image", request.Hinhanh.FileName);
-            //    using (var stream = new FileStream(imagePath, FileMode.Create))
-            //    {
-            //        await request.Hinhanh.CopyToAsync(stream);
-            //    }
-            //    sanpham.Hinhanh = Path.Combine("image", request.Hinhanh.FileName);
-            //}
-
+            sanpham.UpdatedBy = request.Updated_By;
+            // Lưu ảnh chính (giống như gioithieu)
             if (request.Hinhanh != null)
             {
-                var fileExtension = Path.GetExtension(request.Hinhanh.FileName); // Lấy đuôi file
-                var imagePath = Path.Combine(_environment.WebRootPath, "image", Guid.NewGuid().ToString() + fileExtension); // Tạo tên file mới giữ lại đuôi
+                // Lấy phần mở rộng của tệp
+                var fileExtension = Path.GetExtension(request.Hinhanh.FileName);
+                var imagePath = Path.Combine(_environment.WebRootPath, "sanpham", Guid.NewGuid().ToString() + fileExtension); // Tạo tên file duy nhất
                 using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
                     await request.Hinhanh.CopyToAsync(stream);
                 }
-                sanpham.Hinhanh = Path.Combine("image", Path.GetFileName(imagePath)); // Lưu đường dẫn file mới
+                sanpham.Hinhanh = Path.Combine("sanpham", Path.GetFileName(imagePath)); // Lưu đường dẫn file mới
             }
 
             // Cập nhật chi tiết sản phẩm
@@ -265,7 +244,6 @@ namespace CuahangtraicayAPI.Controllers
                     _context.ChiTiets.Add(sanpham.ChiTiet);
                 }
                 sanpham.ChiTiet.mo_ta_chung = request.ChiTiet.MoTaChung;
-              
                 sanpham.ChiTiet.bai_viet = request.ChiTiet.BaiViet;
             }
 
@@ -284,27 +262,14 @@ namespace CuahangtraicayAPI.Controllers
                 _context.HinhAnhSanPhams.RemoveRange(sanpham.Images);
             }
 
-            // Thêm ảnh phụ mới nếu có
-            //if (request.Images != null)
-            //{
-            //    foreach (var image in request.Images)
-            //    {
-            //        var imagePath = Path.Combine(_environment.WebRootPath, "hinhanhphu", image.FileName);
-            //        using (var stream = new FileStream(imagePath, FileMode.Create))
-            //        {
-            //            await image.CopyToAsync(stream);
-            //        }
-            //        sanpham.Images.Add(new HinhAnhSanPham { hinhanh = Path.Combine("hinhanhphu", image.FileName) });
-            //    }
-            //}
             if (request.Images != null)
             {
                 foreach (var image in request.Images)
                 {
-                    // Lấy phần mở rộng của tệp (ví dụ .jpg, .png, .jpeg)
+                    // Lấy phần mở rộng của tệp
                     var fileExtension = Path.GetExtension(image.FileName);
 
-                    // Tạo tên file duy nhất bằng cách kết hợp GUID với phần mở rộng
+                    // Tạo tên file duy nhất
                     var uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
 
                     // Đường dẫn lưu hình ảnh
@@ -473,6 +438,8 @@ namespace CuahangtraicayAPI.Controllers
                 Hinhanh = !string.IsNullOrEmpty(s.Hinhanh) ? GetImageUrl(s.Hinhanh) : string.Empty,
                 s.Trangthai,
                 s.don_vi_tinh,
+                s.CreatedBy,
+                s.UpdatedBy,
                 s.danhmucsanpham_id,
                 s.SanphamSales,
                 DanhmucsanphamName = s.Danhmucsanpham?.Name,

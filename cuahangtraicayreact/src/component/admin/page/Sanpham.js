@@ -290,6 +290,8 @@ const SanPham = () => {
                           <th>Đánh giá</th>
                           <th>Trạng thái</th>
                           <th>Khuyến mãi</th>
+                          <th>Người tạo</th>
+                          <th>Người cập nhật</th>
                           <th>Chức năng</th>
                         </tr>
                       </thead>
@@ -298,7 +300,7 @@ const SanPham = () => {
                           sanPhamTheoTrang.map((sanPham, index) => (
                             <tr key={nanoid()}>
                               <td>{viTriSanPhamDau + index + 1}</td>
-                              <td><img src={sanPham.hinhanh} alt={sanPham.tieude} style={{ width: '50px', objectFit: 'cover' }} /></td>
+                              <td><img src={sanPham.hinhanh} alt={sanPham.tieude} style={{ width: '100px', objectFit: 'cover' }} /></td>
                               <td>{sanPham.tieude}</td>
                               <td>{parseFloat(sanPham.giatien).toLocaleString("vi-VN")} VNĐ</td>
                               <td>{sanPham.don_vi_tinh}</td>
@@ -339,6 +341,8 @@ const SanPham = () => {
                                   <span>Không có khuyến mãi</span>
                                 )}
                               </td>
+                              <td>{sanPham.createdBy}</td>
+                              <td>{sanPham.updatedBy}</td>
                               <td>
                                 <Button variant="warning" onClick={() => moModalSuaSanPham(sanPham)}><i className="fas fa-edit"></i></Button>
                                 <Button

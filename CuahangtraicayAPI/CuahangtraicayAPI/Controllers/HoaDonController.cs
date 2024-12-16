@@ -266,24 +266,6 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(new { message = "Trạng thái đơn hàng đã được cập nhật", bill });
         }
 
-        ///// <summary>
-        ///// Lấy danh thu theo tháng {year}/ {moth}
-        ///// </summary>
-        ///// <returns> Lấy danh thu theo tháng {year}/ {moth} </returns>
-
-        //// GET: api/HoaDon/DoanhThuTheoThang/2024/10
-        //[HttpGet("DoanhThuTheoThang/{year}/{month}")]
-        //[Authorize]
-        //public async Task<ActionResult<object>> GetDoanhThuTheoThang(int year, int month)
-        //{
-        //    // Tính tổng doanh thu dựa trên TotalPrice của các hóa đơn trong tháng và năm được chỉ định
-        //    var doanhThu = await _context.HoaDons
-        //        .Where(hd => hd.Created_at.Year == year && hd.Created_at.Month == month)
-        //        .SumAsync(hd => hd.total_price);
-
-        //    return Ok(new { Year = year, Month = month, DoanhThu = doanhThu });
-        //}
-
         /// <summary>
         /// Lấy danh thu theo ngày hiện tại
         /// </summary>

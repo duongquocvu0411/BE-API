@@ -14,21 +14,25 @@ namespace CuahangtraicayAPI.Model
         public int Id { get; set; }
 
 
-        public string? Tieude { get; set; }  // Tên sản phẩm, có thể nullable nếu cơ sở dữ liệu cho phép NULL
+        public string Tieude { get; set; }  // Tên sản phẩm, có thể nullable nếu cơ sở dữ liệu cho phép NULL
 
 
         public decimal Giatien { get; set; } // Giá sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
 
 
-        public string? Hinhanh { get; set; }  // Hình ảnh, nullable nếu cơ sở dữ liệu cho phép NULL
+        public string Hinhanh { get; set; }  // Hình ảnh, nullable nếu cơ sở dữ liệu cho phép NULL
 
 
-        public string? Trangthai { get; set; } // Trạng thái của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
+        public string Trangthai { get; set; } // Trạng thái của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
 
      
-        public string? don_vi_tinh { get; set; } // Đơn vị tính của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
+        public string don_vi_tinh { get; set; } // Đơn vị tính của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
 
-       
+
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
+
+
         // Foreign Key cho Danhmucsanpham
 
 

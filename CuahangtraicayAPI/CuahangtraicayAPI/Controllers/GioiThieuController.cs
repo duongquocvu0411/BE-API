@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -96,6 +97,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Mục giới thiệu vừa được tạo.</returns>
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CreateGioithieu([FromForm] GioithieuCreateDTO dto)
         {
             // Kiểm tra đầu vào từ DTO
@@ -121,15 +123,22 @@ namespace CuahangtraicayAPI.Controllers
             {
                 foreach (var image in dto.Images)
                 {
-                    var filePath = Path.Combine(_imageDirectory, image.FileName);
+                    // Tạo chuỗi ngẫu nhiên cho tên tệp nhưng giữ lại phần đuôi (ví dụ .jpg, .png)
+                    var randomFileName = Path.GetRandomFileName().Replace(".", "") + Path.GetExtension(image.FileName); // Tạo tên ngẫu nhiên và giữ đuôi tệp
+                    var filePath = Path.Combine(_imageDirectory, randomFileName);
+
+                    // Lưu tệp hình ảnh vào thư mục 'gioithieu'
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await image.CopyToAsync(stream);
                     }
-                    imageUrls.Add($"/gioithieu/{image.FileName}");
+
+                    // Thêm đường dẫn vào danh sách imageUrls
+                    imageUrls.Add($"/gioithieu/{randomFileName}");
                 }
             }
 
+            // Thêm mục giới thiệu vào CSDL
             _context.Gioithieu.Add(gioithieu);
             await _context.SaveChangesAsync();
 
@@ -147,6 +156,8 @@ namespace CuahangtraicayAPI.Controllers
             return CreatedAtAction(nameof(GetGioithieu), new { id = gioithieu.Id }, gioithieu);
         }
 
+
+
         /// <summary>
         /// Cập nhật thông tin của một mục giới thiệu, bao gồm việc thêm mới hình ảnh nếu cần.
         /// </summary>
@@ -155,6 +166,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái cập nhật.</returns>
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateGioithieu(int id, [FromForm] GioithieuUpdateDTO gioithieuUpdateDTO)
         {
             var gioithieu = await _context.Gioithieu.Include(g => g.GioithieuImgs).FirstOrDefaultAsync(g => g.Id == id);
@@ -181,12 +193,16 @@ namespace CuahangtraicayAPI.Controllers
                 // Lưu hình ảnh mới
                 foreach (var image in gioithieuUpdateDTO.Images)
                 {
-                    var filePath = Path.Combine(_imageDirectory, image.FileName);
+                    // Tạo chuỗi ngẫu nhiên cho tên tệp nhưng giữ lại phần đuôi (ví dụ .jpg, .png)
+                    var randomFileName = Path.GetRandomFileName().Replace(".", "") + Path.GetExtension(image.FileName); // Tạo tên ngẫu nhiên và giữ đuôi tệp
+                    var filePath = Path.Combine(_imageDirectory, randomFileName);
+
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await image.CopyToAsync(stream);
                     }
-                    imageUrls.Add($"/gioithieu/{image.FileName}");
+
+                    imageUrls.Add($"/gioithieu/{randomFileName}");
                 }
 
                 // Thêm hình ảnh mới vào cơ sở dữ liệu mà không xóa hình ảnh cũ
@@ -215,6 +231,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái xóa.</returns>
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteGioithieu(int id)
         {
             var gioithieu = await _context.Gioithieu.FindAsync(id);
@@ -241,10 +258,12 @@ namespace CuahangtraicayAPI.Controllers
 
 
         [HttpDelete("DeleteImage/{imageId}")]
+        [Authorize]
+
         public async Task<ActionResult> DeleteImage(int imageId)
         {
             var gioithieuImg = await _context.GioithieuImg.FindAsync(imageId);
-    
+
             if (gioithieuImg == null)
             {
                 return NotFound();
@@ -257,6 +276,7 @@ namespace CuahangtraicayAPI.Controllers
                 System.IO.File.Delete(filePath);
             }
 
+            // Xóa hình ảnh khỏi cơ sở dữ liệu
             _context.GioithieuImg.Remove(gioithieuImg);
             await _context.SaveChangesAsync();
 

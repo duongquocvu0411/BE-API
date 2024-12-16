@@ -66,6 +66,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Website vừa được tạo.</returns>
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromForm] CreateTenWebSiteDto createDto)
         {
             var newTenWebSite = new TenwebSite
@@ -74,17 +75,21 @@ namespace CuahangtraicayAPI.Controllers
                 TrangThai = createDto.TrangThai,
                 CreatedBy = createDto.Created_By,
                 UpdatedBy = createDto.Updated_By,
-              
             };
 
             if (createDto.Favicon != null)
             {
-                var filePath = Path.Combine("wwwroot/tenwebsite", createDto.Favicon.FileName);
+                // Tạo GUID ngẫu nhiên và lấy phần mở rộng của tệp hình ảnh gốc
+                var fileExtension = Path.GetExtension(createDto.Favicon.FileName); // Lấy phần mở rộng (vd: .jpg, .png)
+                var uniqueFileName = Guid.NewGuid().ToString() + fileExtension; // GUID + phần mở rộng
+
+                var filePath = Path.Combine("wwwroot/tenwebsite", uniqueFileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await createDto.Favicon.CopyToAsync(stream);
                 }
-                newTenWebSite.Favicon = $"/tenwebsite/{createDto.Favicon.FileName}";
+
+                newTenWebSite.Favicon = $"/tenwebsite/{uniqueFileName}";
             }
 
             _context.TenwebSites.Add(newTenWebSite);
@@ -99,8 +104,8 @@ namespace CuahangtraicayAPI.Controllers
         /// <param name="id">ID của Website cần cập nhật.</param>
         /// <param name="updateDto">Dữ liệu cần cập nhật.</param>
         /// <returns>Trạng thái cập nhật.</returns>
-        
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, [FromForm] TenwebSiteDTO.UpdateTenWebSiteDto updateDto)
         {
             var existing = await _context.TenwebSites.FindAsync(id);
@@ -110,11 +115,8 @@ namespace CuahangtraicayAPI.Controllers
             if (!string.IsNullOrEmpty(updateDto.TieuDe))
                 existing.Tieu_de = updateDto.TieuDe;
 
-            //if (!string.IsNullOrEmpty(updateDto.UpdatedBy))
-            //    existing.UpdatedBy = updateDto.UpdatedBy;
-
             if (updateDto.TrangThai.HasValue)
-                existing.TrangThai = updateDto.TrangThai.Value; // Cập nhật TrangThai nếu có trong DTO
+                existing.TrangThai = updateDto.TrangThai.Value;
 
             existing.UpdatedBy = updateDto.Updated_By;
             existing.Updated_at = DateTime.Now;
@@ -129,13 +131,17 @@ namespace CuahangtraicayAPI.Controllers
                         System.IO.File.Delete(oldFilePath);
                 }
 
-                // Lưu favicon mới
-                var newFilePath = Path.Combine("wwwroot/tenwebsite", updateDto.Favicon.FileName);
+                // Tạo GUID mới và lấy phần mở rộng của tệp
+                var fileExtension = Path.GetExtension(updateDto.Favicon.FileName);
+                var uniqueFileName = Guid.NewGuid().ToString() + fileExtension; // GUID + phần mở rộng
+
+                var newFilePath = Path.Combine("wwwroot/tenwebsite", uniqueFileName);
                 using (var stream = new FileStream(newFilePath, FileMode.Create))
                 {
                     await updateDto.Favicon.CopyToAsync(stream);
                 }
-                existing.Favicon = $"/tenwebsite/{updateDto.Favicon.FileName}";
+
+                existing.Favicon = $"/tenwebsite/{uniqueFileName}";
             }
 
             await _context.SaveChangesAsync();
@@ -147,8 +153,9 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         /// <param name="id">ID của Website cần xóa.</param>
         /// <returns>Trạng thái xóa.</returns>
-       
+
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var tenWebSite = await _context.TenwebSites.FindAsync(id);

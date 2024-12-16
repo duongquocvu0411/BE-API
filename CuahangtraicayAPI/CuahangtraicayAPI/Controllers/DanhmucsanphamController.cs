@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CuahangtraicayAPI.Model;
+using static CuahangtraicayAPI.DTO.DanhmucsanphamDTO;
+using Azure.Core;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -58,8 +61,15 @@ namespace CuahangtraicayAPI.Controllers
         // POST: api/Danhmucsanpham
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Danhmucsanpham>> PostDanhmucsanpham(Danhmucsanpham danhmucsanpham)
+        public async Task<ActionResult<Danhmucsanpham>> PostDanhmucsanpham([FromBody] PostDanhmucDTO dto)
         {
+            var danhmucsanpham = new Danhmucsanpham
+            {
+                Name = dto.Name,
+                CreatedBy = dto.Created_By,
+                UpdatedBy = dto.Updated_By
+            };
+
             _context.Danhmucsanpham.Add(danhmucsanpham);
             await _context.SaveChangesAsync();
 
@@ -75,20 +85,18 @@ namespace CuahangtraicayAPI.Controllers
         // PUT: api/Danhmucsanpham/{id}
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutDanhmucsanpham(int id, Danhmucsanpham danhmucsanpham)
+        public async Task<IActionResult> PutDanhmucsanpham(int id, [FromBody] PutDanhmucDTO dto)
         {
-            // Tìm đối tượng trong cơ sở dữ liệu dựa trên `id` từ URL
-            var danhmucsanphamid = await _context.Danhmucsanpham.FindAsync(id);
-
-            if (danhmucsanphamid == null)
+            var danhmucsanpham = await _context.Danhmucsanpham.FindAsync(id);
+            if (danhmucsanpham == null)
             {
                 return NotFound();
             }
 
-            // Cập nhật các thuộc tính từ `danhmucsanpham` (ngoại trừ ID)
-            danhmucsanphamid.Name = danhmucsanpham.Name;
+            danhmucsanpham.Name = dto.Name;
+            danhmucsanpham.UpdatedBy = dto.Updated_By;
 
-            _context.Entry(danhmucsanphamid).State = EntityState.Modified;
+            _context.Entry(danhmucsanpham).State = EntityState.Modified;
 
             try
             {
@@ -106,7 +114,7 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-             return Ok(danhmucsanphamid); ;
+            return Ok(danhmucsanpham);
         }
 
 

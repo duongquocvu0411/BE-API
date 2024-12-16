@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\do an\\new folder\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\diachichitietcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\diachichitietcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\do an\\new folder\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\sanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\sanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\do an\\new folder\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\dto\\sanphamdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\dto\\sanphamdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\do an\\new folder\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\sanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\sanpham.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DiachichitietController.cs",
-              "DocumentMoniker": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\DiachichitietController.cs",
-              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\DiachichitietController.cs",
-              "ToolTip": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\DiachichitietController.cs*",
-              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\DiachichitietController.cs*",
-              "ViewState": "AgIAALoAAAAAAAAAAAAAwOYAAAABAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "Sanpham.cs",
+              "DocumentMoniker": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Sanpham.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Sanpham.cs",
+              "ToolTip": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Sanpham.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Sanpham.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwCMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-16T12:55:32.857Z",
+              "WhenOpened": "2024-12-16T16:31:05.667Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SanphamDTO.cs",
+              "DocumentMoniker": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\DTO\\SanphamDTO.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\DTO\\SanphamDTO.cs",
+              "ToolTip": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\DTO\\SanphamDTO.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\DTO\\SanphamDTO.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAADwvzQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-16T16:31:02.091Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SanphamController.cs",
+              "DocumentMoniker": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\SanphamController.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\SanphamController.cs",
+              "ToolTip": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\SanphamController.cs*",
+              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\SanphamController.cs*",
+              "ViewState": "AgIAAJYBAAAAAAAAAAD4v7kBAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-16T16:30:55.98Z",
               "EditorCaption": ""
             }
           ]

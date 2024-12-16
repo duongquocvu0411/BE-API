@@ -68,6 +68,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Footer vừa được tạo.</returns>
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Footer>> CreateFooter([FromBody] DTO.FooterDto.FooterCreateDto dto)
         {
             var footer = new Footer
@@ -91,6 +92,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái cập nhật.</returns>
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateFooter(int id, [FromBody] DTO.FooterDto.FooterUpdateDto footerDto)
         {
             var footer = await _context.Footers.FindAsync(id);
@@ -122,6 +124,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái xóa.</returns>
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteFooter(int id)
         {
             var footer = await _context.Footers.FindAsync(id);

@@ -196,8 +196,6 @@ namespace CuahangtraicayAPI.Controllers
         {
             return _context.Dactrungs.Any(e => e.ID == id);
         }
-
-        // Hàm lưu trữ tệp tin icon vào thư mục wwwroot/icon
         // Hàm lưu trữ tệp tin icon vào thư mục wwwroot/icon và trả về chuỗi đường dẫn
         private async Task<string> SaveIconFileAsync(IFormFile iconFile)
         {
@@ -210,7 +208,7 @@ namespace CuahangtraicayAPI.Controllers
                 Directory.CreateDirectory(folderPath);
             }
 
-            // Tạo tên file duy nhất với GUID và giữ phần mở rộng của file
+            // Tạo tên file duy nhất bằng cách sử dụng GUID và phần mở rộng của file
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(iconFile.FileName)}";
 
             // Đường dẫn đầy đủ của file
@@ -222,9 +220,10 @@ namespace CuahangtraicayAPI.Controllers
                 await iconFile.CopyToAsync(stream);
             }
 
-            // Trả về chuỗi đường dẫn tương đối (để lưu vào cơ sở dữ liệu)
+            // Trả về chuỗi đường dẫn tương đối (để lưu vào cơ sở dữ liệu), sử dụng dấu "/" thay vì "\"
             return Path.Combine("icon", fileName).Replace("\\", "/");
         }
+
 
     }
 }

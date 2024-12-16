@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { Helmet } from 'react-helmet';
+import { Helmet,HelmetProvider } from 'react-helmet-async';
 
 const HeaderAdmin = () => {
   const [showModal, setShowModal] = useState(false);
@@ -71,12 +71,14 @@ const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "
 
   return (
     <>
-    <Helmet>
+ <HelmetProvider>
+      <Helmet>
         <title>{thongTinWebsite.tieu_de || "Tên website mặc định"}</title>
         {thongTinWebsite.favicon && (
           <link rel="icon" type="image/x-icon" href={thongTinWebsite.favicon} />
         )}
       </Helmet>
+    </HelmetProvider>
       {/* Topbar */}
       <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
         {/* Sidebar Toggle (Topbar) */}

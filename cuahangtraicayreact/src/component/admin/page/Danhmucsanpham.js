@@ -18,7 +18,7 @@ const Danhmucsanpham = () => {
   const danhMucMoiTrang = 4;
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xóa
   const [danhMucXoa, setDanhMucXoa] = useState(null); // Lưu thông tin danh mục cần xóa
-
+ 
   // Thêm state để lưu trữ giá trị tìm kiếm
   const [timKiem, setTimKiem] = useState('');
 
@@ -199,6 +199,8 @@ const Danhmucsanpham = () => {
                       <tr>
                         <th scope="col">STT</th>
                         <th scope="col">Tên</th>
+                        <th scope="col">Người tạo</th>
+                        <th scope="col">Người cập nhật</th>
                         <th scope="col">Chức năng</th>
                       </tr>
                     </thead>
@@ -207,6 +209,8 @@ const Danhmucsanpham = () => {
                         <tr key={nanoid()}>
                           <td>{viTriDanhMucDau + index + 1}</td>
                           <td>{danhMuc.name}</td>
+                          <td>{danhMuc.createdBy}</td>
+                          <td>{danhMuc.updatedBy}</td>
                           <td>
                             <Button
                               variant="primary me-2"

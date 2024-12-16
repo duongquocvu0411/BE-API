@@ -7,7 +7,7 @@ const ModalMenu = ({ show, handleClose, isEdit, menu, fetchMenuList }) => {
   const [name, setName] = useState('');
   const [thutuhien, setThutuhien] = useState('');
   const [url, setUrl] = useState('');
-
+ 
   useEffect(() => {
     if (isEdit && menu && menu.id) {
       setName(menu.name);

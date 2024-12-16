@@ -5,20 +5,53 @@ namespace CuahangtraicayAPI.DTO
 {
     public class SanphamDTO
     {
+       
+        public class SanphamCreateRequest
+        {
+            [Required]
+            public string Tieude { get; set; }
+
+            [Required]
+            public decimal Giatien { get; set; } // Make this nullable
+
+
+            [Required]
+            public string Trangthai { get; set; }
+
+            [Required]
+            public string DonViTinh { get; set; }
+
+            [Required]
+            public int DanhmucsanphamId { get; set; }
+
+            [Required]
+            public IFormFile Hinhanh { get; set; } // Main image
+
+            [Required]
+            public string Created_By { get; set; }
+
+            [Required]
+            public string Updated_By { get; set; }
+            public IFormFileCollection? Images { get; set; } // Secondary images
+            public ChiTietDto? ChiTiet { get; set; } // Product details
+            public SanphamSaleCreateRequest? Sale { get; set; } // Thêm thông tin sale
+        }
         public class SanphamUpdateRequest
         {
-           
+
             public string Tieude { get; set; }
-           
+
             public decimal Giatien { get; set; }
-          
+
             public string Trangthai { get; set; }
-        
+
             public string DonViTinh { get; set; }
-         
+
             public int DanhmucsanphamId { get; set; }
-       
+
             public IFormFile? Hinhanh { get; set; } // Main image, optional for PUT
+            [Required]
+            public string Updated_By { get; set; }
             public IFormFileCollection? Images { get; set; } // Secondary images
             public ChiTietDto? ChiTiet { get; set; } // Product details
             public List<int>? ExistingImageIds { get; set; } // Thêm danh sách ID ảnh phụ hiện có
@@ -26,20 +59,7 @@ namespace CuahangtraicayAPI.DTO
         }
 
 
-        public class SanphamCreateRequest
-        {
-            public string Tieude { get; set; }
-            public decimal Giatien { get; set; } // Make this nullable
-                                                 //public decimal? Giatien { get; set; } // Make this nullable
-            public string Trangthai { get; set; }
-            public string DonViTinh { get; set; }
-            public int DanhmucsanphamId { get; set; }
-            //public int? DanhmucsanphamId { get; set; } // Make this nullable
-            public IFormFile Hinhanh { get; set; } // Main image
-            public IFormFileCollection? Images { get; set; } // Secondary images
-            public ChiTietDto? ChiTiet { get; set; } // Product details
-            public SanphamSaleCreateRequest? Sale { get; set; } // Thêm thông tin sale
-        }
+
         public class ChiTietDto
         {
             public string? MoTaChung { get; set; }

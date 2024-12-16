@@ -30,15 +30,6 @@ const ModlaSanpham = ({
   const [showChiTietModal, setShowChiTietModal] = useState(false);
   const [chiTiet, setChiTiet] = useState({
     moTaChung: "",
-    // hinhDang: "",
-    // congDung: "",
-    // xuatXu: "",
-    // khoiLuong: "",
-    // baoQuan: "",
-    // thanhPhanDinhDuong: "",
-    // ngayThuHoach: "",
-    // huongVi: "",
-    // nongDoDuong: "",
     baiViet: "",
   });
 
@@ -91,15 +82,7 @@ const ModlaSanpham = ({
       if (product.chiTiet) {
         setChiTiet({
           moTaChung: product.chiTiet.mo_ta_chung || "",
-          // hinhDang: product.chiTiet.hinh_dang || "",
-          // congDung: product.chiTiet.cong_dung || "",
-          // xuatXu: product.chiTiet.xuat_xu || "",
-          // khoiLuong: product.chiTiet.khoi_luong || "",
-          // baoQuan: product.chiTiet.bao_quan || "",
-          // thanhPhanDinhDuong: product.chiTiet.thanh_phan_dinh_duong || "",
-          // ngayThuHoach: product.chiTiet.ngay_thu_hoach || "",
-          // huongVi: product.chiTiet.huong_vi || "",
-          // nongDoDuong: product.chiTiet.nong_do_duong || "",
+
           baiViet: product.chiTiet.bai_viet || "",
         });
       } else {
@@ -151,43 +134,42 @@ const ModlaSanpham = ({
     const updatedHinhanhs = hinhanhPhu.filter((_, i) => i !== index);
     setHinhanhPhu(updatedHinhanhs);
   };
-
   const handleSubmit = async () => {
     let hasError = false;
-
+  
     // Validation cho các trường bắt buộc
     if (!tieude) {
       toast.error("Vui lòng nhập tiêu đề sản phẩm.", { autoClose: 3000 });
       hasError = true;
     }
-
+  
     if (!giatien) {
       toast.error("Vui lòng nhập giá sản phẩm.", { autoClose: 3000 });
       hasError = true;
     }
-
+  
     if (!dvt) {
       toast.error("Vui lòng chọn đơn vị tính.", { autoClose: 3000 });
       hasError = true;
     }
-
+  
     if (!danhmucsanphamID) {
       toast.error("Vui lòng chọn danh mục sản phẩm.", { autoClose: 3000 });
       hasError = true;
     }
-
+  
     if (!trangthai) {
       toast.error("Vui lòng chọn trạng thái sản phẩm.", { autoClose: 3000 });
       hasError = true;
     }
-
+  
     if (!isEdit && !hinhanh) {
       toast.error("Vui lòng chọn hình ảnh chính.", { autoClose: 3000 });
       hasError = true;
     }
-
+  
     if (hasError) return;
-
+  
     // Tạo FormData và thêm tất cả các trường
     const formData = new FormData();
     formData.append("Tieude", tieude);
@@ -195,12 +177,12 @@ const ModlaSanpham = ({
     formData.append("Trangthai", trangthai);
     formData.append("DonViTinh", dvt);
     formData.append("DanhmucsanphamId", danhmucsanphamID);
-
+  
     // Thêm hình ảnh chính nếu có hình ảnh mới
     if (hinhanh) {
       formData.append("Hinhanh", hinhanh);
     }
-
+  
     // Thêm thông tin khuyến mãi nếu có
     if (saleData) {
       formData.append("Sale.Giasale", saleData.giasale || "");
@@ -208,41 +190,39 @@ const ModlaSanpham = ({
       formData.append("Sale.Thoigianketthuc", saleData.thoigianketthuc || "");
       formData.append("Sale.Trangthai", saleData.trangthai || "");
     }
-
+  
     // Thêm danh sách ID của ảnh phụ hiện có
     existingHinhanhPhu.forEach((img) => {
       formData.append("ExistingImageIds[]", img.id); // Thêm danh sách ID ảnh phụ hiện có
     });
-
+  
     // Thêm ảnh phụ mới nếu có
     hinhanhPhu.forEach((file) => {
       if (file) formData.append("Images", file);
     });
-
+  
     // Thêm chi tiết sản phẩm nếu có bất kỳ trường nào được nhập
     if (Object.keys(chiTiet).some((key) => chiTiet[key])) {
       formData.append("ChiTiet.MoTaChung", chiTiet.moTaChung || "");
-      // formData.append("ChiTiet.HinhDang", chiTiet.hinhDang || "");
-      // formData.append("ChiTiet.CongDung", chiTiet.congDung || "");
-      // formData.append("ChiTiet.XuatXu", chiTiet.xuatXu || "");
-      // formData.append("ChiTiet.KhoiLuong", chiTiet.khoiLuong || "");
-      // formData.append("ChiTiet.BaoQuan", chiTiet.baoQuan || "");
-      // formData.append("ChiTiet.ThanhPhanDinhDuong", chiTiet.thanhPhanDinhDuong || "");
-      // formData.append("ChiTiet.NgayThuHoach", chiTiet.ngayThuHoach || "");
-      // formData.append("ChiTiet.HuongVi", chiTiet.huongVi || "");
-      // formData.append("ChiTiet.NongDoDuong", chiTiet.nongDoDuong || "");
       formData.append("ChiTiet.BaiViet", chiTiet.baiViet || "");
     }
-
+  
     try {
       // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
       const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
       const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+      const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
       const method = isEdit ? "put" : "post";
       const url = isEdit
         ? `${process.env.REACT_APP_BASEURL}/api/sanpham/${product.id}`
         : `${process.env.REACT_APP_BASEURL}/api/sanpham`;
-
+  
+      // Gửi CreatedBy khi POST và UpdatedBy khi PUT
+      if (!isEdit) {
+        formData.append("created_By", loggedInUser);  // Chỉ gửi CreatedBy khi POST
+      }
+      formData.append("updated_By", loggedInUser);  // Gửi UpdatedBy cả khi POST và PUT
+  
       const response = await axios({
         method,
         url,
@@ -252,7 +232,7 @@ const ModlaSanpham = ({
           Authorization: `Bearer ${token}`, // Thêm token vào header
         },
       });
-
+  
       toast.success(`Sản phẩm đã được ${isEdit ? "cập nhật" : "thêm"} thành công!`, {
         autoClose: 3000,
       });
@@ -270,10 +250,7 @@ const ModlaSanpham = ({
       });
     }
   };
-
-
-
-
+  
   const resetForm = () => {
     setTieude("");
     setTrangthai("");

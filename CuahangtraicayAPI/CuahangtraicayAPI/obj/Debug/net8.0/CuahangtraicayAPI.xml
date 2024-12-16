@@ -147,13 +147,13 @@
             </summary>
             <returns> Lấy danh sách Danh mục sản phẩm theo {id}</returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DanhmucsanphamController.PostDanhmucsanpham(CuahangtraicayAPI.Model.Danhmucsanpham)">
+        <member name="M:CuahangtraicayAPI.Controllers.DanhmucsanphamController.PostDanhmucsanpham(CuahangtraicayAPI.DTO.DanhmucsanphamDTO.PostDanhmucDTO)">
             <summary>
              Thêm mới 1 danh mục sản phẩm
             </summary>
             <returns> Thêm mới 1 danh mục sản phẩm </returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DanhmucsanphamController.PutDanhmucsanpham(System.Int32,CuahangtraicayAPI.Model.Danhmucsanpham)">
+        <member name="M:CuahangtraicayAPI.Controllers.DanhmucsanphamController.PutDanhmucsanpham(System.Int32,CuahangtraicayAPI.DTO.DanhmucsanphamDTO.PutDanhmucDTO)">
             <summary>
             Chỉnh sửa danh mục sản phẩm theo {id}
             </summary>

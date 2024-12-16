@@ -23,6 +23,7 @@ namespace CuahangtraicayAPI.Controllers
         }
 
         // Hàm lưu hình ảnh vào thư mục wwwroot/banners
+        // Hàm lưu hình ảnh vào thư mục wwwroot/banners
         private async Task<string> SaveImageFileAsync(IFormFile imageFile)
         {
             // Đường dẫn thư mục lưu hình ảnh
@@ -34,11 +35,15 @@ namespace CuahangtraicayAPI.Controllers
                 Directory.CreateDirectory(folderPath);
             }
 
-            // Tạo tên file duy nhất bằng cách sử dụng GUID và tên file ban đầu
-            var fileName = $"{Guid.NewGuid()}_{imageFile.FileName}";
+            // Lấy tên file gốc và phần mở rộng (ví dụ: image.jpg)
+            var fileName = Path.GetFileName(imageFile.FileName);
+            var fileExtension = Path.GetExtension(fileName).ToLower();
+
+            // Tạo tên file duy nhất, chỉ giữ lại phần mở rộng
+            var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
 
             // Đường dẫn đầy đủ của file trên server
-            var filePath = Path.Combine(folderPath, fileName);
+            var filePath = Path.Combine(folderPath, uniqueFileName);
 
             // Lưu file vào thư mục
             using (var stream = new FileStream(filePath, FileMode.Create))
@@ -47,8 +52,9 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             // Trả về đường dẫn chuỗi mà bạn sẽ lưu vào cơ sở dữ liệu
-            return Path.Combine("banners", fileName).Replace("\\", "/"); // Đảm bảo sử dụng dấu "/" cho đường dẫn
+            return Path.Combine("banners", uniqueFileName).Replace("\\", "/");
         }
+
 
 
         /// <summary>

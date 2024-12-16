@@ -33,6 +33,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>URL của hình ảnh đã tải lên hoặc thông báo lỗi nếu thất bại.</returns>
 
         [HttpPost("upload-image")]
+ 
 
         public async Task<IActionResult> UploadImage(IFormFile upload)
         {
@@ -117,7 +118,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Mục menu footer vừa được tạo.</returns>
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<ActionResult<MenuFooter>> PostMenuFooter(MenuFooterCreateDto menuFooterCreateDto)
         {
             var menuFooter = new MenuFooter
@@ -155,7 +156,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Không trả về nội dung nếu cập nhật thành công, hoặc lỗi nếu không tìm thấy mục menu footer.</returns>
 
         [HttpPut("{id}")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> PutMenuFooter(int id, MenuFooterUpdateDto menuFooterUpdateDto)
         {
             //if (id != menuFooterUpdateDto.Id)
@@ -188,6 +189,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái thành công hoặc lỗi nếu không tìm thấy mục menu footer.</returns>
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteMenuFooter(int id)
         {
             var menuFooter = await _context.MenuFooters.FindAsync(id);

@@ -581,8 +581,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "danhmucsanpham",
-        "Type": "CuahangtraicayAPI.Model.Danhmucsanpham",
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.DanhmucsanphamDTO\u002BPostDanhmucDTO",
         "IsRequired": true
       }
     ],
@@ -638,8 +638,8 @@
         "IsRequired": true
       },
       {
-        "Name": "danhmucsanpham",
-        "Type": "CuahangtraicayAPI.Model.Danhmucsanpham",
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.DanhmucsanphamDTO\u002BPutDanhmucDTO",
         "IsRequired": true
       }
     ],
@@ -1713,6 +1713,16 @@
         "IsRequired": false
       },
       {
+        "Name": "Created_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "Images",
         "Type": "Microsoft.AspNetCore.Http.IFormFileCollection",
         "IsRequired": false
@@ -1817,6 +1827,11 @@
       {
         "Name": "Hinhanh",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
