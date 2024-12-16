@@ -72,7 +72,8 @@ namespace CuahangtraicayAPI.Controllers
             {
                 Tieu_de = createDto.TieuDe,
                 TrangThai = createDto.TrangThai,
-                //UpdatedBy = createDto.UpdatedBy,
+                CreatedBy = createDto.Created_By,
+                UpdatedBy = createDto.Updated_By,
               
             };
 
@@ -115,6 +116,7 @@ namespace CuahangtraicayAPI.Controllers
             if (updateDto.TrangThai.HasValue)
                 existing.TrangThai = updateDto.TrangThai.Value; // Cập nhật TrangThai nếu có trong DTO
 
+            existing.UpdatedBy = updateDto.Updated_By;
             existing.Updated_at = DateTime.Now;
 
             if (updateDto.Favicon != null)
@@ -166,72 +168,48 @@ namespace CuahangtraicayAPI.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Đặt trạng thái Website được sử dụng (TrangThai = 1) và các Website khác về trạng thái không hoạt động (TrangThai = 0).
-        /// </summary>
-        /// <param name="id">ID của Website cần đặt làm sử dụng.</param>
-        /// <param name="setDto">Thông tin người thực hiện cập nhật.</param>
-        /// <returns>Trạng thái cập nhật.</returns>
-
-        //[HttpPost("setTenwebsiter/{id}")]
-        //public async Task<IActionResult> SetTenwebsiter(int id, [FromBody] UpdateTenWebSiteDto setDto)
-        //{
-        //    // Tìm bản ghi được yêu cầu set TrangThai == 1
-        //    var tenWebSiteToSet = await _context.TenwebSites.FindAsync(id);
-        //    if (tenWebSiteToSet == null)
-        //        return NotFound(new { message = "Không tìm thấy website với ID này." });
-
-        //    //// Lấy giá trị updatedBy từ DTO
-        //    //var updatedBy = setDto.UpdatedBy;
-
-        //    // Đặt tất cả các bản ghi khác TrangThai = 0
-        //    var otherWebsites = await _context.TenwebSites
-        //        .Where(t => t.Id != id && t.TrangThai == 1)
-        //        .ToListAsync();
-
-        //    foreach (var website in otherWebsites)
-        //    {
-        //        website.TrangThai = 0;
-        //        //website.UpdatedBy = updatedBy; // Gán người thực hiện vào UpdatedBy
-        //        website.Updated_at = DateTime.Now; // Cập nhật thời gian
-        //    }
-
-        //    // Đặt bản ghi được chỉ định thành TrangThai = 1
-        //    tenWebSiteToSet.TrangThai = 1;
-        //    //tenWebSiteToSet.UpdatedBy = updatedBy; // Gán người thực hiện vào UpdatedBy
-        //    tenWebSiteToSet.Updated_at = DateTime.Now;
-
-        //    // Lưu các thay đổi
-        //    await _context.SaveChangesAsync();
-
-        //    return Ok(new
-        //    {
-        //        message = "Đã cập nhật trạng thái website thành công.",
-        //        id = tenWebSiteToSet.Id,
-        //        //updatedBy = updatedBy
-        //    });
-        //}
-
 
         [HttpPost("setTenwebsiter/{id}")]
         [Authorize]
-        public async Task<IActionResult> SetDiaChiHien(int id)
+        public async Task<IActionResult> SetDiaChiHien(int id, SetTenwebSiteDto dto)
         {
-            // Set tất cả Footer khác thành "không sử dụng"
-            await _context.TenwebSites.ForEachAsync(d => d.TrangThai = 0);
-            await _context.SaveChangesAsync();
-
-            // Cập nhật Footer với id cụ thể thành "đang sử dụng"
-            var diachi = await _context.TenwebSites.FindAsync(id);
-            if (diachi == null)
+            // Kiểm tra tính hợp lệ của DTO
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            diachi.TrangThai = 1;
+            // Lấy tất cả bản ghi
+            var allTenwebSites = await _context.TenwebSites.ToListAsync();
+
+            // Cập nhật trạng thái "không sử dụng" cho tất cả các bản ghi
+            foreach (var tenweb in allTenwebSites)
+            {
+                tenweb.TrangThai = 0;
+
+                // Chỉ cập nhật `UpdatedBy` cho bản ghi được chọn
+                if (tenweb.Id == id)
+                {
+                    tenweb.UpdatedBy = dto.Updated_By; // Ghi lại người cập nhật
+                }
+            }
+
+            // Tìm bản ghi với ID được chọn
+            var tenwebSite = allTenwebSites.FirstOrDefault(t => t.Id == id);
+            if (tenwebSite == null)
+            {
+                return NotFound(new { message = "Không tìm thấy TenwebSite với ID được cung cấp." });
+            }
+
+            // Cập nhật trạng thái cho bản ghi được chọn
+            tenwebSite.TrangThai = 1;
+
+            // Lưu thay đổi
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Footer đã được chọn làm Footer đang sử dụng" });
+            return Ok(new { message = "TenwebSite đã được chọn làm TenwebSite đang sử dụng." });
         }
+
     }
 }
+

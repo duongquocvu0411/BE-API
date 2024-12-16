@@ -88,17 +88,17 @@ const DiaChiChiTiet = () => {
   const themDiaChi = () => {
     setChinhSua(false);
     setDiaChiHienTai(null);
-    setHienThiModal(true);
+    setHienThiModal(true); 
   };
 
   const suDungDiaChi = async (id) => {
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
-
+    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
     try {
       await axios.post(
         `${process.env.REACT_APP_BASEURL}/api/diachichitiet/setDiaChiHien/${id}`,
-        {},
+        {Updated_By:loggedInUser},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -211,6 +211,8 @@ const DiaChiChiTiet = () => {
                         <th scope="col">Địa Chỉ</th>
                         <th scope="col">Email</th>
                         <th scope="col">SĐT</th>
+                        <th scope="col">Người tạo</th>
+                        <th scope="col">Người cập nhật</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Chức Năng</th>
                       </tr>
@@ -222,6 +224,8 @@ const DiaChiChiTiet = () => {
                           <td>{diaChi.diachi}</td>
                           <td>{diaChi.email}</td>
                           <td>{diaChi.sdt}</td>
+                          <td>{diaChi.createdBy}</td>
+                          <td>{diaChi.updatedBy}</td>
                           <td>
                             <span
                               className={`badge ${diaChi.status === 'đang sử dụng' ? 'bg-success' : 'bg-secondary'}`}

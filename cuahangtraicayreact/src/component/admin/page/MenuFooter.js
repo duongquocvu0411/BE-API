@@ -182,6 +182,8 @@ const MenuFooter = () => {
                         <th>Tiêu đề</th>
                         <th>Phụ đề</th>
                         <th>Thứ tự hiển thị</th>
+                        <th>Người tạo</th>
+                        <th>Người cập nhật</th>
                         <th>Chức năng</th>
                       </tr>
                     </thead>
@@ -202,6 +204,12 @@ const MenuFooter = () => {
 
                           <td>
                             {MenuFooter.thutuhienthi}
+                          </td>
+                          <td>
+                            {MenuFooter.createdBy}
+                          </td>
+                          <td>
+                            {MenuFooter.updatedBy}
                           </td>
                           <td>
                             <Button

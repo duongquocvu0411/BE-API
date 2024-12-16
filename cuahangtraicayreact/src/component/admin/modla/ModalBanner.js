@@ -7,7 +7,7 @@ const ModalBanner = ({ show, handleClose, isEdit, banner, fetchBanners }) => {
   const [tieude, setTieude] = useState(banner?.tieude || '');
   const [phude, setPhude] = useState(banner?.phude || '');
   const [hinhanhs, setHinhanhs] = useState([]);
-
+  
   // Thiết lập trạng thái ban đầu khi chỉnh sửa hoặc thêm banner mới
   useEffect(() => {
     if (isEdit && banner) {
@@ -50,6 +50,8 @@ const ModalBanner = ({ show, handleClose, isEdit, banner, fetchBanners }) => {
   const handleSave = async () => {
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+
     const formData = new FormData();
     formData.append('tieude', tieude);
     formData.append('phude', phude);
@@ -60,6 +62,7 @@ const ModalBanner = ({ show, handleClose, isEdit, banner, fetchBanners }) => {
 
     try {
       if (isEdit) {
+        formData.append("Updated_By",loggedInUser);
         await axios.put(`${process.env.REACT_APP_BASEURL}/api/banners/${banner.id}`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -67,6 +70,8 @@ const ModalBanner = ({ show, handleClose, isEdit, banner, fetchBanners }) => {
         });
         toast.success('Cập nhật banner thành công!', { position: 'top-right', autoClose: 3000 });
       } else {
+        formData.append("Created_By",loggedInUser);
+        formData.append("Updated_By",loggedInUser);
         await axios.post(`${process.env.REACT_APP_BASEURL}/api/banners`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,

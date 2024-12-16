@@ -125,6 +125,8 @@ namespace CuahangtraicayAPI.Controllers
                 Tieu_de = menuFooterCreateDto.Tieu_de,
                 Noi_dung = menuFooterCreateDto.Noi_dung,
                 Thutuhienthi = menuFooterCreateDto.Thutuhienthi,
+                CreatedBy = menuFooterCreateDto.Created_By,
+                UpdatedBy = menuFooterCreateDto.Updated_By,
                
             };
 
@@ -136,7 +138,10 @@ namespace CuahangtraicayAPI.Controllers
                 Id = menuFooter.Id,
                 Tieu_de = menuFooter.Tieu_de,
                 Noi_dung = menuFooter.Noi_dung,
-                Thutuhienthi = menuFooter.Thutuhienthi
+                Thutuhienthi = menuFooter.Thutuhienthi,
+                CreatedBy = menuFooter.CreatedBy,
+                UpdatedBy = menuFooter.UpdatedBy,
+                
             };
 
             return CreatedAtAction("GetMenuFooter", new { id = menuFooter.Id }, menuFooterDto);
@@ -167,6 +172,7 @@ namespace CuahangtraicayAPI.Controllers
             menuFooter.Tieu_de = menuFooterUpdateDto.Tieu_de;
             menuFooter.Noi_dung = menuFooterUpdateDto.Noi_dung;
             menuFooter.Thutuhienthi = menuFooterUpdateDto.Thutuhienthi;
+            menuFooter.UpdatedBy = menuFooterUpdateDto.Updated_By;
             menuFooter.Updated_at = DateTime.Now;
 
             _context.Entry(menuFooter).State = EntityState.Modified;

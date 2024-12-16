@@ -13,14 +13,10 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
   const [formData, setFormData] = useState(defaultFormState);
   const [dangTai, setDangTai] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
-  // const [updatedBy, setUpdatedBy] = useState("");
+
 
   useEffect(() => {
-    // const isLoggedIn = localStorage.getItem("isAdminLoggedIn") === "true";
-    // const hoten = isLoggedIn
-    //   ? localStorage.getItem("loginhoten")
-    //   : sessionStorage.getItem("loginhoten");
-    // setUpdatedBy(hoten || "");
+   
 
     if (isEdit && Website) {
       setFormData({
@@ -71,15 +67,16 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
       const token = isLoggedIn
         ? localStorage.getItem("adminToken")
         : sessionStorage.getItem("adminToken");
-
+        const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
       const form = new FormData();
       form.append("TieuDe", formData.tieu_de);
       form.append("Favicon", formData.favicon);
-      // form.append("UpdatedBy", updatedBy);
       form.append("TrangThai", formData.trangThai); // Gửi trạng thái
 
       if (isEdit) {
+        form.append("Updated_By",loggedInUser);
         await axios.put(
+         
           `${process.env.REACT_APP_BASEURL}/api/Tenwebsite/${Website.id}`,
           form,
           {
@@ -87,10 +84,12 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
               Authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data",
             },
-          }
+          } 
         );
         toast.success("Cập nhật Website thành công!", { position: "top-right", autoClose: 3000 });
       } else {
+        form.append('Created_By',loggedInUser);
+        form.append('Updated_By',loggedInUser);
         await axios.post(`${process.env.REACT_APP_BASEURL}/api/Tenwebsite`, form, {
           headers: {
             Authorization: `Bearer ${token}`,

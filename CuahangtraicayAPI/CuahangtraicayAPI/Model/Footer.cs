@@ -13,5 +13,9 @@ namespace CuahangtraicayAPI.Model
 
         public byte TrangThai { get; set; } = 1;
 
+        public string CreatedBy { get; set; }
+
+        public string UpdatedBy { get; set; }
+
     }
 }

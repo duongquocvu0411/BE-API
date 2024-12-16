@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using CuahangtraicayAPI.Model;
 using static CuahangtraicayAPI.DTO.BannersDTO;
+using static CuahangtraicayAPI.DTO.TenwebSiteDTO;
+using System.Reflection;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -95,7 +97,9 @@ namespace CuahangtraicayAPI.Controllers
             {
                 Tieude = dto.Tieude,
                 Phude = dto.Phude,
-                Trangthai = "không sử dụng"
+                Trangthai = "không sử dụng",
+                CreatedBy = dto.Created_By,
+                UpdatedBy = dto.Updated_By,
             };
 
             // Xử lý lưu hình ảnh
@@ -139,6 +143,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 banner.Phude = dto.Phude;
             }
+            banner.UpdatedBy=dto.Updated_By;
 
             // Xử lý thêm mới hình ảnh
             if (dto.Hinhanhs != null)
@@ -245,21 +250,39 @@ namespace CuahangtraicayAPI.Controllers
         ///    /// <returns> Cập nhật trạng thái "Đang sử dụng" cho banner, các banner khác sẽ có trạng thái "Không sử dụng". </returns>
         [HttpPost("setTrangthai/{id}")]
         [Authorize]
-        public async Task<IActionResult> SetTrangthai(int id)
+        public async Task<IActionResult> SetTrangthai(int id, [FromBody] SetBannerDTO dto)
         {
-            var banner = await _context.Banners.FindAsync(id);
-            if (banner == null)
+            // Kiểm tra tính hợp lệ của DTO
+            if (!ModelState.IsValid)
             {
-                return NotFound(new { message = "Không tìm thấy banner với id này" });
+                return BadRequest(ModelState);
             }
 
-            // Cập nhật tất cả các banner còn lại thành "Không sử dụng"
-            await _context.Banners.ForEachAsync(b => b.Trangthai = "không sử dụng");
-            banner.Trangthai = "đang sử dụng";
+            // Lấy tất cả các banner
+            var allBanners = await _context.Banners.ToListAsync();
 
+            // Tìm banner với ID được chọn
+            var selectedBanner = allBanners.FirstOrDefault(b => b.Id == id);
+            if (selectedBanner == null)
+            {
+                return NotFound(new { message = "Không tìm thấy banner với id này." });
+            }
+
+            // Cập nhật trạng thái cho tất cả các banner
+            foreach (var banner in allBanners)
+            {
+                banner.Trangthai = "không sử dụng"; // Đặt trạng thái mặc định cho tất cả
+                if (banner.Id == id)
+                {
+                    banner.Trangthai = "đang sử dụng"; // Cập nhật trạng thái cho banner được chọn
+                    banner.UpdatedBy = dto.Updated_By; // Cập nhật người thực hiện
+                }
+            }
+
+            // Lưu thay đổi
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Trạng thái banner đã được cập nhật" });
+            return Ok(new { message = "Trạng thái banner đã được cập nhật." });
         }
 
         /// <summary>

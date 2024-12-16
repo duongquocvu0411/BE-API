@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using CuahangtraicayAPI.Model;
 using Microsoft.AspNetCore.Authorization;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -34,18 +35,29 @@ namespace CuahangtraicayAPI.Controllers
         // POST: api/Diachichitiet
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Diachichitiet>> Store(Diachichitiet diachi)
+        public async Task<ActionResult<Diachichitiet>> Store([FromBody] DiachichitietDTO.CreateDiachichitietDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            var diachi = new Diachichitiet
+            {
+                Diachi = dto.Diachi,
+                Sdt = dto.Sdt,
+                Email = dto.Email,
+                Status = "không sử dụng", // Giá trị mặc định
+                CreatedBy = dto.Created_By,
+                UpdatedBy = dto.Updated_By
+            };
+
             _context.Diachichitiets.Add(diachi);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(Show), new { id = diachi.Id }, diachi);
         }
+
         /// <summary>
         /// xem id  địa chỉ chi tiết.
         /// </summary>
@@ -70,22 +82,40 @@ namespace CuahangtraicayAPI.Controllers
         // PUT: api/Diachichitiet/{id}
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Update(int id, Diachichitiet diachi)
+        public async Task<IActionResult> Update(int id, [FromBody] DiachichitietDTO.UpdateDiachichitietDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             // Tìm đối tượng trong cơ sở dữ liệu dựa trên `id` từ URL
             var existingDiachi = await _context.Diachichitiets.FindAsync(id);
 
             if (existingDiachi == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Không tìm thấy địa chỉ với id này." });
             }
 
-            // Cập nhật các thuộc tính từ `diachi` (ngoại trừ Id)
-            existingDiachi.Diachi = diachi.Diachi;
-            existingDiachi.Sdt = diachi.Sdt;
-            existingDiachi.Email = diachi.Email;
-            existingDiachi.Status = diachi.Status;
+            // Cập nhật các thuộc tính từ DTO nếu có giá trị
+            if (!string.IsNullOrEmpty(dto.Diachi))
+            {
+                existingDiachi.Diachi = dto.Diachi;
+            }
+            if (!string.IsNullOrEmpty(dto.Sdt))
+            {
+                existingDiachi.Sdt = dto.Sdt;
+            }
+            if (!string.IsNullOrEmpty(dto.Email))
+            {
+                existingDiachi.Email = dto.Email;
+            }
+            if (!string.IsNullOrEmpty(dto.Updated_By))
+            {
+                existingDiachi.UpdatedBy = dto.Updated_By;
+            }
 
+            // Đánh dấu thực thể là đã thay đổi
             _context.Entry(existingDiachi).State = EntityState.Modified;
 
             try
@@ -106,6 +136,8 @@ namespace CuahangtraicayAPI.Controllers
 
             return Ok(existingDiachi);
         }
+
+
         /// <summary>
         /// Xóa địa chỉ chi tiết theo {id}.
         /// </summary>
@@ -137,25 +169,42 @@ namespace CuahangtraicayAPI.Controllers
         // Custom endpoint: Set a specific address as "đang sử dụng"
         [HttpPost("setDiaChiHien/{id}")]
         [Authorize]
-        public async Task<IActionResult> SetDiaChiHien(int id)
+        public async Task<IActionResult> SetDiaChiHien(int id, [FromBody] DiachichitietDTO.SetDiachichitietDto dto)
         {
-            // Set tất cả địa chỉ khác thành "không sử dụng"
-            await _context.Diachichitiets.ForEachAsync(d => d.Status = "không sử dụng");
-            await _context.SaveChangesAsync();
-
-            // Cập nhật địa chỉ với id cụ thể thành "đang sử dụng"
-            var diachi = await _context.Diachichitiets.FindAsync(id);
-            if (diachi == null)
+            // Kiểm tra tính hợp lệ của DTO
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            diachi.Status = "đang sử dụng";
+            // Lấy tất cả các địa chỉ
+            var allDiachis = await _context.Diachichitiets.ToListAsync();
+
+            // Tìm địa chỉ cần cập nhật
+            var diachiToUpdate = allDiachis.FirstOrDefault(d => d.Id == id);
+            if (diachiToUpdate == null)
+            {
+                return NotFound(new { message = "Không tìm thấy địa chỉ với id này." });
+            }
+
+            // Cập nhật trạng thái cho tất cả các địa chỉ
+            foreach (var diachi in allDiachis)
+            {
+                diachi.Status = "không sử dụng"; // Đặt trạng thái mặc định cho tất cả
+                if (diachi.Id == id)
+                {
+                    diachi.Status = "đang sử dụng"; // Cập nhật trạng thái cho địa chỉ được chọn
+                    diachi.UpdatedBy = dto.Updated_By; // Ghi lại người thực hiện
+                }
+            }
+
+            // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Địa chỉ đã được chọn làm địa chỉ đang sử dụng" });
+            return Ok(new { message = "Địa chỉ đã được đặt làm đang sử dụng." });
         }
-       
+
+
         /// <summary>
         /// lấy danh sách địa chỉ chi tiết đang có status : "đang sử dụng"
         /// </summary>

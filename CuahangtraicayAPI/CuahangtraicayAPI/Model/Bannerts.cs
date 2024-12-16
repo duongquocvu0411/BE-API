@@ -18,6 +18,8 @@ namespace CuahangtraicayAPI.Model
         public string Phude { get; set; } = string.Empty;
 
         public string Trangthai { get; set; } = "không sử dụng"; // Giá trị mặc định
+        public string CreatedBy {  get; set; }
+        public string UpdatedBy { get; set; }
 
 
         public ICollection<BannerImages> BannerImages { get; set; } = new List<BannerImages>();

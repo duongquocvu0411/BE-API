@@ -14,10 +14,10 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
   useEffect(() => {
     if (isEdit && MenuFooter) {
       setTieude(MenuFooter.tieu_de || '');
-      setNoidung(MenuFooter.noi_dung || '');
+      setNoidung(MenuFooter.noi_dung || ''); // Đảm bảo giá trị không bị null
       setThutuhienthi(MenuFooter.thutuhienthi || '');
     } else {
-      setNoidung('');
+      setNoidung(''); 
       setTieude('');
       setThutuhienthi('');
 
@@ -28,7 +28,7 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
   const handleSave = async () => {
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
-
+    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
     const body = {
       tieu_de: tieude,
       noi_dung: noidung,
@@ -37,6 +37,7 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
 
     try {
       if (isEdit) {
+        body.Updated_By = loggedInUser;
         const response = await axios.put(`${process.env.REACT_APP_BASEURL}/api/MenuFooter/${MenuFooter.id}`, body, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -45,6 +46,8 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
         });
         toast.success('Cập nhật MenuFooter thành công!', { position: 'top-right', autoClose: 3000 });
       } else {
+        body.Created_By = loggedInUser;
+        body.Updated_By = loggedInUser;
         const response = await axios.post(`${process.env.REACT_APP_BASEURL}/api/MenuFooter`, body, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -137,7 +140,7 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
               </Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Nhập phụ đề"
+                placeholder="Nhập số hứ tự"
                 value={thutuhienthi}
                 onChange={(e) => setThutuhienthi(e.target.value)}
                 className="shadow-sm border-0 rounded"

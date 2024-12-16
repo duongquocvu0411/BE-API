@@ -61,7 +61,9 @@ namespace CuahangtraicayAPI.Controllers
             {
                 Name = menuDTO.Name,
                 Thutuhien = menuDTO.Thutuhien,
-                Url = menuDTO.Url
+                Url = menuDTO.Url,
+                CreatedBy = menuDTO.Created_By,
+                UpdatedBy = menuDTO.Updated_By,
             };
 
             _context.Menus.Add(menu);
@@ -105,6 +107,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 existingMenu.Url = menuDTO.Url;
             }
+            existingMenu.UpdatedBy = menuDTO.Updated_By;
 
             try
             {

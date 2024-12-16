@@ -111,6 +111,8 @@ namespace CuahangtraicayAPI.Controllers
                 Phu_de = dto.Phu_de,
                 Noi_dung = dto.Noi_dung,
                 Trang_thai = dto.Trang_thai,
+                CreatedBy = dto.Created_By,
+                UpdatedBy = dto.Updated_By,
             };
 
             // Lưu thông tin hình ảnh
@@ -166,6 +168,7 @@ namespace CuahangtraicayAPI.Controllers
             gioithieu.Phu_de = gioithieuUpdateDTO.Phu_de ?? gioithieu.Phu_de;
             gioithieu.Noi_dung = gioithieuUpdateDTO.Noi_dung ?? gioithieu.Noi_dung;
             gioithieu.Trang_thai = gioithieuUpdateDTO.Trang_thai ?? gioithieu.Trang_thai;
+            gioithieu.UpdatedBy = gioithieuUpdateDTO.Updated_By;
 
             // Lưu các thay đổi về thông tin trong bảng Gioithieu
             _context.Gioithieu.Update(gioithieu);

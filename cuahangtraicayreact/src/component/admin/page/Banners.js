@@ -72,6 +72,7 @@ const Banners = () => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/banners/${id}`,
         {
@@ -96,12 +97,14 @@ const Banners = () => {
   const suDungBanners = async (id) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
+  
+    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
     try {
       // Gọi API với token trong headers
       await axios.post(
         `${process.env.REACT_APP_BASEURL}/api/Banners/setTrangthai/${id}`,
-        {}, // Body rỗng vì không có dữ liệu gửi đi
+        {Updated_By:loggedInUser}, // Body rỗng vì không có dữ liệu gửi đi
         {
           headers: {
             Authorization: `Bearer ${token}`, // Thêm token vào header
@@ -216,6 +219,8 @@ const Banners = () => {
                         <th>Tiêu đề</th>
                         <th>Phụ đề</th>
                         <th>Hình ảnh</th>
+                        <th>Người tạo</th>
+                        <th>Người cập nhật</th>
                         <th>Chức năng</th>
                       </tr>
                     </thead>
@@ -236,6 +241,8 @@ const Banners = () => {
                               'Không có hình ảnh'
                             )}
                           </td>
+                          <td>{banner.createdBy}</td>
+                          <td>{banner.updatedBy}</td>
                           <td>
                             <Button
                               variant="primary me-2"

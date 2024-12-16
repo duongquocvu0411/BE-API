@@ -7,8 +7,8 @@ import { nanoid } from 'nanoid';
 import { toast, ToastContainer } from 'react-toastify';
 import SiderbarAdmin from '../SidebarAdmin';
 import { Link } from 'react-router-dom';
-
-import ModalAddGioiThieu from '../modla/moModalThemGioithieu';
+ 
+import ModalAddGioiThieu from '../modla/ModalThemGioithieu';
 
 const GioithieuAdmin = () => {
   const [danhSachGioithieu, setDanhSachGioithieu] = useState([]);
@@ -180,6 +180,9 @@ const GioithieuAdmin = () => {
                           <th scope="col">STT</th>
                           <th scope="col">Tiêu đề</th>
                           <th scope="col">Phụ đề</th>
+                          <th scope="col">Người tạo</th>
+                          <th scope="col">Người cập nhật</th>
+                          <th scope="col">Trạng thái</th>
                           <th scope="col">Chức năng</th>
                         </tr>
                       </thead>
@@ -189,6 +192,9 @@ const GioithieuAdmin = () => {
                             <td>{viTriGioithieuDau + index + 1}</td>
                             <td>{gioithieu.tieu_de}</td>
                             <td>{gioithieu.phu_de}</td>
+                            <td>{gioithieu.createdBy}</td>
+                            <td>{gioithieu.updatedBy}</td>
+                            <td>{gioithieu.trang_thai === 1 ? "Hiển thị" : "Ẩn"}</td>
                             <td>
                               <Button
                                 variant="primary me-2"

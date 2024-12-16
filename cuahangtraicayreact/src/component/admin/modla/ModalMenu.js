@@ -18,7 +18,8 @@ const ModalMenu = ({ show, handleClose, isEdit, menu, fetchMenuList }) => {
       setThutuhien('');
       setUrl('');
     }
-  }, [isEdit, menu]);
+    fetchMenuList();
+  }, [isEdit, menu]); 
   
 
   const handleSubmit = async () => {
@@ -26,9 +27,12 @@ const ModalMenu = ({ show, handleClose, isEdit, menu, fetchMenuList }) => {
    // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-    try {
+   const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+
+   try {
       if (isEdit && menu && menu.id) {
         // PUT request
+        menuData.Updated_By = loggedInUser;
         await axios.put(`${process.env.REACT_APP_BASEURL}/api/menu/${menu.id}` ,menuData,
           {
             headers: {
@@ -38,6 +42,8 @@ const ModalMenu = ({ show, handleClose, isEdit, menu, fetchMenuList }) => {
         toast.success('Cập nhật menu thành công', { position: 'top-right', autoClose: 3000 });
       } else {
         // POST request
+        menuData.Created_By = loggedInUser;
+        menuData.Updated_By = loggedInUser;
         await axios.post(`${process.env.REACT_APP_BASEURL}/api/menu` ,menuData,
           {
             headers: {

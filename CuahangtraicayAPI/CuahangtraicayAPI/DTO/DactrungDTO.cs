@@ -13,6 +13,10 @@ namespace CuahangtraicayAPI.DTO
             public string Phude { get; set; }
             [Required]
             public int Thutuhienthi { get; set; }
+            [Required]
+            public string Created_By {  get; set; }
+            [Required]
+            public string Updated_By { get; set; }
             public IFormFile IconFile { get; set; } // File icon upload
             //public string Icon { get; set; } // Tên icon (nếu cần điền thủ công)
         }
@@ -21,6 +25,7 @@ namespace CuahangtraicayAPI.DTO
             public string? Tieude { get; set; }
             public string? Phude { get; set; }
             public int? Thutuhienthi { get; set; }
+            public string Updated_By { get; set; }
             public IFormFile? IconFile { get; set; } // File icon upload
             //public string? Icon { get; set; } // Tên icon (nếu cần điền thủ công)
         }

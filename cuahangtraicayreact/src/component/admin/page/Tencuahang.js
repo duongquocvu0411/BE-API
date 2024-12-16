@@ -90,11 +90,11 @@ const Tencuahang = () => {
   const suDungTencuahang = async (id) => {
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
-
+    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
     try {
       await axios.post(
         `${process.env.REACT_APP_BASEURL}/api/Tencuahang/setTencuahang/${id}`,
-        {},
+        {Updated_By:loggedInUser},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -196,6 +196,8 @@ const Tencuahang = () => {
                         <tr>
                           <th scope="col">STT</th>
                           <th scope="col">Tên Cửa Hàng</th>
+                          <th scope="col">Người tạo</th>
+                          <th scope="col">Người cập nhật</th>
                           <th scope="col">Chức Năng</th>
                         </tr>
                       </thead>
@@ -204,6 +206,8 @@ const Tencuahang = () => {
                           <tr key={nanoid()}>
                             <td>{viTriHangDau + index + 1}</td>
                             <td>{tencuahang.name}</td>
+                            <td>{tencuahang.createdBy}</td>
+                            <td>{tencuahang.updatedBy}</td>
                             <td>
                               <Button
                                 variant="primary me-2"

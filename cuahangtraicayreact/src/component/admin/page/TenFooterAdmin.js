@@ -186,6 +186,8 @@ const TenFooterAdmin = () => {
                         <th>Phụ đề</th>
                         <th>Hình ảnh</th>
                         <th>Link</th>
+                        <th>Người tạo</th>
+                        <th>Người Cập nhật</th>
                         <th>Chức năng</th>
                       </tr>
                     </thead>
@@ -219,6 +221,8 @@ const TenFooterAdmin = () => {
                               <span className="text-muted">Không có link</span>
                             )}
                           </td>
+                          <td>{tf.createdBy}</td>
+                          <td>{tf.updatedBy}</td>
                           <td>
                             <Button
                               variant="primary me-2"

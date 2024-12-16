@@ -72,7 +72,9 @@ namespace CuahangtraicayAPI.Controllers
             var tenFooter = new TenFooters
             {
                 tieude = dto.Tieude,
-                phude = dto.Phude
+                phude = dto.Phude,
+                CreatedBy=dto.Created_By,
+                UpdatedBy=dto.Updated_By,
             };
 
             if (dto.Images != null && dto.Images.Count > 0)
@@ -142,6 +144,7 @@ namespace CuahangtraicayAPI.Controllers
                 existingTenFooter.phude = dto.Phude;
             }
 
+            existingTenFooter.UpdatedBy =dto.Updated_By;
             // Handle images
             if (dto.Images != null && dto.Images.Count > 0)
             {

@@ -21,7 +21,7 @@ const Dactrung = () => {
   const dactrungDaLoc = danhSachDactrung.filter((item) =>
     item.tieude.toLowerCase().includes(timKiem.toLowerCase())
   );
-
+ 
   const viTriDactrungCuoi = trangHienTai * dactrungMoiTrang;
   const viTriDactrungDau = viTriDactrungCuoi - dactrungMoiTrang;
   const dactrungTheoTrang = dactrungDaLoc.slice(viTriDactrungDau, viTriDactrungCuoi);
@@ -167,6 +167,8 @@ const Dactrung = () => {
                         <th>STT</th>
                         <th>Tiêu đề</th>
                         <th>Phụ đề</th>
+                        <th>Người tạo</th>
+                        <th>Người cập nhật</th>
                         <th>Chức năng</th>
                       </tr>
                     </thead>
@@ -176,6 +178,8 @@ const Dactrung = () => {
                           <td>{viTriDactrungDau + index + 1}</td>
                           <td>{dactrung.tieude}</td>
                           <td>{dactrung.phude}</td>
+                          <td>{dactrung.createdBy}</td>
+                          <td>{dactrung.updatedBy}</td>
                           <td>
                             <Button
                               variant="primary me-2"

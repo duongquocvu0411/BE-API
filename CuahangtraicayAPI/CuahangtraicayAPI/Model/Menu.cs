@@ -12,5 +12,8 @@ namespace CuahangtraicayAPI.Model
         public int Thutuhien { get; set; }
 
         public string Url { get; set; }
+        public string CreatedBy {  get; set; }
+
+        public string UpdatedBy { get; set; }
     }
 }

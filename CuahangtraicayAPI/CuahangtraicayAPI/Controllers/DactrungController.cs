@@ -66,6 +66,8 @@ namespace CuahangtraicayAPI.Controllers
                 Tieude = dto.Tieude,
                 Phude = dto.Phude,
                 Thutuhienthi = dto.Thutuhienthi,
+                CreatedBy = dto.Created_By,
+                UpdatedBy = dto.Updated_By,
             };
 
             // Xử lý lưu file icon nếu có
@@ -112,6 +114,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 dactrung.Thutuhienthi = dto.Thutuhienthi.Value; // Cập nhật thứ tự hiển thị (nếu có)
             }
+            dactrung.UpdatedBy=dto.Updated_By;
 
             // Xử lý file icon mới (nếu có)
             if (dto.IconFile != null)

@@ -12,7 +12,7 @@ const ModalTencuahang = ({ show, handleClose, isEdit, detail, fetchDetails }) =>
     } else {
       setTen('');
     }
-  }, [isEdit, detail]);
+  }, [isEdit, detail]); 
 
   const handleSave = () => {
     const updatedData = { 
@@ -22,7 +22,10 @@ const ModalTencuahang = ({ show, handleClose, isEdit, detail, fetchDetails }) =>
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+
     if (isEdit) {
+      updatedData.Updated_By = loggedInUser;
       axios.put(`${process.env.REACT_APP_BASEURL}/api/Tencuahang/${detail.id}`, updatedData,
         {
           headers: {
@@ -46,6 +49,8 @@ const ModalTencuahang = ({ show, handleClose, isEdit, detail, fetchDetails }) =>
           });
         });
     } else {
+      updatedData.Created_By = loggedInUser;
+      updatedData.Updated_By = loggedInUser;
       axios.post(`${process.env.REACT_APP_BASEURL}/api/Tencuahang`, updatedData,
         {
           headers: {

@@ -12,5 +12,9 @@ namespace CuahangtraicayAPI.Model
         public string Tieu_de {  get; set; }
         public string Noi_dung {  get; set; }
         public int Thutuhienthi { get; set; }
+
+        public string CreatedBy {  get; set; }
+
+        public string UpdatedBy { get; set; }
     }
 }

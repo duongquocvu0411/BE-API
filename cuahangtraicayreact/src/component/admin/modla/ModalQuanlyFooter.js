@@ -21,19 +21,21 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
     }, [isEdit, Footer]);
     const handleSubmit = async () => {
         try {
-            // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-            const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-            const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-            // const updatedBy = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten'); // Lấy tên người dùng từ localStorage hoặc sessionStorage
+            // Kiểm tra trạng thái lưu đăng nhập
+            const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+            const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+            const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
 
             const footerData = {
                 noiDungFooter: name,
                 trangthai: Trangthai, // Đảm bảo Trangthai có giá trị hợp lệ (0 hoặc 1)
-                // updatedBy
             };
-
+ 
             if (isEdit) {
-                // Cập nhật Footer hiện tại
+                // Thêm updatedBy khi cập nhật
+                footerData.updated_By = loggedInUser;
+
+                // Gọi API PUT để cập nhật Footer
                 await axios.put(
                     `${process.env.REACT_APP_BASEURL}/api/Footer/${Footer.id}`,
                     footerData,
@@ -44,17 +46,22 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
                     }
                 );
 
-                const plainTextName = new DOMParser().parseFromString(name, 'text/html').body.textContent; // hiện thị nội dung từ ckeditor dưới dạng ko html
-                toast.success(`Footer ${plainTextName} đã được cập nhật thành công!`, {
+                // Hiển thị thông báo thành công
+                const plainTextName = new DOMParser().parseFromString(name, 'text/html').body.textContent; // Xóa HTML khỏi CKEditor
+                toast.success(`Footer "${plainTextName}" đã được cập nhật thành công!`, {
                     position: 'top-right',
                     autoClose: 3000,
                 });
 
-                fetchFooters(); // Làm mới danh sách
+                fetchFooters(); // Làm mới danh sách Footers
                 resetForm();
                 handleClose(); // Đóng modal
             } else {
-                // Thêm mới Footer
+                // Thêm createdBy và updatedBy khi tạo mới
+                footerData.created_By = loggedInUser;
+                footerData.updated_By = loggedInUser;
+
+                // Gọi API POST để tạo mới Footer
                 await axios.post(
                     `${process.env.REACT_APP_BASEURL}/api/Footer`,
                     footerData,
@@ -65,12 +72,14 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
                     }
                 );
 
-                toast.success(`Footer ${name} đã được thêm thành công!`, {
+                // Hiển thị thông báo thành công
+                const plainTextName = new DOMParser().parseFromString(name, 'text/html').body.textContent; // Xóa HTML khỏi CKEditor
+                toast.success(`Footer "${plainTextName}" đã được thêm thành công!`, {
                     position: 'top-right',
                     autoClose: 3000,
                 });
 
-                fetchFooters(); // Làm mới danh sách
+                fetchFooters(); // Làm mới danh sách Footers
                 resetForm();
                 handleClose(); // Đóng modal
             }

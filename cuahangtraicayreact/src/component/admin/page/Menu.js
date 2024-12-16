@@ -19,7 +19,7 @@ const Menu = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [currentMenu, setCurrentMenu] = useState(null);
 
-  useEffect(() => {
+  useEffect(() => { 
     fetchMenuList();
   }, []);
 
@@ -157,6 +157,8 @@ const Menu = () => {
                     <th>Tên</th>
                     <th>Thứ tự hiển thị</th>
                     <th>URL</th>
+                    <th>Người tạo</th>
+                    <th>Người cập nhật</th>
                     <th>Chức năng</th>
                   </tr>
                 </thead>
@@ -167,6 +169,8 @@ const Menu = () => {
                       <td>{menu.name}</td>
                       <td>{menu.thutuhien}</td>
                       <td>{menu.url}</td>
+                      <td>{menu.createdBy}</td>
+                      <td>{menu.updatedBy}</td>
                       <td>
                         <Button variant="primary me-2" onClick={() => openModal(menu)} title="Chỉnh sửa menu">
                           <i className="fas fa-edit"></i>

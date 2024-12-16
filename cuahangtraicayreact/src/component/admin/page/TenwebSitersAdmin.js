@@ -120,7 +120,7 @@ const TenwebSitersAdmin = () => {
       // Gọi API với token trong headers và updatedBy trong body
       await axios.post(
         `${process.env.REACT_APP_BASEURL}/api/TenWebSite/setTenwebsiter/${id}`,
-        { updatedBy: updatedBy }, // Gửi updatedBy trong body
+        { Updated_By: updatedBy }, // Gửi updatedBy trong body
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -214,7 +214,8 @@ const TenwebSitersAdmin = () => {
                         <th scope="col">STT</th>
                         <th scope="col">Tiêu đề</th>
                         <th scope="col">Hình ảnh</th>
-                        {/* <th scope="col">Đã cập nhật Bởi</th> */}
+                        <th scope="col">Người tạo</th>
+                        <th scope="col">Đã cập nhật Bởi</th>
                         <th scope="col">Chức năng</th>
                       </tr>
                     </thead>
@@ -232,9 +233,12 @@ const TenwebSitersAdmin = () => {
                           ) : (
                             'Không có hình ảnh'
                           )}</td>
-                          {/* <td>
+                          <td>
+                            {Website.createdBy}
+                          </td>
+                          <td>
                             {Website.updatedBy}
-                          </td> */}
+                          </td>
                           <td>
                             <Button
                               variant="primary me-2"

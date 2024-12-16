@@ -14,7 +14,12 @@ namespace CuahangtraicayAPI.Model
         public string Noi_dung { get; set; }
 
         public byte Trang_thai { get; set; } = 1; // Mặc định hiển thị
-                                                  // Thêm danh sách các hình ảnh liên quan đến mục Gioithieu
+
+        public string CreatedBy { get; set; }
+
+        public string UpdatedBy { get; set; }
+
+       // Thêm danh sách các hình ảnh liên quan đến mục Gioithieu
         public ICollection<GioithieuImg> GioithieuImgs { get; set; }
     }
 }

@@ -9,12 +9,12 @@ namespace CuahangtraicayAPI.Model
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(255)]
+        //[Required]
+        //[MaxLength(255)]
         public string Diachi { get; set; }
 
-        [Required]
-        [MaxLength(11)]
+        //[Required]
+        //[MaxLength(11)]
         public string Sdt { get; set; }
 
         [Required]
@@ -23,5 +23,10 @@ namespace CuahangtraicayAPI.Model
         public string Email { get; set; }
 
         public string Status { get; set; } = "không sử dụng"; // Giá trị mặc định
+
+        public string CreatedBy { get; set; }
+
+        public string UpdatedBy { get; set; }
+
     }
 }

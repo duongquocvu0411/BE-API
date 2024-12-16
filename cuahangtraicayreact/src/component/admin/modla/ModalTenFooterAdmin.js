@@ -75,7 +75,8 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
   const handleSave = async () => {
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-  
+    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+
     // Kiểm tra nếu không có token thì yêu cầu đăng nhập lại
     if (!token) {
       toast.error("Vui lòng đăng nhập để tiếp tục!", {
@@ -111,6 +112,7 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
   
     try {
       if (isEdit) {
+        formData.append('Updated_By',loggedInUser);
         await axios.put(`${process.env.REACT_APP_BASEURL}/api/TenFooter/${tenFooter.id}`, formData, {
           headers: {
             Authorization: `Bearer ${token}`, // Thêm token vào header
@@ -118,6 +120,8 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
         });
         toast.success('Cập nhật TenFooter thành công!');
       } else {
+        formData.append("Updated_By" , loggedInUser);
+        formData.append("Created_By" ,loggedInUser);
         await axios.post(`${process.env.REACT_APP_BASEURL}/api/TenFooter`, formData, {
           headers: {
             Authorization: `Bearer ${token}`, // Thêm token vào header

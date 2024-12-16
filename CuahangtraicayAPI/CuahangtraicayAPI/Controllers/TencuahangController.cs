@@ -61,7 +61,9 @@ namespace CuahangtraicayAPI.Controllers
             var cuahang = new Tencuahang
             {
                 Name = dto.Name,
-                Trangthai = "không sử dụng"
+                Trangthai = "không sử dụng",
+                CreatedBy= dto.Created_By,
+                UpdatedBy= dto.Updated_By,
             };
 
             _context.Tencuahangs.Add(cuahang);
@@ -77,7 +79,7 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Update(int id, Tencuahang cuahang)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateTencuahangDTO dto)
         {
             // Tìm cửa hàng theo ID
             var existingCuaHang = await _context.Tencuahangs.FindAsync(id);
@@ -87,19 +89,18 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Không tìm thấy cửa hàng với id này" });
             }
 
-            // Chỉ cập nhật các thuộc tính nếu chúng không null
-            if (!string.IsNullOrEmpty(cuahang.Name))
+            // Chỉ cập nhật các thuộc tính nếu chúng có giá trị
+            if (!string.IsNullOrEmpty(dto.Name))
             {
-                existingCuaHang.Name = cuahang.Name;
+                existingCuaHang.Name = dto.Name;
             }
 
-            // Nếu client không gửi `Trangthai`, giữ nguyên giá trị cũ
-            if (!string.IsNullOrEmpty(cuahang.Trangthai))
+            if (!string.IsNullOrEmpty(dto.Updated_By))
             {
-                existingCuaHang.Trangthai = cuahang.Trangthai;
+                existingCuaHang.UpdatedBy = dto.Updated_By;
             }
 
-            // Đánh dấu entity là đã thay đổi
+            // Đánh dấu thực thể là đã thay đổi
             _context.Entry(existingCuaHang).State = EntityState.Modified;
 
             try
@@ -146,21 +147,41 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         [HttpPost("setTencuahang/{id}")]
         [Authorize]
-        public async Task<IActionResult> SetTencuahang(int id)
+        public async Task<IActionResult> SetTencuahang(int id, [FromBody] SetTencuahangDto dto)
         {
-            await _context.Tencuahangs.ForEachAsync(c => c.Trangthai = "không sử dụng");
-            await _context.SaveChangesAsync();
-
-            var cuahang = await _context.Tencuahangs.FindAsync(id);
-            if (cuahang == null)
+            // Kiểm tra tính hợp lệ của DTO
+            if (!ModelState.IsValid)
             {
-                return NotFound(new { message = "Không tìm thấy cửa hàng với id này" });
+                return BadRequest(ModelState);
             }
 
-            cuahang.Trangthai = "đang sử dụng";
+            // Lấy tất cả các cửa hàng
+            var allStores = await _context.Tencuahangs.ToListAsync();
+
+            // Tìm cửa hàng với ID được chọn
+            var selectedStore = allStores.FirstOrDefault(store => store.Id == id);
+            if (selectedStore == null)
+            {
+                return NotFound(new { message = "Không tìm thấy cửa hàng với id này." });
+            }
+
+            // Cập nhật trạng thái cho tất cả các cửa hàng
+            foreach (var store in allStores)
+            {
+                store.Trangthai = "không sử dụng"; // Đặt trạng thái mặc định cho tất cả
+
+                // Chỉ cập nhật `UpdatedBy` cho cửa hàng được chọn
+                if (store.Id == id)
+                {
+                    store.Trangthai = "đang sử dụng"; // Cập nhật trạng thái cho cửa hàng được chọn
+                    store.UpdatedBy = dto.Updated_By; // Cập nhật người thực hiện
+                }
+            }
+
+            // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Tên cửa hàng đã được chọn làm đang sử dụng" });
+            return Ok(new { message = "Tên cửa hàng đã được chọn làm đang sử dụng." });
         }
 
         /// <summary>

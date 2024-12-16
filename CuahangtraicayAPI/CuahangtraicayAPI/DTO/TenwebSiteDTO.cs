@@ -12,7 +12,10 @@ namespace CuahangtraicayAPI.DTO
             public IFormFile Favicon { get; set; } // Favicon (file upload)
             [Required]
             //public string UpdatedBy { get; set; } // Người tạo (hoặc cập nhật ban đầu)
-            
+           
+            public string Created_By { get; set; }
+             [Required]
+            public string Updated_By { get; set; }
             public byte TrangThai {  get; set; } = 0;
         }
 
@@ -22,11 +25,12 @@ namespace CuahangtraicayAPI.DTO
             public IFormFile? Favicon { get; set; } // Favicon mới (có thể null)
             //public string? UpdatedBy { get; set; } // Người cập nhật
             public byte? TrangThai { get; set; } = 0;
+            public string Updated_By { get; set; }
         }
         public class SetTenwebSiteDto
         {
             [Required]
-            public string UpdatedBy { get; set; } // Người thực hiện cập nhật
+            public string Updated_By { get; set; } // Người thực hiện cập nhật
         }
     }
 }

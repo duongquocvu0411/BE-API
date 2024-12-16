@@ -9,7 +9,7 @@ const ModalDiaChiChiTiet = ({ show, handleClose, isEdit, detail, fetchDetails })
   const [sdt,setSdt] = useState('');
 
   // Cập nhật state khi mở modal để chỉnh sửa
-  useEffect(() => {
+  useEffect(() => { 
     if (isEdit && detail) {
       setDiachi(detail.diachi);
       setEmail(detail.email);
@@ -23,12 +23,15 @@ const ModalDiaChiChiTiet = ({ show, handleClose, isEdit, detail, fetchDetails })
 
   // Xử lý khi nhấn nút "Save"
   const handleSave = () => {
+    const form = {diachi,email,sdt}
       // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
       const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
       const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-    if (isEdit) {
+      const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+      if (isEdit) {
       // Chỉnh sửa chi tiết địa chỉ
-      axios.put(`${process.env.REACT_APP_BASEURL}/api/diachichitiet/${detail.id}`, { diachi, email, sdt },
+      form.Updated_By = loggedInUser;
+      axios.put(`${process.env.REACT_APP_BASEURL}/api/diachichitiet/${detail.id}`, form,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Thêm token vào header
@@ -59,7 +62,9 @@ const ModalDiaChiChiTiet = ({ show, handleClose, isEdit, detail, fetchDetails })
       });
   } else {
       // Thêm mới chi tiết địa chỉ
-      axios.post(`${process.env.REACT_APP_BASEURL}/api/diachichitiet`, { diachi, email, sdt },
+      form.Created_By = loggedInUser;
+      form.Updated_By = loggedInUser;
+      axios.post(`${process.env.REACT_APP_BASEURL}/api/diachichitiet`, form,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Thêm token vào header

@@ -11,5 +11,8 @@ namespace CuahangtraicayAPI.Model
 
         public string Name { get; set; }
         public string Trangthai { get; set; } = "không sử dụng"; // Giá trị mặc định
+
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
     }
 }

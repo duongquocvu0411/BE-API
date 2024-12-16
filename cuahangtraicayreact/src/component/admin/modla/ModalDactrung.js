@@ -9,7 +9,7 @@ const ModalDactrung = ({ show, handleClose, isEdit, dactrung, fetchDactrungs }) 
   const [thutuhienthi, setThutuhienthi] = useState("");
   const [iconFile, setIconFile] = useState(null); // Trường iconFile (file ảnh biểu tượng)
   const [iconPreview, setIconPreview] = useState(""); // Dùng để hiển thị ảnh đại diện (preview)
-
+ 
   // Gán dữ liệu khi mở modal (trường hợp chỉnh sửa)
   useEffect(() => {
     if (isEdit && dactrung) {
@@ -57,10 +57,13 @@ const ModalDactrung = ({ show, handleClose, isEdit, dactrung, fetchDactrungs }) 
        // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
      const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
      const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+     const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
 
       if (isEdit) {
         // PUT: Cập nhật đặc trưng
+        formData.append("Updated_By",loggedInUser);
         await axios.put(
+        
           `${process.env.REACT_APP_BASEURL}/api/dactrung/${dactrung.id}`,
           formData,
           {
@@ -76,6 +79,8 @@ const ModalDactrung = ({ show, handleClose, isEdit, dactrung, fetchDactrungs }) 
         });
       } else {
         // POST: Thêm mới đặc trưng
+        formData.append("Created_By",loggedInUser);
+        formData.append("Updated_By",loggedInUser);
         await axios.post(`${process.env.REACT_APP_BASEURL}/api/dactrung`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",

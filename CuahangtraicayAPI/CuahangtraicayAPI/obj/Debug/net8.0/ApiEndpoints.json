@@ -86,6 +86,16 @@
         "IsRequired": false
       },
       {
+        "Name": "Created_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "Hinhanhs",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
@@ -154,6 +164,11 @@
       },
       {
         "Name": "Phude",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
         "Type": "System.String",
         "IsRequired": false
       },
@@ -233,6 +248,11 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.BannersDTO\u002BSetBannerDTO",
         "IsRequired": true
       }
     ],
@@ -328,6 +348,16 @@
         "IsRequired": false
       },
       {
+        "Name": "Created_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "IconFile",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
@@ -397,6 +427,11 @@
       {
         "Name": "Thutuhienthi",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -655,8 +690,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "diachi",
-        "Type": "CuahangtraicayAPI.Model.Diachichitiet",
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.DiachichitietDTO\u002BCreateDiachichitietDto",
         "IsRequired": true
       }
     ],
@@ -712,8 +747,8 @@
         "IsRequired": true
       },
       {
-        "Name": "diachi",
-        "Type": "CuahangtraicayAPI.Model.Diachichitiet",
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.DiachichitietDTO\u002BUpdateDiachichitietDto",
         "IsRequired": true
       }
     ],
@@ -766,6 +801,11 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.DiachichitietDTO\u002BSetDiachichitietDto",
         "IsRequired": true
       }
     ],
@@ -902,8 +942,8 @@
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.FooterController",
-    "Method": "SetDiaChiHien",
-    "RelativePath": "api/Footer/setDiaChiHien/{id}",
+    "Method": "setFooter",
+    "RelativePath": "api/Footer/setFooter/{id}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -911,6 +951,11 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.FooterDto\u002BSetFooterDTO",
         "IsRequired": true
       }
     ],
@@ -952,6 +997,16 @@
       {
         "Name": "Trang_thai",
         "Type": "System.Byte",
+        "IsRequired": false
+      },
+      {
+        "Name": "Created_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -1009,6 +1064,11 @@
       {
         "Name": "Trang_thai",
         "Type": "System.Nullable\u00601[[System.Byte, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -2064,8 +2124,8 @@
         "IsRequired": true
       },
       {
-        "Name": "cuahang",
-        "Type": "CuahangtraicayAPI.Model.Tencuahang",
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.TencuahangDTO\u002BUpdateTencuahangDTO",
         "IsRequired": true
       }
     ],
@@ -2119,6 +2179,11 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.TencuahangDTO\u002BSetTencuahangDto",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -2169,6 +2234,16 @@
       {
         "Name": "Links",
         "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Created_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],
@@ -2231,6 +2306,11 @@
       {
         "Name": "Links",
         "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],
@@ -2297,6 +2377,16 @@
         "IsRequired": false
       },
       {
+        "Name": "Created_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "TrangThai",
         "Type": "System.Byte",
         "IsRequired": false
@@ -2347,6 +2437,11 @@
         "Name": "TrangThai",
         "Type": "System.Nullable\u00601[[System.Byte, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
+      },
+      {
+        "Name": "Updated_By",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -2388,6 +2483,11 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.TenwebSiteDTO\u002BSetTenwebSiteDto",
         "IsRequired": true
       }
     ],

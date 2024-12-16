@@ -58,7 +58,7 @@
             </summary>
             <returns> Trả về kết quả xóa hình ảnh </returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.BannersController.SetTrangthai(System.Int32)">
+        <member name="M:CuahangtraicayAPI.Controllers.BannersController.SetTrangthai(System.Int32,CuahangtraicayAPI.DTO.BannersDTO.SetBannerDTO)">
             <summary>
             Cập nhật trạng thái "Đang sử dụng" cho banner, các banner khác sẽ có trạng thái "Không sử dụng".
             </summary>
@@ -171,7 +171,7 @@
             </summary>
             <returns>Danh sách các đối tượng Diachichitiet</returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.Store(CuahangtraicayAPI.Model.Diachichitiet)">
+        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.Store(CuahangtraicayAPI.DTO.DiachichitietDTO.CreateDiachichitietDto)">
             <summary>
             thêm 1  địa chỉ chi tiết.
             </summary>
@@ -183,7 +183,7 @@
             </summary>
             <returns>xem id  địa chỉ chi tiết.</returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.Update(System.Int32,CuahangtraicayAPI.Model.Diachichitiet)">
+        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.Update(System.Int32,CuahangtraicayAPI.DTO.DiachichitietDTO.UpdateDiachichitietDto)">
             <summary>
             chỉnh sửa  địa chỉ chi tiết theo {id}.
             </summary>
@@ -195,7 +195,7 @@
             </summary>
             <returns>Xóa địa chỉ chi tiết theo {id}..</returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.SetDiaChiHien(System.Int32)">
+        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.SetDiaChiHien(System.Int32,CuahangtraicayAPI.DTO.DiachichitietDTO.SetDiachichitietDto)">
             <summary>
             post địa chỉ chi tiết {id} status thành: "đang sử dụng"
             </summary>
@@ -247,14 +247,6 @@
             </summary>
             <param name="id">ID của Footer cần xóa.</param>
             <returns>Trạng thái xóa.</returns>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.FooterController.SetDiaChiHien(System.Int32)">
-            <summary>
-            Đặt trạng thái Footer được sử dụng (TrangThai = 1) và các Footer khác về trạng thái không hoạt động (TrangThai = 0).
-            </summary>
-            <param name="id">ID của Footer cần đặt làm sử dụng.</param>
-            <param name="setDto">Thông tin người thực hiện cập nhật.</param>
-            <returns>Trạng thái cập nhật.</returns>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.GioithieuController.GetAllGioithieu">
             <summary>
@@ -574,7 +566,7 @@
             </summary>
             
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.Update(System.Int32,CuahangtraicayAPI.Model.Tencuahang)">
+        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.Update(System.Int32,CuahangtraicayAPI.DTO.TencuahangDTO.UpdateTencuahangDTO)">
             <summary>
             Chỉnh sửa thông tin của một tên cửa hàng theo id.
             </summary>
@@ -584,7 +576,7 @@
             Xóa một tên cửa hàng theo id.
             </summary>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.SetTencuahang(System.Int32)">
+        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.SetTencuahang(System.Int32,CuahangtraicayAPI.DTO.TencuahangDTO.SetTencuahangDto)">
             <summary>
             Đặt một tên cửa hàng có trạng thái "đang sử dụng" theo id.
             </summary>
@@ -671,14 +663,6 @@
             </summary>
             <param name="id">ID của Website cần xóa.</param>
             <returns>Trạng thái xóa.</returns>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.SetDiaChiHien(System.Int32)">
-            <summary>
-            Đặt trạng thái Website được sử dụng (TrangThai = 1) và các Website khác về trạng thái không hoạt động (TrangThai = 0).
-            </summary>
-            <param name="id">ID của Website cần đặt làm sử dụng.</param>
-            <param name="setDto">Thông tin người thực hiện cập nhật.</param>
-            <returns>Trạng thái cập nhật.</returns>
         </member>
     </members>
 </doc>

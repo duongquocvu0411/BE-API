@@ -74,7 +74,9 @@ namespace CuahangtraicayAPI.Controllers
             {
                 NoiDungFooter = dto.NoiDungFooter,
                 //UpdatedBy = dto.UpdatedBy,
-                TrangThai = dto.Trangthai
+                TrangThai = dto.Trangthai,
+                CreatedBy = dto.Created_By,
+                UpdatedBy = dto.Updated_By,
             };
             _context.Footers.Add(footer);
             await _context.SaveChangesAsync();
@@ -103,6 +105,8 @@ namespace CuahangtraicayAPI.Controllers
             {
                 footer.TrangThai = footerDto.Trangthai.Value;
             }
+
+            footer.UpdatedBy = footerDto.Updated_By;
             footer.Updated_at = DateTime.Now;
 
             _context.Entry(footer).State = EntityState.Modified;
@@ -132,32 +136,50 @@ namespace CuahangtraicayAPI.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Đặt trạng thái Footer được sử dụng (TrangThai = 1) và các Footer khác về trạng thái không hoạt động (TrangThai = 0).
-        /// </summary>
-        /// <param name="id">ID của Footer cần đặt làm sử dụng.</param>
-        /// <param name="setDto">Thông tin người thực hiện cập nhật.</param>
-        /// <returns>Trạng thái cập nhật.</returns>
+        ///// <summary>
+        ///// Đặt trạng thái Footer được sử dụng (TrangThai = 1) và các Footer khác về trạng thái không hoạt động (TrangThai = 0).
+        ///// </summary>
+        ///// <param name="id">ID của Footer cần đặt làm sử dụng.</param>
+        ///// <param name="setDto">Thông tin người thực hiện cập nhật.</param>
+        ///// <returns>Trạng thái cập nhật.</returns>
 
-        [HttpPost("setDiaChiHien/{id}")]
+        [HttpPost("setFooter/{id}")]
         [Authorize]
-        public async Task<IActionResult> SetDiaChiHien(int id)
+        public async Task<IActionResult> setFooter(int id, [FromBody] DTO.FooterDto.SetFooterDTO dto)
         {
-            // Set tất cả Footer khác thành "không sử dụng"
-            await _context.Footers.ForEachAsync(d => d.TrangThai = 0);
-            await _context.SaveChangesAsync();
-
-            // Cập nhật Footer với id cụ thể thành "đang sử dụng"
-            var diachi = await _context.Footers.FindAsync(id);
-            if (diachi == null)
+            // Kiểm tra tính hợp lệ của DTO
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            diachi.TrangThai =1;
+            // Lấy tất cả các Footer
+            var allFooters = await _context.Footers.ToListAsync();
+
+            // Tìm Footer cần cập nhật
+            var footerToUpdate = allFooters.FirstOrDefault(f => f.Id == id);
+            if (footerToUpdate == null)
+            {
+                return NotFound(new { message = "Không tìm thấy Footer với id này." });
+            }
+
+            // Cập nhật trạng thái cho tất cả các Footer
+            foreach (var footer in allFooters)
+            {
+                footer.TrangThai = 0; // Đặt trạng thái mặc định cho tất cả
+
+                // Chỉ cập nhật `Updated_By` cho Footer được chọn
+                if (footer.Id == id)
+                {
+                    footer.TrangThai = 1; // Cập nhật trạng thái cho Footer được chọn
+                    footer.UpdatedBy = dto.Updated_By; // Ghi lại người thực hiện
+                }
+            }
+
+            // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Footer đã được chọn làm Footer đang sử dụng" });
+            return Ok(new { message = "Footer đã được chọn làm Footer đang sử dụng." });
         }
 
     }
