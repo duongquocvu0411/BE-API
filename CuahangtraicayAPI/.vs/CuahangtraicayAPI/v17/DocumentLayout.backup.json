@@ -1,12 +1,37 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\CDSG\\BE\\do an\\doan git\\BE-API\\CuahangtraicayAPI\\",
-  "Documents": [],
+  "WorkspaceRootPath": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\do an\\new folder\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\diachichitietcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\diachichitietcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DiachichitietController.cs",
+              "DocumentMoniker": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\DiachichitietController.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\DiachichitietController.cs",
+              "ToolTip": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\DiachichitietController.cs*",
+              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\DiachichitietController.cs*",
+              "ViewState": "AgIAALoAAAAAAAAAAAAAwOYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-16T12:55:32.857Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

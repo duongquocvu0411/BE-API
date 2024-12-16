@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\CDSG\\BE\\do an\\doan git\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj": {}
+    "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj": {}
   },
   "projects": {
-    "E:\\CDSG\\BE\\do an\\doan git\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj": {
+    "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\CDSG\\BE\\do an\\doan git\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
+        "projectUniqueName": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
         "projectName": "CuahangtraicayAPI",
-        "projectPath": "E:\\CDSG\\BE\\do an\\doan git\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
+        "projectPath": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "E:\\CDSG\\BE\\do an\\doan git\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\obj\\",
+        "outputPath": "E:\\CDSG\\BE\\do an\\New folder\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",

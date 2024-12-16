@@ -6,9 +6,9 @@ using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
-    [Route("api/[controller]")] 
+    [Route("api/[controller]")]
     [ApiController]
-    public class DiachichitietController:ControllerBase
+    public class DiachichitietController : ControllerBase
     {
         private readonly AppDbContext _context;
 
@@ -67,8 +67,8 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<Diachichitiet>> Show(int id)
         {
             var diachi = await _context.Diachichitiets.FindAsync(id);
-            
-            if(diachi == null)
+
+            if (diachi == null)
             {
                 return NotFound(new { message = " không tìm thấy địa chỉ với id này " });
             }
@@ -150,7 +150,7 @@ namespace CuahangtraicayAPI.Controllers
         {
             var diachi = await _context.Diachichitiets.FindAsync(id);
 
-            if(diachi == null)
+            if (diachi == null)
             {
                 return NotFound(new { message = " không tìm thấy địa chỉ chi tiết với id này" });
             }
