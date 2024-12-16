@@ -1,25 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { Modal, Button } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { Helmet } from 'react-helmet';
 
 const HeaderAdmin = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "" });
 
-
-// lấy cột hoten backend để hiện tên admin đã login
-
+  // Get admin name from storage
   const hoten = localStorage.getItem('loginhoten') || sessionStorage.getItem('loginhoten');
 
-  // Hiển thị modal xác nhận đăng xuất
+  useEffect(() =>{
+    layThongTinWebsiteHoatDong();
+  },[])
+  const layThongTinWebsiteHoatDong = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite/active`);
+      if (response.data && response.data.length > 0) {
+        const baseURL = process.env.REACT_APP_BASEURL;
+        setThongTinWebsite({
+          tieu_de: response.data[0].tieu_de,
+          favicon: `${baseURL}${response.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
+        });
+        console.log(thongTinWebsite.favicon)
+      } else {
+        toast.info("Không có website đang hoạt động", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        console.log("Không có website đang hoạt động");
+      }
+    } catch (err) {
+      console.error("Lỗi khi gọi API thông tin website:", err);
+      toast.error("Lỗi khi lấy thông tin website hoạt động", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  };
+  // Show logout confirmation modal
   const handleClickDangXuat = () => {
     setShowModal(true);
   };
 
- 
-  // Xác nhận đăng xuất (chỉ xóa token khỏi localStorage)
+  // Confirm logout
   const handleXacNhanDangXuatTaiKhoan = () => {
-    // Xóa token và trạng thái đăng nhập khỏi localStorage && sessionStorage
+    // Clear localStorage and sessionStorage
     localStorage.removeItem('adminToken');
     localStorage.removeItem('loginTime');
     localStorage.removeItem('isAdminLoggedIn');
@@ -30,20 +59,26 @@ const HeaderAdmin = () => {
     sessionStorage.removeItem('isAdminLoggedIn');
     sessionStorage.removeItem('loginhoten');
 
-    // Đóng modal và chuyển hướng người dùng đến trang đăng nhập
+    // Close modal and navigate to login page
     setShowModal(false);
     navigate('/admin/Login');
   };
 
-  // Đóng modal xác nhận đăng xuất
-  const handleDongModla = () => {
+  // Close modal
+  const handleDongModal = () => {
     setShowModal(false);
   };
 
   return (
     <>
-    {/* Topbar */}
-    <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    <Helmet>
+        <title>{thongTinWebsite.tieu_de || "Tên website mặc định"}</title>
+        {thongTinWebsite.favicon && (
+          <link rel="icon" type="image/x-icon" href={thongTinWebsite.favicon} />
+        )}
+      </Helmet>
+      {/* Topbar */}
+      <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
         {/* Sidebar Toggle (Topbar) */}
         <button
           id="sidebarToggleTop"
@@ -57,12 +92,8 @@ const HeaderAdmin = () => {
           <i className="fa fa-bars"></i>
         </button>
 
-       
-        
         {/* Topbar Navbar */}
         <ul className="navbar-nav ml-auto">
-          
-
           {/* Nav Item - User Information */}
           <li className="nav-item dropdown no-arrow">
             <a
@@ -75,13 +106,16 @@ const HeaderAdmin = () => {
               aria-expanded="false"
             >
               <span className="mr-2 d-none d-lg-inline text-gray-600 small">{hoten || 'Admin'}</span>
-              <img className="img-profile rounded-circle" src={`${process.env.PUBLIC_URL}/lte/img/undraw_profile.svg`} alt="User Profile" />
+              <img
+                className="img-profile rounded-circle"
+                src={`${process.env.PUBLIC_URL}/lte/img/undraw_profile.svg`}
+                alt="User Profile"
+              />
             </a>
             <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
               <Link className="dropdown-item" to="/admin/ProfileAdmin">
                 <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile
               </Link>
-     
               <div className="dropdown-divider"></div>
               <button className="dropdown-item" onClick={handleClickDangXuat}>
                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
@@ -91,25 +125,35 @@ const HeaderAdmin = () => {
         </ul>
       </nav>
 
-      {/* Modal xác nhận đăng xuất */}
-      {showModal && (
-        <div className="modal fade show d-block" tabIndex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="logoutModalLabel">Xác nhận đăng xuất</h5>
-                <button type="button" className="btn-close" onClick={handleDongModla} aria-label="Close"></button>
-              </div>
-              <div className="modal-body">Bạn có chắc muốn đăng xuất khỏi giao diện admin chứ?</div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={handleDongModla}>Thoát</button>
-                <button type="button" className="btn btn-danger" onClick={handleXacNhanDangXuatTaiKhoan}>Xác nhận</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-     
+      {/* Logout Confirmation Modal (React-Bootstrap) */}
+      <Modal show={showModal} onHide={handleDongModal} centered backdrop="static" >
+  <Modal.Header closeButton className="bg-light border-0">
+    <Modal.Title className="text-center w-100">
+      <i className="fas fa-exclamation-circle text-warning fa-2x mb-2"></i>
+      <h5 className="text-danger mb-0">Xác nhận đăng xuất</h5>
+    </Modal.Title>
+  </Modal.Header>
+  <Modal.Body className="text-center bg-light">
+    <div className="py-3">
+      <p className="fw-semibold fs-5">
+        Bạn có chắc muốn <span className="text-danger">đăng xuất</span> không?
+      </p>
+      <p className="text-muted small">
+        Tất cả các phiên làm việc hiện tại sẽ kết thúc và bạn cần đăng nhập lại.
+      </p>
+    </div>
+  </Modal.Body>
+  <Modal.Footer className="d-flex justify-content-between bg-light border-0">
+    <Button variant="secondary" className="fw-bold px-4 py-2" onClick={handleDongModal}>
+      Thoát
+    </Button>
+    <Button variant="danger" className="fw-bold px-4 py-2" onClick={handleXacNhanDangXuatTaiKhoan}>
+      Xác nhận
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+
     </>
   );
 };

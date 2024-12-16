@@ -394,6 +394,7 @@ const ModlaSanpham = ({
               >
                 <option value="">Chọn đơn vị tính</option>
                 <option value="kg">kg</option>
+                <option value="gói">Gói</option>
                 <option value="bó">bó</option>
                 <option value="thùng">Thùng</option>
                 <option value="Lốc">Lốc</option>

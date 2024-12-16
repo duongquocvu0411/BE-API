@@ -901,6 +901,22 @@
     ]
   },
   {
+    "ContainingType": "CuahangtraicayAPI.Controllers.FooterController",
+    "Method": "SetDiaChiHien",
+    "RelativePath": "api/Footer/setDiaChiHien/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CuahangtraicayAPI.Controllers.GioithieuController",
     "Method": "GetAllGioithieu",
     "RelativePath": "api/Gioithieu",
@@ -2281,11 +2297,6 @@
         "IsRequired": false
       },
       {
-        "Name": "UpdatedBy",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "TrangThai",
         "Type": "System.Byte",
         "IsRequired": false
@@ -2333,11 +2344,6 @@
         "IsRequired": false
       },
       {
-        "Name": "UpdatedBy",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "TrangThai",
         "Type": "System.Nullable\u00601[[System.Byte, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
@@ -2373,7 +2379,7 @@
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.TenWebSiteController",
-    "Method": "SetTenwebsiter",
+    "Method": "SetDiaChiHien",
     "RelativePath": "api/TenWebSite/setTenwebsiter/{id}",
     "HttpMethod": "POST",
     "IsController": true,
@@ -2382,11 +2388,6 @@
       {
         "Name": "id",
         "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "setDto",
-        "Type": "CuahangtraicayAPI.DTO.TenwebSiteDTO\u002BSetTenwebSiteDto",
         "IsRequired": true
       }
     ],

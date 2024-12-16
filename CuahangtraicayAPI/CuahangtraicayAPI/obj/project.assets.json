@@ -4244,11 +4244,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
+      "projectUniqueName": "E:\\CDSG\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
       "projectName": "CuahangtraicayAPI",
-      "projectPath": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
+      "projectPath": "E:\\CDSG\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
       "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "E:\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\obj\\",
+      "outputPath": "E:\\CDSG\\BE\\do an\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",

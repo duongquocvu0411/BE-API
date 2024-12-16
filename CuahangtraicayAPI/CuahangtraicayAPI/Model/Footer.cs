@@ -9,7 +9,7 @@ namespace CuahangtraicayAPI.Model
         [Key]
         public int Id { get; set; }
         public string NoiDungFooter { get; set; }
-        public string UpdatedBy { get; set; }
+        //public string UpdatedBy { get; set; }
 
         public byte TrangThai { get; set; } = 1;
 

@@ -248,6 +248,14 @@
             <param name="id">ID của Footer cần xóa.</param>
             <returns>Trạng thái xóa.</returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.FooterController.SetDiaChiHien(System.Int32)">
+            <summary>
+            Đặt trạng thái Footer được sử dụng (TrangThai = 1) và các Footer khác về trạng thái không hoạt động (TrangThai = 0).
+            </summary>
+            <param name="id">ID của Footer cần đặt làm sử dụng.</param>
+            <param name="setDto">Thông tin người thực hiện cập nhật.</param>
+            <returns>Trạng thái cập nhật.</returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.GioithieuController.GetAllGioithieu">
             <summary>
             Lấy danh sách tất cả các mục giới thiệu, bao gồm thông tin hình ảnh liên quan.
@@ -664,7 +672,7 @@
             <param name="id">ID của Website cần xóa.</param>
             <returns>Trạng thái xóa.</returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.SetTenwebsiter(System.Int32,CuahangtraicayAPI.DTO.TenwebSiteDTO.SetTenwebSiteDto)">
+        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.SetDiaChiHien(System.Int32)">
             <summary>
             Đặt trạng thái Website được sử dụng (TrangThai = 1) và các Website khác về trạng thái không hoạt động (TrangThai = 0).
             </summary>

@@ -1,7 +1,9 @@
 ﻿using CuahangtraicayAPI.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static CuahangtraicayAPI.DTO.FooterDto;
+using static CuahangtraicayAPI.DTO.TenFooterDTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -71,7 +73,7 @@ namespace CuahangtraicayAPI.Controllers
             var footer = new Footer
             {
                 NoiDungFooter = dto.NoiDungFooter,
-                UpdatedBy = dto.UpdatedBy,
+                //UpdatedBy = dto.UpdatedBy,
                 TrangThai = dto.Trangthai
             };
             _context.Footers.Add(footer);
@@ -96,7 +98,7 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             footer.NoiDungFooter = footerDto.NoiDungFooter;
-            footer.UpdatedBy = footerDto.UpdatedBy;
+            //footer.UpdatedBy = footerDto.UpdatedBy;
             if (footerDto.Trangthai.HasValue)
             {
                 footer.TrangThai = footerDto.Trangthai.Value;
@@ -128,6 +130,34 @@ namespace CuahangtraicayAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// Đặt trạng thái Footer được sử dụng (TrangThai = 1) và các Footer khác về trạng thái không hoạt động (TrangThai = 0).
+        /// </summary>
+        /// <param name="id">ID của Footer cần đặt làm sử dụng.</param>
+        /// <param name="setDto">Thông tin người thực hiện cập nhật.</param>
+        /// <returns>Trạng thái cập nhật.</returns>
+
+        [HttpPost("setDiaChiHien/{id}")]
+        [Authorize]
+        public async Task<IActionResult> SetDiaChiHien(int id)
+        {
+            // Set tất cả Footer khác thành "không sử dụng"
+            await _context.Footers.ForEachAsync(d => d.TrangThai = 0);
+            await _context.SaveChangesAsync();
+
+            // Cập nhật Footer với id cụ thể thành "đang sử dụng"
+            var diachi = await _context.Footers.FindAsync(id);
+            if (diachi == null)
+            {
+                return NotFound();
+            }
+
+            diachi.TrangThai =1;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Footer đã được chọn làm Footer đang sử dụng" });
         }
 
     }

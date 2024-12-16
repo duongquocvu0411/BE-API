@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Helmet } from 'react-helmet';
 
 const Login = () => {
   const [tenDangNhap, setTenDangNhap] = useState('');
@@ -10,6 +11,38 @@ const Login = () => {
   const [dangXuLy, setDangXuLy] = useState(false);
   const [luuDangNhap, setLuuDangNhap] = useState(false); // Trạng thái của checkbox lưu thông tin đăng nhập
   const dieuHuong = useNavigate();
+  const [thongTinWebsite,setThongTinWebsite] = useState([])
+
+
+  useEffect (() => {
+    layThongTinWebsiteHoatDong();
+  },[])
+  
+    const layThongTinWebsiteHoatDong = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite/active`);
+        if (response.data && response.data.length > 0) {
+          const baseURL = process.env.REACT_APP_BASEURL;
+          setThongTinWebsite({
+            tieu_de: response.data[0].tieu_de,
+            favicon: `${baseURL}${response.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
+          });
+          console.log(thongTinWebsite.favicon)
+        } else {
+          toast.info("Không có website đang hoạt động", {
+            position: "top-right",
+            autoClose: 3000,
+          });
+          console.log("Không có website đang hoạt động");
+        }
+      } catch (err) {
+        console.error("Lỗi khi gọi API thông tin website:", err);
+        toast.error("Lỗi khi lấy thông tin website hoạt động", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      }
+    };
 
   const xuLyDangNhap = async (e) => {
     e.preventDefault();
@@ -59,6 +92,12 @@ const Login = () => {
 
   return (
     <div className="container d-flex vh-100">
+       <Helmet>
+        <title>{thongTinWebsite.tieu_de || "Tên website mặc định"}</title>
+        {thongTinWebsite.favicon && (
+          <link rel="icon" type="image/x-icon" href={thongTinWebsite.favicon} />
+        )}
+      </Helmet>
        <ul className="bubbles">
       <li></li>
       <li></li>

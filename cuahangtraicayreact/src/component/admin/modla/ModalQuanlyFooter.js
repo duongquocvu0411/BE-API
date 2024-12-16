@@ -24,12 +24,12 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
             // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
             const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
             const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-            const updatedBy = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten'); // Lấy tên người dùng từ localStorage hoặc sessionStorage
+            // const updatedBy = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten'); // Lấy tên người dùng từ localStorage hoặc sessionStorage
 
             const footerData = {
                 noiDungFooter: name,
                 trangthai: Trangthai, // Đảm bảo Trangthai có giá trị hợp lệ (0 hoặc 1)
-                updatedBy
+                // updatedBy
             };
 
             if (isEdit) {

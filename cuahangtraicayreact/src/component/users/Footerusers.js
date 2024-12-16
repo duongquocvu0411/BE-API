@@ -1,3 +1,4 @@
+import Aos from "aos";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -66,7 +67,12 @@ const Footerusers = () => {
         console.log("Lỗi khi lấy thông tin Footer active:", err);
       }
     };
-    
+      Aos.init({
+          duration: 1000, // Thời gian hiệu ứng
+          easing: 'ease-in-out', // Hiệu ứng easing
+          once: true, // Hiệu ứng chỉ xuất hiện 1 lần
+        });
+     
 
     fetchFooterActive();
     fetchTenFooter();
@@ -77,8 +83,8 @@ const Footerusers = () => {
   return (
     <>
       {/* Footer Starts */}
-      <div className="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
-        <div className="container py-5">
+      <div className="container-fluid bg-dark text-white-50 footer pt-5 mt-5" data-aos="fade-up">
+        <div className="container py-5 " >
           <div className="pb-4 mb-4" style={{ borderBottom: '1px solid rgba(226, 175, 24, 0.5)' }}>
             <div className="row g-4">
               <div className="col-lg-3">

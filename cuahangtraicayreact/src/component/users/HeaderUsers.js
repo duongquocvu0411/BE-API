@@ -23,7 +23,7 @@ const HeaderUsers = () => {
     fetchMenuData();
     layThongTinWebsiteHoatDong();
   }, []);
-
+ 
   const layThongTinWebsiteHoatDong = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite/active`);

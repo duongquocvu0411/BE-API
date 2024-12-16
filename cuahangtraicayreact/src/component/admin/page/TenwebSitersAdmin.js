@@ -94,41 +94,7 @@ const TenwebSitersAdmin = () => {
       });
     }
   };
-  const suDungTenwebsite = async (id) => {
-    // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-    try {
-      // Gọi API với token trong headers
-      await axios.post(
-        `${process.env.REACT_APP_BASEURL}/api/Tenwebsite/setTrangthai/${id}`,
-        {}, // Body rỗng vì không có dữ liệu gửi đi
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Thêm token vào header
-          },
-        }
-      );
-
-      // Hiển thị thông báo thành công
-      toast.success("Cửa hàng đã được đánh dấu là đang sử dụng", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-
-      // Lấy lại danh sách cửa hàng sau khi cập nhật
-      layDanhSachTenwebsite();
-    } catch (error) {
-      console.error("Có lỗi khi sử dụng tên cửa hàng", error);
-
-      // Hiển thị thông báo lỗi
-      toast.error("Có lỗi khi sử dụng tên cửa hàng", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-    }
-  };
-
+ 
 
   const handleHienThiModalXoa = (Website) => {
     setWebsiteXoa(Website); // Lưu Website cần xóa
@@ -248,7 +214,7 @@ const TenwebSitersAdmin = () => {
                         <th scope="col">STT</th>
                         <th scope="col">Tiêu đề</th>
                         <th scope="col">Hình ảnh</th>
-                        <th scope="col">Đã cập nhật Bởi</th>
+                        {/* <th scope="col">Đã cập nhật Bởi</th> */}
                         <th scope="col">Chức năng</th>
                       </tr>
                     </thead>
@@ -266,9 +232,9 @@ const TenwebSitersAdmin = () => {
                           ) : (
                             'Không có hình ảnh'
                           )}</td>
-                          <td>
+                          {/* <td>
                             {Website.updatedBy}
-                          </td>
+                          </td> */}
                           <td>
                             <Button
                               variant="primary me-2"

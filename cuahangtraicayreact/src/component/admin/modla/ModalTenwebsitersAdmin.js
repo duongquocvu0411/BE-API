@@ -13,14 +13,14 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
   const [formData, setFormData] = useState(defaultFormState);
   const [dangTai, setDangTai] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
-  const [updatedBy, setUpdatedBy] = useState("");
+  // const [updatedBy, setUpdatedBy] = useState("");
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isAdminLoggedIn") === "true";
-    const hoten = isLoggedIn
-      ? localStorage.getItem("loginhoten")
-      : sessionStorage.getItem("loginhoten");
-    setUpdatedBy(hoten || "");
+    // const isLoggedIn = localStorage.getItem("isAdminLoggedIn") === "true";
+    // const hoten = isLoggedIn
+    //   ? localStorage.getItem("loginhoten")
+    //   : sessionStorage.getItem("loginhoten");
+    // setUpdatedBy(hoten || "");
 
     if (isEdit && Website) {
       setFormData({
@@ -75,7 +75,7 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
       const form = new FormData();
       form.append("TieuDe", formData.tieu_de);
       form.append("Favicon", formData.favicon);
-      form.append("UpdatedBy", updatedBy);
+      // form.append("UpdatedBy", updatedBy);
       form.append("TrangThai", formData.trangThai); // Gửi trạng thái
 
       if (isEdit) {
@@ -181,7 +181,7 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
             )}
           </Form.Group>
 
-          <Form.Group className="mb-4" controlId="formTrangThai">
+          {/* <Form.Group className="mb-4" controlId="formTrangThai">
             <Form.Label className="fw-bold">
               <i className="bi bi-toggle-on me-2"></i> Trạng thái
             </Form.Label>
@@ -193,7 +193,7 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
               className="shadow-sm bg-light"
               style={{ borderRadius: "8px" }}
             />
-          </Form.Group>
+          </Form.Group> */}
         </Modal.Body>
         <Modal.Footer>
           <Button

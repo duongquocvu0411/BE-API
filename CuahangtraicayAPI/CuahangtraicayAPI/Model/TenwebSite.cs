@@ -11,6 +11,6 @@ namespace CuahangtraicayAPI.Model
         public string Tieu_de {  get; set; }
         public string Favicon { get; set; }
         public byte TrangThai { get; set; } = 0;
-        public string UpdatedBy { get; set; }
+      
     }
 }

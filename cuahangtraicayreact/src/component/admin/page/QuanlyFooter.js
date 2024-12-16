@@ -117,7 +117,7 @@ const QuanlyFooter = () => {
   const handleDongModalXoa = () => {
     setFooterXoa(null); // Reset thông tin Footer cần xóa
     setShowModalXoa(false); // Đóng modal xóa
-  }; 
+  };
 
   const handleXacNhanXoa = async () => {
     if (FooterXoa) {
@@ -126,6 +126,38 @@ const QuanlyFooter = () => {
       setShowModalXoa(false); // Đóng modal xóa
     }
   };
+  
+  const suDungTenWebsite = async (id) => {
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+  
+    try {
+      // Gọi API với headers đặt đúng chỗ
+      await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/Footer/setDiaChiHien/${id}`,
+        {}, // Body rỗng, vì API  không yêu cầu body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Đặt headers đúng vị trí
+          },
+        }
+      );
+  
+      toast.success("Footers đã được đánh dấu là đang sử dụng", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+  
+      layDanhSachFooter();
+    } catch (error) {
+      console.error("Có lỗi khi sử dụng tên Footers", error);
+      toast.error("Có lỗi khi sử dụng tên Footers", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  };
+  
 
   return (
     <div id="wrapper">
@@ -201,7 +233,7 @@ const QuanlyFooter = () => {
                         <th scope="col">STT</th>
                         <th scope="col">Nội dung</th>
                         <th scope="col">Trạng thái</th>
-                         <th scope="col">Đã cập nhật Bởi</th>
+                        {/* <th scope="col">Đã cập nhật Bởi</th> */}
                         <th scope="col">Chức năng</th>
                       </tr>
                     </thead>
@@ -211,7 +243,7 @@ const QuanlyFooter = () => {
                           <td>{viTriFooterDau + index + 1}</td>
                           <td> <span dangerouslySetInnerHTML={{ __html: Footer.noiDungFooter.slice(0, 50) + '...' }} /></td>
                           <td>{Footer.trangThai === 1 ? "Hiển thị" : "Ẩn"}</td>
-                          <td>{Footer.updatedBy}</td>
+                          {/* <td>{Footer.updatedBy}</td> */}
                           <td>
                             <Button
                               variant="primary me-2"
@@ -227,6 +259,14 @@ const QuanlyFooter = () => {
                             >
                               <i className="fas fa-trash"></i>
                             </Button>
+                            {Footer.trangThai !== 1 && (
+                              <Button
+                                variant="success"
+                                onClick={() => suDungTenWebsite(Footer.id)}
+                              >
+                                Sử dụng
+                              </Button>
+                            )}
                           </td>
                         </tr>
                       ))}

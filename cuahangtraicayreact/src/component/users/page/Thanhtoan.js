@@ -4,7 +4,8 @@ import HeaderUsers from "../HeaderUsers";
 import { CartContext } from "./CartContext";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
-
+import Aos from "aos";
+ 
 const Thanhtoan = () => {
   const [thanhpho, setThanhpho] = useState("");
   const { giohang, xoagiohangthanhtoanthanhcong } = useContext(CartContext);
@@ -26,6 +27,11 @@ const Thanhtoan = () => {
 
   useEffect(() => {
     fetchCities();
+     Aos.init({
+          duration: 1000, // Thời gian hiệu ứng
+          easing: 'ease-in-out', // Hiệu ứng easing
+          once: true, // Hiệu ứng chỉ xuất hiện 1 lần
+        });
   }, []);
 
   const handleInput = (e) => {
@@ -189,7 +195,7 @@ const Thanhtoan = () => {
         </div>
 
         {/* Checkout Form */}
-        <div className="container py-5">
+        <div className="container py-5 " data-aos="fade-up">
           <h1 className="mb-5 text-center fw-bold text-success">Chi tiết thanh toán</h1>
           <form onSubmit={handlePlaceOrder}>
             <div className="row g-5">

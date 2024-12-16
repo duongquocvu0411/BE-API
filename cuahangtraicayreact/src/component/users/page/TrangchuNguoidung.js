@@ -290,12 +290,12 @@ const TrangchuNguoidung = () => {
         <div className="container py-5">
           <div className="tab-class text-center">
             {/* Tiêu đề chính */}
-            <div class="row mb-4 align-items-center">
-              <div class="col-12 text-center">
-                <h1 class="text-uppercase fw-bold glowing-text">
+            <div classname="row mb-4 align-items-center">
+              <div classname="col-12 text-center">
+                <h1 classname="text-uppercase fw-bold glowing-text">
                   Sản phẩm của chúng tôi
                 </h1>
-                <p class="text-muted">
+                <p classname="text-muted">
                   Khám phá các sản phẩm chất lượng với mức giá phù hợp.
                 </p>
               </div>

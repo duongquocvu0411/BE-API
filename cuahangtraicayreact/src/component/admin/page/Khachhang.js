@@ -126,17 +126,32 @@ const Khachhangs = () => {
 
   const hienThiChiTiet = async (id) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/khachhang/${id}`);
+      // Lấy token từ localStorage hoặc sessionStorage
+      const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+      const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+  
+      // Gửi request với token
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/khachhang/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Đính kèm token vào header
+        },
+      });
+  
+      // Cập nhật dữ liệu khách hàng và hiển thị modal
       setChiTietKhachHang(response.data);
       setHienThiModal(true);
     } catch (error) {
-      console.log('có lỗi khi lấy chi tiết khách hàng', error);
-      toast.error(' có lỗi khi lấy chi tiết khách hàng', {
-        position: 'top-right',
-        autoClose: 300
-      });
+      console.error('Có lỗi khi lấy chi tiết khách hàng:', error);
+  
+     
+        toast.error('Có lỗi khi lấy chi tiết khách hàng!', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      
     }
   };
+  
   const capNhatTrangThai = async (billId, trangthaimoi) => {
     try {
       const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
