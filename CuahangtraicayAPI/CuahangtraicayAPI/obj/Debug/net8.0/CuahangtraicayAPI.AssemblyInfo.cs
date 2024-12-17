@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CuahangtraicayAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d935984f30504dfe2d08531b6a3e1354c8c3960")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c6621b77bacb317db996fb410325abc586feaad8")]
 [assembly: System.Reflection.AssemblyProductAttribute("CuahangtraicayAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CuahangtraicayAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
