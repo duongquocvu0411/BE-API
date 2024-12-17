@@ -290,12 +290,12 @@ const TrangchuNguoidung = () => {
         <div className="container py-5">
           <div className="tab-class text-center">
             {/* Tiêu đề chính */}
-            <div classname="row mb-4 align-items-center">
-              <div classname="col-12 text-center">
-                <h1 classname="text-uppercase fw-bold glowing-text">
+            <div className="row mb-4 align-items-center">
+              <div className="col-12 text-center">
+                <h1 className="text-uppercase fw-bold glowing-text">
                   Sản phẩm của chúng tôi
                 </h1>
-                <p classname="text-muted">
+                <p className="text-muted">
                   Khám phá các sản phẩm chất lượng với mức giá phù hợp.
                 </p>
               </div>
@@ -303,7 +303,7 @@ const TrangchuNguoidung = () => {
  
 
             {/* Bộ lọc sản phẩm */}
-            <div className="row g-4 align-items-center " data-aos="fade-up">
+            <div className="row g-4 align-items-center " >
               <div className="col-lg-6 text-start">
                 <h2 className="text-uppercase fw-bold text-success">
                   Sản phẩm không sale
