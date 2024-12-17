@@ -466,6 +466,26 @@
             <param name="id">ID của mục menu footer cần xóa.</param>
             <returns>Trạng thái thành công hoặc lỗi nếu không tìm thấy mục menu footer.</returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.GetPhanHoiByDanhGiaId(System.Int32)">
+            <summary>
+            Lấy phản hồi theo đánh giá ID
+            </summary>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.CreatePhanHoi(CuahangtraicayAPI.Model.PhanHoiDanhGia)">
+            <summary>
+            Tạo mới phản hồi cho đánh giá
+            </summary>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.UpdatePhanHoi(System.Int32,CuahangtraicayAPI.Model.PhanHoiDanhGia)">
+            <summary>
+            Cập nhật phản hồi
+            </summary>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.DeletePhanHoi(System.Int32)">
+            <summary>
+            Xóa phản hồi theo ID
+            </summary>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.SanphamController.GetSanphams">
             <summary>
             Lấy danh sách sản phẩm

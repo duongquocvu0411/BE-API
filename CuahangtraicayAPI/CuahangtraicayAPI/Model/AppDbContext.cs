@@ -37,13 +37,22 @@ public class AppDbContext : DbContext
     public DbSet<MenuFooter> MenuFooters { get; set; }
     public DbSet<Footer> Footers { get; set; }
     public DbSet<TenwebSite> TenwebSites { get; set; }
+    public DbSet<PhanHoiDanhGia> PhanHoiDanhGias { get; set; }
+
 
 
 
     // Cấu hình mối quan hệ và chuyển đổi dữ liệu
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      
+        // Cấu hình khóa ngoại cho PhanHoiDanhGia
+        modelBuilder.Entity<PhanHoiDanhGia>()
+            .HasOne(p => p.DanhGia)
+            .WithOne(d => d.PhanHoi) // Mối quan hệ 1-1 giữa đánh giá và phản hồi
+            .HasForeignKey<PhanHoiDanhGia>(p => p.danhgia_id)
+            .OnDelete(DeleteBehavior.Cascade); // Xóa phản hồi nếu đánh giá bị xóa
+
+
         // Quan hệ 1-nhiều giữa Banners và BannerImages
         modelBuilder.Entity<BannerImages>()
             .HasOne(bi => bi.Banner) // BannerImages có một Banner

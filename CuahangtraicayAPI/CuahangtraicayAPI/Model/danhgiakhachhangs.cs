@@ -32,5 +32,8 @@ namespace CuahangtraicayAPI.Model
 
         [ForeignKey("sanphams_id")]
         public Sanpham? Sanpham { get; set; } // Navigation property for `Sanpham`
+        public virtual PhanHoiDanhGia? PhanHoi { get; set; } // Navigation property cho phản hồi
+
     }
+
 }

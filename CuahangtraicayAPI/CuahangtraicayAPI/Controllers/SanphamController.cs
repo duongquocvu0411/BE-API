@@ -79,7 +79,8 @@ namespace CuahangtraicayAPI.Controllers
                 .Include(s => s.ChiTiet)
                 .Include(s => s.Images)
                 .Include(s => s.Danhmucsanpham)
-                .Include(s => s.Danhgiakhachhangs)
+                .Include(s => s.Danhgiakhachhangs) // Include đánh giá khách hàng
+                    .ThenInclude(dg => dg.PhanHoi) // Include phản hồi của từng đánh giá
                 .Include(s => s.SanphamSales)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
@@ -97,9 +98,6 @@ namespace CuahangtraicayAPI.Controllers
 
             return Ok(sanpham);
         }
-
-
-
 
 
         /// <summary>

@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\image\**" />
+    <Content Remove="wwwroot\image\**" />
+    <EmbeddedResource Remove="wwwroot\image\**" />
+    <None Remove="wwwroot\image\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
@@ -29,7 +36,6 @@
     <Folder Include="wwwroot\footer\" />
     <Folder Include="wwwroot\icon\" />
     <Folder Include="wwwroot\menuFooter\" />
-    <Folder Include="wwwroot\image\" />
     <Folder Include="wwwroot\sanpham\" />
     <Folder Include="wwwroot\upload\" />
     <Folder Include="wwwroot\tenwebsite\" />

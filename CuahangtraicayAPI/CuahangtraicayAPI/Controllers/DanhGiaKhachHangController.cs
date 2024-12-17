@@ -31,6 +31,7 @@ namespace CuahangtraicayAPI.Controllers
                 var danhgias = await _context.DanhGiaKhachHang
                     .Where(dg => dg.sanphams_id == sanphams_id.Value)
                     .Include(dg => dg.Sanpham)
+                    .Include(dg => dg.PhanHoi)
                     .ToListAsync();
 
                 if (!danhgias.Any())
@@ -58,7 +59,7 @@ namespace CuahangtraicayAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DanhGiaKhachHang>> GetDanhGiaKhachHangById(int id)
         {
-            var danhgia = await _context.DanhGiaKhachHang.Include(dg => dg.Sanpham).FirstOrDefaultAsync(dg => dg.Id == id);
+            var danhgia = await _context.DanhGiaKhachHang.Include(dg => dg.Sanpham) .Include(dg=> dg.PhanHoi).FirstOrDefaultAsync(dg => dg.Id == id);
 
             if (danhgia == null)
                 return NotFound(new { message = "Đánh giá không tồn tại" });

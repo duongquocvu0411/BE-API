@@ -75,6 +75,7 @@ const CuahangChitiet = () => {
       tieude: tieude,
       so_sao: soSao,
       noi_dung: noiDung,
+
     };
 
     try {
@@ -85,22 +86,30 @@ const CuahangChitiet = () => {
       });
 
       if (response.ok) {
-        toast.success("Đánh giá của bạn đã được gửi!", { position: "top-right", autoClose: 3000 });
+        toast.success("Đánh giá của bạn đã được gửi!", { position: "top-right", autoClose: 2000 });
+
+        // Cập nhật danh sách đánh giá trực tiếp mà không reload
+        setSanPham((prevSanPham) => ({
+          ...prevSanPham,
+          danhgiakhachhangs: [...prevSanPham.danhgiakhachhangs, danhGiaMoi],
+        }));
+
+        // Đóng modal và reset state
         setShowModal(false);
         setHoTen("");
         setTieude("");
         setNoiDung("");
         setSoSao(0);
-
-        // Refetch the product details including the updated reviews
-        layThongTinSanPham();
       } else {
         toast.warning("Có lỗi xảy ra, vui lòng thử lại!", { position: "top-right", autoClose: 3000 });
       }
     } catch (error) {
       console.error("Lỗi khi gửi đánh giá:", error);
+      toast.error("Đã có lỗi xảy ra khi gửi đánh giá!");
     }
   };
+
+
   if (dangtai) {
     return (
       <div className="text-center mt-5">
@@ -136,28 +145,28 @@ const CuahangChitiet = () => {
 
         {/* Hiển thị thông tin sản phẩm */}
         <div className="container-fluid page-header py-5">
-        <div className="text-center">
-    <h1 className="display-4 fw-bold text-animation">
-      <span className="animated-letter">C</span>
-      <span className="animated-letter">h</span>
-      <span className="animated-letter">i</span>
-      &nbsp;
-      <span className="animated-letter">T</span>
-      <span className="animated-letter">i</span>
-      <span className="animated-letter">ế</span>
-      <span className="animated-letter">t</span>
-      &nbsp;
-      <span className="animated-letter">S</span>
-      <span className="animated-letter">ả</span>
-      <span className="animated-letter">n</span>
-      &nbsp;
-      <span className="animated-letter">P</span>
-      <span className="animated-letter">h</span>
-      <span className="animated-letter">ẩ</span>
-      <span className="animated-letter">m</span>
-    </h1>
-   
-  </div>
+          <div className="text-center">
+            <h1 className="display-4 fw-bold text-animation">
+              <span className="animated-letter">C</span>
+              <span className="animated-letter">h</span>
+              <span className="animated-letter">i</span>
+              &nbsp;
+              <span className="animated-letter">T</span>
+              <span className="animated-letter">i</span>
+              <span className="animated-letter">ế</span>
+              <span className="animated-letter">t</span>
+              &nbsp;
+              <span className="animated-letter">S</span>
+              <span className="animated-letter">ả</span>
+              <span className="animated-letter">n</span>
+              &nbsp;
+              <span className="animated-letter">P</span>
+              <span className="animated-letter">h</span>
+              <span className="animated-letter">ẩ</span>
+              <span className="animated-letter">m</span>
+            </h1>
+
+          </div>
         </div>
 
         <div className="container-fluid py-5 mt-5">
@@ -275,59 +284,51 @@ const CuahangChitiet = () => {
                 <h4 className="fw-bold text-primary mb-4">
                   <i className="fa fa-info-circle me-2"></i>Chi Tiết Sản Phẩm
                 </h4>
+
                 {chiTiet && Object.values(chiTiet).some((value) => value) ? (
-                  <div className="row g-3">
-                    {/* Mỗi chi tiết được hiển thị dưới dạng card */}
+                  <div className="row g-4">
+                    {/* Mô tả chi tiết sản phẩm */}
                     {[
                       { label: "Mô tả chung", value: chiTiet.mo_ta_chung },
-                      // { label: "Hình dáng", value: chiTiet.hinh_dang },
-                      // { label: "Công dụng", value: chiTiet.cong_dung },
-                      // { label: "Xuất xứ", value: chiTiet.xuat_xu },
-                      // { label: "Khối lượng", value: chiTiet.khoi_luong },
-                      // { label: "Bảo quản", value: chiTiet.bao_quan },
-                      // { label: "Thành phần dinh dưỡng", value: chiTiet.thanh_phan_dinh_duong },
-                      // {
-                      //   label: "Ngày thu hoạch",
-                      //   value: chiTiet.ngay_thu_hoach
-                      //     ? new Date(chiTiet.ngay_thu_hoach).toLocaleDateString("vi-VN")
-                      //     : null,
-                      // },
-                      // { label: "Hương vị", value: chiTiet.huong_vi },
-                      // { label: "Nồng độ đường", value: chiTiet.nong_do_duong },
                     ].map((item, index) => (
-                      <div className="col-md-6" key={index}>
+                      <div className="col-12" key={index}>
                         <div
-                          className="border rounded p-3 shadow-sm bg-white"
+                          className="border rounded-3 p-4 bg-white shadow-sm d-flex flex-column align-items-start"
                           style={{
-                            transition: "transform 0.3s ease",
+                            transition: "transform 0.3s ease, box-shadow 0.3s ease",
                           }}
-                          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-                          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "scale(1.03)";
+                            e.currentTarget.style.boxShadow = "0 10px 20px rgba(0, 0, 0, 0.2)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "scale(1)";
+                            e.currentTarget.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.1)";
+                          }}
                         >
-                          {/* <h6 className="fw-bold text-secondary mb-1">{item.label}:</h6>
-                          <p className="mb-0 text-dark">
-                            {item.value || <span className="text-muted">Không có thông tin</span>}
-                          </p> */}
-                             <h6 className="fw-bold text-secondary mb-1">{item.label}:</h6>
-                          <p
-                            className="mb-0 text-dark"
+                          <h5 className="fw-bold text-secondary mb-3">
+                            <i className="fa fa-file-alt me-2"></i>{item.label}
+                          </h5>
+                          <div
+                            className="text-dark"
+                            style={{ lineHeight: "1.8", fontSize: "1.1rem" }}
                             dangerouslySetInnerHTML={{
                               __html: item.value || "<span class='text-muted'>Không có thông tin</span>",
                             }}
-                          ></p>
+                          />
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted text-center">
-                    <i className="fa fa-exclamation-circle me-2"></i>Không có chi tiết sản phẩm.
-                  </p>
+                  <div className="text-center">
+                    <p className="text-muted">
+                      <i className="fa fa-exclamation-circle me-2"></i>Không có chi tiết sản phẩm.
+                    </p>
+                  </div>
                 )}
               </div>
             )}
-
-
 
             {/* Hiển thị bài viết */}
             {tab === "baiViet" && (
@@ -361,8 +362,6 @@ const CuahangChitiet = () => {
               </div>
             )}
 
-
-            {/* Hiển thị danh sách đánh giá */}
             {/* Hiển thị danh sách đánh giá */}
             {tab === "danhGia" && (
               <div>
@@ -430,7 +429,24 @@ const CuahangChitiet = () => {
                         <p className="text-secondary small mb-0">
                           Ngày tạo: <b>{new Date(dg.created_at).toLocaleDateString("vi-VN")}</b>
                         </p>
+                                {/* hiển thị phần phản hồi */}
+                        {dg.phanHoi && dg.phanHoi.noi_dung ? (
+                          <div className="mt-3 p-3 bg-light border rounded">
+                            <h6 className="text-success mb-1">Phản hồi từ Admin:</h6>
+                            <p className="mb-1">{dg.phanHoi.noi_dung}</p>
+                            <small className="text-muted">
+                              Cập nhật bởi: <b>{dg.phanHoi.updatedBy}</b> lúc{" "}
+                              <b>{new Date(dg.phanHoi.updated_at).toLocaleString("vi-VN")}</b>
+                            </small>
+                          </div>
+                        ) : (
+                          <div className="mt-3 p-3 bg-light border rounded text-muted">
+                            <h6 className="mb-1">Phản hồi từ Admin:</h6>
+                            <p className="mb-0">Chưa có phản hồi từ Admin</p>
+                          </div>
+                        )}
                       </div>
+
                     ))}
                   </div>
                 ) : (
