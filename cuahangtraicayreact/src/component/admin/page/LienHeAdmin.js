@@ -13,7 +13,7 @@ const LienHeAdmin = () => {
   const [danhSachLienHe, setDanhSachLienHe] = useState([]);
   const [danhSachLienHeLoc, setDanhSachLienHeLoc] = useState([]);
   const [trangHienTai, setTrangHienTai] = useState(1);
-  const soPhanTuMotTrang = 4;
+  const soPhanTuMotTrang = 5;
   const [hienThiModal, setHienThiModal] = useState(false);
   const [noiDungChiTiet, setNoiDungChiTiet] = useState('');
   const [ngayLoc, setNgayLoc] = useState('');
@@ -175,6 +175,22 @@ const LienHeAdmin = () => {
                   </table>
                 )}
               </div>
+              <div className="card-footer clearfix">
+                  {/* Phân trang */}
+                  <ul className="pagination pagination-sm m-0 float-right">
+                    <li className={`page-item ${trangHienTai === 1 ? 'disabled' : ''}`}>
+                      <button className="page-link" onClick={() => thayDoiTrang(trangHienTai > 1 ? trangHienTai - 1 : 1)}>«</button>
+                    </li>
+                    {[...Array(tongSoTrang)].map((_, i) => (
+                      <li key={i + 1} className={`page-item ${trangHienTai === i + 1 ? 'active' : ''}`}>
+                        <button className="page-link" onClick={() => thayDoiTrang(i + 1)}>{i + 1}</button>
+                      </li>
+                    ))}
+                    <li className={`page-item ${trangHienTai === tongSoTrang ? 'disabled' : ''}`}>
+                      <button className="page-link" onClick={() => thayDoiTrang(trangHienTai < tongSoTrang ? trangHienTai + 1 : tongSoTrang)}>»</button>
+                    </li>
+                  </ul>
+                </div>
             </div>
           </div>
         </div>

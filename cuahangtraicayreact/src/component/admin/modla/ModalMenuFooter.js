@@ -67,7 +67,9 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
   };
   const handleChangeNoiDung = (event, editor) => {
     const data = editor.getData();
-    setNoidung(data);
+    if (data !== undefined) {
+      setNoidung(data);
+    }
   };
 
   // Đặt lại form
@@ -120,7 +122,7 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
               </Form.Label>
               <CKEditor
                 editor={ClassicEditor}
-                data={noidung}
+                data={noidung || ""}
                 config={{
                   ckfinder: {
                     uploadUrl: `${process.env.REACT_APP_BASEURL}/api/Menufooter/upload-image`,
