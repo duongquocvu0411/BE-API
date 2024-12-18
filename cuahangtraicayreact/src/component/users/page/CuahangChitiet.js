@@ -26,9 +26,10 @@ const CuahangChitiet = () => {
   useEffect(() => {
 
     layThongTinSanPham();
-    Aos.init({ duration: 1000,
+    Aos.init({
+      duration: 1000,
       easing: 'ease-in-out'
-     });
+    });
   }, [id]);
 
   // Lấy thông tin sản phẩm và chi tiết
@@ -148,7 +149,7 @@ const CuahangChitiet = () => {
 
         {/* Hiển thị thông tin sản phẩm */}
         <div className="container-fluid page-header py-5">
-          <div className="text-center">
+          <div className="text-center py-5">
             <h1 className="display-4 fw-bold text-animation">
               <span className="animated-letter">C</span>
               <span className="animated-letter">h</span>
@@ -172,7 +173,7 @@ const CuahangChitiet = () => {
           </div>
         </div>
 
-        <div className="container-fluid py-5 mt-5"  data-aos="fade-up">
+        <div className="container-fluid py-5 mt-5" data-aos="fade-up">
           <div className="container py-5">
             <div className="row g-4 mb-5">
               <div className="col-lg-8 col-xl-9">
@@ -283,7 +284,7 @@ const CuahangChitiet = () => {
 
             {/* Hiển thị chi tiết sản phẩm */}
             {tab === "chiTiet" && (
-              <div className="container border p-4 rounded shadow-sm bg-light"  data-aos="fade-up">
+              <div className="container border p-4 rounded shadow-sm bg-light" data-aos="fade-up">
                 <h4 className="fw-bold text-primary mb-4">
                   <i className="fa fa-info-circle me-2"></i>Chi Tiết Sản Phẩm
                 </h4>
@@ -292,7 +293,7 @@ const CuahangChitiet = () => {
                   <div className="row g-4">
                     {/* Mô tả chi tiết sản phẩm */}
                     {[
-                      { label: "Mô tả chung", value: chiTiet.mo_ta_chung },
+                      { label: "Nội dung ", value: chiTiet.mo_ta_chung },
                     ].map((item, index) => (
                       <div className="col-12" key={index}>
                         <div
@@ -309,9 +310,9 @@ const CuahangChitiet = () => {
                             e.currentTarget.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.1)";
                           }}
                         >
-                          <h5 className="fw-bold text-secondary mb-3">
+                          {/* <h5 className="fw-bold text-secondary mb-3">
                             <i className="fa fa-file-alt me-2"></i>{item.label}
-                          </h5>
+                          </h5> */}
                           <div
                             className="text-dark"
                             style={{ lineHeight: "1.8", fontSize: "1.1rem" }}
@@ -335,7 +336,7 @@ const CuahangChitiet = () => {
 
             {/* Hiển thị bài viết */}
             {tab === "baiViet" && (
-              <div className="container border p-4 rounded shadow-sm bg-light"  data-aos="fade-up">
+              <div className="container border p-4 rounded shadow-sm bg-light" data-aos="fade-up">
                 <h4 className="fw-bold mb-3 text-primary">
                   <i className="fa fa-file-alt me-2"></i> Bài Viết Đánh Giá
                 </h4>
@@ -393,7 +394,7 @@ const CuahangChitiet = () => {
 
                 {/* Phần hiển thị danh sách đánh giá */}
                 {sanPham.danhgiakhachhangs && sanPham.danhgiakhachhangs.length > 0 ? (
-                  <div className="container border p-4 rounded mt-4 bg-light shadow-sm"  data-aos="fade-up">
+                  <div className="container border p-4 rounded mt-4 bg-light shadow-sm" data-aos="fade-up">
                     <h4 className="fw-bold text-success mb-4">Đánh Giá Sản Phẩm</h4>
                     {sanPham.danhgiakhachhangs.map((dg, index) => (
                       <div
@@ -432,19 +433,19 @@ const CuahangChitiet = () => {
                         <p className="text-secondary small mb-0">
                           Ngày tạo: <b>{new Date(dg.created_at).toLocaleDateString("vi-VN")}</b>
                         </p>
-                                {/* hiển thị phần phản hồi */}
+                        {/* hiển thị phần phản hồi */}
                         {dg.phanHoi && dg.phanHoi.noi_dung ? (
                           <div className="mt-3 p-3 bg-light border rounded">
-                            <h6 className="text-success mb-1">Phản hồi từ Admin:</h6>
+                            <h6 className="text-success mb-1">Phản hồi từ Admin: {dg.phanHoi.updatedBy}</h6>
                             <p className="mb-1">{dg.phanHoi.noi_dung}</p>
                             <small className="text-muted">
-                              Cập nhật bởi: <b>{dg.phanHoi.updatedBy}</b> lúc{" "}
-                              <b>{new Date(dg.phanHoi.updated_at).toLocaleString("vi-VN")}</b>
+                              Cập nhật lúc: <b></b> {" "}
+                              <b>{new Date(dg.phanHoi.updated_at) .toLocaleString("vi-VN")}</b>
                             </small>
                           </div>
                         ) : (
                           <div className="mt-3 p-3 bg-light border rounded text-muted">
-                            <h6 className="mb-1">Phản hồi từ Admin:</h6>
+                            <h6 className="mb-1">Phản hồi từ Admin: </h6>
                             <p className="mb-0">Chưa có phản hồi từ Admin</p>
                           </div>
                         )}

@@ -471,12 +471,12 @@
             Lấy phản hồi theo đánh giá ID
             </summary>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.CreatePhanHoi(CuahangtraicayAPI.Model.PhanHoiDanhGia)">
+        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.CreatePhanHoi(CuahangtraicayAPI.DTO.PhanhoiDTO.PhanhoiPOSTDTO)">
             <summary>
             Tạo mới phản hồi cho đánh giá
             </summary>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.UpdatePhanHoi(System.Int32,CuahangtraicayAPI.Model.PhanHoiDanhGia)">
+        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.UpdatePhanHoi(System.Int32,CuahangtraicayAPI.DTO.PhanhoiDTO.PhanhoiPUTDTO)">
             <summary>
             Cập nhật phản hồi
             </summary>

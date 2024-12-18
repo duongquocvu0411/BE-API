@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -60,20 +61,21 @@ namespace CuahangtraicayAPI.Controllers
         /// Tạo mới phản hồi cho đánh giá
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult<PhanHoiDanhGia>> CreatePhanHoi([FromBody] PhanHoiDanhGia phanhoi)
+        public async Task<ActionResult<PhanHoiDanhGia>> CreatePhanHoi([FromBody] PhanhoiDTO.PhanhoiPOSTDTO dto)
         {
             // Kiểm tra đánh giá tồn tại không
-            var danhgia = await _context.DanhGiaKhachHang.FindAsync(phanhoi.danhgia_id);
+            var danhgia = await _context.DanhGiaKhachHang.FindAsync(dto.danhgia_id);
             if (danhgia == null)
                 return BadRequest(new { message = "Đánh giá không tồn tại" });
+
 
             // Thêm phản hồi mới
             var newPhanHoi = new PhanHoiDanhGia
             {
-                danhgia_id = phanhoi.danhgia_id,
-                noi_dung = phanhoi.noi_dung,
-                CreatedBy = phanhoi.CreatedBy,
-                UpdatedBy = phanhoi.UpdatedBy
+                danhgia_id = dto.danhgia_id,
+                noi_dung = dto.noi_dung,
+                CreatedBy = dto.CreatedBy,
+                UpdatedBy = dto.UpdatedBy
             };
 
             _context.PhanHoiDanhGias.Add(newPhanHoi);
@@ -87,17 +89,14 @@ namespace CuahangtraicayAPI.Controllers
         /// Cập nhật phản hồi
         /// </summary>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePhanHoi(int id, PhanHoiDanhGia phanhoi)
+        public async Task<IActionResult> UpdatePhanHoi(int id, PhanhoiDTO.PhanhoiPUTDTO dto)
         {
-            if (id != phanhoi.Id)
-                return BadRequest(new { message = "ID không khớp" });
-
             var existingPhanHoi = await _context.PhanHoiDanhGias.FindAsync(id);
             if (existingPhanHoi == null)
                 return NotFound(new { message = "Phản hồi không tồn tại" });
 
-            existingPhanHoi.noi_dung = phanhoi.noi_dung;
-            existingPhanHoi.UpdatedBy = phanhoi.UpdatedBy;
+            existingPhanHoi.noi_dung = dto.noi_dung;
+            existingPhanHoi.UpdatedBy = dto.UpdatedBy;
 
             await _context.SaveChangesAsync();
             return Ok(new { message = "Phản hồi đã được cập nhật thành công" });

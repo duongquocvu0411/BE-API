@@ -1663,8 +1663,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "phanhoi",
-        "Type": "CuahangtraicayAPI.Model.PhanHoiDanhGia",
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.PhanhoiDTO\u002BPhanhoiPOSTDTO",
         "IsRequired": true
       }
     ],
@@ -1710,8 +1710,8 @@
         "IsRequired": true
       },
       {
-        "Name": "phanhoi",
-        "Type": "CuahangtraicayAPI.Model.PhanHoiDanhGia",
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.PhanhoiDTO\u002BPhanhoiPUTDTO",
         "IsRequired": true
       }
     ],
