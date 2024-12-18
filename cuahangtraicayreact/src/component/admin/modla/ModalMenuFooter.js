@@ -65,12 +65,17 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
     }
 
   };
-  const handleChangeNoiDung = (event, editor) => {
+  // const handleChangeNoiDung = (event, editor) => {
+  //   const data = editor.getData();
+  //   if (data !== undefined) {
+  //     setNoidung(data);
+  //   }
+  // };
+
+  const handleChangeNoiDung = (e, editor) =>{
     const data = editor.getData();
-    if (data !== undefined) {
-      setNoidung(data);
-    }
-  };
+    setNoidung(data);
+  }
 
   // Đặt lại form
   const ResetForm = () => {

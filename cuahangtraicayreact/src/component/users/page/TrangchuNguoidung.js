@@ -41,7 +41,9 @@ const TrangchuNguoidung = () => {
 
   // Gọi API lấy danh mục và sản phẩm
   useEffect(() => {
-    Aos.init({ duration: 1000 });
+    Aos.init({ duration: 1000,
+      easing: 'ease-in-out'
+     });
     laySanPham();
     layDanhMuc();
     layDactrungs()
@@ -226,7 +228,7 @@ const TrangchuNguoidung = () => {
 
 
       {/* Hero End */}
-      {/* Featurs Section Start */}
+      {/* Đặc trưng */}
       <div className="container-fluid features-section py-5 bg-light" data-aos="fade-up">
         <div className="container py-5">
           <div className="text-center mb-5">
@@ -257,8 +259,8 @@ const TrangchuNguoidung = () => {
                         alt={item.tieude}
                         className="img-fluid"
                         style={{
-                          width: "60px",
-                          height: "60px",
+                          // width: "60px",
+                          // height: "60px",
                           objectFit: "cover",
                           borderRadius: "50%",
                         }}

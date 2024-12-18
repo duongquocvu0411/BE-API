@@ -267,15 +267,7 @@ const ModlaSanpham = ({
   const resetChiTiet = () => {
     setChiTiet({
       moTaChung: "",
-      // hinhDang: "",
-      // congDung: "",
-      // xuatXu: "",
-      // khoiLuong: "",
-      // baoQuan: "",
-      // thanhPhanDinhDuong: "",
-      // ngayThuHoach: "",
-      // huongVi: "",
-      // nongDoDuong: "",
+   
       baiViet: "",
     });
   };
@@ -341,7 +333,7 @@ const ModlaSanpham = ({
                 <option value="">Chọn trạng thái</option>
                 <option value="Còn hàng">Còn hàng</option>
                 <option value="Hết hàng">Hết hàng</option>
-              </Form.Control>
+              </Form.Control> 
             </Form.Group>
 
             {/* Giá */}

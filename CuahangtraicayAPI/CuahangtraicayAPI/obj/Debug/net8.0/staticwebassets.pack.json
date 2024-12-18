@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\24c0490b-ec4d-41bc-bfd8-5961d0756ad4.jpg",
+      "PackagePath": "staticwebassets\\banners\\24c0490b-ec4d-41bc-bfd8-5961d0756ad4.jpg"
+    },
+    {
       "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\52034344-c885-4934-acd1-215a2c18ee0f.jpg",
       "PackagePath": "staticwebassets\\banners\\52034344-c885-4934-acd1-215a2c18ee0f.jpg"
     },
@@ -245,6 +249,10 @@
       "PackagePath": "staticwebassets\\menuFooter\\638700524165567529_payment.png"
     },
     {
+      "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg",
+      "PackagePath": "staticwebassets\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg"
+    },
+    {
       "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\20b763fe-0958-4862-beea-1966251feb11.jpg",
       "PackagePath": "staticwebassets\\sanpham\\20b763fe-0958-4862-beea-1966251feb11.jpg"
     },
@@ -287,6 +295,10 @@
     {
       "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f4ca3b88-23c5-4cb4-b978-92b420eeb1ab.jpg",
       "PackagePath": "staticwebassets\\sanpham\\f4ca3b88-23c5-4cb4-b978-92b420eeb1ab.jpg"
+    },
+    {
+      "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f5a89b21-f243-4b7e-b17b-8ea49d1bd573.jpg",
+      "PackagePath": "staticwebassets\\sanpham\\f5a89b21-f243-4b7e-b17b-8ea49d1bd573.jpg"
     },
     {
       "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f63b6b95-904d-4c97-baa4-c2b9cfba6bf8.jpg",

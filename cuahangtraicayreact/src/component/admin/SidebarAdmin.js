@@ -54,14 +54,16 @@ const SiderbarAdmin = () => {
             <i className="fas fa-sign"></i> {/* Icon cửa hàng */}
             Tên cửa hàng
           </Link>
-          <Link className={`collapse-item ${vitriRoute.pathname === '/admin/dactrung' ? 'active' : ''}`} to="/admin/dactrung">
-            <i className="fas fa-cogs"></i> {/* Icon đặc trưng */}
-            Đặc trưng
-          </Link>
+          
           <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Banners' ? 'active' : ''}`} to="/admin/Banners">
             <i className="fas fa-images"></i> {/* Icon banners */}
             Banners
           </Link>
+          <Link className={`collapse-item ${vitriRoute.pathname === '/admin/dactrung' ? 'active' : ''}`} to="/admin/dactrung">
+            <i className="fas fa-cogs"></i> {/* Icon đặc trưng */}
+            Đặc trưng
+          </Link>
+
           <Link className={`collapse-item ${vitriRoute.pathname === '/admin/tenfooter' ? 'active' : ''}`} to="/admin/tenfooter">
             <i className="fas fa-columns"></i> {/* Icon footer */}
             Tên Footer

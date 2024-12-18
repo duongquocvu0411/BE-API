@@ -17,7 +17,7 @@ const Tracuu = () => {
     Aos.init({
       duration: 1000, // Thời gian hiệu ứng
       easing: 'ease-in-out', // Hiệu ứng easing
-      once: true, // Hiệu ứng chỉ xuất hiện 1 lần
+     
     });
   }, []);
 

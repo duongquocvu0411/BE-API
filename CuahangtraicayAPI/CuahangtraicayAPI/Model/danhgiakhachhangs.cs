@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using CuahangtraicayAPI.Model;
 
 namespace CuahangtraicayAPI.Model
@@ -31,6 +32,7 @@ namespace CuahangtraicayAPI.Model
         public string noi_dung { get; set; }
 
         [ForeignKey("sanphams_id")]
+        [JsonIgnore]
         public Sanpham? Sanpham { get; set; } // Navigation property for `Sanpham`
         public virtual PhanHoiDanhGia? PhanHoi { get; set; } // Navigation property cho phản hồi
 

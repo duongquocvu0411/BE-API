@@ -6,6 +6,7 @@ using CuahangtraicayAPI.Model;
 using static CuahangtraicayAPI.DTO.BannersDTO;
 using static CuahangtraicayAPI.DTO.TenwebSiteDTO;
 using System.Reflection;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -64,10 +65,13 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/Banners
         [HttpGet]
-       
         public async Task<ActionResult<IEnumerable<Bannerts>>> GetBanners()
         {
-            return await _context.Banners.Include(b => b.BannerImages).ToListAsync();
+            var banners = await _context.Banners
+                .Include(b => b.BannerImages)
+                .ToListAsync();
+
+            return banners; // Không cần xử lý thêm
         }
 
         /// <summary>
@@ -79,11 +83,19 @@ namespace CuahangtraicayAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Bannerts>> GetBanner(int id)
         {
-            var banner = await _context.Banners.Include(b => b.BannerImages).FirstOrDefaultAsync(b => b.Id == id);
+            var banner = await _context.Banners
+        .Include(b => b.BannerImages)
+        .FirstOrDefaultAsync(b => b.Id == id);
 
             if (banner == null)
             {
                 return NotFound();
+            }
+
+            // Loại bỏ trường `banner` trong `BannerImages`
+            foreach (var bannerImage in banner.BannerImages)
+            {
+                bannerImage.Banner = null; // Gán null cho trường `Banner`
             }
 
             return banner;

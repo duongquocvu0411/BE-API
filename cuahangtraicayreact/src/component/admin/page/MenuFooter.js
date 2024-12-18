@@ -17,7 +17,7 @@ const MenuFooter = () => {
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xác nhận xóa
   const [MenuFooterXoa, setMenuFooterXoa] = useState(null); // Lưu thông tin MenuFooter cần xóa
 
-  const MenuFootersMoiTrang = 4;
+  const MenuFootersMoiTrang = 4; 
 
   // Logic tìm kiếm MenuFooters
   const [timKiem, setTimKiem] = useState('');

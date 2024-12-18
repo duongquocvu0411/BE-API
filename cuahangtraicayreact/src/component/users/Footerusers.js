@@ -67,12 +67,12 @@ const Footerusers = () => {
         console.log("Lỗi khi lấy thông tin Footer active:", err);
       }
     };
-      Aos.init({
-          duration: 1000, // Thời gian hiệu ứng
-          easing: 'ease-in-out', // Hiệu ứng easing
-          once: true, // Hiệu ứng chỉ xuất hiện 1 lần
-        });
-     
+    Aos.init({
+      duration: 1000, // Thời gian hiệu ứng
+      easing: 'ease-in-out', // Hiệu ứng easing
+    
+    });
+
 
     fetchFooterActive();
     fetchTenFooter();
@@ -82,107 +82,100 @@ const Footerusers = () => {
 
   return (
     <>
-      {/* Footer Starts */}
-      <div className="container-fluid bg-dark text-white-50 footer pt-5 mt-5" data-aos="fade-up">
-        <div className="container py-5 " >
-          <div className="pb-4 mb-4" style={{ borderBottom: '1px solid rgba(226, 175, 24, 0.5)' }}>
-            <div className="row g-4">
-              <div className="col-lg-3">
-                <span className="title">
-                  <p className="text-primary mb-0 h1">{tenFooter.tieude || "Trái cây"}</p>
-                  <p className="text-secondary mb-0 h4 glowing-subtitle">{tenFooter.phude || "Sản phẩm tươi"}</p>
-                </span>
-              </div>
-              <div className="col-lg-3">
-                <div className="d-flex justify-content-end pt-3">
-                  {tenFooter.footerIMG.map((img, index) => (
-                    <Link
-                      key={index}
-                      className="btn btn-outline-secondary me-2 btn-md-square rounded-circle d-flex align-items-center justify-content-center"
-                      to="#"
-                      onClick={() => window.open(img.link, "_blank")}
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        overflow: "hidden",
-                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                        transition: "transform 0.3s ease",
-                      }}
-                      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-                    >
-                      <img
-                        src={`${process.env.REACT_APP_BASEURL}${img.imagePath}`}
-                        alt={`Social Icon ${index}`}
-                        style={{
-                          width: "200px",
-                          height: "55px",
-                          objectFit: "cover",
-                          borderRadius: "100%",
-                        }}
-                      />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row g-5">
-
-            {menuFooter.map((menu, index) => (
-              <div className="col-lg-3 col-md-6" key={index}>
-                <div className="footer-item">
-                  <h4 className="text-light mb-3 glowing-text-footer">{menu.tieu_de}</h4>
-                  <div dangerouslySetInnerHTML={{ __html: menu.noi_dung }} />
-
-                </div>
-              </div>
-            ))}
-
-            {/* <div className="col-lg-3 col-md-6">
-              <h4 className="text-light mb-3 glowing-text-footer">Liên hệ</h4>
-              <p>
-                Địa chỉ:
-                <Link
-                  to="#"
-                  onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(chiTietDiaChi.diachi)}`, '_blank')}
-                  className="text-decoration-none text-white-50"
-                >
-                  {chiTietDiaChi.diachi}
-                </Link>
-              </p>
-              <p>Email:
-                <Link to={`mailto:${chiTietDiaChi.email}`} className="text-decoration-none text-white-50">{chiTietDiaChi.email}</Link>
-              </p>
-              <p>Điện thoại:
-                <Link to={`tel:${chiTietDiaChi.sdt}`} className="text-decoration-none text-white-50">{chiTietDiaChi.sdt}</Link>
-              </p>
-              <p>Phương thức thanh toán</p>
-              <img src={`${process.env.PUBLIC_URL}/img/payment.png`} className="img-fluid" alt="Payment methods" />
-            </div> */}
-          </div>
-        </div>
+{/* Footer Starts */}
+<div
+  className="container-fluid footer bg-dark text-white-50 pt-5 mt-5"
+  data-aos="fade-up"
+  style={{
+    background: "linear-gradient(135deg, #222, #2c2c2c)",
+    boxShadow: "0 -4px 8px rgba(0, 0, 0, 0.5)",
+  }}
+>
+  <div className="container py-5">
+    {/* Header Section */}
+    <div className="row mb-4 pb-4 border-bottom border-secondary">
+      <div className="col-lg-6 text-center text-lg-start">
+        <h1 className="text-primary mb-0" style={{ fontSize: "2.5rem", fontWeight: "700" }}>
+          {tenFooter.tieude || "Trái cây"}
+        </h1>
+        <p className="text-secondary glowing-subtitle mb-0" style={{ fontSize: "1.2rem" }}>
+          {tenFooter.phude || "Sản phẩm tươi"}
+        </p>
       </div>
-
-      {/* Footer End */}
-      {/* Copyright Start */}
-      <div className="container-fluid bg-dark text-light py-4" style={{ background: "linear-gradient(90deg, rgba(33,37,41,1) 0%, rgba(52,58,64,1) 100%)" }}>
-  <div className="container d-flex justify-content-center align-items-center text-center">
-    <div className="row w-100">
-      <div className="col-12">
-        {footerActive.map((footer, index) => (
-          <div key={index} style={{ fontSize: "1rem", fontWeight: "400" }}>
-            <div dangerouslySetInnerHTML={{ __html: footer.noiDungFooter }} />
-          </div>
+      {/* Social Media Links */}
+      <div className="col-lg-6 text-center text-lg-end mt-3 mt-lg-0">
+        {tenFooter.footerIMG.map((img, index) => (
+          <Link
+            key={index}
+            to="#"
+            onClick={() => window.open(img.link, "_blank")}
+            className="mx-2"
+            style={{
+              display: "inline-block",
+              width: "50px",
+              height: "50px",
+              borderRadius: "50%",
+              overflow: "hidden",
+              transition: "transform 0.3s ease",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          >
+            <img
+              src={`${process.env.REACT_APP_BASEURL}${img.imagePath}`}
+              alt={`Social Icon ${index}`}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          </Link>
         ))}
       </div>
+    </div>
+
+    {/* Footer Content */}
+    <div className="row g-4">
+      {menuFooter.map((menu, index) => (
+        <div key={index} className="col-lg-3 col-md-6">
+          <div className="footer-item text-center text-md-start">
+            <h4 className="text-light mb-3 glowing-text-footer" style={{ fontWeight: "600" }}>
+              {menu.tieu_de}
+            </h4>
+            <div
+              className="text-white-50"
+              style={{
+                lineHeight: "1.8",
+                fontSize: "0.95rem",
+              }}
+              dangerouslySetInnerHTML={{ __html: menu.noi_dung }}
+            />
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 </div>
 
+{/* Copyright Section */}
+<div
+  className="container-fluid text-light py-3"
+  style={{
+    background: "linear-gradient(to right, #333, #444)",
+    textAlign: "center",
+    fontSize: "1rem",
+  }}
+  
+>
+  {footerActive.map((footer, index) => (
+    <div key={index}>
+      <div dangerouslySetInnerHTML={{ __html: footer.noiDungFooter }} />
+    </div>
+  ))}
+</div>
 
-
-      {/* Copyright End */}
     </>
   );
 }

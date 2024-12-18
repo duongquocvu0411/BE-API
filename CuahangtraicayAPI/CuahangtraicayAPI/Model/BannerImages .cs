@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 
 namespace CuahangtraicayAPI.Model
@@ -17,6 +18,7 @@ namespace CuahangtraicayAPI.Model
 
 
         [ForeignKey("BannerId")]
-       public Bannerts? Banner { get; set; }
+        [JsonIgnore]
+        public Bannerts? Banner { get; set; }
     }
 }

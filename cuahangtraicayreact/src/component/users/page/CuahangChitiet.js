@@ -7,6 +7,7 @@ import { Modal, Button, Form, Spinner } from "react-bootstrap"; // Sử dụng m
 import { toast, ToastContainer } from "react-toastify";
 import { Lightbox } from "react-modal-image"; // Sử dụng thư viện Lightbox để phóng to ảnh
 import Countdown from "react-countdown";
+import Aos from "aos";
 
 const CuahangChitiet = () => {
   const { id } = useParams(); // Lấy ID sản phẩm từ URL
@@ -25,7 +26,9 @@ const CuahangChitiet = () => {
   useEffect(() => {
 
     layThongTinSanPham();
-
+    Aos.init({ duration: 1000,
+      easing: 'ease-in-out'
+     });
   }, [id]);
 
   // Lấy thông tin sản phẩm và chi tiết
@@ -169,7 +172,7 @@ const CuahangChitiet = () => {
           </div>
         </div>
 
-        <div className="container-fluid py-5 mt-5">
+        <div className="container-fluid py-5 mt-5"  data-aos="fade-up">
           <div className="container py-5">
             <div className="row g-4 mb-5">
               <div className="col-lg-8 col-xl-9">
@@ -280,7 +283,7 @@ const CuahangChitiet = () => {
 
             {/* Hiển thị chi tiết sản phẩm */}
             {tab === "chiTiet" && (
-              <div className="container border p-4 rounded shadow-sm bg-light">
+              <div className="container border p-4 rounded shadow-sm bg-light"  data-aos="fade-up">
                 <h4 className="fw-bold text-primary mb-4">
                   <i className="fa fa-info-circle me-2"></i>Chi Tiết Sản Phẩm
                 </h4>
@@ -332,7 +335,7 @@ const CuahangChitiet = () => {
 
             {/* Hiển thị bài viết */}
             {tab === "baiViet" && (
-              <div className="container border p-4 rounded shadow-sm bg-light">
+              <div className="container border p-4 rounded shadow-sm bg-light"  data-aos="fade-up">
                 <h4 className="fw-bold mb-3 text-primary">
                   <i className="fa fa-file-alt me-2"></i> Bài Viết Đánh Giá
                 </h4>
@@ -390,7 +393,7 @@ const CuahangChitiet = () => {
 
                 {/* Phần hiển thị danh sách đánh giá */}
                 {sanPham.danhgiakhachhangs && sanPham.danhgiakhachhangs.length > 0 ? (
-                  <div className="container border p-4 rounded mt-4 bg-light shadow-sm">
+                  <div className="container border p-4 rounded mt-4 bg-light shadow-sm"  data-aos="fade-up">
                     <h4 className="fw-bold text-success mb-4">Đánh Giá Sản Phẩm</h4>
                     {sanPham.danhgiakhachhangs.map((dg, index) => (
                       <div

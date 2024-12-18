@@ -9,7 +9,7 @@ const ModalBanner = ({ show, handleClose, isEdit, banner, fetchBanners }) => {
   const [hinhanhs, setHinhanhs] = useState([]);
   
   // Thiết lập trạng thái ban đầu khi chỉnh sửa hoặc thêm banner mới
-  useEffect(() => {
+  useEffect(() => { 
     if (isEdit && banner) {
       setTieude(banner.tieude || '');
       setPhude(banner.phude || '');

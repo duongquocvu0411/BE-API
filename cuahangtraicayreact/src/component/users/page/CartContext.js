@@ -133,18 +133,12 @@ export const CartProvider = ({ children }) => {
   const Xoatoanbogiohang = () => {
     if (giohang.length === 0) {
       // Nếu giỏ hàng trống, hiển thị thông báo
-      toast.warn("Giỏ hàng hiện tại không có sản phẩm!", {
-        position: "top-right",
-        autoClose: 3000,
-      });
+
     } else {
       // Nếu giỏ hàng không trống, thực hiện xóa giỏ hàng
       setGiohang([]); // Đặt giỏ hàng về mảng rỗng
       localStorage.removeItem('giohang'); // Xóa giỏ hàng khỏi localStorage
-      toast.info("Giỏ hàng đã được xóa hết!", {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      
     }
   };
   

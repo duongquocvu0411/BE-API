@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CuahangtraicayAPI.Model
 {
@@ -24,6 +25,7 @@ namespace CuahangtraicayAPI.Model
         public DateTime? thoigianketthuc { get; set; }
 
         [ForeignKey("sanpham_id")]
+        [JsonIgnore]
         // Navigation property
         public virtual Sanpham Sanpham { get; set; }
     }

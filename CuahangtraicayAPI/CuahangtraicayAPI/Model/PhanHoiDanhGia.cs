@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CuahangtraicayAPI.Model
 {
@@ -20,6 +21,7 @@ namespace CuahangtraicayAPI.Model
 
         // Navigation property
         [ForeignKey("danhgia_id")]
+        [JsonIgnore]
         public  DanhGiaKhachHang? DanhGia { get; set; }
     }
 }

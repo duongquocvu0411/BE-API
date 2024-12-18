@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.Model;
 
@@ -45,9 +46,10 @@ namespace CuahangtraicayAPI.Model
         [ForeignKey("danhmucsanpham_id")]
         public virtual Danhmucsanpham? Danhmucsanpham { get; set; }
 
-   
+
 
         // Liên kết với chi tiết sản phẩm
+
         public virtual ChiTiet? ChiTiet { get; set; }
 
         // Quan hệ một-nhiều với Sanphamsale

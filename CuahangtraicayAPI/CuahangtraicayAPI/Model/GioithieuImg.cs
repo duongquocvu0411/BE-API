@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CuahangtraicayAPI.Model
 {
@@ -14,6 +15,7 @@ namespace CuahangtraicayAPI.Model
         public string URL_image { get; set; }
 
         [ForeignKey("Id_gioithieu")]
+        [JsonIgnore]
         public Gioithieu Gioithieu { get; set; }
     }
 }
