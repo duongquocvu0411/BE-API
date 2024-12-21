@@ -3,7 +3,7 @@ import { Modal, Button, Container, Row, Col } from 'react-bootstrap';
 
 const ModalLienhe = ({ show, handleClose, noiDungChiTiet }) => {
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal show={show} onHide={handleClose} centered   backdrop="static">
       <Modal.Header closeButton className="bg-primary text-white">
         <Modal.Title className="fw-bold">
           <i className="bi bi-info-circle"></i> Chi Tiết Nội Dung

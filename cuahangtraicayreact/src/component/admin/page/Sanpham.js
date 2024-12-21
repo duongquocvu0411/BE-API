@@ -295,14 +295,14 @@ const SanPham = () => {
                           <th>Chức năng</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody> 
                         {danhSachSanPham.length > 0 ? (
                           sanPhamTheoTrang.map((sanPham, index) => (
                             <tr key={nanoid()}>
                               <td>{viTriSanPhamDau + index + 1}</td>
                               <td><img src={sanPham.hinhanh} alt={sanPham.tieude} style={{ width: '100px', objectFit: 'cover' }} /></td>
                               <td>{sanPham.tieude}</td>
-                              <td>{parseFloat(sanPham.giatien).toLocaleString("vi-VN")} VNĐ</td>
+                              <td>{parseFloat(sanPham.giatien).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} VNĐ</td>
                               <td>{sanPham.don_vi_tinh}</td>
                               <td>
                                 <Button variant="info" onClick={() => moModalChiTiet(sanPham.id)}>Chi tiết</Button>

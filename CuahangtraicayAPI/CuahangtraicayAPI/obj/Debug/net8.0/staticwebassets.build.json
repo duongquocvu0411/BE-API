@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "9dNLfPRSw93yY+DSRGQQlZfJx09ZBfmxWNREtcEUZ+w=",
+  "Hash": "eBonbGThwEM+QAVjzLQ+iCHmrWYwCiaaqQLG7M4IPlU=",
   "Source": "CuahangtraicayAPI",
   "BasePath": "_content/CuahangtraicayAPI",
   "Mode": "Default",
@@ -91,25 +91,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\banners\\ddfdb405-c4ee-4df1-9ee4-584ce2a7e8e7.jpg"
-    },
-    {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\debfb68a-65d9-4ab5-9882-091d67907582.jpg",
-      "SourceId": "CuahangtraicayAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
-      "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "banners/debfb68a-65d9-4ab5-9882-091d67907582.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\banners\\debfb68a-65d9-4ab5-9882-091d67907582.jpg"
     },
     {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\ffa0e3ab-237d-4af5-bdd3-08205e3f32c3.jpg",
@@ -1839,6 +1820,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\sanpham\\f63b6b95-904d-4c97-baa4-c2b9cfba6bf8.jpg"
+    },
+    {
+      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\2e6d7b0a-8b8e-4ee4-8596-43a69ec33cbc.jpg",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "tenwebsite/2e6d7b0a-8b8e-4ee4-8596-43a69ec33cbc.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\tenwebsite\\2e6d7b0a-8b8e-4ee4-8596-43a69ec33cbc.jpg"
     },
     {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\b0010f65-a38a-4d7e-96df-b7b48153792d.webp",

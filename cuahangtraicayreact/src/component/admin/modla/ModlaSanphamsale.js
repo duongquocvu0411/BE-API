@@ -48,7 +48,7 @@ const ModlaSanphamsale = ({ show, handleClose, saleData, setSaleData,isEdit }) =
 
   return (
 <>
-  <Modal show={show} onHide={handleClose} size="lg" centered>
+  <Modal show={show} onHide={handleClose} size="lg" centered   backdrop="static">
     <Modal.Header closeButton className="bg-primary text-white shadow-sm">
       <Modal.Title className="fw-bold fs-5">
         {isEdit ? "Chỉnh sửa chương trình khuyến mãi" : "Thêm chương trình khuyến mãi"}

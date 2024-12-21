@@ -159,7 +159,7 @@ const ModalAddGioiThieu = ({ show, onHide, chinhSua, gioithieu, layDanhSachGioit
   };
 
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={show} onHide={onHide} centered   backdrop="static">
       <Modal.Header closeButton className="bg-primary text-white">
         <Modal.Title>
           <i className={chinhSua ? 'bi bi-pencil-square' : 'bi bi-plus-circle'} style={{ marginRight: '8px' }}></i>

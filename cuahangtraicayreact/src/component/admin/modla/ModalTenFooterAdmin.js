@@ -149,7 +149,7 @@ const ResetForm = () => {
 
 
   return (
-<Modal show={show} onHide={handleClose} centered>
+<Modal show={show} onHide={handleClose} centered   backdrop="static">
   <Modal.Header closeButton className="bg-primary text-white shadow-sm">
     <Modal.Title className="fs-5 fw-bold">
       {isEdit ? (

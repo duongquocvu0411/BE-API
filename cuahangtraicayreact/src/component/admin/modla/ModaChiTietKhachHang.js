@@ -20,7 +20,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
   const handleDongModalXoa = () => {
     setShowModalXoa(false); // Đóng modal xóa
   };
-
+ 
   const handleXacNhanXoa = async () => {
     if (chiTietKhachHang) {
       await xoaKhachHang(chiTietKhachHang.id, `${chiTietKhachHang.ho} ${chiTietKhachHang.ten}`);
@@ -30,7 +30,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} size="lg">
+      <Modal show={show} onHide={handleClose} size="lg" centered   backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title className="text-primary">
             <i className="bi bi-person-badge"></i> Chi Tiết Khách Hàng

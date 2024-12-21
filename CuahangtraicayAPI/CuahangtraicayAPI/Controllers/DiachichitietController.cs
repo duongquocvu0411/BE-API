@@ -90,9 +90,9 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             // Tìm đối tượng trong cơ sở dữ liệu dựa trên `id` từ URL
-            var existingDiachi = await _context.Diachichitiets.FindAsync(id);
+            var editDiachi = await _context.Diachichitiets.FindAsync(id);
 
-            if (existingDiachi == null)
+            if (editDiachi == null)
             {
                 return NotFound(new { message = "Không tìm thấy địa chỉ với id này." });
             }
@@ -100,23 +100,23 @@ namespace CuahangtraicayAPI.Controllers
             // Cập nhật các thuộc tính từ DTO nếu có giá trị
             if (!string.IsNullOrEmpty(dto.Diachi))
             {
-                existingDiachi.Diachi = dto.Diachi;
+                editDiachi.Diachi = dto.Diachi;
             }
             if (!string.IsNullOrEmpty(dto.Sdt))
             {
-                existingDiachi.Sdt = dto.Sdt;
+                editDiachi.Sdt = dto.Sdt;
             }
             if (!string.IsNullOrEmpty(dto.Email))
             {
-                existingDiachi.Email = dto.Email;
+                editDiachi.Email = dto.Email;
             }
             if (!string.IsNullOrEmpty(dto.Updated_By))
             {
-                existingDiachi.UpdatedBy = dto.Updated_By;
+                editDiachi.UpdatedBy = dto.Updated_By;
             }
 
             // Đánh dấu thực thể là đã thay đổi
-            _context.Entry(existingDiachi).State = EntityState.Modified;
+            _context.Entry(editDiachi).State = EntityState.Modified;
 
             try
             {
@@ -134,7 +134,7 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-            return Ok(existingDiachi);
+            return Ok(editDiachi);
         }
 
 

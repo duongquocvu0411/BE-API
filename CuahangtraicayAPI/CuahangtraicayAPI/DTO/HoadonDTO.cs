@@ -13,11 +13,14 @@ namespace CuahangtraicayAPI.DTO
             public List<int> SanphamIds { get; set; }
             [Required]
             public List<int> Quantities { get; set; }
+
+            public string Updated_By { get; set; }
         }  
      public class UpdateStatusDto 
         {
             public string Status { get; set; }
-            
+            [Required]
+            public string Updated_By { get; set; }
         }
     }
 

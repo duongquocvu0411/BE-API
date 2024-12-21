@@ -49,6 +49,7 @@ namespace CuahangtraicayAPI.Controllers
                     hd.khachhang_id,
                     hd.total_price,
                     hd.order_code,
+                    hd.UpdatedBy,
                     hd.status,
                    
                     //HoaDonChiTiets = hoaDonChiTiets
@@ -122,7 +123,8 @@ namespace CuahangtraicayAPI.Controllers
                 total_price = totalPrice,
                 order_code = orderCode,
                 status = "Chờ xử lý",
-              
+                UpdatedBy = hoaDonDto.Updated_By ?? "Chưa có tác động"
+
             };
             _context.HoaDons.Add(bill);
             await _context.SaveChangesAsync();
@@ -261,6 +263,7 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Không tìm thấy đơn hàng" });
 
             bill.status = dto.Status;
+            bill.UpdatedBy = dto.Updated_By ;
             bill.Updated_at=DateTime.Now;
             await _context.SaveChangesAsync();
             return Ok(new { message = "Trạng thái đơn hàng đã được cập nhật", bill });
@@ -370,6 +373,7 @@ namespace CuahangtraicayAPI.Controllers
 
             return Ok(result);
         }
+       
 
 
     }

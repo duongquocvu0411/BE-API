@@ -142,6 +142,7 @@ const Thanhtoan = () => {
           const sale = sanpham.sanphamSales?.find((sale) => sale.trangthai === "Đang áp dụng");
           return sale ? parseFloat(sale.giasale) : parseFloat(sanpham.gia);
         }),
+        updated_By: "Chưa có tác động"
       };
 
       const billResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/HoaDon`, billData);

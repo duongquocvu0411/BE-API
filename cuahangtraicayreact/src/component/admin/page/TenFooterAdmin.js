@@ -130,7 +130,7 @@ const TenFooterAdmin = () => {
                     <li className="breadcrumb-item">
                       <Link to="/admin/trangchu">Home</Link>
                     </li>
-                    <li className="breadcrumb-item active">Danh sách Footer</li>
+                    <li className="breadcrumb-item active">Danh sách Tên Footer</li>
                   </ol>
                 </div>
               </div>

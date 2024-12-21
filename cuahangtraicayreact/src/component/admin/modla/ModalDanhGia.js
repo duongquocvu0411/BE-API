@@ -86,16 +86,16 @@ const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
   const xoaDanhGia = async (id) => {
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/danhgiakhachhang/${id}`);
-      toast.success("Review deleted successfully");
+      toast.success("Đánh giá đã được xóa thành công!!");
       setDanhGias(danhGias.filter((danhGia) => danhGia.id !== id));
     } catch (error) {
-      toast.error("Error deleting review");
+      toast.error("Có lỗi khi xóa đánh giá!!!");
     }
   };
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} size="lg" centered>
+      <Modal show={show} onHide={handleClose} size="lg" centered   backdrop="static" >
         <Modal.Header closeButton className="bg-primary text-white">
           <Modal.Title>Danh sách đánh giá</Modal.Title>
         </Modal.Header>
@@ -215,8 +215,9 @@ const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
         show={showPhanHoiModal}
         onHide={() => setShowPhanHoiModal(false)}
         centered
+         backdrop="static"
       >
-        <Modal.Header closeButton className="bg-primary text-white">
+        <Modal.Header closeButton className="bg-info text-white">
           <Modal.Title className="text-center w-100">
             {currentPhanHoi.isEdit ? (
               <>

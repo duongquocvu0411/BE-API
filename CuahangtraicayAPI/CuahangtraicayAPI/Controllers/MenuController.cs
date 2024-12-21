@@ -88,8 +88,8 @@ namespace CuahangtraicayAPI.Controllers
                 return BadRequest("Invalid ID");
             }
 
-            var existingMenu = await _context.Menus.FindAsync(id);
-            if (existingMenu == null)
+            var editMenu = await _context.Menus.FindAsync(id);
+            if (editMenu == null)
             {
                 return NotFound();
             }
@@ -97,17 +97,17 @@ namespace CuahangtraicayAPI.Controllers
             // Chỉ cập nhật các trường không null trong DTO
             if (!string.IsNullOrEmpty(menuDTO.Name))
             {
-                existingMenu.Name = menuDTO.Name;
+                editMenu.Name = menuDTO.Name;
             }
             if (menuDTO.Thutuhien.HasValue)
             {
-                existingMenu.Thutuhien = menuDTO.Thutuhien.Value;
+                editMenu.Thutuhien = menuDTO.Thutuhien.Value;
             }
             if (!string.IsNullOrEmpty(menuDTO.Url))
             {
-                existingMenu.Url = menuDTO.Url;
+                editMenu.Url = menuDTO.Url;
             }
-            existingMenu.UpdatedBy = menuDTO.Updated_By;
+            editMenu.UpdatedBy = menuDTO.Updated_By;
 
             try
             {

@@ -121,7 +121,7 @@ const handleSdtChange = (e) => {
 //mới được chấp nhận. Điều này cung cấp xác thực ở phía trình duyệt.
 
   return (
-<Modal show={show} onHide={handleClose} centered>
+<Modal show={show} onHide={handleClose} centered   backdrop="static">
   <Modal.Header closeButton className="bg-primary text-white">
     <Modal.Title>
       {isEdit ? (

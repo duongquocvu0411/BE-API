@@ -125,11 +125,11 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize]
         public async Task<IActionResult> PutTenFooter(int id, [FromForm] TenFooterPuttDto dto)
         {
-            var existingTenFooter = await _context.TenFooters
+            var editTenFooter = await _context.TenFooters
                 .Include(tf => tf.FooterIMG)
                 .FirstOrDefaultAsync(tf => tf.Id == id);
 
-            if (existingTenFooter == null)
+            if (editTenFooter == null)
             {
                 return NotFound();
             }
@@ -137,14 +137,14 @@ namespace CuahangtraicayAPI.Controllers
             // Update basic fields (nếu DTO có giá trị)
             if (!string.IsNullOrWhiteSpace(dto.Tieude))
             {
-                existingTenFooter.tieude = dto.Tieude;
+                editTenFooter.tieude = dto.Tieude;
             }
             if (!string.IsNullOrWhiteSpace(dto.Phude))
             {
-                existingTenFooter.phude = dto.Phude;
+                editTenFooter.phude = dto.Phude;
             }
 
-            existingTenFooter.UpdatedBy =dto.Updated_By;
+            editTenFooter.UpdatedBy =dto.Updated_By;
             // Handle images
             if (dto.Images != null && dto.Images.Count > 0)
             {
@@ -168,7 +168,7 @@ namespace CuahangtraicayAPI.Controllers
                     }
 
                     // Cập nhật thông tin hình ảnh vào đối tượng
-                    existingTenFooter.FooterIMG.Add(new FooterImgs
+                    editTenFooter.FooterIMG.Add(new FooterImgs
                     {
                         ImagePath = $"/footer/{uniqueFileName}",
                         link = link
@@ -176,7 +176,7 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-            _context.Entry(existingTenFooter).State = EntityState.Modified;
+            _context.Entry(editTenFooter).State = EntityState.Modified;
 
             try
             {

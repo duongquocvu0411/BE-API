@@ -5,7 +5,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 const MoadlChitietsanpham = ({ show, handleClose, chiTiet, setChiTiet, handleSaveChiTiet,isEdit }) => {
   return (
 <>
-  <Modal show={show} onHide={handleClose} size="xl" centered>
+  <Modal show={show} onHide={handleClose} size="xl" centered   backdrop="static">
     <Modal.Header closeButton className="bg-primary text-white">
       <Modal.Title className="fw-bold">
         {isEdit ? "Chỉnh sửa chi tiết sản phẩm" : "Thêm chi tiết sản phẩm"}

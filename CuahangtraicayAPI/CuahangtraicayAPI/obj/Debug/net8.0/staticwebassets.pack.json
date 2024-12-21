@@ -17,10 +17,6 @@
       "PackagePath": "staticwebassets\\banners\\ddfdb405-c4ee-4df1-9ee4-584ce2a7e8e7.jpg"
     },
     {
-      "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\debfb68a-65d9-4ab5-9882-091d67907582.jpg",
-      "PackagePath": "staticwebassets\\banners\\debfb68a-65d9-4ab5-9882-091d67907582.jpg"
-    },
-    {
       "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\ffa0e3ab-237d-4af5-bdd3-08205e3f32c3.jpg",
       "PackagePath": "staticwebassets\\banners\\ffa0e3ab-237d-4af5-bdd3-08205e3f32c3.jpg"
     },
@@ -383,6 +379,10 @@
     {
       "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f63b6b95-904d-4c97-baa4-c2b9cfba6bf8.jpg",
       "PackagePath": "staticwebassets\\sanpham\\f63b6b95-904d-4c97-baa4-c2b9cfba6bf8.jpg"
+    },
+    {
+      "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\2e6d7b0a-8b8e-4ee4-8596-43a69ec33cbc.jpg",
+      "PackagePath": "staticwebassets\\tenwebsite\\2e6d7b0a-8b8e-4ee4-8596-43a69ec33cbc.jpg"
     },
     {
       "Id": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\b0010f65-a38a-4d7e-96df-b7b48153792d.webp",

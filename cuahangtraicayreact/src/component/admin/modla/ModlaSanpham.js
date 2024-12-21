@@ -289,7 +289,7 @@ const ModlaSanpham = ({
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} size="lg" centered>
+      <Modal show={show} onHide={handleClose} size="lg" centered   backdrop="static">
         <Modal.Header closeButton className="bg-primary text-white">
           <Modal.Title>
             {isEdit ? (

@@ -92,7 +92,7 @@ const ModlaAdddanhsachsanpham = ({ show, handleClose, isEdit, danhmuc, fetchdanh
 
 
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal show={show} onHide={handleClose} centered   backdrop="static">
     <Modal.Header closeButton className="bg-primary text-white">
       <Modal.Title>
         {isEdit ? (

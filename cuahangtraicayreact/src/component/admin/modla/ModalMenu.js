@@ -68,7 +68,7 @@ const ModalMenu = ({ show, handleClose, isEdit, menu, fetchMenuList }) => {
   }
   return (
 <>
-  <Modal show={show} onHide={handleClose} centered>
+  <Modal show={show} onHide={handleClose} centered   backdrop="static">
     <Modal.Header closeButton className="bg-success text-white shadow-sm">
       <Modal.Title className="fs-5 fw-bold">
         {isEdit ? "Chỉnh sửa menu" : "Thêm mới menu"}

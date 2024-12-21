@@ -17,6 +17,7 @@ namespace CuahangtraicayAPI.Model
        
         public string order_code { get; set; }
        
+        public string UpdatedBy { get; set; }
         public string status { get; set; }
        
         // Định nghĩa quan hệ với Khách Hàng

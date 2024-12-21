@@ -827,9 +827,6 @@ E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\r
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
@@ -856,3 +853,6 @@ E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\C
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\CuahangtraicayAPI.pdb
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\CuahangtraicayAPI.genruntimeconfig.cache
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\ref\CuahangtraicayAPI.dll
+E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll

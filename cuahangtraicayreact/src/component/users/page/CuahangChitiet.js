@@ -33,23 +33,43 @@ const CuahangChitiet = () => {
   }, [id]);
 
   // Lấy thông tin sản phẩm và chi tiết
+  // const layThongTinSanPham = async () => {
+  //   try {
+  //     setDangtai(true);
+  //     const response = await fetch(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}`);
+  //     const data = await response.json();
+  //     console.log("Dữ liệu sản phẩm:", data);
+
+  //     setSanPham(data); // Lưu toàn bộ dữ liệu sản phẩm
+  //     setChiTiet(data.chiTiet || {}); // Lưu chi tiết sản phẩm
+  //     setHinhanhPhu(data.images || []); // Lưu danh sách hình ảnh phụ
+  //   } catch (error) {
+  //     console.error("Lỗi khi lấy thông tin sản phẩm:", error);
+  //   } finally {
+  //     setDangtai(false);
+  //   }
+  // };
   const layThongTinSanPham = async () => {
     try {
       setDangtai(true);
       const response = await fetch(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}`);
+      if (!response.ok) {
+        throw new Error("Không thể tải thông tin sản phẩm");
+      }
       const data = await response.json();
-      console.log("Dữ liệu sản phẩm:", data);
-
-      setSanPham(data); // Lưu toàn bộ dữ liệu sản phẩm
+      if (!data) {
+        throw new Error("Dữ liệu sản phẩm không hợp lệ");
+      }
+      setSanPham(data); // Lưu dữ liệu sản phẩm
       setChiTiet(data.chiTiet || {}); // Lưu chi tiết sản phẩm
       setHinhanhPhu(data.images || []); // Lưu danh sách hình ảnh phụ
     } catch (error) {
       console.error("Lỗi khi lấy thông tin sản phẩm:", error);
+      setSanPham(null); // Đảm bảo không để undefined
     } finally {
       setDangtai(false);
     }
   };
-
 
 
   // Hàm mở modal để viết đánh giá
@@ -79,7 +99,6 @@ const CuahangChitiet = () => {
       tieude: tieude,
       so_sao: soSao,
       noi_dung: noiDung,
-
     };
 
     try {
@@ -90,12 +109,14 @@ const CuahangChitiet = () => {
       });
 
       if (response.ok) {
+        const danhGiaTraVe = await response.json(); // Lấy dữ liệu đánh giá từ server
+
         toast.success("Đánh giá của bạn đã được gửi!", { position: "top-right", autoClose: 2000 });
 
-        // Cập nhật danh sách đánh giá trực tiếp mà không reload
+        // Cập nhật danh sách đánh giá dựa trên phản hồi từ server
         setSanPham((prevSanPham) => ({
           ...prevSanPham,
-          danhgiakhachhangs: [...prevSanPham.danhgiakhachhangs, danhGiaMoi],
+          danhgiakhachhangs: [...prevSanPham.danhgiakhachhangs, danhGiaTraVe],
         }));
 
         // Đóng modal và reset state
@@ -112,7 +133,6 @@ const CuahangChitiet = () => {
       toast.error("Đã có lỗi xảy ra khi gửi đánh giá!");
     }
   };
-
 
   if (dangtai) {
     return (
@@ -284,50 +304,54 @@ const CuahangChitiet = () => {
 
             {/* Hiển thị chi tiết sản phẩm */}
             {tab === "chiTiet" && (
-              <div className="container border p-4 rounded shadow-sm bg-light" data-aos="fade-up">
-                <h4 className="fw-bold text-primary mb-4">
-                  <i className="fa fa-info-circle me-2"></i>Chi Tiết Sản Phẩm
-                </h4>
+              <div
+                className="container border p-4 rounded shadow-sm bg-light"
+                data-aos="fade-up"
+              >
+                {/* Tiêu đề */}
+                <div className="d-flex align-items-center mb-3">
+                  <h4 className="fw-bold text-primary m-0">
+                    <i className="fa fa-info-circle me-2"></i> Chi Tiết Sản Phẩm
+                  </h4>
+                  <span className="badge bg-info ms-2" style={{ fontSize: "0.8rem" }}>
+                    {/* Thông tin chi tiết */}
+                  </span>
+                </div>
 
+                {/* Nội dung chi tiết có thanh cuộn */}
                 {chiTiet && Object.values(chiTiet).some((value) => value) ? (
-                  <div className="row g-4">
-                    {/* Mô tả chi tiết sản phẩm */}
+                  <div
+                    className="p-4 bg-white rounded shadow-sm"
+                    style={{
+                      fontSize: "1.1rem",
+                      lineHeight: "1.8",
+                      color: "#495057",
+                      maxHeight: "500px", // Giới hạn chiều cao
+                      overflowY: "auto", // Thanh cuộn khi nội dung quá dài
+                    }}
+                  >
                     {[
-                      { label: "Nội dung ", value: chiTiet.mo_ta_chung },
+                      { label: "Nội dung", value: chiTiet.mo_ta_chung },
                     ].map((item, index) => (
-                      <div className="col-12" key={index}>
+                      <div key={index} className="mb-3">
+                        <h6 className="fw-bold text-secondary mb-2">
+                          <i className="fa fa-file-alt me-2"></i> {item.label}
+                        </h6>
                         <div
-                          className="border rounded-3 p-4 bg-white shadow-sm d-flex flex-column align-items-start"
-                          style={{
-                            transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              item.value ||
+                              "<span class='text-muted'>Không có thông tin chi tiết</span>",
                           }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = "scale(1.03)";
-                            e.currentTarget.style.boxShadow = "0 10px 20px rgba(0, 0, 0, 0.2)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = "scale(1)";
-                            e.currentTarget.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.1)";
-                          }}
-                        >
-                          {/* <h5 className="fw-bold text-secondary mb-3">
-                            <i className="fa fa-file-alt me-2"></i>{item.label}
-                          </h5> */}
-                          <div
-                            className="text-dark"
-                            style={{ lineHeight: "1.8", fontSize: "1.1rem" }}
-                            dangerouslySetInnerHTML={{
-                              __html: item.value || "<span class='text-muted'>Không có thông tin</span>",
-                            }}
-                          />
-                        </div>
+                        />
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center">
-                    <p className="text-muted">
-                      <i className="fa fa-exclamation-circle me-2"></i>Không có chi tiết sản phẩm.
+                  <div className="text-center py-4">
+                    <i className="fa fa-exclamation-circle text-warning fa-2x mb-3"></i>
+                    <p className="text-muted mb-0 fw-bold">
+                      Không có chi tiết sản phẩm.
                     </p>
                   </div>
                 )}
@@ -336,48 +360,76 @@ const CuahangChitiet = () => {
 
             {/* Hiển thị bài viết */}
             {tab === "baiViet" && (
-              <div className="container border p-4 rounded shadow-sm bg-light" data-aos="fade-up">
-                <h4 className="fw-bold mb-3 text-primary">
-                  <i className="fa fa-file-alt me-2"></i> Bài Viết Đánh Giá
-                </h4>
+              <div
+                className="container border p-4 rounded shadow-sm bg-light"
+                data-aos="fade-up"
+              >
+                {/* Tiêu đề bài viết */}
+                <div className="d-flex align-items-center mb-3">
+                  <h4 className="fw-bold text-primary m-0">
+                    <i className="fa fa-file-alt me-2"></i> Bài Viết Đánh Giá
+                  </h4>
+                  {chiTiet.bai_viet && (
+                    <span className="badge bg-info ms-2" style={{ fontSize: "0.8rem" }}>
+                      <small className="text-muted">
+                        Cập nhật lúc:{" "}
+                        <b>{new Date(chiTiet.updated_at).toLocaleString("vi-VN")}</b>
+                      </small>
+                    </span>
+                  )}
+                </div>
+
+                {/* Nội dung bài viết */}
                 {chiTiet.bai_viet ? (
                   <div
-                    className="p-3 bg-white rounded"
+                    className="p-4 bg-white rounded shadow-sm"
                     style={{
-                      fontSize: "1rem",
-                      lineHeight: "1.6",
-                      color: "#333",
-                      boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+                      fontSize: "1.1rem",
+                      lineHeight: "1.8",
+                      color: "#495057",
+                      maxHeight: "500px",
+                      overflowY: "auto",
                     }}
-                    dangerouslySetInnerHTML={{ __html: chiTiet.bai_viet }}
+                    dangerouslySetInnerHTML={{
+                      __html: chiTiet.bai_viet.replace(
+                        /<img /g,
+                        '<img class="img-fluid rounded mb-3" '
+                      ),
+                    }}
                   />
                 ) : (
                   <div
-                    className="p-3 bg-white rounded text-center"
+                    className="p-4 bg-white rounded text-center shadow-sm"
                     style={{
                       color: "#6c757d",
                       fontStyle: "italic",
-                      boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
                     }}
                   >
-                    <i className="fa fa-exclamation-circle me-2"></i> Sản phẩm không có bài viết
+                    <i className="fa fa-exclamation-circle fa-2x text-warning mb-3"></i>
+                    <p className="mb-0">
+                      <strong>Xin lỗi!</strong> Sản phẩm này chưa có bài viết đánh giá.
+                    </p>
                   </div>
                 )}
               </div>
             )}
+
 
             {/* Hiển thị danh sách đánh giá */}
             {tab === "danhGia" && (
               <div>
                 {/* Phần viết đánh giá */}
                 <div className="mt-4">
-                  <h4 className="fw-bold text-primary">Viết Đánh Giá của bạn</h4>
-                  <p className="text-muted">Chọn số sao:</p>
-                  <div className="d-flex align-items-center">
+                  <h4 className="fw-bold text-primary mb-3">
+                    <i className="fa fa-pen me-2"></i> Viết Đánh Giá của bạn
+                  </h4>
+                  <p className="text-muted mb-2">Chọn số sao:</p>
+                  <div className="d-flex align-items-center mb-4">
                     {[1, 2, 3, 4, 5].map((soSaoItem) => (
                       <span
                         key={soSaoItem}
-                        className={`fa fa-star ${soSao >= soSaoItem ? "text-warning" : "text-muted"}`}
+                        className={`fa fa-star ${soSao >= soSaoItem ? "text-warning" : "text-muted"
+                          }`}
                         style={{
                           cursor: "pointer",
                           fontSize: "1.5rem",
@@ -385,8 +437,10 @@ const CuahangChitiet = () => {
                           transition: "color 0.3s ease",
                         }}
                         onClick={() => moModalVietDanhGia(soSaoItem)}
-                        onMouseEnter={(e) => (e.target.style.color = "#ffcc00")} // Hover effect on mouse enter
-                        onMouseLeave={(e) => (e.target.style.color = soSao >= soSaoItem ? "#ffcc00" : "#6c757d")} // Reset on mouse leave
+                        onMouseEnter={(e) => (e.target.style.color = "#ffcc00")}
+                        onMouseLeave={(e) =>
+                          (e.target.style.color = soSao >= soSaoItem ? "#ffcc00" : "#6c757d")
+                        }
                       />
                     ))}
                   </div>
@@ -394,74 +448,101 @@ const CuahangChitiet = () => {
 
                 {/* Phần hiển thị danh sách đánh giá */}
                 {sanPham.danhgiakhachhangs && sanPham.danhgiakhachhangs.length > 0 ? (
-                  <div className="container border p-4 rounded mt-4 bg-light shadow-sm" data-aos="fade-up">
-                    <h4 className="fw-bold text-success mb-4">Đánh Giá Sản Phẩm</h4>
-                    {sanPham.danhgiakhachhangs.map((dg, index) => (
-                      <div
-                        key={index}
-                        className="mb-4 p-3 bg-white rounded shadow-sm"
-                        style={{
-                          transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = "scale(1.02)";
-                          e.currentTarget.style.boxShadow = "0 5px 15px rgba(0, 0, 0, 0.2)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = "scale(1)";
-                          e.currentTarget.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
-                        }}
-                      >
-                        <div className="d-flex align-items-center mb-2">
-                          <h5 className="mb-0 me-3 fw-bold">{dg.ho_ten}</h5>
-                          <div>
-                            {Array(dg.so_sao)
-                              .fill()
-                              .map((_, i) => (
-                                <span key={i} className="fa fa-star text-warning"></span>
-                              ))}
-                            {Array(5 - dg.so_sao)
-                              .fill()
-                              .map((_, i) => (
-                                <span key={i} className="fa fa-star text-muted"></span>
-                              ))}
-                          </div>
-                        </div>
-                        <h6 className="fw-bold text-primary">{dg.tieude}</h6>
-                        <p className="text-muted mb-2">{dg.noi_dung}</p>
-                        <p className="text-secondary small mb-0">
-                          Ngày tạo: <b>{new Date(dg.created_at).toLocaleDateString("vi-VN")}</b>
-                        </p>
-                        {/* hiển thị phần phản hồi */}
-                        {dg.phanHoi && dg.phanHoi.noi_dung ? (
-                          <div className="mt-3 p-3 bg-light border rounded">
-                            <h6 className="text-success mb-1">Phản hồi từ Admin: {dg.phanHoi.updatedBy}</h6>
-                            <p className="mb-1">{dg.phanHoi.noi_dung}</p>
-                            <small className="text-muted">
-                              Cập nhật lúc: <b></b> {" "}
-                              <b>{new Date(dg.phanHoi.updated_at) .toLocaleString("vi-VN")}</b>
-                            </small>
-                          </div>
-                        ) : (
-                          <div className="mt-3 p-3 bg-light border rounded text-muted">
-                            <h6 className="mb-1">Phản hồi từ Admin: </h6>
-                            <p className="mb-0">Chưa có phản hồi từ Admin</p>
-                          </div>
-                        )}
-                      </div>
+                  <div
+                    className="container border p-4 rounded mt-4 bg-light shadow-sm"
+                    data-aos="fade-up"
+                  >
+                    <h4 className="fw-bold text-success mb-3">
+                      <i className="fa fa-star me-2"></i> Đánh Giá Sản Phẩm
+                    </h4>
 
-                    ))}
+                    {/* Khung cuộn cho danh sách đánh giá */}
+                    <div
+                      className="p-3 bg-white rounded shadow-sm"
+                      style={{
+                        maxHeight: "500px", // Giới hạn chiều cao
+                        overflowY: "auto", // Thanh cuộn dọc
+                      }}
+                    >
+                      {sanPham.danhgiakhachhangs.map((dg, index) => (
+                        <div
+                          key={index}
+                          className="mb-4 p-3 bg-light border rounded shadow-sm"
+                          style={{
+                            transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "translateY(-5px)";
+                            e.currentTarget.style.boxShadow =
+                              "0 8px 16px rgba(0, 0, 0, 0.2)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "translateY(0)";
+                            e.currentTarget.style.boxShadow =
+                              "0 4px 8px rgba(0, 0, 0, 0.1)";
+                          }}
+                        >
+                          {/* Thông tin người đánh giá */}
+                          <div className="d-flex align-items-center mb-2">
+                            <h5 className="mb-0 me-3 fw-bold text-primary">{dg.ho_ten}</h5>
+                            <div>
+                              {Array(dg.so_sao)
+                                .fill()
+                                .map((_, i) => (
+                                  <span key={i} className="fa fa-star text-warning"></span>
+                                ))}
+                              {Array(5 - dg.so_sao)
+                                .fill()
+                                .map((_, i) => (
+                                  <span key={i} className="fa fa-star text-muted"></span>
+                                ))}
+                            </div>
+                          </div>
+
+                          {/* Tiêu đề và nội dung đánh giá */}
+                          <h6 className="fw-bold text-secondary">{dg.tieude}</h6>
+                          <p className="text-dark mb-2">{dg.noi_dung}</p>
+                          <p className="text-muted small mb-0">
+                            Ngày tạo:{" "}
+                            <b>{new Date(dg.created_at).toLocaleDateString("vi-VN")}</b>
+                          </p>
+
+                          {/* Phản hồi từ Admin */}
+                          {dg.phanHoi && dg.phanHoi.noi_dung ? (
+                            <div className="mt-3 p-3 bg-white border rounded">
+                              <h6 className="text-success mb-1">
+                                Phản hồi từ Admin: {dg.phanHoi.updatedBy}
+                              </h6>
+                              <p className="mb-1">{dg.phanHoi.noi_dung}</p>
+                              <small className="text-muted">
+                                Cập nhật lúc:{" "}
+                                <b>
+                                  {new Date(dg.phanHoi.updated_at).toLocaleDateString(
+                                    "vi-VN"
+                                  )}
+                                </b>
+                              </small>
+                            </div>
+                          ) : (
+                            <div className="mt-3 p-3 bg-white border rounded text-muted">
+                              <h6 className="mb-1">Phản hồi từ Admin:</h6>
+                              <p className="mb-0">Chưa có phản hồi từ Admin</p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ) : (
                   <div className="container border p-4 rounded mt-4 bg-light shadow-sm">
-                    <p className="text-center text-muted">Chưa có đánh giá nào cho sản phẩm này.</p>
+                    <p className="text-center text-muted">
+                      <i className="fa fa-exclamation-circle me-2"></i> Chưa có đánh giá nào
+                      cho sản phẩm này.
+                    </p>
                   </div>
                 )}
               </div>
             )}
-
-
 
             {/* Modal viết đánh giá */}
             <Modal

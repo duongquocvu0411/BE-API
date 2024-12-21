@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -61,6 +62,7 @@ namespace CuahangtraicayAPI.Controllers
         /// Tạo mới phản hồi cho đánh giá
         /// </summary>
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<PhanHoiDanhGia>> CreatePhanHoi([FromBody] PhanhoiDTO.PhanhoiPOSTDTO dto)
         {
             // Kiểm tra đánh giá tồn tại không
@@ -89,14 +91,15 @@ namespace CuahangtraicayAPI.Controllers
         /// Cập nhật phản hồi
         /// </summary>
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdatePhanHoi(int id, PhanhoiDTO.PhanhoiPUTDTO dto)
         {
-            var existingPhanHoi = await _context.PhanHoiDanhGias.FindAsync(id);
-            if (existingPhanHoi == null)
+            var editPhanHoi = await _context.PhanHoiDanhGias.FindAsync(id);
+            if (editPhanHoi == null)
                 return NotFound(new { message = "Phản hồi không tồn tại" });
 
-            existingPhanHoi.noi_dung = dto.noi_dung;
-            existingPhanHoi.UpdatedBy = dto.UpdatedBy;
+            editPhanHoi.noi_dung = dto.noi_dung;
+            editPhanHoi.UpdatedBy = dto.UpdatedBy;
 
             await _context.SaveChangesAsync();
             return Ok(new { message = "Phản hồi đã được cập nhật thành công" });

@@ -8,6 +8,7 @@ using CuahangtraicayAPI.Model;
 using Microsoft.AspNetCore.Authorization;
 using CuahangtraicayAPI.DTO;
 
+
 namespace CuahangtraicayAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -46,8 +47,6 @@ namespace CuahangtraicayAPI.Controllers
                 foreach (var bill in kh.HoaDons)
                 {
 
-
-
                     hoaDons.Add(new
                     {
                         bill.Id,
@@ -55,6 +54,7 @@ namespace CuahangtraicayAPI.Controllers
                         bill.total_price,
                         bill.order_code,
                         bill.status,
+                        bill.UpdatedBy,
                         bill.Created_at,
                         bill.Updated_at
 
@@ -204,8 +204,6 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(new { mesaage = " Xóa khách hàng thành công" });
 
         }
-
-
 
         /// <summary>
         /// Lấy tổng số khách hàng mới trong tháng hiện tại

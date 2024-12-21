@@ -285,7 +285,7 @@ const Tencuahang = () => {
           show={showModalXoa}
           onHide={handleDongModalXoa}
           centered
-          // backdrop="static" // Không cho phép đóng khi click ra ngoài
+          backdrop="static" // Không cho phép đóng khi click ra ngoài
         >
           <Modal.Header closeButton className="bg-danger text-white">
             <Modal.Title>

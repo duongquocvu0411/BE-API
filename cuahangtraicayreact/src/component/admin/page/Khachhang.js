@@ -42,7 +42,7 @@ const Khachhangs = () => {
           Authorization: `Bearer ${token}` // Thêm token vào header
         }
       }
-    );
+      );
       setDanhSachKhachHang(response.data);
       setKhachHangHienThi(response.data);
       setDangtai(false);
@@ -129,37 +129,45 @@ const Khachhangs = () => {
       // Lấy token từ localStorage hoặc sessionStorage
       const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
       const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
-  
+
       // Gửi request với token
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/khachhang/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Đính kèm token vào header
         },
       });
-  
+
       // Cập nhật dữ liệu khách hàng và hiển thị modal
       setChiTietKhachHang(response.data);
       setHienThiModal(true);
     } catch (error) {
       console.error('Có lỗi khi lấy chi tiết khách hàng:', error);
-  
-     
-        toast.error('Có lỗi khi lấy chi tiết khách hàng!', {
-          position: 'top-right',
-          autoClose: 3000,
-        });
-      
+
+
+      toast.error('Có lỗi khi lấy chi tiết khách hàng!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+
     }
   };
-  
+
   const capNhatTrangThai = async (billId, trangthaimoi) => {
     try {
       const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
       const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+
+      const loggedInUser = isLoggedIn
+        ? localStorage.getItem("loginhoten")
+        : sessionStorage.getItem("loginhoten");
+
       // Gửi trạng thái cập nhật lên backend
       await axios.put(
         `${process.env.REACT_APP_BASEURL}/api/HoaDon/UpdateStatus/${billId}`,
-        { status: trangthaimoi },
+        {
+          status: trangthaimoi,
+          updated_By: loggedInUser
+        },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -178,7 +186,7 @@ const Khachhangs = () => {
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
             khachHang.hoaDons = khachHang.hoaDons.map((hoadon) =>
-              hoadon.id === billId ? { ...hoadon, status: trangthaimoi } : hoadon
+              hoadon.id === billId ? { ...hoadon, status: trangthaimoi, updatedBy: loggedInUser } : hoadon
             );
           }
           return khachHang;
@@ -189,7 +197,7 @@ const Khachhangs = () => {
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
             khachHang.hoaDons = khachHang.hoaDons.map((hoadon) =>
-              hoadon.id === billId ? { ...hoadon, status: trangthaimoi } : hoadon
+              hoadon.id === billId ? { ...hoadon, status: trangthaimoi, updatedBy: loggedInUser } : hoadon
             );
           }
           return khachHang;
@@ -373,13 +381,14 @@ const Khachhangs = () => {
                           <th scope="col">Thành phố/Tỉnh thành/Xã</th>
                           <th scope="col">Ghi chú</th>
                           <th scope="col">Trạng thái</th>
+                          <th scope="col">Cập nhật bởi</th>
                           <th scope="col">Chức Năng</th>
                         </tr>
                       </thead>
                       <tbody>
                         {danhSachKhachHang.length === 0 ? (
                           <tr>
-                            <td colSpan="10" className="text-center">Hiện tại chưa có khách hàng</td>
+                            <td colSpan="11" className="text-center">Hiện tại chưa có khách hàng</td>
                           </tr>
                         ) : cacPhanTuHienTai.length > 0 ? (
                           cacPhanTuHienTai.map((item, index) => {
@@ -396,6 +405,11 @@ const Khachhangs = () => {
                                 <td>{item.ghiChu}</td>
                                 <td className={`${trangThaiDonHang.bgColor} ${trangThaiDonHang.textColor}`}>
                                   {trangThaiDonHang.text}
+                                </td>
+                                <td>
+                                  {item.hoaDons.map((hoaDon, idx) => (
+                                    <div key={nanoid()}>{hoaDon.updatedBy}</div>
+                                  ))}
                                 </td>
                                 <td>
                                   <div className="d-flex align-items-center">
@@ -424,7 +438,7 @@ const Khachhangs = () => {
                           })
                         ) : (
                           <tr>
-                            <td colSpan="10" className="text-center">Không tìm thấy khách hàng</td>
+                            <td colSpan="11" className="text-center">Không tìm thấy khách hàng</td>
                           </tr>
                         )}
                       </tbody>

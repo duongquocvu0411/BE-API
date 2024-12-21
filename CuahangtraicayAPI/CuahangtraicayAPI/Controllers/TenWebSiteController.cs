@@ -108,25 +108,25 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize]
         public async Task<IActionResult> Update(int id, [FromForm] TenwebSiteDTO.UpdateTenWebSiteDto updateDto)
         {
-            var existing = await _context.TenwebSites.FindAsync(id);
-            if (existing == null)
+            var edit = await _context.TenwebSites.FindAsync(id);
+            if (edit == null)
                 return NotFound();
 
             if (!string.IsNullOrEmpty(updateDto.TieuDe))
-                existing.Tieu_de = updateDto.TieuDe;
+                edit.Tieu_de = updateDto.TieuDe;
 
             if (updateDto.TrangThai.HasValue)
-                existing.TrangThai = updateDto.TrangThai.Value;
+                edit.TrangThai = updateDto.TrangThai.Value;
 
-            existing.UpdatedBy = updateDto.Updated_By;
-            existing.Updated_at = DateTime.Now;
+            edit.UpdatedBy = updateDto.Updated_By;
+            edit.Updated_at = DateTime.Now;
 
             if (updateDto.Favicon != null)
             {
                 // Xóa favicon cũ (nếu có)
-                if (!string.IsNullOrEmpty(existing.Favicon))
+                if (!string.IsNullOrEmpty(edit.Favicon))
                 {
-                    var oldFilePath = Path.Combine("wwwroot", existing.Favicon.TrimStart('/'));
+                    var oldFilePath = Path.Combine("wwwroot", edit.Favicon.TrimStart('/'));
                     if (System.IO.File.Exists(oldFilePath))
                         System.IO.File.Delete(oldFilePath);
                 }
@@ -141,7 +141,7 @@ namespace CuahangtraicayAPI.Controllers
                     await updateDto.Favicon.CopyToAsync(stream);
                 }
 
-                existing.Favicon = $"/tenwebsite/{uniqueFileName}";
+                edit.Favicon = $"/tenwebsite/{uniqueFileName}";
             }
 
             await _context.SaveChangesAsync();

@@ -82,9 +82,9 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] UpdateTencuahangDTO dto)
         {
             // Tìm cửa hàng theo ID
-            var existingCuaHang = await _context.Tencuahangs.FindAsync(id);
+            var editCuaHang = await _context.Tencuahangs.FindAsync(id);
 
-            if (existingCuaHang == null)
+            if (editCuaHang == null)
             {
                 return NotFound(new { message = "Không tìm thấy cửa hàng với id này" });
             }
@@ -92,16 +92,16 @@ namespace CuahangtraicayAPI.Controllers
             // Chỉ cập nhật các thuộc tính nếu chúng có giá trị
             if (!string.IsNullOrEmpty(dto.Name))
             {
-                existingCuaHang.Name = dto.Name;
+                editCuaHang.Name = dto.Name;
             }
 
             if (!string.IsNullOrEmpty(dto.Updated_By))
             {
-                existingCuaHang.UpdatedBy = dto.Updated_By;
+                editCuaHang.UpdatedBy = dto.Updated_By;
             }
 
             // Đánh dấu thực thể là đã thay đổi
-            _context.Entry(existingCuaHang).State = EntityState.Modified;
+            _context.Entry(editCuaHang).State = EntityState.Modified;
 
             try
             {
@@ -119,7 +119,7 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-            return Ok(existingCuaHang);
+            return Ok(editCuaHang);
         }
 
         /// <summary>
