@@ -28,6 +28,9 @@ namespace CuahangtraicayAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Danhmucsanpham>>> GetDanhmucsanpham()
         {
+            //ActionResult là một lớp trong ASP.NET Core, được sử dụng để trả về các kết quả HTTP từ controller.
+            // api có thể trả về một danh sách các đối tượng trong danhmucsanpham
+
             return await _context.Danhmucsanpham.ToListAsync();
         }
 
@@ -37,7 +40,7 @@ namespace CuahangtraicayAPI.Controllers
         /// Lấy danh sách Danh mục sản phẩm theo {id}
         /// </summary>
         /// <returns> Lấy danh sách Danh mục sản phẩm theo {id}</returns>
-       
+
         // GET: api/Danhmucsanpham/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Danhmucsanpham>> GetDanhmucsanpham(int id)
@@ -128,17 +131,27 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteDanhmucsanpham(int id)
         {
+            // Tìm danh mục sản phẩm theo ID
             var danhmucsanpham = await _context.Danhmucsanpham.FindAsync(id);
             if (danhmucsanpham == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Danh mục sản phẩm không tồn tại" });
             }
 
+            // Kiểm tra xem có sản phẩm nào trong danh mục này hay không
+            var khoaSP = await _context.Sanpham.AnyAsync(sp => sp.danhmucsanpham_id == id);
+            if (khoaSP)
+            {
+                return BadRequest(new { message = "Không thể xóa vì danh mục này đang chứa sản phẩm" });
+            }
+
+            // Xóa danh mục nếu không có sản phẩm nào
             _context.Danhmucsanpham.Remove(danhmucsanpham);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Xóa Danh mục sản phẩm  thành công" });
+            return Ok(new { message = "Xóa danh mục sản phẩm thành công" });
         }
+
 
         private bool DanhmucsanphamExists(int id)
         {

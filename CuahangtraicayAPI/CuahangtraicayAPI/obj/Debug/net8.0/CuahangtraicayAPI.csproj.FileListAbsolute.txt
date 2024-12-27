@@ -856,3 +856,9 @@ E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\r
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
 E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\MailKit.dll
+E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\MimeKit.dll
+E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\RestSharp.dll
+E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+E:\CDSG\BE\project\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

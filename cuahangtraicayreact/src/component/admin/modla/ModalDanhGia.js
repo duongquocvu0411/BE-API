@@ -147,12 +147,12 @@ const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
                       </Button>
                     </Alert>
                   ) : (
-                    <Alert variant="warning" className="mt-3">
+                    <Alert variant="warning" className="me-2">
                       Chưa có phản hồi từ Admin
                       <Button
                         variant="success"
                         size="sm"
-                        className="mt-2"
+                        className="me-2"
                         onClick={() => {
                           setCurrentPhanHoi({
                             danhgia_id: danhGia.id,

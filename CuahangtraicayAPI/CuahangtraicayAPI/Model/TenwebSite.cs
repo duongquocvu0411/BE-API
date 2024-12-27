@@ -4,13 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CuahangtraicayAPI.Model
 {
     [Table("TenwebSite")]
-    public class TenwebSite:BaseModel
+    public class TenwebSite : BaseModel
     {
         [Key]
         public int Id { get; set; }
-        public string Tieu_de {  get; set; }
+        public string Tieu_de { get; set; }
         public string Favicon { get; set; }
-        public byte TrangThai { get; set; } = 0;
+        public string Email { get; set; }
+
+        public string Sdt { get; set; }
+        public string Diachi { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
 

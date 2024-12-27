@@ -94,7 +94,7 @@ const TenwebSitersAdmin = () => {
       });
     }
   };
- 
+
 
   const handleHienThiModalXoa = (Website) => {
     setWebsiteXoa(Website); // Lưu Website cần xóa
@@ -197,9 +197,9 @@ const TenwebSitersAdmin = () => {
             <div className="card shadow mb-4">
               <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 className="m-0 font-weight-bold text-primary">Danh sách Tenwebsite</h6>
-                <Button variant="primary" onClick={moModalThemWebsite} className="btn-lg">
+                {/* <Button variant="primary" onClick={moModalThemWebsite} className="btn-lg">
                   <i className="fas fa-plus-circle"></i> Thêm Website
-                </Button>
+                </Button> */}
               </div>
               <div className="card-body table-responsive p-0" style={{ maxHeight: '400px' }}>
                 {dangtai ? (
@@ -213,10 +213,13 @@ const TenwebSitersAdmin = () => {
                       <tr>
                         <th scope="col">STT</th>
                         <th scope="col">Tiêu đề</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Địa chỉ</th>
+                        <th scope="col">Số điện thoại</th>
                         <th scope="col">Hình ảnh</th>
                         <th scope="col">Người tạo</th>
                         <th scope="col">Đã cập nhật Bởi</th>
-                        <th scope="col">Chức năng</th>
+                        <th scope="col" >Chức năng</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -224,6 +227,9 @@ const TenwebSitersAdmin = () => {
                         <tr key={nanoid()} className="hover-effect">
                           <td>{viTriWebsiteDau + index + 1}</td>
                           <td>{Website.tieu_de}</td>
+                          <td>{Website.email}</td>
+                          <td>{Website.diachi}</td>
+                          <td>{Website.sdt}</td>
                           <td>{Website.favicon?.length > 0 ? (
                             <img
                               src={`${process.env.REACT_APP_BASEURL}/${Website.favicon}`}
@@ -240,29 +246,25 @@ const TenwebSitersAdmin = () => {
                             {Website.updatedBy}
                           </td>
                           <td>
-                            <Button
-                              variant="primary me-2"
-                              onClick={() => moModalSuaWebsite(Website)}
-                              title="Chỉnh sửa Website"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                            <Button
-                              variant="danger"
-                              onClick={() => handleHienThiModalXoa(Website)}
-                              title="Xóa Website"
-                            >
-                              <i className="fas fa-trash"></i>
-                            </Button>
+                            <div className="d-flex gap-2">
 
-                            {Website.trangThai !== 1 && (
-                              <Button
-                                variant="success"
-                                onClick={() => suDungTenWebsite(Website.id)}
+                              <button
+                                className="btn btn-outline-warning btn-sm"
+                                onClick={() => moModalSuaWebsite(Website)}
+                                title="Chỉnh sửa Website"
                               >
-                                Sử dụng
-                              </Button>
-                            )}
+                                <i className="fas fa-edit"></i>
+                              </button>
+
+
+                              {/* <button
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={() => handleHienThiModalXoa(Website)}
+                                title="Xóa Website"
+                              >
+                                <i className="fas fa-trash"></i>
+                              </button> */}
+                            </div>
                           </td>
                         </tr>
                       ))}

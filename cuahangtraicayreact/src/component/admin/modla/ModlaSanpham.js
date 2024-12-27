@@ -32,6 +32,7 @@ const ModlaSanpham = ({
     moTaChung: "",
     baiViet: "",
   });
+  const [soLuong, setSoLuong] = useState("");
 
   useEffect(() => {
 
@@ -50,6 +51,7 @@ const ModlaSanpham = ({
       setGiatien(product.giatien || "");
       setDvt(product.don_vi_tinh || ""); // Đảm bảo `dvt` có giá trị mặc định
       setDanhmucsanphamID(product.danhmucsanpham_id || "");
+      setSoLuong(product.soluong || "");
 
       setSaleData(
         product.sanphamSales && product.sanphamSales.length > 0
@@ -136,53 +138,54 @@ const ModlaSanpham = ({
   };
   const handleSubmit = async () => {
     let hasError = false;
-  
+
     // Validation cho các trường bắt buộc
     if (!tieude) {
       toast.error("Vui lòng nhập tiêu đề sản phẩm.", { autoClose: 3000 });
       hasError = true;
     }
-  
+
     if (!giatien) {
       toast.error("Vui lòng nhập giá sản phẩm.", { autoClose: 3000 });
       hasError = true;
     }
-  
+
     if (!dvt) {
       toast.error("Vui lòng chọn đơn vị tính.", { autoClose: 3000 });
       hasError = true;
     }
-  
+
     if (!danhmucsanphamID) {
       toast.error("Vui lòng chọn danh mục sản phẩm.", { autoClose: 3000 });
       hasError = true;
     }
-  
+
     if (!trangthai) {
       toast.error("Vui lòng chọn trạng thái sản phẩm.", { autoClose: 3000 });
       hasError = true;
     }
-  
+
     if (!isEdit && !hinhanh) {
       toast.error("Vui lòng chọn hình ảnh chính.", { autoClose: 3000 });
       hasError = true;
     }
-  
+
     if (hasError) return;
-  
+
     // Tạo FormData và thêm tất cả các trường
     const formData = new FormData();
     formData.append("Tieude", tieude);
     formData.append("Giatien", giatien);
     formData.append("Trangthai", trangthai);
     formData.append("DonViTinh", dvt);
+    formData.append("So_luong", soLuong);
     formData.append("DanhmucsanphamId", danhmucsanphamID);
-  
+
     // Thêm hình ảnh chính nếu có hình ảnh mới
     if (hinhanh) {
       formData.append("Hinhanh", hinhanh);
     }
-  
+
     // Thêm thông tin khuyến mãi nếu có
     if (saleData) {
       formData.append("Sale.Giasale", saleData.giasale || "");
@@ -190,23 +193,23 @@ const ModlaSanpham = ({
       formData.append("Sale.Thoigianketthuc", saleData.thoigianketthuc || "");
       formData.append("Sale.Trangthai", saleData.trangthai || "");
     }
-  
+
     // Thêm danh sách ID của ảnh phụ hiện có
     existingHinhanhPhu.forEach((img) => {
       formData.append("ExistingImageIds[]", img.id); // Thêm danh sách ID ảnh phụ hiện có
     });
-  
+
     // Thêm ảnh phụ mới nếu có
     hinhanhPhu.forEach((file) => {
       if (file) formData.append("Images", file);
     });
-  
+
     // Thêm chi tiết sản phẩm nếu có bất kỳ trường nào được nhập
     if (Object.keys(chiTiet).some((key) => chiTiet[key])) {
       formData.append("ChiTiet.MoTaChung", chiTiet.moTaChung || "");
       formData.append("ChiTiet.BaiViet", chiTiet.baiViet || "");
     }
-  
+
     try {
       // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
       const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
@@ -216,13 +219,13 @@ const ModlaSanpham = ({
       const url = isEdit
         ? `${process.env.REACT_APP_BASEURL}/api/sanpham/${product.id}`
         : `${process.env.REACT_APP_BASEURL}/api/sanpham`;
-  
+
       // Gửi CreatedBy khi POST và UpdatedBy khi PUT
       if (!isEdit) {
         formData.append("created_By", loggedInUser);  // Chỉ gửi CreatedBy khi POST
       }
       formData.append("updated_By", loggedInUser);  // Gửi UpdatedBy cả khi POST và PUT
-  
+
       const response = await axios({
         method,
         url,
@@ -232,7 +235,7 @@ const ModlaSanpham = ({
           Authorization: `Bearer ${token}`, // Thêm token vào header
         },
       });
-  
+
       toast.success(`Sản phẩm đã được ${isEdit ? "cập nhật" : "thêm"} thành công!`, {
         autoClose: 3000,
       });
@@ -241,16 +244,20 @@ const ModlaSanpham = ({
       resetForm();
       resetChiTiet();
     } catch (error) {
-      console.error("Error while submitting product:", error);
+      console.error("Error while submitting sale data:", error);
       if (error.response) {
-        console.error("Error details:", error.response.data);
+        // Hiển thị thông báo lỗi từ backend
+        if (error.response.data && error.response.data.message) {
+          toast.error(error.response.data.message, { autoClose: 3000 });
+        } else {
+          toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.", { autoClose: 3000 });
+        }
+      } else {
+        toast.error("Không thể kết nối với máy chủ. Vui lòng thử lại sau.", { autoClose: 3000 });
       }
-      toast.error(`Có lỗi khi ${isEdit ? "cập nhật" : "thêm"} sản phẩm. Vui lòng thử lại.`, {
-        autoClose: 3000,
-      });
     }
   };
-  
+
   const resetForm = () => {
     setTieude("");
     setTrangthai("");
@@ -267,7 +274,7 @@ const ModlaSanpham = ({
   const resetChiTiet = () => {
     setChiTiet({
       moTaChung: "",
-   
+
       baiViet: "",
     });
   };
@@ -289,7 +296,7 @@ const ModlaSanpham = ({
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} size="lg" centered   backdrop="static">
+      <Modal show={show} onHide={handleClose} size="lg" centered backdrop="static">
         <Modal.Header closeButton className="bg-primary text-white">
           <Modal.Title>
             {isEdit ? (
@@ -319,6 +326,36 @@ const ModlaSanpham = ({
               />
             </Form.Group>
 
+            <Form.Group className="mb-4">
+              <Form.Label className="fw-bold">
+                <i className="bi bi-card-text"></i> Số lượng
+              </Form.Label>
+              <Form.Control
+                type="text"
+                value={soLuong}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  // Chỉ cho phép nhập số nguyên
+                  if (/^\d*$/.test(inputValue)) {
+                    setSoLuong(inputValue);
+                  }
+                }}
+                onBlur={() => {
+                  if (!soLuong || parseInt(soLuong, 10) <= 0) {
+                    setSoLuong(""); // Reset giá trị nếu không hợp lệ
+                  } else {
+                    setSoLuong(parseInt(soLuong, 10).toString()); // Đảm bảo giá trị là số nguyên
+                  }
+                }}
+                placeholder="Nhập số lượng sản phẩm"
+                className="shadow-sm"
+              />
+              {(!soLuong || parseInt(soLuong, 10) <= 0) && (
+                <small className="text-danger">
+                  Số lượng sản phẩm phải lớn hơn 0.
+                </small>
+              )}
+            </Form.Group>
             {/* Trạng thái */}
             <Form.Group className="mb-4">
               <Form.Label className="fw-bold">
@@ -333,7 +370,7 @@ const ModlaSanpham = ({
                 <option value="">Chọn trạng thái</option>
                 <option value="Còn hàng">Còn hàng</option>
                 <option value="Hết hàng">Hết hàng</option>
-              </Form.Control> 
+              </Form.Control>
             </Form.Group>
 
             {/* Giá */}
@@ -342,13 +379,31 @@ const ModlaSanpham = ({
                 <i className="bi bi-currency-dollar"></i> Giá
               </Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 value={giatien}
-                onChange={(e) => setGiatien(e.target.value)}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  if (/^\d*\.?\d*$/.test(inputValue)) {
+                    setGiatien(inputValue); // Chỉ cho phép nhập số và dấu chấm
+                  }
+                }}
+                onBlur={() => {
+                  if (!giatien || parseFloat(giatien) <= 0) {
+                    setGiatien(""); // Reset giá trị nếu không hợp lệ
+                  } else {
+                    setGiatien(parseFloat(giatien).toFixed(0)); // Định dạng giá trị
+                  }
+                }}
                 placeholder="Nhập giá sản phẩm"
                 className="shadow-sm"
               />
+              {(!giatien || parseFloat(giatien) <= 0) && (
+                <small className="text-danger">
+                  Giá sản phẩm phải lớn hơn 0.
+                </small>
+              )}
             </Form.Group>
+
 
             {/* Đơn vị tính */}
             <Form.Group className="mb-4">
@@ -370,6 +425,7 @@ const ModlaSanpham = ({
                 <option value="gram">Gram</option>
               </Form.Control>
             </Form.Group>
+
 
             {/* Danh mục sản phẩm */}
             <Form.Group className="mb-4">
@@ -548,6 +604,7 @@ const ModlaSanpham = ({
         saleData={saleData}
         isEdit={isEdit}
         setSaleData={setSaleData}
+        giaGoc={giatien}
       />
     </>
 

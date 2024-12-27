@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 
-const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTrangThai, xoaKhachHang, layTrangThaiDonHang }) => {
+const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTrangThai, xoaKhachHang, layTrangThaiDonHang, isLoading }) => {
   const [showModalXoa, setShowModalXoa] = useState(false); // Quản lý trạng thái hiển thị modal xóa
 
   const inHoaDon = () => {
@@ -20,7 +20,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
   const handleDongModalXoa = () => {
     setShowModalXoa(false); // Đóng modal xóa
   };
- 
+
   const handleXacNhanXoa = async () => {
     if (chiTietKhachHang) {
       await xoaKhachHang(chiTietKhachHang.id, `${chiTietKhachHang.ho} ${chiTietKhachHang.ten}`);
@@ -30,7 +30,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} size="lg" centered   backdrop="static">
+      <Modal show={show} onHide={handleClose} size="lg" centered backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title className="text-primary">
             <i className="bi bi-person-badge"></i> Chi Tiết Khách Hàng
@@ -72,7 +72,10 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                           <i className="bi bi-calendar-check-fill"></i> <strong>Ngày tạo:</strong> {bill.created_at ? new Date(bill.created_at).toLocaleDateString("vi-VN") : "Không có thông tin"}
                         </p>
                         <p>
-                          <i className="bi bi-cash"></i> <strong>Tổng tiền:</strong> {parseFloat(bill.total_price).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} VND
+                          <i className="bi bi-cash"></i> <strong>Tổng tiền:</strong> {parseFloat(bill.total_price).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })} VND
+                        </p>
+                        <p>
+                          <i class="bi bi-credit-card"></i> <strong>Thanh toán:</strong> {bill.thanhtoan}
                         </p>
                         <p>
                           <i className="bi bi-circle-fill"></i> <strong>Trạng thái:</strong> <span className={`badge ${layTrangThaiDonHang([bill]).bgColor}`}>{bill.status}</span>
@@ -83,7 +86,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                           {bill.hoaDonChiTiets.map((chitiet, idx) => (
                             <li key={idx} className="list-group-item">
                               <i className="bi bi-box"></i> <strong>{chitiet.sanphamNames}</strong> x {chitiet.quantity} {chitiet.sanphamDonViTinh} -{" "}
-                              {parseFloat(chitiet.price).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} VND
+                              {parseFloat(chitiet.price).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })} VND
                             </li>
                           ))}
                         </ul>
@@ -91,13 +94,13 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                         {/* Hành động */}
                         <div className="d-flex align-items-center">
                           {bill.status === "Hủy đơn" && (
-                            <Button
-                              variant="danger"
+                            <button
+                              className="btn btn-outline-danger btn-sm"
                               onClick={handleHienThiModalXoa}
                               disabled={!chiTietKhachHang || !chiTietKhachHang.hoaDons?.some(hd => hd.status === "Hủy đơn")}
                             >
                               <i className="bi bi-trash-fill"></i> Xóa Khách Hàng
-                            </Button>
+                            </button>
 
                           )}
 
@@ -109,15 +112,25 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                                 value={bill.status}
                                 onChange={(e) => capNhatTrangThai(bill.id, e.target.value)}
                                 className="form-select-sm"
+                                disabled={isLoading} // Vô hiệu hóa khi đang loading
                               >
                                 <option value="Chờ xử lý">Chờ xử lý</option>
                                 <option value="Đang giao">Đang giao</option>
                                 <option value="Đã giao thành công">Đã giao thành công</option>
-                                <option value="Hủy đơn">Hủy đơn</option>
+                                {bill.thanhtoan !== "VnPay" && bill.thanhtoan !=="Momo" && (
+                                  <option value="Hủy đơn">Hủy đơn</option>
+                                )}
                                 <option value="Giao không thành công">Giao không thành công</option>
                               </Form.Control>
+
+                              {isLoading && (
+                                <div className="spinner-border text-primary ms-2" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </div>
+                              )}
                             </Form.Group>
                           )}
+
                         </div>
                       </div>
                     ))

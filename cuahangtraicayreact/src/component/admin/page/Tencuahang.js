@@ -196,6 +196,7 @@ const Tencuahang = () => {
                         <tr>
                           <th scope="col">STT</th>
                           <th scope="col">Tên Cửa Hàng</th>
+                          <th scope='col'>Trạng thái</th>
                           <th scope="col">Người tạo</th>
                           <th scope="col">Người cập nhật</th>
                           <th scope="col">Chức Năng</th>
@@ -206,33 +207,48 @@ const Tencuahang = () => {
                           <tr key={nanoid()}>
                             <td>{viTriHangDau + index + 1}</td>
                             <td>{tencuahang.name}</td>
+                            <td>
+                              <span
+                              className={`badge ${tencuahang.trangthai === 'đang sử dụng' ? 'bg-success' : 'bg-secondary'}`}
+                            >
+                              {tencuahang.trangthai === 'đang sử dụng' ? 'Đang sử dụng' : 'Không sử dụng'}
+                            </span>
+                            </td>
                             <td>{tencuahang.createdBy}</td>
                             <td>{tencuahang.updatedBy}</td>
                             <td>
-                              <Button
-                                variant="primary me-2"
+                            <div className="d-flex gap-2">
+
+                              <button
+                                className="btn btn-outline-warning btn-sm"
                                 onClick={() => chinhSuaTencuahang(tencuahang)}
-                                className="btn btn-sm btn-primary"
+                                title="Chỉnh sửa Website"
                               >
                                 <i className="fas fa-edit"></i>
-                              </Button>
-                              <Button
-                                variant="danger me-2"
+                              </button>
+
+
+                              <button
+                                className="btn btn-outline-danger btn-sm"
                                 onClick={() => handleHienThiModalXoa(tencuahang)}
-                                className="btn btn-sm btn-danger"
+                                title="Xóa Website"
                               >
                                 <i className="fas fa-trash"></i>
-                              </Button>
+                              </button>
+
+
                               {tencuahang.trangthai !== 'đang sử dụng' && (
-                                <Button
-                                  variant="success"
+                                <button
+                                  className="btn btn-outline-success btn-sm"
                                   onClick={() => suDungTencuahang(tencuahang.id)}
-                                  className="btn btn-sm btn-success"
+                                  title="Sử dụng Website"
                                 >
-                                  <i className="fas fa-check"></i> Sử dụng
-                                </Button>
+                                  <i className="fas fa-check-circle"></i> Sử dụng
+                                </button>
                               )}
-                            </td>
+                            </div>
+                          </td>
+                            
                           </tr>
                         ))}
                       </tbody>

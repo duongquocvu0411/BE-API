@@ -5,7 +5,7 @@ namespace CuahangtraicayAPI.DTO
 {
     public class SanphamDTO
     {
-       
+
         public class SanphamCreateRequest
         {
             [Required]
@@ -14,6 +14,8 @@ namespace CuahangtraicayAPI.DTO
             [Required]
             public decimal Giatien { get; set; } // Make this nullable
 
+            [Required]
+            public int so_luong {  get; set; }
 
             [Required]
             public string Trangthai { get; set; }
@@ -40,7 +42,7 @@ namespace CuahangtraicayAPI.DTO
         {
 
             public string Tieude { get; set; }
-
+            public int? So_luong { get; set; }
             public decimal Giatien { get; set; }
 
             public string Trangthai { get; set; }
@@ -48,6 +50,7 @@ namespace CuahangtraicayAPI.DTO
             public string DonViTinh { get; set; }
 
             public int DanhmucsanphamId { get; set; }
+            public bool Xoasp { get; set; }
 
             public IFormFile? Hinhanh { get; set; } // Main image, optional for PUT
             [Required]
@@ -63,7 +66,7 @@ namespace CuahangtraicayAPI.DTO
         public class ChiTietDto
         {
             public string? MoTaChung { get; set; }
-          
+
             public string? BaiViet { get; set; }
         }
         public class SanphamSaleCreateRequest

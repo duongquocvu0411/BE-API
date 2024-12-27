@@ -193,9 +193,9 @@ const DiaChiChiTiet = () => {
             <div className="card shadow mb-4">
               <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h3 className="m-0 font-weight-bold text-primary">Danh Sách Địa Chỉ</h3>
-                <Button className="btn btn-primary" onClick={themDiaChi}>
+                {/* <Button className="btn btn-primary" onClick={themDiaChi}>
                   <i className="fas fa-plus-circle"></i> Thêm Địa Chỉ
-                </Button>
+                </Button> */}
               </div>
               <div className="card-body table-responsive" style={{ maxHeight: '400px' }}>
                 {dangtai ? (
@@ -234,32 +234,38 @@ const DiaChiChiTiet = () => {
                             </span>
                           </td>
                           <td>
-                            <Button
-                              variant="primary me-2"
-                              onClick={() => chinhSuaDiaChi(diaChi)}
-                              className="btn btn-sm btn-primary"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                            <Button
-                              variant="danger me-2"
-                              onClick={() => handleHienThiModalXoa(diaChi)}
-                              className="btn btn-sm btn-danger"
-                            >
-                              <i className="fas fa-trash"></i>
-                            </Button>
+                            <div className="d-flex gap-2">
 
-
-                            {diaChi.status !== 'đang sử dụng' && (
-                              <Button
-                                variant="success"
-                                onClick={() => suDungDiaChi(diaChi.id)}
-                                className="btn btn-sm btn-success"
+                              <button
+                                className="btn btn-outline-warning btn-sm"
+                                onClick={() => chinhSuaDiaChi(diaChi)}
+                                title="Chỉnh sửa Website"
                               >
-                                <i className="fas fa-check"></i> Sử dụng
-                              </Button>
-                            )}
+                                <i className="fas fa-edit"></i>
+                              </button>
+
+
+                              {/* <button
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={() => handleHienThiModalXoa(diaChi)}
+                                title="Xóa Website"
+                              >
+                                <i className="fas fa-trash"></i>
+                              </button> */}
+
+
+                              {diaChi.status !== 'đang sử dụng' && (
+                                <button
+                                  className="btn btn-outline-success btn-sm"
+                                  onClick={() => suDungDiaChi(diaChi.id)}
+                                  title="Sử dụng Website"
+                                >
+                                  <i className="fas fa-check-circle"></i>  sử dụng
+                                </button>
+                              )}
+                            </div>
                           </td>
+                          
                         </tr>
                       ))}
                     </tbody>

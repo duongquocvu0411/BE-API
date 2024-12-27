@@ -29,7 +29,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/KhachHang
         [HttpGet]
-        [Authorize]
+
         public async Task<ActionResult<IEnumerable<object>>> GetKhachHangs()
         {
             var khachHangs = await _context.KhachHangs
@@ -54,6 +54,7 @@ namespace CuahangtraicayAPI.Controllers
                         bill.total_price,
                         bill.order_code,
                         bill.status,
+                        bill.Thanhtoan,
                         bill.UpdatedBy,
                         bill.Created_at,
                         bill.Updated_at
@@ -87,8 +88,13 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns> xem khách hàng theo id có hóa đơn , hóa đơn chi tiết </returns>
 
         // GET: api/KhachHang/5
+        /// <summary>
+        /// Xem khách hàng theo id có hóa đơn, hóa đơn chi tiết
+        /// </summary>
+        /// <returns> xem khách hàng theo id có hóa đơn , hóa đơn chi tiết </returns>
+
+        // GET: api/KhachHang/5
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<ActionResult<object>> GetKhachHang(int id)
         {
             var khachHang = await _context.KhachHangs
@@ -101,29 +107,43 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Không tìm thấy khách hàng với ID này." });
             }
 
-            // Lặp qua các hóa đơn và chi tiết hóa đơn để lấy thông tin sản phẩm
-            var hoaDons = khachHang.HoaDons.Select(bill => new
+            // Lấy tất cả các hóa đơn của khách hàng và các chi tiết hóa đơn
+            var hoaDons = new List<object>();
+
+            foreach (var bill in khachHang.HoaDons)
             {
-                bill.Id,
-                bill.khachhang_id,
-                bill.total_price,
-                bill.order_code,
-                bill.status,
-                bill.Created_at,
-                HoaDonChiTiets = bill.HoaDonChiTiets.Select(async ct =>
+                var hoaDonChiTiets = new List<object>();
+
+                // Lặp qua các chi tiết hóa đơn và lấy thông tin sản phẩm
+                foreach (var chiTiet in bill.HoaDonChiTiets)
                 {
-                    var sanphamDetails = await GetSanPhamDetails(ct.sanpham_ids);
-                    return new
+                    // Lấy thông tin chi tiết sản phẩm từ các sanPhamIds
+                    var sanphamDetails = await GetSanPhamDetails(chiTiet.sanpham_ids);
+
+                    hoaDonChiTiets.Add(new
                     {
-                        ct.Id,
-                        ct.bill_id,
-                        ct.price,
-                        ct.quantity,
-                        SanphamNames = sanphamDetails.SanphamNames,
-                        SanphamDonViTinh = sanphamDetails.SanphamDonViTinh
-                    };
-                }).Select(task => task.Result).ToList()
-            }).ToList();
+                        chiTiet.Id,
+                        chiTiet.bill_id,
+                        chiTiet.price,
+                        chiTiet.quantity,
+                        SanphamNames = sanphamDetails.SanphamNames, // Tên sản phẩm
+                        SanphamDonViTinh = sanphamDetails.SanphamDonViTinh, // Đơn vị tính
+                        IsDeleted = sanphamDetails.IsDeleted // Trạng thái xóa
+                    });
+                }
+
+                hoaDons.Add(new
+                {
+                    bill.Id,
+                    bill.khachhang_id,
+                    bill.total_price,
+                    bill.Thanhtoan,
+                    bill.order_code,
+                    bill.status,
+                    bill.Created_at,
+                    HoaDonChiTiets = hoaDonChiTiets
+                });
+            }
 
             var result = new
             {
@@ -132,7 +152,6 @@ namespace CuahangtraicayAPI.Controllers
                 khachHang.Ho,
                 khachHang.DiaChiCuThe,
                 khachHang.ThanhPho,
-                //khachHang.tenThanhpho,
                 khachHang.tinhthanhquanhuyen,
                 khachHang.xaphuong,
                 khachHang.Sdt,
@@ -143,6 +162,7 @@ namespace CuahangtraicayAPI.Controllers
 
             return Ok(result);
         }
+
 
         /// <summary>
         /// Thêm mới khách hàng
@@ -232,28 +252,55 @@ namespace CuahangtraicayAPI.Controllers
             return _context.KhachHangs.Any(e => e.Id == id);
         }
 
-        // Lấy thông tin sản phẩm từ SanPhamIds
-        private async Task<(string SanphamNames, string SanphamDonViTinh)> GetSanPhamDetails(string sanPhamIds)
+
+        // hàm lấy tên sản phẩm và đon vị tính 
+        private async Task<(string SanphamNames, string SanphamDonViTinh, bool IsDeleted)> GetSanPhamDetails(string sanPhamIds)
         {
-            var ids = sanPhamIds.Trim('[', ']').Split(',').Select(int.Parse).ToList();
+            if (string.IsNullOrWhiteSpace(sanPhamIds))
+            {
+                return (null, null, false); // Nếu chuỗi rỗng hoặc chỉ có khoảng trắng, trả về null
+            }
+
+            // Tách chuỗi sanPhamIds thành danh sách các ID
+            var ids = sanPhamIds.Trim('[', ']').Split(',')
+                .Select(id =>
+                {
+                    int result;
+                    return int.TryParse(id, out result) ? result : (int?)null;
+                })
+                .Where(id => id.HasValue)  // Lọc bỏ các giá trị null
+                .Select(id => id.Value)
+                .ToList();
+
+            if (!ids.Any())
+            {
+                return (null, null, false); // Nếu không có ID hợp lệ, trả về null
+            }
+
+            // Lấy thông tin sản phẩm từ cơ sở dữ liệu, bao gồm các sản phẩm đã xóa và chưa xóa
             var sanphams = await _context.Sanpham
-                .Where(sp => ids.Contains(sp.Id))
+                .Where(sp => ids.Contains(sp.Id)) // Lấy tất cả sản phẩm theo ID
                 .Select(sp => new
                 {
-                    sp.Tieude, // Tên sản phẩm
-                    sp.don_vi_tinh // Đơn vị tính
+                    sp.Tieude,  // Tên sản phẩm
+                    sp.don_vi_tinh, // Đơn vị tính
+                    sp.Xoa // Kiểm tra xem sản phẩm có bị xóa không
                 })
                 .ToListAsync();
 
             if (!sanphams.Any())
             {
-                return (null, null);
+                return (null, null, false); // Nếu không có sản phẩm hợp lệ, trả về null
             }
 
-            string sanphamNames = string.Join(", ", sanphams.Select(sp => sp.Tieude));
-            string donViTinh = sanphams.Select(sp => sp.don_vi_tinh).FirstOrDefault();
+            // Kiểm tra xem sản phẩm có bị xóa không và trả về tên/đơn vị tính phù hợp
+            string sanphamNames = string.Join(", ", sanphams.Select(sp => sp.Xoa ? $"{sp.Tieude} (Đã xóa)" : sp.Tieude));
+            string donViTinh = string.Join(", ", sanphams.Select(sp => sp.Xoa ? $"{sp.don_vi_tinh} (Đã xóa)" : sp.don_vi_tinh));
 
-            return (sanphamNames, donViTinh);
+            // Trả về thông tin tên sản phẩm, đơn vị tính và trạng thái bị xóa
+            return (sanphamNames, donViTinh, sanphams.Any(sp => sp.Xoa));
         }
+
+
     }
 }

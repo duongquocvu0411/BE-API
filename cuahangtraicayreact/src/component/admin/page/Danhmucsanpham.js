@@ -18,7 +18,7 @@ const Danhmucsanpham = () => {
   const danhMucMoiTrang = 4;
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xóa
   const [danhMucXoa, setDanhMucXoa] = useState(null); // Lưu thông tin danh mục cần xóa
- 
+
   // Thêm state để lưu trữ giá trị tìm kiếm
   const [timKiem, setTimKiem] = useState('');
 
@@ -82,31 +82,44 @@ const Danhmucsanpham = () => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-
+  
     try {
-      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/danhmucsanpham/${id}`
-        ,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Thêm token vào header
-          },
-        }
-      );
-      toast.success(`xóa danh muc "${name} " thành công`, {
-        position: 'top-right',
-        autoClose: 3000
+      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/danhmucsanpham/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Thêm token vào header
+        },
       });
-      layDanhSachDanhMuc(); // lấy lại danh mục khi xóa thành công
+  
+      // Thông báo thành công
+      toast.success(`Xóa danh mục "${name}" thành công`, {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+  
+      // Lấy lại danh sách danh mục và reset trang hiện tại
+      layDanhSachDanhMuc();
       setTrangHienTai(1);
-    }
-    catch (error) {
-      console.log('có lỗi khi xóa danh mục', error);
-      toast.error('có lỗi khi xóa danh mục', {
-        position: 'top-right',
-        autoClose: 3000
-      });
+    } catch (error) {
+      // Kiểm tra lỗi từ phản hồi API
+      if (error.response) {
+        const { status, data } = error.response;
+  
+        if (status === 400 && data.message === 'Không thể xóa vì danh mục này đang chứa sản phẩm') {
+          toast.error(`Không thể xóa danh mục "${name}" vì đang chứa sản phẩm`, {
+            position: 'top-right',
+            autoClose: 3000,
+          });
+        } else {
+          toast.error(`Có lỗi xảy ra khi xóa danh mục: ${data.message || 'Lỗi không xác định'}`, {
+            position: 'top-right',
+            autoClose: 3000,
+          });
+        }
+      } 
+      
     }
   };
+  
 
   const handleHienThiModalXoa = (danhMuc) => {
     setDanhMucXoa(danhMuc); // Lưu thông tin danh mục cần xóa
@@ -212,20 +225,21 @@ const Danhmucsanpham = () => {
                           <td>{danhMuc.createdBy}</td>
                           <td>{danhMuc.updatedBy}</td>
                           <td>
-                            <Button
-                              variant="primary me-2"
+                            <button
+
                               onClick={() => moModalSuaDanhMuc(danhMuc)}
-                              className="btn btn-sm btn-primary"
+                              className="btn btn-outline-warning btn-sm me-2"
                             >
                               <i className="fas fa-edit"></i>
-                            </Button>
-                            <Button
-                              variant="danger"
+                            </button>
+
+                            <button
+
                               onClick={() => handleHienThiModalXoa(danhMuc)}
-                              className="btn btn-sm btn-danger"
+                              className="btn btn-outline-danger btn-sm"
                             >
                               <i className="fas fa-trash"></i>
-                            </Button>
+                            </button>
                           </td>
                         </tr>
                       ))}

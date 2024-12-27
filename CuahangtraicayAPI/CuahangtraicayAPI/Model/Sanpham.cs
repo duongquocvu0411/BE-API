@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using CuahangtraicayAPI.Model;
-using CuahangtraicayAPI.Model;
+
 
 namespace CuahangtraicayAPI.Model
 {
     [Table("sanphams")]
-    public class Sanpham: BaseModel
+    public class Sanpham : BaseModel
     {
         [Key]
-    
+
         public int Id { get; set; }
 
 
@@ -26,13 +26,13 @@ namespace CuahangtraicayAPI.Model
 
         public string Trangthai { get; set; } // Trạng thái của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
 
-     
+        public int Soluong { get; set; }
         public string don_vi_tinh { get; set; } // Đơn vị tính của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
 
 
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
-
+        public bool Xoa { get; set; }
 
         // Foreign Key cho Danhmucsanpham
 

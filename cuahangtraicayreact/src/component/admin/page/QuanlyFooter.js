@@ -127,15 +127,17 @@ const QuanlyFooter = () => {
     }
   };
   
-  const suDungTenWebsite = async (id) => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+  const suDungFooters = async (id) => {
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
+  
+    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
   
     try {
       // Gọi API với headers đặt đúng chỗ
       await axios.post(
         `${process.env.REACT_APP_BASEURL}/api/Footer/setFooter/${id}`,
-        {updated_By:isLoggedIn}, // Body rỗng, vì API  không yêu cầu body
+        {updated_By:loggedInUser}, // Body rỗng, vì API  không yêu cầu body
         {
           headers: {
             Authorization: `Bearer ${token}`, // Đặt headers đúng vị trí
@@ -214,7 +216,7 @@ const QuanlyFooter = () => {
               <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 className="m-0 font-weight-bold text-primary">Danh sách Footer</h6>
                 <div className="card-tools">
-                  <Button variant="primary" onClick={moModalThemFooter}>
+                  <Button variant="primary" onClick={moModalThemFooter} className='btn-sm'>
                     <i className="fas fa-plus-circle"></i> Thêm Footer
                   </Button>
                 </div>
@@ -246,32 +248,47 @@ const QuanlyFooter = () => {
                           <td> <span dangerouslySetInnerHTML={{ __html: Footer.noiDungFooter.slice(0, 50) + '...' }} /></td>
                           <td>{Footer.createdBy}</td>
                           <td>{Footer.updatedBy}</td>
-                          <td>{Footer.trangThai === 1 ? "Hiển thị" : "Ẩn"}</td>
-                          {/* <td>{Footer.updatedBy}</td> */}
                           <td>
-                            <Button
-                              variant="primary me-2"
-                              onClick={() => moModalSuaFooter(Footer)}
-                              className="btn btn-sm btn-primary"
+                          <span
+                              className={`badge ${Footer.trangThai === 1 ? 'bg-success' : 'bg-secondary'}`}
                             >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                            <Button
-                              variant="danger"
-                              onClick={() => handleHienThiModalXoa(Footer)}
-                              className="btn btn-sm btn-danger"
-                            >
-                              <i className="fas fa-trash"></i>
-                            </Button>
-                            {Footer.trangThai !== 1 && (
-                              <Button
-                                variant="success"
-                                onClick={() => suDungTenWebsite(Footer.id)}
-                              >
-                                Sử dụng
-                              </Button>
-                            )}
+                              {Footer.trangThai === 1 ? 'Đang sử dụng' : 'Không sử dụng'}
+                            </span>
                           </td>
+                         
+                          <td>
+                            <div className="d-flex gap-2">
+
+                              <button
+                                className="btn btn-outline-warning btn-sm"
+                                onClick={() => moModalSuaFooter(Footer)}
+                                title="Chỉnh sửa Website"
+                              >
+                                <i className="fas fa-edit"></i>
+                              </button>
+
+
+                              <button
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={() => handleHienThiModalXoa(Footer)}
+                                title="Xóa Website"
+                              >
+                                <i className="fas fa-trash"></i>
+                              </button>
+
+
+                              {Footer.trangThai !== 1 && (
+                                <button
+                                  className="btn btn-outline-success btn-sm"
+                                  onClick={() => suDungFooters(Footer.id)}
+                                  title="Sử dụng Website"
+                                >
+                                  <i className="fas fa-check-circle"></i> Sử dụng
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                          
                         </tr>
                       ))}
                     </tbody>

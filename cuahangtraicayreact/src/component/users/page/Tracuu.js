@@ -17,7 +17,7 @@ const Tracuu = () => {
     Aos.init({
       duration: 1000, // Thời gian hiệu ứng
       easing: 'ease-in-out', // Hiệu ứng easing
-     
+
     });
   }, []);
 
@@ -58,10 +58,12 @@ const Tracuu = () => {
       });
     }
   };
-
+  
   // hàm để chọn class cho trạng thái đơn hàng
   const getStatusClass = (status) => {
     switch (status) {
+      case 'Đã Thanh toán':
+        return ' bg-info text-dark border border-info'
       case 'Đang giao':
         return 'bg-warning text-dark';  // Màu vàng cho đang giao
       case 'Đã giao thành công':
@@ -157,7 +159,7 @@ const Tracuu = () => {
                         <tr key={index}>
                           <td>{item.sanPhamNames}</td>
                           <td>{item.quantity} {item.sanPhamDonViTinh}</td>
-                          <td>{parseFloat(item.price).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} VND</td>
+                          <td>{parseFloat(item.price).toLocaleString("vi-VN", {style:'decimal', minimumFractionDigits: 0 })} VND</td>
                         </tr>
                       ))
                     ) : (
@@ -171,23 +173,23 @@ const Tracuu = () => {
 
               {/* Tổng giá trị đơn hàng */}
               <p className="card-text">
-                <strong>Tổng giá trị đơn hàng:</strong> {parseFloat(dathangchitiet.total_price).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} VND
+                <strong>Tổng giá trị đơn hàng:</strong> {parseFloat(dathangchitiet.total_price).toLocaleString("vi-VN", { style:'decimal',minimumFractionDigits: 0 })} VND
               </p>
 
               {/* Nút hủy đơn hàng */}
-              {dathangchitiet.status === "Chờ xử lý" && (
+              {dathangchitiet.status === "Chờ xử lý" && dathangchitiet.thanhtoan !== "VnPay" && dathangchitiet.thanhtoan !== "Momo" && (
                 <div className="text-center mt-4">
                   <button
                     className="btn btn-danger rounded-3 py-2 px-4"
                     onClick={() => {
-
-                      setShowModal(true);  // Hiển thị modal khi nhấn hủy
+                      setShowModal(true); // Hiển thị modal khi nhấn hủy
                     }}
                   >
                     <i className="fas fa-ban"></i> Hủy đơn hàng
                   </button>
                 </div>
               )}
+
             </div>
           </div>
         )}

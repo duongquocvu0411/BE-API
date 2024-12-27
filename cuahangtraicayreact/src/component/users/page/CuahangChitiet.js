@@ -10,7 +10,7 @@ import Countdown from "react-countdown";
 import Aos from "aos";
 
 const CuahangChitiet = () => {
-  const { id } = useParams(); // Lấy ID sản phẩm từ URL
+  const { id,name } = useParams(); // Lấy ID sản phẩm từ URL
   const [sanPham, setSanPham] = useState(null); // Thông tin sản phẩm
   const [chiTiet, setChiTiet] = useState({}); // Chi tiết sản phẩm
   const [tab, setTab] = useState("chiTiet"); // Quản lý tab hiển thị (chi tiết hoặc bài viết)
@@ -32,23 +32,7 @@ const CuahangChitiet = () => {
     });
   }, [id]);
 
-  // Lấy thông tin sản phẩm và chi tiết
-  // const layThongTinSanPham = async () => {
-  //   try {
-  //     setDangtai(true);
-  //     const response = await fetch(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}`);
-  //     const data = await response.json();
-  //     console.log("Dữ liệu sản phẩm:", data);
-
-  //     setSanPham(data); // Lưu toàn bộ dữ liệu sản phẩm
-  //     setChiTiet(data.chiTiet || {}); // Lưu chi tiết sản phẩm
-  //     setHinhanhPhu(data.images || []); // Lưu danh sách hình ảnh phụ
-  //   } catch (error) {
-  //     console.error("Lỗi khi lấy thông tin sản phẩm:", error);
-  //   } finally {
-  //     setDangtai(false);
-  //   }
-  // };
+  
   const layThongTinSanPham = async () => {
     try {
       setDangtai(true);
@@ -165,7 +149,7 @@ const CuahangChitiet = () => {
   return (
     <>
       <div>
-        <HeaderUsers />
+        <HeaderUsers  tieudeSanPham={sanPham?.tieude}/>
 
         {/* Hiển thị thông tin sản phẩm */}
         <div className="container-fluid page-header py-5">
@@ -239,12 +223,14 @@ const CuahangChitiet = () => {
                     {isSaleActive ? (
                       <div>
                         <p className="text-muted mb-2" style={{ textDecoration: "line-through" }}>
-                          Giá gốc: {parseFloat(sanPham.giatien).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "}/ vnđ  ({sanPham.don_vi_tinh})
+                        {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                        ({sanPham.don_vi_tinh})
 
 
                         </p>
                         <p className="text-danger fw-bold mb-2">
-                          Giá khuyến mãi: {parseFloat(sale.giasale).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "}/ vnđ  ({sanPham.don_vi_tinh})
+                          Giá khuyến mãi: {parseFloat(sale.giasale).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                          {/* {parseFloat(sale.giasale).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "}/ vnđ */} ({sanPham.don_vi_tinh}) 
                         </p>
                         <p className="text-warning">
                           <Countdown date={new Date(sale.thoigianketthuc)} renderer={countdownRenderer} />

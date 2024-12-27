@@ -150,36 +150,51 @@ const Menu = () => {
                 <p>Đang tải dữ liệu...</p>
               </div>
             ) : (
-              <table className="table table-bordered table-hover table-striped">
-                <thead className="thead-dark">
-                  <tr>
-                    <th>STT</th>
-                    <th>Tên</th>
-                    <th>Thứ tự hiển thị</th>
-                    <th>URL</th>
-                    <th>Người tạo</th>
-                    <th>Người cập nhật</th>
-                    <th>Chức năng</th>
+              <table className="table table-bordered table-hover table-striped table-sm">
+              <thead className="table-dark text-center">
+                <tr>
+                  <th style={{ width: '5%' }}>#</th>
+                  <th style={{ width: '20%' }}>Tên</th>
+                  <th style={{ width: '10%' }}>Thứ tự hiển thị</th>
+                  <th style={{ width: '25%' }}>URL</th>
+                  <th style={{ width: '15%' }}>Người tạo</th>
+                  <th style={{ width: '15%' }}>Người cập nhật</th>
+                  <th style={{ width: '10%' }}>Chức năng</th>
+                </tr>
+              </thead>
+              <tbody>
+                {menuPerPage.map((menu, index) => (
+                  <tr key={menu.id} className="align-middle">
+                    <td className="text-center">{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                    <td className="text-truncate" title={menu.name} style={{ maxWidth: '200px' }}>
+                      {menu.name}
+                    </td>
+                    <td className="text-center">{menu.thutuhien}</td>
+                    <td className="text-truncate" title={menu.url} style={{ maxWidth: '250px' }}>
+                      <a href={menu.url} target="_blank" rel="noopener noreferrer">
+                        {menu.url}
+                      </a>
+                    </td>
+                    <td className="text-truncate" style={{ maxWidth: '150px' }} title={menu.createdBy}>
+                      {menu.createdBy}
+                    </td>
+                    <td className="text-truncate" style={{ maxWidth: '150px' }} title={menu.updatedBy}>
+                      {menu.updatedBy}
+                    </td>
+                    <td className="text-center">
+                      <button
+                        className="btn btn-outline-warning btn-sm"
+                        onClick={() => openModal(menu)}
+                        title="Chỉnh sửa menu"
+                      >
+                        <i className="fas fa-edit"></i> 
+                      </button>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {menuPerPage.map((menu, index) => (
-                    <tr key={nanoid()} className="table-row-hover">
-                      <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                      <td>{menu.name}</td>
-                      <td>{menu.thutuhien}</td>
-                      <td>{menu.url}</td>
-                      <td>{menu.createdBy}</td>
-                      <td>{menu.updatedBy}</td>
-                      <td>
-                        <Button variant="primary me-2" onClick={() => openModal(menu)} title="Chỉnh sửa menu">
-                          <i className="fas fa-edit"></i>
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                ))}
+              </tbody>
+            </table>
+            
             )}
           </div>
 

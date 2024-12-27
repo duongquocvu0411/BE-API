@@ -17,7 +17,7 @@ const MenuFooter = () => {
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xác nhận xóa
   const [MenuFooterXoa, setMenuFooterXoa] = useState(null); // Lưu thông tin MenuFooter cần xóa
 
-  const MenuFootersMoiTrang = 4; 
+  const MenuFootersMoiTrang = 4;
 
   // Logic tìm kiếm MenuFooters
   const [timKiem, setTimKiem] = useState('');
@@ -199,7 +199,7 @@ const MenuFooter = () => {
                               : (MenuFooter.noi_dung || "Không có mô tả")}
                           </td> */}
                           <td>
-                          <span dangerouslySetInnerHTML={{ __html: MenuFooter.noi_dung.slice(0, 50) + '...' }} />
+                            <span dangerouslySetInnerHTML={{ __html: MenuFooter.noi_dung.slice(0, 50) + '...' }} />
                           </td>
 
                           <td>
@@ -212,20 +212,21 @@ const MenuFooter = () => {
                             {MenuFooter.updatedBy}
                           </td>
                           <td>
-                            <Button
-                              variant="primary me-2"
+                            <button
+                              className="btn btn-outline-warning btn-sm me-2"
                               onClick={() => moModalSuaMenuFooter(MenuFooter)}
                               title="Chỉnh sửa MenuFooter"
                             >
                               <i className="fas fa-edit"></i>
-                            </Button>
-                            <Button
-                              variant="danger"
+                            </button>
+
+                            <button
+                              className="btn btn-outline-danger btn-sm"
                               onClick={() => handleHienThiModalXoa(MenuFooter)}
                               title="Xóa MenuFooter"
                             >
                               <i className="fas fa-trash"></i>
-                            </Button>
+                            </button>
 
                           </td>
                         </tr>

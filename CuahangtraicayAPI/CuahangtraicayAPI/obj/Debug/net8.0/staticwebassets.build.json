@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "eBonbGThwEM+QAVjzLQ+iCHmrWYwCiaaqQLG7M4IPlU=",
+  "Hash": "Ua7HwMPOfZzR56lF6xsYn8dE7pY5wGSwwcb9OXHMy/Y=",
   "Source": "CuahangtraicayAPI",
   "BasePath": "_content/CuahangtraicayAPI",
   "Mode": "Default",
@@ -359,25 +359,6 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\1b260f3d-6f05-4d02-b405-6c55e06aec98.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\277bb1c6-1f27-4cc6-84a1-4ea966c90a2d.jpg",
-      "SourceId": "CuahangtraicayAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
-      "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "hinhanhphu/277bb1c6-1f27-4cc6-84a1-4ea966c90a2d.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\hinhanhphu\\277bb1c6-1f27-4cc6-84a1-4ea966c90a2d.jpg"
-    },
-    {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\2f90083b-783a-4675-a15d-507a8f81d57c.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
@@ -433,44 +414,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\4fed4776-5f1b-42b7-8e75-4bb399a7e485.jpg"
-    },
-    {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\504e7b68-05c9-4ea5-a19f-2386b07e10c6.jpg",
-      "SourceId": "CuahangtraicayAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
-      "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "hinhanhphu/504e7b68-05c9-4ea5-a19f-2386b07e10c6.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\hinhanhphu\\504e7b68-05c9-4ea5-a19f-2386b07e10c6.jpg"
-    },
-    {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\521f26b5-a6be-4acf-a941-f30d3ac6e3ff.jpg",
-      "SourceId": "CuahangtraicayAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
-      "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "hinhanhphu/521f26b5-a6be-4acf-a941-f30d3ac6e3ff.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\hinhanhphu\\521f26b5-a6be-4acf-a941-f30d3ac6e3ff.jpg"
     },
     {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\5c7be786-88d2-4326-b495-304b8372ff69.jpg",
@@ -739,25 +682,6 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\99dc7c18-80f0-45f1-a92f-f27bf3c3c1ef.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\9b05d416-cfd6-4460-a36b-aab64bbe954a.jpg",
-      "SourceId": "CuahangtraicayAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
-      "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "hinhanhphu/9b05d416-cfd6-4460-a36b-aab64bbe954a.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\hinhanhphu\\9b05d416-cfd6-4460-a36b-aab64bbe954a.jpg"
-    },
-    {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\a33f5865-779d-4024-8bb5-193d6cf1a6e1.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
@@ -794,25 +718,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\ae3c3dc5-2615-44a3-8f46-7acd12a32b50.jpg"
-    },
-    {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b1db0375-f71b-44f3-b5b5-3627e331e36e.jpg",
-      "SourceId": "CuahangtraicayAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
-      "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "hinhanhphu/b1db0375-f71b-44f3-b5b5-3627e331e36e.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\hinhanhphu\\b1db0375-f71b-44f3-b5b5-3627e331e36e.jpg"
     },
     {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b628104f-602d-4c3d-b934-26cf4654119b.jpg",
@@ -946,44 +851,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\ca8c43ab-8d08-48fe-bcc5-9c04a438ca30.jpg"
-    },
-    {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\cd0b1b97-22d4-4e96-a4dc-62e5d68adb23.jpg",
-      "SourceId": "CuahangtraicayAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
-      "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "hinhanhphu/cd0b1b97-22d4-4e96-a4dc-62e5d68adb23.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\hinhanhphu\\cd0b1b97-22d4-4e96-a4dc-62e5d68adb23.jpg"
-    },
-    {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\cf1f98e6-1c1e-4472-bdfb-f43d01fedac1.jpg",
-      "SourceId": "CuahangtraicayAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
-      "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "hinhanhphu/cf1f98e6-1c1e-4472-bdfb-f43d01fedac1.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\hinhanhphu\\cf1f98e6-1c1e-4472-bdfb-f43d01fedac1.jpg"
     },
     {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\e440cf74-0b6c-4d7b-895a-746c37c42c61.jpg",
@@ -1632,12 +1499,12 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\45ab3cc8-6c88-439f-aa89-fafd7a69dc18.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\5a58163c-b760-4d45-b40b-071441eccf85.jpg",
+      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\48904915-73cb-48e6-a864-e735ee20cdaa.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "sanpham/5a58163c-b760-4d45-b40b-071441eccf85.jpg",
+      "RelativePath": "sanpham/48904915-73cb-48e6-a864-e735ee20cdaa.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1648,7 +1515,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\sanpham\\5a58163c-b760-4d45-b40b-071441eccf85.jpg"
+      "OriginalItemSpec": "wwwroot\\sanpham\\48904915-73cb-48e6-a864-e735ee20cdaa.jpg"
     },
     {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\6c312081-9059-4b92-b3f6-99676e0844d0.jpg",
@@ -1668,6 +1535,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\sanpham\\6c312081-9059-4b92-b3f6-99676e0844d0.jpg"
+    },
+    {
+      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\ad64e5d6-8bf8-42b2-9421-d5491209ad21.jpg",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "sanpham/ad64e5d6-8bf8-42b2-9421-d5491209ad21.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\sanpham\\ad64e5d6-8bf8-42b2-9421-d5491209ad21.jpg"
     },
     {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\c509b89a-5b8a-4ea0-b682-8ae23609ec2b.jpg",
@@ -1706,6 +1592,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\sanpham\\d7d4581f-a0b1-42ca-a6ef-5aef6a850504.jpg"
+    },
+    {
+      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\da15eb2c-525e-4697-b5ac-36f476a47cb2.jpg",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "sanpham/da15eb2c-525e-4697-b5ac-36f476a47cb2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\sanpham\\da15eb2c-525e-4697-b5ac-36f476a47cb2.jpg"
     },
     {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\dcb5ac48-5bd7-4b00-9d32-984ea4099226.jpg",
@@ -1765,25 +1670,6 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\e73fb8a6-f6de-4776-ac5d-0bdad56e6670.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f4ca3b88-23c5-4cb4-b978-92b420eeb1ab.jpg",
-      "SourceId": "CuahangtraicayAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
-      "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "sanpham/f4ca3b88-23c5-4cb4-b978-92b420eeb1ab.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\sanpham\\f4ca3b88-23c5-4cb4-b978-92b420eeb1ab.jpg"
-    },
-    {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f5a89b21-f243-4b7e-b17b-8ea49d1bd573.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
@@ -1822,12 +1708,12 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\f63b6b95-904d-4c97-baa4-c2b9cfba6bf8.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\2e6d7b0a-8b8e-4ee4-8596-43a69ec33cbc.jpg",
+      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\98ade339-9ed7-406d-b4a1-01c70e132631.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "tenwebsite/2e6d7b0a-8b8e-4ee4-8596-43a69ec33cbc.jpg",
+      "RelativePath": "tenwebsite/98ade339-9ed7-406d-b4a1-01c70e132631.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1838,7 +1724,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\tenwebsite\\2e6d7b0a-8b8e-4ee4-8596-43a69ec33cbc.jpg"
+      "OriginalItemSpec": "wwwroot\\tenwebsite\\98ade339-9ed7-406d-b4a1-01c70e132631.jpg"
     },
     {
       "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\b0010f65-a38a-4d7e-96df-b7b48153792d.webp",

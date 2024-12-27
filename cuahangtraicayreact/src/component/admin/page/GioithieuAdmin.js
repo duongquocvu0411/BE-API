@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 import { toast, ToastContainer } from 'react-toastify';
 import SiderbarAdmin from '../SidebarAdmin';
 import { Link } from 'react-router-dom';
- 
+
 import ModalAddGioiThieu from '../modla/ModalThemGioithieu';
 
 const GioithieuAdmin = () => {
@@ -194,22 +194,29 @@ const GioithieuAdmin = () => {
                             <td>{gioithieu.phu_de}</td>
                             <td>{gioithieu.createdBy}</td>
                             <td>{gioithieu.updatedBy}</td>
-                            <td>{gioithieu.trang_thai === 1 ? "Hiển thị" : "Ẩn"}</td>
                             <td>
-                              <Button
-                                variant="primary me-2"
+                              <span
+                                className={`badge ${gioithieu.trang_thai === 1 ? 'bg-success' : 'bg-secondary'}`}
+                              >
+                                {gioithieu.trang_thai === 1 ? 'Đang hiển thị' : 'Không hiển thị'}
+                              </span>
+                            </td>
+                            <td>
+                            <div className="d-flex ">
+                              <button
+                                  className="btn btn-outline-warning btn-sm me-2"
                                 onClick={() => moModalSuaGioithieu(gioithieu)}
-                                className="btn btn-sm btn-primary"
                               >
                                 <i className="fas fa-edit"></i>
-                              </Button>
-                              <Button
-                                variant="danger"
+                              </button>
+
+                              <button
                                 onClick={() => handleHienThiModalXoa(gioithieu)}
-                                className="btn btn-sm btn-danger"
+                                className="btn btn-outline-danger btn-sm"
                               >
                                 <i className="fas fa-trash"></i>
-                              </Button>
+                              </button>
+                              </div>
                             </td>
                           </tr>
                         ))}

@@ -149,7 +149,7 @@ const Dactrung = () => {
             <div className="card shadow mb-4">
               <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 className="m-0 font-weight-bold text-primary">Danh sách đặc trưng</h6>
-                <Button variant="primary" onClick={moModalThemDactrung}>
+                <Button variant="primary" onClick={moModalThemDactrung} className="btn-sm">
                   <i className="fas fa-plus-circle"></i> Thêm đặc trưng
                 </Button>
               </div>
@@ -181,20 +181,22 @@ const Dactrung = () => {
                           <td>{dactrung.createdBy}</td>
                           <td>{dactrung.updatedBy}</td>
                           <td>
-                            <Button
-                              variant="primary me-2"
+                            <button
+                              className="btn btn-outline-warning btn-sm me-2"
+                             
                               onClick={() => moModalSuaDactrung(dactrung)}
                               title="Chỉnh sửa"
                             >
                               <i className="fas fa-edit"></i>
-                            </Button>
-                            <Button
-                              variant="danger"
+                            </button>
+                            <button
+                             className="btn btn-outline-danger btn-sm"
+                             
                               onClick={() => handleHienThiModalXoa(dactrung)}
                               title="Xóa"
                             >
                               <i className="fas fa-trash"></i>
-                            </Button>
+                            </button>
                           </td>
                         </tr>
                       ))}

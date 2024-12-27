@@ -131,14 +131,14 @@ const SanPham = () => {
     const SanphamXoa = danhSachSanPham.find((sanpham) => sanpham.id === id);
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-
+    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
     try {
-      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Thêm token vào header
-          },
-        });
+      // ?UpdatedBy=${encodeURIComponent(loggedInUser)} truyền updatedBy vào api xóa để lấy thông tin người cập nhật cuối cùng 
+      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}?UpdatedBy=${encodeURIComponent(loggedInUser)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Thêm token vào header
+        },
+      });
 
       toast.success(`Sản phẩm ${SanphamXoa.tieude} đã được xóa thành công!`, {
         position: 'top-right',
@@ -146,16 +146,24 @@ const SanPham = () => {
       });
 
       layDanhSachSanPham(); // Cập nhật danh sách sản phẩm sau khi xóa
-
     } catch (error) {
       console.log('Lỗi khi xóa sản phẩm:', error);
-      toast.error(`Sản phẩm ${SanphamXoa.tieude} chưa xóa được, vui lòng thử lại!`, {
-        position: 'top-right',
-        autoClose: 3000,
-      });
+      // Kiểm tra lỗi từ backend
+      if (error.response && error.response.data && error.response.data.message) {
+        // Nếu lỗi từ backend có thông báo cụ thể
+        toast.error(error.response.data.message, {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      } else {
+        // Thông báo lỗi mặc định nếu không lấy được từ backend
+        toast.error(`Sản phẩm ${SanphamXoa.tieude} chưa xóa được, vui lòng thử lại!`, {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      }
     }
   };
-
 
 
   // Hàm mở modal để xem chi tiết sản phẩm (gọi API lấy dữ liệu chi tiết)
@@ -263,7 +271,7 @@ const SanPham = () => {
           {/* Bảng danh sách sản phẩm */}
           <div className="container-fluid">
             <div className="card shadow mb-4">
-              <div className="card-header d-flex align-items-center justify-content-between">
+              <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 className="m-0 font-weight-bold text-primary">Danh sách sản phẩm</h6>
                 <Button variant="primary" onClick={moModalThemSanPham} className="btn-sm">
                   <i className="fas fa-plus-circle"></i> Thêm sản phẩm
@@ -278,13 +286,14 @@ const SanPham = () => {
                   </div>
                 ) : (
                   <div className="table-responsive">
-                    <table className="table table-striped table-bordered">
-                      <thead className="thead-dark">
+                    <table className="table table-hover table-bordered table-sm align-middle ">
+                      <thead className="table-dark text-center">
                         <tr>
                           <th>#</th>
-                          <th>Hình ảnh</th>
+                          <th>Hình</th>
                           <th>Tên</th>
                           <th>Giá</th>
+                          <th>Số lượng </th>
                           <th>Đơn vị</th>
                           <th>Chi tiết</th>
                           <th>Đánh giá</th>
@@ -295,72 +304,101 @@ const SanPham = () => {
                           <th>Chức năng</th>
                         </tr>
                       </thead>
-                      <tbody> 
+                      <tbody>
                         {danhSachSanPham.length > 0 ? (
                           sanPhamTheoTrang.map((sanPham, index) => (
-                            <tr key={nanoid()}>
-                              <td>{viTriSanPhamDau + index + 1}</td>
-                              <td><img src={sanPham.hinhanh} alt={sanPham.tieude} style={{ width: '100px', objectFit: 'cover' }} /></td>
-                              <td>{sanPham.tieude}</td>
-                              <td>{parseFloat(sanPham.giatien).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} VNĐ</td>
+                            <tr key={sanPham.id}>
+                              <td className="text-center">{viTriSanPhamDau + index + 1}</td>
+                              <td className="text-center">
+                                <img
+                                  src={sanPham.hinhanh}
+                                  alt={sanPham.tieude}
+                                  className="rounded img-thumbnail"
+                                  style={{ width: '60px', height: '60px', objectFit: 'cover' }}
+                                />
+                              </td>
+                              <td className="text-truncate" style={{ maxWidth: '150px' }} title={sanPham.tieude}>
+                                {sanPham.tieude}
+                              </td>
+                              <td className="text-end">
+                              {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                              </td>
+                              <td>
+                                {sanPham.soluong}
+                              </td>
                               <td>{sanPham.don_vi_tinh}</td>
-                              <td>
-                                <Button variant="info" onClick={() => moModalChiTiet(sanPham.id)}>Chi tiết</Button>
+                              <td className="text-center">
+                                <button className="btn btn-outline-info btn-sm" onClick={() => moModalChiTiet(sanPham.id)}>
+                                  <i className="fas fa-eye"></i>
+                                </button>
                               </td>
-                              <td>
-                                <Button variant="secondary" onClick={() => moModalDanhGia(sanPham.id)}>Xem Đánh Giá</Button>
+                              <td className="text-center">
+                                <button className="btn btn-outline-secondary btn-sm" onClick={() => moModalDanhGia(sanPham.id)}>
+                                  <i className="fas fa-star"></i>
+                                </button>
                               </td>
-                              <td>{sanPham.trangthai}</td>
-                              <td>
+                              <td className="text-center">
+                                <span className={`badge ${sanPham.trangthai === 'Còn hàng' ? 'bg-success' : 'bg-danger'}`}>
+                                  {sanPham.trangthai}
+                                </span>
+                              </td>
+                              <td className="text-center">
                                 {sanPham.sanphamSales.length > 0 ? (
                                   sanPham.sanphamSales.map((sale) => (
-                                    <div key={sale.id}>
-                                      <p>Trạng thái: {sale.trangthai}</p>
-                                      {sale.trangthai === "Đang áp dụng" ? (
-                                        <p>
-                                          Còn lại:{" "}
+                                    <div key={sale.id} className="mb-1 text-truncate" style={{ maxWidth: '150px' }}>
+                                      <span className={`badge ${sale.trangthai === 'Đang áp dụng' ? 'bg-success' : 'bg-danger'}`}>
+                                        {sale.trangthai}
+                                      </span>
+                                      {sale.trangthai === 'Đang áp dụng' && (
+                                        <small className="d-block text-muted">
                                           <Countdown
                                             date={new Date(sale.thoigianketthuc)}
                                             renderer={({ days, hours, minutes, seconds, completed }) =>
                                               completed ? (
-                                                <span>Khuyến mãi đã kết thúc</span>
+                                                <span>Đã kết thúc</span>
                                               ) : (
                                                 <span>
-                                                  {days} ngày {hours} giờ {minutes} phút {seconds} giây
+                                                  {days}d {hours}h {minutes}‘  {seconds}s
                                                 </span>
                                               )
                                             }
                                           />
-                                        </p>
-                                      ) : (
-                                        <span>Khuyến mãi đã kết thúc</span>
+                                        </small>
                                       )}
                                     </div>
                                   ))
                                 ) : (
-                                  <span>Không có khuyến mãi</span>
+                                  <span className="badge bg-secondary">Không có</span>
                                 )}
                               </td>
-                              <td>{sanPham.createdBy}</td>
-                              <td>{sanPham.updatedBy}</td>
-                              <td>
-                                <Button variant="warning" onClick={() => moModalSuaSanPham(sanPham)}><i className="fas fa-edit"></i></Button>
-                                <Button
-                                  variant="danger"
-                                  onClick={() => handleHienThiModalXoa(sanPham)}
-                                  title="Xóa sản phẩm"
-                                >
-                                  <i className="fas fa-trash"></i>
-                                </Button>
-
+                              <td className="text-truncate" style={{ maxWidth: '100px' }} title={sanPham.createdBy}>
+                                {sanPham.createdBy}
+                              </td>
+                              <td className="text-truncate" style={{ maxWidth: '100px' }} title={sanPham.updatedBy}>
+                                {sanPham.updatedBy}
+                              </td>
+                              <td className="text-center">
+                                <div className="btn-group">
+                                  <button className="btn btn-outline-warning btn-sm" onClick={() => moModalSuaSanPham(sanPham)}>
+                                    <i className="fas fa-edit"></i>
+                                  </button>
+                                  <button className="btn btn-outline-danger btn-sm" onClick={() => handleHienThiModalXoa(sanPham)}>
+                                    <i className="fas fa-trash"></i>
+                                  </button>
+                                </div>
                               </td>
                             </tr>
                           ))
                         ) : (
-                          <tr><td colSpan="10" className="text-center">Không có sản phẩm nào</td></tr>
+                          <tr>
+                            <td colSpan="12" className="text-center">
+                              Không có sản phẩm nào
+                            </td>
+                          </tr>
                         )}
                       </tbody>
                     </table>
+
                   </div>
                 )}
               </div>

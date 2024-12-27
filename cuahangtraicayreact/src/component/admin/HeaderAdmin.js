@@ -18,7 +18,7 @@ const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "
   },[])
   const layThongTinWebsiteHoatDong = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite/active`);
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite`);
       if (response.data && response.data.length > 0) {
         const baseURL = process.env.REACT_APP_BASEURL;
         setThongTinWebsite({
@@ -26,12 +26,6 @@ const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "
           favicon: `${baseURL}${response.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
         });
         console.log(thongTinWebsite.favicon)
-      } else {
-        toast.info("Không có website đang hoạt động", {
-          position: "top-right",
-          autoClose: 3000,
-        });
-        console.log("Không có website đang hoạt động");
       }
     } catch (err) {
       console.error("Lỗi khi gọi API thông tin website:", err);

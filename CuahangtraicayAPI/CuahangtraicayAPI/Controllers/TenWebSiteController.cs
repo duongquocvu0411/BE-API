@@ -20,7 +20,7 @@ namespace CuahangtraicayAPI.Controllers
         /// Lấy danh sách tất cả các Website.
         /// </summary>
         /// <returns>Danh sách Website.</returns>
-       
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -33,7 +33,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <param name="id">ID của Website.</param>
         /// <returns>Thông tin chi tiết của Website.</returns>
 
-   
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -44,21 +44,23 @@ namespace CuahangtraicayAPI.Controllers
         }
 
 
-        /// <summary>
-        /// Lấy danh sách các Website đang hoạt động (TrangThai = 1).
-        /// </summary>
-        /// <returns>Danh sách Website đang hoạt động.</returns>
-      
+        ///// <summary>
+        ///// Lấy danh sách các Website đang hoạt động (TrangThai = 1).
+        ///// </summary>
+        ///// <returns>Danh sách Website đang hoạt động.</returns>
 
-        [HttpGet("active")]
-        public async Task<IActionResult> GetActiveItems()
-        {
-            var activeItems = await _context.TenwebSites
-                .Where(t => t.TrangThai == 1)
-                .ToListAsync();
 
-            return Ok(activeItems);
-        }
+        //[HttpGet("active")]
+        //public async Task<IActionResult> GetActiveItems()
+        //{
+        //    var activeItems = await _context.TenwebSites
+
+        //        .ToListAsync();
+
+        //    return Ok(activeItems);
+        //}
+
+
         /// <summary>
         /// Tạo mới một Website.
         /// </summary>
@@ -72,7 +74,9 @@ namespace CuahangtraicayAPI.Controllers
             var newTenWebSite = new TenwebSite
             {
                 Tieu_de = createDto.TieuDe,
-                TrangThai = createDto.TrangThai,
+                Email = createDto.Email,
+                Diachi = createDto.Diachi,
+                Sdt = createDto.Sodienthoai,
                 CreatedBy = createDto.Created_By,
                 UpdatedBy = createDto.Updated_By,
             };
@@ -115,8 +119,14 @@ namespace CuahangtraicayAPI.Controllers
             if (!string.IsNullOrEmpty(updateDto.TieuDe))
                 edit.Tieu_de = updateDto.TieuDe;
 
-            if (updateDto.TrangThai.HasValue)
-                edit.TrangThai = updateDto.TrangThai.Value;
+            if (!string.IsNullOrEmpty(updateDto.Email))
+                edit.Email = updateDto.Email;
+
+            if (!string.IsNullOrEmpty(updateDto.Diachi))
+                edit.Diachi = updateDto.Diachi;
+
+            if (!string.IsNullOrEmpty(updateDto.Sodienthoai))
+                edit.Sdt = updateDto.Sodienthoai;
 
             edit.UpdatedBy = updateDto.Updated_By;
             edit.Updated_at = DateTime.Now;
@@ -176,46 +186,46 @@ namespace CuahangtraicayAPI.Controllers
         }
 
 
-        [HttpPost("setTenwebsiter/{id}")]
-        [Authorize]
-        public async Task<IActionResult> SetDiaChiHien(int id, SetTenwebSiteDto dto)
-        {
-            // Kiểm tra tính hợp lệ của DTO
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[HttpPost("setTenwebsiter/{id}")]
+        //[Authorize]
+        //public async Task<IActionResult> SetDiaChiHien(int id, SetTenwebSiteDto dto)
+        //{
+        //    // Kiểm tra tính hợp lệ của DTO
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            // Lấy tất cả bản ghi
-            var allTenwebSites = await _context.TenwebSites.ToListAsync();
+        //    // Lấy tất cả bản ghi
+        //    var allTenwebSites = await _context.TenwebSites.ToListAsync();
 
-            // Cập nhật trạng thái "không sử dụng" cho tất cả các bản ghi
-            foreach (var tenweb in allTenwebSites)
-            {
-                tenweb.TrangThai = 0;
+        //    // Cập nhật trạng thái "không sử dụng" cho tất cả các bản ghi
+        //    foreach (var tenweb in allTenwebSites)
+        //    {
+        //        tenweb.TrangThai = 0;
 
-                // Chỉ cập nhật `UpdatedBy` cho bản ghi được chọn
-                if (tenweb.Id == id)
-                {
-                    tenweb.UpdatedBy = dto.Updated_By; // Ghi lại người cập nhật
-                }
-            }
+        //        // Chỉ cập nhật `UpdatedBy` cho bản ghi được chọn
+        //        if (tenweb.Id == id)
+        //        {
+        //            tenweb.UpdatedBy = dto.Updated_By; // Ghi lại người cập nhật
+        //        }
+        //    }
 
-            // Tìm bản ghi với ID được chọn
-            var tenwebSite = allTenwebSites.FirstOrDefault(t => t.Id == id);
-            if (tenwebSite == null)
-            {
-                return NotFound(new { message = "Không tìm thấy TenwebSite với ID được cung cấp." });
-            }
+        //    // Tìm bản ghi với ID được chọn
+        //    var tenwebSite = allTenwebSites.FirstOrDefault(t => t.Id == id);
+        //    if (tenwebSite == null)
+        //    {
+        //        return NotFound(new { message = "Không tìm thấy TenwebSite với ID được cung cấp." });
+        //    }
 
-            // Cập nhật trạng thái cho bản ghi được chọn
-            tenwebSite.TrangThai = 1;
+        //    // Cập nhật trạng thái cho bản ghi được chọn
+        //    tenwebSite.TrangThai = 1;
 
-            // Lưu thay đổi
-            await _context.SaveChangesAsync();
+        //    // Lưu thay đổi
+        //    await _context.SaveChangesAsync();
 
-            return Ok(new { message = "TenwebSite đã được chọn làm TenwebSite đang sử dụng." });
-        }
+        //    return Ok(new { message = "TenwebSite đã được chọn làm TenwebSite đang sử dụng." });
+        //}
 
     }
 }

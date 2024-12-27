@@ -1655,6 +1655,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CuahangtraicayAPI.Controllers.PaymentController",
+    "Method": "PaymentResponse",
+    "RelativePath": "api/Payment/PaymentResponse",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.PaymentController",
+    "Method": "Paymomo",
+    "RelativePath": "api/Payment/Paymomo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController",
     "Method": "CreatePhanHoi",
     "RelativePath": "api/PhanHoiDanhGia",
@@ -1772,6 +1792,11 @@
         "IsRequired": false
       },
       {
+        "Name": "so_luong",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
         "Name": "Trangthai",
         "Type": "System.String",
         "IsRequired": false
@@ -1884,6 +1909,11 @@
         "IsRequired": false
       },
       {
+        "Name": "So_luong",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
         "Name": "Giatien",
         "Type": "System.Decimal",
         "IsRequired": false
@@ -1901,6 +1931,11 @@
       {
         "Name": "DanhmucsanphamId",
         "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Xoasp",
+        "Type": "System.Boolean",
         "IsRequired": false
       },
       {
@@ -1968,6 +2003,11 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "UpdatedBy",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -2471,6 +2511,21 @@
         "IsRequired": false
       },
       {
+        "Name": "Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sodienthoai",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Diachi",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "Created_By",
         "Type": "System.String",
         "IsRequired": false
@@ -2528,8 +2583,18 @@
         "IsRequired": false
       },
       {
-        "Name": "TrangThai",
-        "Type": "System.Nullable\u00601[[System.Byte, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Name": "Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sodienthoai",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Diachi",
+        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -2551,37 +2616,6 @@
       {
         "Name": "id",
         "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CuahangtraicayAPI.Controllers.TenWebSiteController",
-    "Method": "GetActiveItems",
-    "RelativePath": "api/TenWebSite/active",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CuahangtraicayAPI.Controllers.TenWebSiteController",
-    "Method": "SetDiaChiHien",
-    "RelativePath": "api/TenWebSite/setTenwebsiter/{id}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "dto",
-        "Type": "CuahangtraicayAPI.DTO.TenwebSiteDTO\u002BSetTenwebSiteDto",
         "IsRequired": true
       }
     ],

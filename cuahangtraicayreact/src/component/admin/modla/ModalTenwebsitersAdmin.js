@@ -7,7 +7,9 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
   const defaultFormState = {
     tieu_de: "",
     favicon: null,
-    trangThai: 0, // Thêm trạng thái mặc định
+    Email: "",
+    sdt: "",
+    Diachi: ""
   };
 
   const [formData, setFormData] = useState(defaultFormState);
@@ -16,13 +18,15 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
 
 
   useEffect(() => {
-   
+
 
     if (isEdit && Website) {
       setFormData({
         tieu_de: Website.tieu_de || "",
         favicon: null,
-        trangThai: Website.trangThai || 0, // Lấy trạng thái từ Website
+        Diachi: Website.diachi || "",
+        Email: Website.email || "",
+        Sodienthoai: Website.sdt || ""
       });
 
       if (Website.favicon) {
@@ -67,16 +71,18 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
       const token = isLoggedIn
         ? localStorage.getItem("adminToken")
         : sessionStorage.getItem("adminToken");
-        const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+      const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
       const form = new FormData();
       form.append("TieuDe", formData.tieu_de);
       form.append("Favicon", formData.favicon);
-      form.append("TrangThai", formData.trangThai); // Gửi trạng thái
+      form.append("Email", formData.Email);
+      form.append("Diachi", formData.Diachi);
+      form.append('Sodienthoai', formData.Sodienthoai);
 
       if (isEdit) {
-        form.append("Updated_By",loggedInUser);
+        form.append("Updated_By", loggedInUser);
         await axios.put(
-         
+
           `${process.env.REACT_APP_BASEURL}/api/Tenwebsite/${Website.id}`,
           form,
           {
@@ -84,12 +90,12 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
               Authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data",
             },
-          } 
+          }
         );
         toast.success("Cập nhật Website thành công!", { position: "top-right", autoClose: 3000 });
       } else {
-        form.append('Created_By',loggedInUser);
-        form.append('Updated_By',loggedInUser);
+        form.append('Created_By', loggedInUser);
+        form.append('Updated_By', loggedInUser);
         await axios.post(`${process.env.REACT_APP_BASEURL}/api/Tenwebsite`, form, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -144,11 +150,57 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
               name="tieu_de"
               value={formData.tieu_de}
               onChange={handleInputChange}
+              placeholder="Nhập Email Website"
+              className="shadow-sm"
+              style={{ borderRadius: "8px" }}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-4" controlId="formEmail">
+            <Form.Label className="fw-bold">
+              <i className="bi bi-card-text me-2"></i> Email *
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="Email"
+              value={formData.Email}
+              onChange={handleInputChange}
               placeholder="Nhập tiêu đề Website"
               className="shadow-sm"
               style={{ borderRadius: "8px" }}
               required
             />
+          </Form.Group>
+          <Form.Group className="mb-4" controlId="formTieuDe">
+            <Form.Label className="fw-bold">
+              <i className="bi bi-card-text me-2"></i> Địa chỉ  *
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="Diachi"
+              value={formData.Diachi}
+              onChange={handleInputChange}
+              placeholder="Nhập tiêu đề Website"
+              className="shadow-sm"
+              style={{ borderRadius: "8px" }}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-4" controlId="formTieuDe">
+            <Form.Label className="fw-bold">
+              <i className="bi bi-card-text me-2"></i> Số điện thoại *
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="Sodienthoai" // Đúng
+              value={formData.Sodienthoai}
+              onChange={handleInputChange}
+              placeholder="Nhập số điện thoại"
+              className="shadow-sm"
+              style={{ borderRadius: "8px" }}
+              required
+            />
+
           </Form.Group>
 
           <Form.Group className="mb-4" controlId="formFavicon">

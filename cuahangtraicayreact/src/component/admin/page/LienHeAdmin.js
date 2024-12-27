@@ -161,13 +161,13 @@ const LienHeAdmin = () => {
                           <td>{new Date(item.created_at).toLocaleDateString()}</td>
                           <td>
                             {/* Nút xóa với icon rõ ràng */}
-                            <Button
-                              variant="danger"
+                            <button
+                              
                               onClick={() => handleHienThiModalXoa(item)}
-                              className="btn-sm"
+                               className="btn btn-outline-danger btn-sm"
                             >
                               <i className="bi bi-trash3-fill"></i>
-                            </Button>
+                            </button>
                           </td>
                         </tr>
                       ))}

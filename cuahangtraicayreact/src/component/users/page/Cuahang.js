@@ -195,7 +195,18 @@ const Cuahang = () => {
                           e.currentTarget.style.boxShadow = "none";
                         }}
                       >
-                        <Link to={`/sanpham/${sanPham.id}`} className="text-decoration-none">
+                        {/* Hiển thị số lượng ở góc trên bên phải */}
+                        <div
+                          className="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 rounded-bottom-left"
+                          style={{
+                            fontSize: "0.8rem",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Số lượng: {sanPham.soluong || 0}
+                        </div>
+
+                        <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`} className="text-decoration-none">
                           <img
                             src={sanPham.hinhanh}
                             className="card-img-top img-fluid rounded-top"
@@ -204,7 +215,7 @@ const Cuahang = () => {
                           />
                         </Link>
                         <div className="card-body d-flex flex-column text-center">
-                          <Link to={`/sanpham/${sanPham.id}`} className="card-title text-success fw-bold text-decoration-none h5">
+                          <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`} className="card-title text-success fw-bold text-decoration-none h5">
                             {sanPham.tieude || "Tên sản phẩm không rõ"}
                           </Link>
                           <p
@@ -218,10 +229,8 @@ const Cuahang = () => {
                           ></p>
 
                           <p className="text-dark fs-5 fw-bold">
-                            {parseFloat(sanPham.giatien || 0).toLocaleString("vi-VN", {
-                              minimumFractionDigits: 3,
-                            })}{" "}
-                            VND
+                            {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                            / {sanPham.don_vi_tinh}
                           </p>
                           {sanPham.trangthai === "Hết hàng" ? (
                             <span className="badge bg-danger py-2 px-3">Hết hàng</span>
@@ -234,6 +243,7 @@ const Cuahang = () => {
                             </button>
                           )}
                         </div>
+
                       </div>
                     </div>
                   ))}
@@ -308,8 +318,19 @@ const Cuahang = () => {
                               e.currentTarget.style.boxShadow = "none";
                             }}
                           >
+                            {/* Hiển thị số lượng ở góc trên bên phải */}
+                            <div
+                              className="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 rounded-bottom-left"
+                              style={{
+                                fontSize: "0.8rem",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Số lượng: {sanPham.soluong || 0}
+                            </div>
+
                             {/* Hình ảnh sản phẩm */}
-                            <Link to={`/sanpham/${sanPham.id}`} className="text-decoration-none">
+                            <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`} className="text-decoration-none">
                               <img
                                 src={sanPham.hinhanh || "/path/to/default-image.jpg"}
                                 className="card-img-top img-fluid rounded-top"
@@ -350,16 +371,16 @@ const Cuahang = () => {
                                   className="text-muted mb-0 text-decoration-line-through"
                                   style={{ fontSize: "0.9rem" }}
                                 >
-                                  {parseFloat(sanPham.giatien || 0).toLocaleString("vi-VN", {
-                                    minimumFractionDigits: 3,
-                                  })}{" "}
-                                  VND
+                                  {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+
                                 </p>
                                 <p className="text-danger fw-bold fs-5 mb-0">
-                                  {parseFloat(sale?.giasale || 0).toLocaleString("vi-VN", {
+                                  {parseFloat(sale?.giasale || 0).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                                  {/* {parseFloat(sale?.giasale || 0).toLocaleString("vi-VN", {
                                     minimumFractionDigits: 3,
                                   })}{" "}
-                                  VND
+                                  VND  */}
+                                  / {sanPham.don_vi_tinh}
                                 </p>
                               </div>
                               {!daHethan && sanPham.trangthai !== "Hết hàng" && (

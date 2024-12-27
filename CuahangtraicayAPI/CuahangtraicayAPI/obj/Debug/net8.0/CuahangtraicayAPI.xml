@@ -300,13 +300,11 @@
             <summary>
             Lấy danh sách hóa đơn
             </summary>
-            <returns>  Lấy danh sách hóa đơn</returns>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.HoaDonController.CreateHoaDon(CuahangtraicayAPI.DTO.HoadonDTO.HoaDonDto)">
             <summary>
-             Thêm mới hóa đơn 
+            Tạo hóa đơn mới
             </summary>
-            <returns> Thêm mới hóa đơn  </returns>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.HoaDonController.GetHoaDonByOrderCode(System.String)">
             <summary>
@@ -510,7 +508,7 @@
             </summary>
             <returns> Chỉnh sửa sản phẩm theo {id}  </returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.SanphamController.DeleteSanpham(System.Int32)">
+        <member name="M:CuahangtraicayAPI.Controllers.SanphamController.DeleteSanpham(System.Int32,System.String)">
             <summary>
              Xóa sản phẩm theo {id}
             </summary>
@@ -655,12 +653,6 @@
             </summary>
             <param name="id">ID của Website.</param>
             <returns>Thông tin chi tiết của Website.</returns>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.GetActiveItems">
-            <summary>
-            Lấy danh sách các Website đang hoạt động (TrangThai = 1).
-            </summary>
-            <returns>Danh sách Website đang hoạt động.</returns>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.TenWebSiteController.Create(CuahangtraicayAPI.DTO.TenwebSiteDTO.CreateTenWebSiteDto)">
             <summary>

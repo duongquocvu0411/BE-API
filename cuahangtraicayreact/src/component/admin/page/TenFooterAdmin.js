@@ -224,20 +224,23 @@ const TenFooterAdmin = () => {
                           <td>{tf.createdBy}</td>
                           <td>{tf.updatedBy}</td>
                           <td>
-                            <Button
-                              variant="primary me-2"
+                            <button
+                             className="btn btn-outline-warning btn-sm me-2"
+                             
                               onClick={() => moModalSuaTenFooter(tf)}
                               title="Chỉnh sửa"
                             >
                               <i className="fas fa-edit"></i>
-                            </Button>
-                            <Button
-                              variant="danger"
+                            </button>
+
+                            <button
+                             className="btn btn-outline-danger btn-sm"
+                             
                               onClick={() => handleHienThiModalXoa(tf)}
                               title="Xóa"
                             >
                               <i className="fas fa-trash"></i>
-                            </Button>
+                            </button>
 
                           </td>
                         </tr>

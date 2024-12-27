@@ -1,0 +1,95 @@
+ [HttpPost]
+ public async Task<ActionResult> CreateHoaDon(HoadonDTO.HoaDonDto hoaDonDto)
+ {
+     var orderCode = GenerateOrderCode();
+     long totalPrice = 0;
+
+     for (int i = 0; i < hoaDonDto.SanphamIds.Count; i++)
+     {
+         var sanpham = await _context.Sanpham
+             .Include(sp => sp.SanphamSales)
+             .FirstOrDefaultAsync(sp => sp.Id == hoaDonDto.SanphamIds[i]);
+
+         if (sanpham == null)
+         {
+             return BadRequest(new { message = $"Sản phẩm với ID {hoaDonDto.SanphamIds[i]} không tồn tại." });
+         }
+
+         var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
+         var gia = activeSale != null ? activeSale.giasale : sanpham.Giatien;
+
+         if (sanpham.Soluong < hoaDonDto.Quantities[i])
+         {
+             return BadRequest(new { message = $"Số lượng sản phẩm '{sanpham.Tieude}' không đủ." });
+         }
+
+         totalPrice += Convert.ToInt64(Math.Round(gia * hoaDonDto.Quantities[i], 0));
+     }
+
+     if (hoaDonDto.PaymentMethod == "VnPay")
+     {
+         var bill = new HoaDon
+         {
+             khachhang_id = hoaDonDto.KhachHangId,
+             total_price = totalPrice,
+             order_code = orderCode,
+             status = "Chờ thanh toán",
+             UpdatedBy = hoaDonDto.Updated_By ?? "Chưa có tác động"
+         };
+
+         _context.HoaDons.Add(bill);
+         await _context.SaveChangesAsync();
+
+         var paymentInfo = new PaymentInformationModel
+         {
+             OrderType = "billpayment",
+             Amount = totalPrice,
+             OrderDescription = $"Thanh toán hóa đơn {orderCode}",
+             Name = "Khách hàng",
+         };
+
+         var paymentUrl = _vnPayService.CreatePaymentUrl(paymentInfo, HttpContext);
+         return Ok(new { message = "URL thanh toán được tạo thành công.", paymentUrl, bill });
+     }
+     else
+     {
+         var bill = new HoaDon
+         {
+             khachhang_id = hoaDonDto.KhachHangId,
+             total_price = totalPrice,
+             order_code = orderCode,
+             status = "Chờ xử lý",
+             UpdatedBy = hoaDonDto.Updated_By ?? "Chưa có tác động"
+         };
+
+         _context.HoaDons.Add(bill);
+         await _context.SaveChangesAsync();
+
+         for (int i = 0; i < hoaDonDto.SanphamIds.Count; i++)
+         {
+             var sanpham = await _context.Sanpham
+                 .Include(sp => sp.SanphamSales)
+                 .FirstOrDefaultAsync(sp => sp.Id == hoaDonDto.SanphamIds[i]);
+
+             if (sanpham != null)
+             {
+                 var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
+                 var gia = activeSale != null ? activeSale.giasale : sanpham.Giatien;
+
+                 var chiTiet = new HoaDonChiTiet
+                 {
+                     bill_id = bill.Id,
+                     sanpham_ids = hoaDonDto.SanphamIds[i].ToString(),
+                     price = (gia) * hoaDonDto.Quantities[i],
+                     quantity = hoaDonDto.Quantities[i]
+                 };
+
+                 _context.HoaDonChiTiets.Add(chiTiet);
+                 _context.Sanpham.Update(sanpham);
+             }
+         }
+
+         await _context.SaveChangesAsync();
+         return Ok(new { message = "Đơn hàng đã được tạo", order_code = orderCode, bill });
+     }
+ }

@@ -1,8 +1,11 @@
 ﻿
+using CuahangtraicayAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProGCoder_MomoAPI.Models.Momo;
+using ProGCoder_MomoAPI.Services;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -13,7 +16,14 @@ namespace CuahangtraicayAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
 
+            builder.Services.AddScoped<IMomoService, MomoService>();
+
+            // đăng ký VnPay service
+            builder.Services.AddScoped<IVnPayService, VnPayService>();
+            // đang ký email
+            builder.Services.AddSingleton<EmailHelper>();
             var API = "allApi";
             builder.Services.AddCors(ots =>
             {

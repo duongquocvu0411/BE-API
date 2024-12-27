@@ -29,6 +29,9 @@ import GioithieuAdmin from "./component/admin/page/GioithieuAdmin";
 import MenuFooter from "./component/admin/page/MenuFooter";
 import QuanlyFooter from "./component/admin/page/QuanlyFooter";
 import TenwebSitersAdmin from "./component/admin/page/TenwebSitersAdmin";
+import PaymentResult from "./component/users/PaymentResult ";
+import PaymentInfo from "./component/users/page/PaymentInfo";
+
 // import MenuFooter from "./component/admin/page/MenuFooter";
 
 function App() {
@@ -45,14 +48,14 @@ function App() {
             <Route path="/admin/login" element={<ProtectedRoute congkhai={true}><LoginAdmin /></ProtectedRoute>} />
 
 
-            <Route
+            {/* <Route
               path="/admin/diachichitiet"
               element={
                 <ProtectedRoute>
                   <DiaChiChiTiet />
                 </ProtectedRoute>
               }
-            />
+            /> */}
             <Route
               path="/admin/tencuahang"
               element={
@@ -149,14 +152,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-              {/* <Route
-              path="/admin/menuFooter"
-              element={
-                <ProtectedRoute>
-                  <MenuFooter />
-                </ProtectedRoute>
-              }
-            /> */}
             <Route
               path="/admin/Trangchu"
               element={
@@ -186,7 +181,7 @@ function App() {
             <Route path="/" element={<TrangchuNguoidung />} />
             <Route path="/cuahang" element={<Cuahang />} />
             <Route path="/thanhtoan" element={<Thanhtoan />} />
-            <Route path="/sanpham/:id" element={<CuahangChitiet />} />
+            <Route path="/sanpham/:name/:id" element={<CuahangChitiet />} />
             <Route path="/giohang" element={<Giohang />} />
             <Route path="/gioithieu" element={<Gioithieu />} />
 
@@ -195,7 +190,8 @@ function App() {
 
             {/* chuyển người dùng đến trang ErrorPage nếu dùng đường truyền router sai */}
             <Route path="*" element={<Trangloi />} />
-            
+            <Route path="/payment-result" element={<PaymentResult />} />
+            <Route path="/payment-info" element={<PaymentInfo  />} />
           </Routes>
         </Router>
       </CartProvider>

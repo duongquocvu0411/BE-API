@@ -1,0 +1,97 @@
+[HttpPost]
+public async Task<ActionResult> CreateHoaDon(HoadonDTO.HoaDonDto hoaDonDto)
+{
+    var orderCode = GenerateOrderCode();
+
+    // Tính tổng giá trị của hóa đơn
+    var totalPrice = 0m;
+
+    for (int i = 0; i < hoaDonDto.SanphamIds.Count; i++)
+    {
+        var sanpham = await _context.Sanpham
+            .Include(sp => sp.SanphamSales) // Bao gồm thông tin khuyến mãi
+            .FirstOrDefaultAsync(sp => sp.Id == hoaDonDto.SanphamIds[i]);
+
+        if (sanpham != null)
+        {
+            // Kiểm tra nếu sản phẩm có khuyến mãi "active"
+            var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
+            var gia = activeSale != null ? activeSale.giasale : sanpham.Giatien; // Ưu tiên giá khuyến mãi nếu có
+
+            totalPrice += (gia) * hoaDonDto.Quantities[i];
+        }
+    }
+
+    // Tạo hóa đơn mới
+    var bill = new HoaDon
+    {
+        khachhang_id = hoaDonDto.KhachHangId,
+        total_price = totalPrice,
+        order_code = orderCode,
+        status = "Chờ xử lý",
+        UpdatedBy = hoaDonDto.Updated_By ?? "Chưa có tác động"
+    };
+    _context.HoaDons.Add(bill);
+    await _context.SaveChangesAsync();
+
+    // Tạo chi tiết hóa đơn
+    for (int i = 0; i < hoaDonDto.SanphamIds.Count; i++)
+    {
+        var sanpham = await _context.Sanpham
+            .Include(sp => sp.SanphamSales)
+            .FirstOrDefaultAsync(sp => sp.Id == hoaDonDto.SanphamIds[i]);
+
+        if (sanpham != null)
+        {
+            var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
+            var gia = activeSale != null ? activeSale.giasale : sanpham.Giatien;
+
+            var chiTiet = new HoaDonChiTiet
+            {
+                bill_id = bill.Id,
+                sanpham_ids = hoaDonDto.SanphamIds[i].ToString(),
+                price = (gia) * hoaDonDto.Quantities[i],
+                quantity = hoaDonDto.Quantities[i]
+            };
+            _context.HoaDonChiTiets.Add(chiTiet);
+        }
+    }
+    await _context.SaveChangesAsync();
+
+    // Lấy thông tin khách hàng
+    var customer = await _context.KhachHangs.FirstOrDefaultAsync(kh => kh.Id == hoaDonDto.KhachHangId);
+
+    // Chuẩn bị nội dung email thông báo
+    var emailSubject = "Thông báo: Đơn hàng mới được tạo";
+    var emailMessage = $@"
+<h2>Thông tin hóa đơn mới</h2>
+<p><strong>Khách hàng:</strong> {customer?.Ho} {customer?.Ten}</p>
+<p><strong>Email:</strong> {customer?.EmailDiaChi}</p>
+<p><strong>Số điện thoại:</strong> {customer?.Sdt}</p>
+<p><strong>Địa chỉ:</strong> {customer?.DiaChiCuThe}, {customer?.xaphuong}, {customer?.tinhthanhquanhuyen}, {customer?.ThanhPho}</p>
+<p><strong>Mã đơn hàng:</strong> {orderCode}</p>
+<p><strong>Tổng giá trị:</strong> {totalPrice:C}</p>
+<h3>Chi tiết đơn hàng</h3>";
+
+    // Thêm thông tin sản phẩm vào nội dung email
+    foreach (var chiTiet in _context.HoaDonChiTiets.Where(ct => ct.bill_id == bill.Id))
+    {
+        var sanphamId = int.Parse(chiTiet.sanpham_ids);
+        var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == sanphamId);
+
+        emailMessage += $@"
+    <p>- {sanpham?.Tieude} ({chiTiet.quantity} x {chiTiet.price / chiTiet.quantity:C})</p>";
+    }
+
+    // Gửi email về email chính
+    try
+    {
+        await _emailHelper.SendEmailAsync("quocvu0411@gmail.com", emailSubject, emailMessage);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Lỗi khi gửi email: {ex.Message}");
+    }
+
+    return Ok(new { message = "Đơn hàng đã được tạo", order_code = orderCode, bill });
+}

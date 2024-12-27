@@ -201,7 +201,7 @@ const Banners = () => {
             <div className="card shadow mb-4">
               <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 className="m-0 font-weight-bold text-primary">Danh sách banners</h6>
-                <Button variant="primary" onClick={moModalThemBanner} className="btn-lg">
+                <Button variant="primary" onClick={moModalThemBanner} className="btn-sm">
                   <i className="fas fa-plus-circle"></i> Thêm banner
                 </Button>
               </div>
@@ -219,6 +219,7 @@ const Banners = () => {
                         <th>Tiêu đề</th>
                         <th>Phụ đề</th>
                         <th>Hình ảnh</th>
+                        <th>Trạng thái</th>
                         <th>Người tạo</th>
                         <th>Người cập nhật</th>
                         <th>Chức năng</th>
@@ -241,34 +242,49 @@ const Banners = () => {
                               'Không có hình ảnh'
                             )}
                           </td>
+                          <td>
+                          <span
+                              className={`badge ${banner.trangthai === 'đang sử dụng' ? 'bg-success' : 'bg-secondary'}`}
+                            >
+                              {banner.trangthai === 'đang sử dụng' ? 'Đang sử dụng' : 'Không sử dụng'}
+                            </span>
+                          </td>
                           <td>{banner.createdBy}</td>
                           <td>{banner.updatedBy}</td>
+
                           <td>
-                            <Button
-                              variant="primary me-2"
-                              onClick={() => moModalSuaBanner(banner)}
-                              title="Chỉnh sửa banner"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
-                            <Button
-                              variant="danger"
-                              onClick={() => handleHienThiModalXoa(banner)}
-                              title="Xóa banner"
-                            >
-                              <i className="fas fa-trash"></i>
-                            </Button>
-                            {banner.trangthai !== 'đang sử dụng' && (
-                              <Button
-                                variant="success"
-                                onClick={() => suDungBanners(banner.id)}
-                                className="btn btn-sm btn-success"
-                                title="Sử dụng banner"
+                            <div className="d-flex gap-2">
+
+                              <button
+                                className="btn btn-outline-warning btn-sm"
+                                onClick={() => moModalSuaBanner(banner)}
+                                title="Chỉnh sửa Website"
                               >
-                                <i className="fas fa-check"></i> Sử dụng
-                              </Button>
-                            )}
+                                <i className="fas fa-edit"></i>
+                              </button>
+
+
+                              <button
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={() => handleHienThiModalXoa(banner)}
+                                title="Xóa Website"
+                              >
+                                <i className="fas fa-trash"></i>
+                              </button>
+
+
+                              {banner.trangthai !== 'đang sử dụng' && (
+                                <button
+                                  className="btn btn-outline-success btn-sm"
+                                  onClick={() => suDungBanners(banner.id)}
+                                  title="Sử dụng Website"
+                                >
+                                  <i className="fas fa-check-circle"></i> Sử dụng
+                                </button>
+                              )}
+                            </div>
                           </td>
+                          
                         </tr>
                       ))}
                     </tbody>

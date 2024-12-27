@@ -6,32 +6,35 @@ import ScrollToTop from 'react-scroll-to-top';
 import { toast } from "react-toastify";
 import ChatBot from "react-chatbotify";
 
-import { HelmetProvider,Helmet } from "react-helmet-async";
+import { HelmetProvider, Helmet } from "react-helmet-async";
 
-const HeaderUsers = () => {
+const HeaderUsers = ({ tieudeSanPham }) => {
   const vitriRoute = useLocation();
   const [diachichitiet, setDiachichitiet] = useState({ diachi: ' ', email: '' });
   const [tencuahang, setTencuahang] = useState('');
-  const [menuData, setMenuData] = useState([]); 
+  const [menuData, setMenuData] = useState([]);
   const { giohang } = useContext(CartContext);
-  const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "" });
+  const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "", email: "", diachi: "", sdt: "" });
 
   const tongSoLuong = giohang.reduce((tong, sanPham) => tong + sanPham.soLuong, 0);
 
   useEffect(() => {
-    fetchCurrentDiaChi();
+    // fetchCurrentDiaChi();
     fetchTencuahang();
     fetchMenuData();
     layThongTinWebsiteHoatDong();
   }, []);
- 
+
   const layThongTinWebsiteHoatDong = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite/active`);
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite`);
       if (response.data && response.data.length > 0) {
         const baseURL = process.env.REACT_APP_BASEURL;
         setThongTinWebsite({
           tieu_de: response.data[0].tieu_de,
+          email: response.data[0].email,
+          diachi: response.data[0].diachi,
+          sdt: response.data[0].sdt,
           favicon: `${baseURL}${response.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
         });
         console.log(thongTinWebsite.favicon)
@@ -51,21 +54,21 @@ const HeaderUsers = () => {
     }
   };
 
-  const fetchCurrentDiaChi = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/DiaChiChiTiet/getDiaChiHien`);
-      if (response.data) {
-        setDiachichitiet({
-          diachi: response.data.diachi,
-          email: response.data.email,
-        });
-      } else {
-        console.log('Không có địa chỉ đang sử dụng');
-      }
-    } catch (err) {
-      console.error('Lỗi khi lấy thông tin địa chỉ:', err);
-    }
-  };
+  // const fetchCurrentDiaChi = async () => {
+  //   try {
+  //     const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/DiaChiChiTiet/getDiaChiHien`);
+  //     if (response.data) {
+  //       setDiachichitiet({
+  //         diachi: response.data.diachi,
+  //         email: response.data.email,
+  //       });
+  //     } else {
+  //       console.log('Không có địa chỉ đang sử dụng');
+  //     }
+  //   } catch (err) {
+  //     console.error('Lỗi khi lấy thông tin địa chỉ:', err);
+  //   }
+  // };
 
   const fetchTencuahang = async () => {
     try {
@@ -101,17 +104,21 @@ const HeaderUsers = () => {
       });
     }
   };
-
+  // Xác định tiêu đề và favicon
+  const isDetailPage = vitriRoute.pathname.includes("/sanpham/");
+  const pageTitle = isDetailPage && tieudeSanPham
+    ? `${tieudeSanPham} - ${thongTinWebsite.tieu_de || "Tên website mặc định"}`
+    : thongTinWebsite.tieu_de || "Tên website mặc định";
   return (
     <>
       <HelmetProvider>
-      <Helmet>
-        <title>{thongTinWebsite.tieu_de || "Tên website mặc định"}</title>
-        {thongTinWebsite.favicon && (
-          <link rel="icon" type="image/x-icon" href={thongTinWebsite.favicon} />
-        )}
-      </Helmet>
-    </HelmetProvider>
+        <Helmet>
+          <title>{pageTitle}</title>
+          {thongTinWebsite.favicon && (
+            <link rel="icon" type="image/x-icon" href={thongTinWebsite.favicon} />
+          )}
+        </Helmet>
+      </HelmetProvider>
 
       <div className="container-fluid fixed-top">
         <div className="container topbar bg-primary">
@@ -119,13 +126,13 @@ const HeaderUsers = () => {
             <div className="col-6 col-sm-auto p-2">
               <small className="text-white d-flex align-items-center">
                 <i className="fas fa-map-marker-alt me-2" />
-                {diachichitiet.diachi}
+                {thongTinWebsite.diachi}
               </small>
             </div>
             <div className="col-6 col-sm-auto p-2">
               <small className="text-white d-flex align-items-center justify-content-end">
                 <i className="fas fa-envelope me-2" />
-                {diachichitiet.email}
+                {thongTinWebsite.email}
               </small>
             </div>
           </div>
@@ -134,7 +141,7 @@ const HeaderUsers = () => {
         <div className="container px-0">
           <nav className="navbar navbar-light bg-white navbar-expand-xl">
             <Link to="/" className="navbar-brand">
-              <h1 className="text-primary display-6">{tencuahang || "Tên cửa hàng mặc định"}</h1>
+              <h1 className="text-primary display-6">{thongTinWebsite.tieu_de}</h1>
             </Link>
             <button
               className="navbar-toggler py-2 px-3"

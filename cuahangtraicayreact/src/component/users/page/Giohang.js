@@ -106,7 +106,9 @@ const Giohang = () => {
                         </td>
                         <td>{sanPham.tieude}</td>
                         <td>
-                          {parseFloat(sanPham.gia).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} {"VND"}
+                          {/* {parseFloat(sanPham.gia).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} {"VND"} */}
+                          {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+
                           / {sanPham.don_vi_tinh}
                         </td>
                         <td>
@@ -134,9 +136,11 @@ const Giohang = () => {
                           </div>
                         </td>
                         <td>
-                          {(parseFloat(sanPham.gia) * sanPham.soLuong).toLocaleString("vi-VN", {
+                        {(parseFloat(sanPham.gia) * sanPham.soLuong).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+
+                          {/* {(parseFloat(sanPham.gia) * sanPham.soLuong).toLocaleString("vi-VN", {
                             minimumFractionDigits: 3,
-                          })} {"VND"}
+                          })} {"VND"} */}
                         </td>
                         <td>
                           <button
@@ -169,7 +173,8 @@ const Giohang = () => {
                     <div className="d-flex justify-content-between border-bottom pb-2">
                       <span className="fw-bold">Tổng:</span>
                       <span>
-                        {tongTienGioHang.toLocaleString("vi-VN", { minimumFractionDigits: 3 })} vnđ
+                     
+                        {tongTienGioHang.toLocaleString("vi-VN", { minimumFractionDigits: 0 })} vnđ
                       </span>
                     </div>
                     <div className="mt-4">

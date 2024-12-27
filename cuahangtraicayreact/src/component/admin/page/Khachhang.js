@@ -152,16 +152,20 @@ const Khachhangs = () => {
     }
   };
 
-  const capNhatTrangThai = async (billId, trangthaimoi) => {
-    try {
-      const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-      const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+  const [isLoading, setIsLoading] = useState(false); // Trạng thái loading
 
+  const capNhatTrangThai = async (billId, trangthaimoi) => {
+    setIsLoading(true); // Bắt đầu hiển thị hiệu ứng loading
+    try {
+      const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+      const token = isLoggedIn
+        ? localStorage.getItem('adminToken')
+        : sessionStorage.getItem('adminToken');
+  
       const loggedInUser = isLoggedIn
         ? localStorage.getItem("loginhoten")
         : sessionStorage.getItem("loginhoten");
-
-      // Gửi trạng thái cập nhật lên backend
+  
       await axios.put(
         `${process.env.REACT_APP_BASEURL}/api/HoaDon/UpdateStatus/${billId}`,
         {
@@ -171,17 +175,16 @@ const Khachhangs = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`, // Thêm token vào header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
+  
       toast.success('Đã cập nhật trạng thái đơn hàng thành công!', {
         position: 'top-right',
         autoClose: 3000,
       });
-
-      // Cập nhật trạng thái của đơn hàng trong danh sách khách hàng
+  
       setDanhSachKhachHang((prevList) =>
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
@@ -192,7 +195,7 @@ const Khachhangs = () => {
           return khachHang;
         })
       );
-
+  
       setKhachHangHienThi((prevList) =>
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
@@ -203,17 +206,19 @@ const Khachhangs = () => {
           return khachHang;
         })
       );
-
-      // Đóng modal sau khi cập nhật thành công
-      setHienThiModal(false);
+  
+      setHienThiModal(false); // Đóng modal sau khi cập nhật thành công
     } catch (error) {
       console.error('Có lỗi khi cập nhật trạng thái đơn hàng:', error);
       toast.error('Có lỗi khi cập nhật trạng thái đơn hàng!', {
         position: 'top-right',
         autoClose: 3000,
       });
+    } finally {
+      setIsLoading(false); // Tắt hiệu ứng loading sau khi hoàn thành
     }
   };
+  
 
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
@@ -228,7 +233,13 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-
+    const hoadonChoThanhToan = hoaDons.find(h => h.status === 'Đã Thanh toán');
+    if (hoadonChoThanhToan) {
+        return {
+            text: 'Đã Thanh toán',
+            bgColor: 'badge bg-info text-dark border border-info',
+        };
+    }
     // Trạng thái "Đang giao"
     const hoadonDangGiao = hoaDons.find(h => h.status === 'Đang giao');
     if (hoadonDangGiao) {
@@ -238,7 +249,7 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-
+  
     // Trạng thái "Đã giao thành công"
     const hoadonGiaoThanhCong = hoaDons.find(h => h.status === 'Đã giao thành công');
     if (hoadonGiaoThanhCong) {
@@ -248,7 +259,6 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-
     // Trạng thái "Hủy đơn"
     const hoadonHuy = hoaDons.find(h => h.status === 'Hủy đơn');
     if (hoadonHuy) {
@@ -258,7 +268,7 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-
+  
     // Trạng thái "Giao không thành công"
     const hoadonKhongGiaoThanhCong = hoaDons.find(h => h.status === 'Giao không thành công');
     if (hoadonKhongGiaoThanhCong) {
@@ -268,8 +278,8 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-
-    // Trạng thái "Chờ xử lý"
+  
+    // Trạng thái "Chờ xử lý" (bổ sung logic kiểm tra)
     const hoadonChoXuLy = hoaDons.find(h => h.status === 'Chờ xử lý');
     if (hoadonChoXuLy) {
       return {
@@ -278,13 +288,15 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-
+  
+    // Mặc định nếu không có trạng thái phù hợp
     return {
       text: 'Chưa có đơn hàng',
       bgColor: 'badge bg-light text-muted border',
       textColor: ''
     };
   };
+  
   const handleHienThiModalXoa = (khachHang) => {
     setKhachHangXoa(khachHang); // Lưu thông tin khách hàng cần xóa
     setShowModalXoa(true); // Hiển thị modal
@@ -380,6 +392,7 @@ const Khachhangs = () => {
                           <th scope="col">Địa chỉ chi tiết</th>
                           <th scope="col">Thành phố/Tỉnh thành/Xã</th>
                           <th scope="col">Ghi chú</th>
+                          <th scope='col'>Thanh toán</th>
                           <th scope="col">Trạng thái</th>
                           <th scope="col">Cập nhật bởi</th>
                           <th scope="col">Chức Năng</th>
@@ -392,7 +405,7 @@ const Khachhangs = () => {
                           </tr>
                         ) : cacPhanTuHienTai.length > 0 ? (
                           cacPhanTuHienTai.map((item, index) => {
-                            const trangThaiDonHang = layTrangThaiDonHang(item.hoaDons); // Lấy trạng thái từ danh sách hoaDons
+                            const trangThaiDonHang = layTrangThaiDonHang(item.hoaDons); // Lấy trạng thái từ danh sách hoaDonsfChưa có đơn hàng
                             return (
                               <tr key={nanoid()}>
                                 <td>{chiSoPhanTuDau + index + 1}</td>
@@ -403,6 +416,8 @@ const Khachhangs = () => {
                                 <td>{item.diaChiCuThe}</td>
                                 <td>{item.xaphuong}, {item.tinhthanhquanhuyen}, {item.thanhPho}</td>
                                 <td>{item.ghiChu}</td>
+                                <td> {item.hoaDons.map((hoaDon,idx) => (
+                                  <div key={nanoid()}>{hoaDon.thanhtoan}</div>))}</td>
                                 <td className={`${trangThaiDonHang.bgColor} ${trangThaiDonHang.textColor}`}>
                                   {trangThaiDonHang.text}
                                 </td>
@@ -424,7 +439,7 @@ const Khachhangs = () => {
                                     {/* Icon xóa */}
                                     {kiemTraTrangThaiHoaDon(item.hoaDons) && (
                                       <button
-                                        className="btn btn-danger btn-sm"
+                                         className="btn btn-outline-danger btn-sm"
                                         title="Xóa khách hàng"
                                         onClick={() => handleHienThiModalXoa(item)}
                                       >
@@ -476,6 +491,7 @@ const Khachhangs = () => {
           capNhatTrangThai={capNhatTrangThai}
           xoaKhachHang={xoaKhachHang}
           layTrangThaiDonHang={layTrangThaiDonHang}
+          isLoading={isLoading}
         />
 
 

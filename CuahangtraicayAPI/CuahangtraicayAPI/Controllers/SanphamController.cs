@@ -44,6 +44,7 @@ namespace CuahangtraicayAPI.Controllers
         {
 
             var sanphams = await _context.Sanpham
+                .Where(s => s.Xoa == false)
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.Images)
                 .Include(s => s.ChiTiet)
@@ -110,11 +111,18 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize]
         public async Task<ActionResult<Sanpham>> PostSanpham([FromForm] SanphamDTO.SanphamCreateRequest request)
         {
+            // Kiểm tra giá gốc hợp lệ
+            if (request.Giatien <= 0)
+            {
+                return BadRequest(new { message = "Giá gốc của sản phẩm phải là số dương lớn hơn 0." });
+            }
+
             // Tạo đối tượng sản phẩm mới
             var sanpham = new Sanpham
             {
                 Tieude = request.Tieude,
                 Giatien = request.Giatien,
+                Soluong = request.so_luong,
                 Trangthai = request.Trangthai,
                 don_vi_tinh = request.DonViTinh,
                 danhmucsanpham_id = request.DanhmucsanphamId,
@@ -173,14 +181,31 @@ namespace CuahangtraicayAPI.Controllers
             _context.Sanpham.Add(sanpham);
             await _context.SaveChangesAsync();
 
-            // Lưu thông tin Sale nếu có
+
+            // Kiểm tra giá sale và thời gian nếu có
             if (request.Sale != null)
             {
+                if (request.Sale.Giasale <= 0)
+                {
+                    return BadRequest(new { message = "Giá sale phải là số dương lớn hơn 0." });
+                }
+
+                if (request.Sale.Giasale >= request.Giatien)
+                {
+                    return BadRequest(new { message = "Giá sale phải nhỏ hơn giá gốc của sản phẩm." });
+                }
+
+                if (request.Sale.Thoigianketthuc <= request.Sale.Thoigianbatdau)
+                {
+                    return BadRequest(new { message = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu." });
+                }
+
+                // Lưu thông tin Sale
                 var sale = new Sanphamsale
                 {
                     sanpham_id = sanpham.Id,
-                    giasale = request.Sale.Giasale, // Gán giá trị mặc định nếu không có Giasale
-                    trangthai = request.Sale.Trangthai ?? "Không áp dụng", // Mặc định trạng thái là 'Không áp dụng'
+                    giasale = request.Sale.Giasale,
+                    trangthai = request.Sale.Trangthai ?? "Không áp dụng",
                     thoigianbatdau = request.Sale.Thoigianbatdau,
                     thoigianketthuc = request.Sale.Thoigianketthuc
                 };
@@ -213,6 +238,12 @@ namespace CuahangtraicayAPI.Controllers
             if (sanpham == null)
                 return NotFound(new { message = "Sản phẩm không tồn tại" });
 
+            // Kiểm tra giá gốc hợp lệ
+            if (request.Giatien <= 0)
+            {
+                return BadRequest(new { message = "Giá gốc của sản phẩm phải là số dương lớn hơn 0." });
+            }
+
             // Cập nhật thông tin sản phẩm
             if (!string.IsNullOrEmpty(request.Tieude)) sanpham.Tieude = request.Tieude;
             if (request.Giatien != 0) sanpham.Giatien = request.Giatien;
@@ -220,6 +251,9 @@ namespace CuahangtraicayAPI.Controllers
             if (!string.IsNullOrEmpty(request.DonViTinh)) sanpham.don_vi_tinh = request.DonViTinh;
             if (request.DanhmucsanphamId != 0) sanpham.danhmucsanpham_id = request.DanhmucsanphamId;
             sanpham.UpdatedBy = request.Updated_By;
+            sanpham.Xoa = request.Xoasp;
+            if (request.So_luong.HasValue) sanpham.Soluong = request.So_luong.Value;
+
             // Lưu ảnh chính (giống như gioithieu)
             if (request.Hinhanh != null)
             {
@@ -283,17 +317,30 @@ namespace CuahangtraicayAPI.Controllers
                     sanpham.Images.Add(new HinhAnhSanPham { hinhanh = Path.Combine("hinhanhphu", uniqueFileName) });
                 }
             }
-
-            // Xử lý thông tin khuyến mãi
+            // Kiểm tra giá sale và thời gian nếu có
             if (request.Sale != null)
             {
-                // Xóa bản ghi khuyến mãi cũ
+                if (request.Sale.Giasale <= 0)
+                {
+                    return BadRequest(new { message = "Giá sale phải là số dương lớn hơn 0." });
+                }
+
+                if (request.Sale.Giasale >= sanpham.Giatien)
+                {
+                    return BadRequest(new { message = "Giá sale phải nhỏ hơn giá gốc của sản phẩm." });
+                }
+
+                if (request.Sale.Thoigianketthuc <= request.Sale.Thoigianbatdau)
+                {
+                    return BadRequest(new { message = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu." });
+                }
+
+                // Xử lý thông tin khuyến mãi
                 if (sanpham.SanphamSales.Any())
                 {
                     _context.SanphamSales.RemoveRange(sanpham.SanphamSales);
                 }
 
-                // Thêm bản ghi khuyến mãi mới
                 var sale = new Sanphamsale
                 {
                     sanpham_id = sanpham.Id,
@@ -324,11 +371,10 @@ namespace CuahangtraicayAPI.Controllers
         // DELETE: api/Sanpham/{id}
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteSanpham(int id)
+        public async Task<IActionResult> DeleteSanpham(int id, [FromQuery] string UpdatedBy)
         {
             var sanpham = await _context.Sanpham
                 .Include(s => s.Images)
-                .Include(s => s.ChiTiet)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (sanpham == null)
@@ -336,43 +382,32 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Sản phẩm không tồn tại" });
             }
 
-            // Xóa ảnh chính
-            if (!string.IsNullOrEmpty(sanpham.Hinhanh))
+            // Kiểm tra sản phẩm có liên quan đến đơn hàng chưa hoàn thành không
+            var hoaDonChiTiets = await _context.HoaDonChiTiets
+                .Where(hdct => hdct.sanpham_ids.Contains(id.ToString()))
+                .Include(hdct => hdct.HoaDon)
+                .ToListAsync();
+
+            // Kiểm tra trạng thái của các đơn hàng liên quan
+            foreach (var chiTiet in hoaDonChiTiets)
             {
-                // Nếu chỉ lưu tên file trong cơ sở dữ liệu, bạn cần phải kết hợp tên file với đường dẫn lưu trữ
-                var mainImagePath = Path.Combine(_environment.WebRootPath, sanpham.Hinhanh);
-                if (System.IO.File.Exists(mainImagePath))
+                if (chiTiet.HoaDon.status != "Đã giao thành công" && chiTiet.HoaDon.status != "Hủy đơn")
                 {
-                    System.IO.File.Delete(mainImagePath);
+                    return BadRequest(new { message = "Sản phẩm này liên quan đến đơn hàng chưa hoàn thành, không thể ẩn." });
                 }
             }
 
-            // Xóa ảnh phụ
-            if (sanpham.Images.Any())
-            {
-                foreach (var image in sanpham.Images)
-                {
-                    // Kiểm tra xem có cần phải thêm đường dẫn trước tên file hay không
-                    var imagePath = Path.Combine(_environment.WebRootPath, image.hinhanh);
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
-                }
-            }
+            // "Ẩn" sản phẩm thay vì xóa
+            sanpham.Xoa = true;
+            sanpham.UpdatedBy = UpdatedBy;
 
-            // Xóa chi tiết sản phẩm
-            if (sanpham.ChiTiet != null)
-            {
-                _context.ChiTiets.Remove(sanpham.ChiTiet);
-            }
 
-            _context.Sanpham.Remove(sanpham);
+
+            // Cập nhật thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
-
 
 
         /// <summary>
@@ -382,7 +417,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/Sanpham/images/{imageId} api xóa hinhanhphu
         [HttpDelete("images/{imageId}")]
-    
+
         public async Task<IActionResult> DeleteImage(int imageId)
         {
             // Tìm ảnh phụ theo ID
@@ -417,7 +452,7 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<IEnumerable<Sanpham>>> GetSanphamsByDanhMuc(int danhmucId)
         {
             var sanphams = await _context.Sanpham
-                .Where(s => s.danhmucsanpham_id == danhmucId)
+                .Where(s => s.danhmucsanpham_id == danhmucId && s.Xoa == false)
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.SanphamSales)
                 .ToListAsync();
@@ -454,7 +489,7 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetSanphamsByDanhMucWithoutActiveSale(int danhmucId)
         {
             var sanphams = await _context.Sanpham
-                .Where(s => s.danhmucsanpham_id == danhmucId)
+                .Where(s => s.danhmucsanpham_id == danhmucId && s.Xoa == false)
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.SanphamSales)
                 .Include(s => s.ChiTiet)
@@ -477,6 +512,7 @@ namespace CuahangtraicayAPI.Controllers
                     s.Giatien,
                     Hinhanh = !string.IsNullOrEmpty(s.Hinhanh) ? GetImageUrl(s.Hinhanh) : string.Empty,
                     s.Trangthai,
+                    s.Soluong,
                     s.don_vi_tinh,
                     s.danhmucsanpham_id,
                     s.ChiTiet?.mo_ta_chung,
@@ -520,7 +556,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // API uploadImage dành cho bài viết chi tiết
         [HttpPost("upload-image")]
-        
+
         public async Task<IActionResult> UploadImage(IFormFile upload)
         {
             if (upload == null || upload.Length == 0)
@@ -563,6 +599,7 @@ namespace CuahangtraicayAPI.Controllers
         {
             // Lấy danh sách sản phẩm và thông tin sale
             var sanphams = await _context.Sanpham
+                .Where(s => s.Xoa == false)
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.ChiTiet)
                 .Include(s => s.SanphamSales) // Include thông tin sale
@@ -577,6 +614,7 @@ namespace CuahangtraicayAPI.Controllers
                 s.Giatien,
                 Hinhanh = !string.IsNullOrEmpty(s.Hinhanh) ? GetImageUrl(s.Hinhanh) : string.Empty,
                 s.Trangthai,
+                s.Soluong,
                 s.don_vi_tinh,
                 s.ChiTiet?.mo_ta_chung,
                 DanhmucsanphamName = s.Danhmucsanpham?.Name,
@@ -628,6 +666,7 @@ namespace CuahangtraicayAPI.Controllers
                     s.Giatien,
                     Hinhanh = !string.IsNullOrEmpty(s.Hinhanh) ? GetImageUrl(s.Hinhanh) : string.Empty,
                     s.Trangthai,
+                    s.Soluong,
                     s.don_vi_tinh,
                     s.ChiTiet?.mo_ta_chung,
                     DanhmucsanphamName = s.Danhmucsanpham?.Name,

@@ -5,7 +5,7 @@ import { CartContext } from "./CartContext";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import Aos from "aos";
- 
+
 const Thanhtoan = () => {
   const [thanhpho, setThanhpho] = useState("");
   const { giohang, xoagiohangthanhtoanthanhcong } = useContext(CartContext);
@@ -23,15 +23,32 @@ const Thanhtoan = () => {
   const [xaphuong, setXaphuong] = useState(""); // Xã phường
   const [tenThanhpho, setTenThanhpho] = useState(""); // Tên thành phố
   const [isLoading, setIsLoading] = useState(false);
+  const [dangtaiTP, setdangtaiTP] = useState(false);
+  const [dangtaiQH, setdangtaiTQH] = useState(false);
+  const [dangtaiXP, setdangtaiXP] = useState(false);
 
 
   useEffect(() => {
     fetchCities();
-     Aos.init({
-          duration: 1000, // Thời gian hiệu ứng
-          easing: 'ease-in-out', // Hiệu ứng easing
-        
-        });
+    Aos.init({
+      duration: 1000, // Thời gian hiệu ứng
+      easing: 'ease-in-out', // Hiệu ứng easing
+
+    });
+    // Tải thông tin khách hàng từ localStorage nếu có
+    const storedKhachHang = localStorage.getItem("khachhang");
+    if (storedKhachHang) {
+      const khachHangData = JSON.parse(storedKhachHang);
+      setFirstName(khachHangData.ten || "");
+      setLastName(khachHangData.ho || "");
+      setAddress(khachHangData.diachicuthe || "");
+      setThanhpho(""); // Nếu cần hiển thị theo mã, cập nhật phù hợp
+      setTinhthanh(khachHangData.tinhthanhquanhuyen || "");
+      setXaphuong(khachHangData.xaphuong || "");
+      setSdt(khachHangData.sdt || "");
+      setEmail(khachHangData.Emaildiachi || "");
+      setGhichu(khachHangData.ghichu || "");
+    }
   }, []);
 
   const handleInput = (e) => {
@@ -42,10 +59,10 @@ const Thanhtoan = () => {
     setSdt(newSdt);
   };
 
-  const handleChonthanhpho = async (e) => {
+  const handleChonQuanHuyen = async (e) => {
     const selectedCityCode = e.target.value;
     setThanhpho(selectedCityCode); // Lưu mã thành phố vào thanhpho
-
+    setdangtaiTQH(true);
     // Gửi request để lấy thông tin về quận huyện của thành phố
     if (selectedCityCode) {
       try {
@@ -58,6 +75,8 @@ const Thanhtoan = () => {
       } catch (error) {
         console.error("Error fetching districts:", error);
         toast.error("Không thể tải thông tin quận huyện!", { position: "top-right", autoClose: 5000 });
+      } finally {
+        setdangtaiTQH(false);
       }
     }
   };
@@ -66,7 +85,7 @@ const Thanhtoan = () => {
   const handleChonTinhThanh = async (e) => {
     const selectedDistrict = e.target.value;
     setTinhthanh(selectedDistrict);
-
+    setdangtaiXP(true);
     // Lấy thông tin xã phường của huyện được chọn
     if (selectedDistrict) {
       try {
@@ -78,6 +97,9 @@ const Thanhtoan = () => {
         console.error("Error fetching wards:", error);
         toast.error("Không thể tải thông tin xã/phường!", { position: "top-right", autoClose: 5000 });
       }
+      finally {
+        setdangtaiXP(false);
+      }
     }
   };
 
@@ -87,6 +109,7 @@ const Thanhtoan = () => {
   };
 
   const fetchCities = async () => {
+    setdangtaiTP(true); // Bắt đầu hiệu ứng loading
     try {
       const response = await axios.get("https://provinces.open-api.vn/api/?depth=3");
       setDanhSachThanhPho(response.data);
@@ -94,14 +117,18 @@ const Thanhtoan = () => {
       console.error("Error fetching cities:", error);
       toast.error("Không thể tải thông tin thành phố!", { position: "top-right", autoClose: 5000 });
     }
+    finally {
+      setdangtaiTP(false); // Kết thúc hiệu ứng loading
+    }
   };
 
   const tongTienGioHang = giohang.reduce((tong, item) => {
     const giaHienTai = item.sanphamSales?.find((sale) => sale.trangthai === "Đang áp dụng")
       ? parseFloat(item.sanphamSales.find((sale) => sale.trangthai === "Đang áp dụng").giasale)
-      : parseFloat(item.gia); // Sử dụng giá giảm nếu có, ngược lại lấy giá gốc
+      : parseFloat(item.gia);
     return tong + giaHienTai * item.soLuong;
-  }, 0);
+  }, 0).toFixed(3); // Giữ 3 chữ số thập phân
+
 
   // hàm thanh toán
   const handlePlaceOrder = async (e) => {
@@ -112,37 +139,33 @@ const Thanhtoan = () => {
       return;
     }
 
-    // if (!firstName || !lastName || !address || !thanhpho || !tinhthanh || !xaphuong || !sdt || sdt.length < 10 || sdt.length > 11 || !email) {
-    //   toast.error("Vui lòng kiểm tra và điền đầy đủ các thông tin bắt buộc!", { position: "top-right", autoClose: 5000 });
-    //   return;
-    // }
-    setIsLoading(true)
+    setIsLoading(true);
+
     const khachhangData = {
       ten: firstName,
       ho: lastName,
       diachicuthe: address,
       thanhpho: tenThanhpho,
-      // tenThanhpho: tenThanhpho,
       tinhthanhquanhuyen: tinhthanh,
-      xaphuong: xaphuong, // Thêm thông tin xã phường
+      xaphuong: xaphuong,
       sdt: sdt,
       Emaildiachi: email,
       ghichu: ghichu,
     };
 
     try {
+      // Gửi thông tin khách hàng
       const khachhangResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/khachhang`, khachhangData);
       const khachhangId = khachhangResponse.data.id;
 
+      // Gửi thông tin hóa đơn
       const billData = {
         KhachHangId: khachhangId,
+        thanhtoan: paymentMethod,
         SanphamIds: giohang.map((sanpham) => sanpham.id),
         Quantities: giohang.map((sanpham) => sanpham.soLuong),
-        Prices: giohang.map((sanpham) => {
-          const sale = sanpham.sanphamSales?.find((sale) => sale.trangthai === "Đang áp dụng");
-          return sale ? parseFloat(sale.giasale) : parseFloat(sanpham.gia);
-        }),
-        updated_By: "Chưa có tác động"
+        PaymentMethod: paymentMethod, // Lựa chọn phương thức thanh toán
+        updated_By: "Chưa có tác động",
       };
 
       const billResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/HoaDon`, billData);
@@ -150,13 +173,43 @@ const Thanhtoan = () => {
       const newOrderCode = billResponse.data.order_code;
       setOrderCode(newOrderCode);
 
-      toast.success(`Đặt hàng thành công! Mã đơn hàng của bạn: ${newOrderCode}`, { position: "top-right", autoClose: 10000 });
+      // Kiểm tra nếu thanh toán online và URL thanh toán tồn tại
+      if (paymentMethod === "VnPay" && billResponse.data.paymentUrl) {
+        // Chuyển hướng người dùng đến trang thanh toán VNPAY
+        window.location.href = billResponse.data.paymentUrl;
+      } else if (paymentMethod === "Momo" && billResponse.data.payUrl) {
+        // Chuyển hướng người dùng đến trang thanh toán MoMo
+        window.location.href = billResponse.data.payUrl;
+      } else {
+        // Thông báo thành công nếu là COD
+        toast.success(`Đặt hàng thành công! Mã đơn hàng: ${newOrderCode}`, {
+          position: "top-right",
+          autoClose: 10000,
+        });
+      }
+
+      // Lưu thông tin khách hàng (trừ các trường không cần thiết) vào localStorage
+      const storedCustomerData = {
+        ten: khachhangData.ten,
+        ho: khachhangData.ho,
+        diachicuthe: khachhangData.diachicuthe,
+        sdt: khachhangData.sdt,
+        Emaildiachi: khachhangData.Emaildiachi,
+      };
+      // Lưu thông tin khách hàng vào bộ nhớ của trình duyệt
+      localStorage.setItem("khachhang", JSON.stringify(storedCustomerData));
       xoagiohangthanhtoanthanhcong();
       ResetForm();
-      setIsLoading(false);
     } catch (error) {
       console.error("Lỗi khi gửi đơn hàng:", error);
-      toast.error("Đã xảy ra lỗi khi gửi đơn hàng. Vui lòng thử lại sau.", { position: "top-right", autoClose: 10000 });
+
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message, { position: "top-right", autoClose: 10000 });
+      } else {
+        toast.error("Đã xảy ra lỗi khi gửi đơn hàng. Vui lòng thử lại sau.", { position: "top-right", autoClose: 10000 });
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -170,6 +223,8 @@ const Thanhtoan = () => {
     setEmail("");
     setGhichu("");
   }
+  const [paymentMethod, setPaymentMethod] = useState("cod"); // Mặc định là COD
+
   return (
     <>
       <div>
@@ -256,17 +311,24 @@ const Thanhtoan = () => {
                         <label className="form-label">
                           <i className="bi bi-geo-alt"></i> Thành phố<sup>*</sup>
                         </label>
-                        <select
-                          className="form-select border-success"
-                          value={thanhpho}
-                          onChange={handleChonthanhpho}
-                          required
-                        >
-                          <option value="" disabled>Chọn thành phố</option>
-                          {danhSachThanhPho.map((city) => (
-                            <option key={city.code} value={city.code}>{city.name}</option>
-                          ))}
-                        </select>
+                        {dangtaiTP ? (
+                          <div className="d-flex align-items-center">
+                            <div className="spinner-border text-success me-2" role="status"></div>
+                            <span>Đang tải thành phố...</span>
+                          </div>
+                        ) : (
+                          <select
+                            className="form-select border-success"
+                            value={thanhpho}
+                            onChange={handleChonQuanHuyen}
+                            required
+                          >
+                            <option value="" disabled>Chọn thành phố</option>
+                            {danhSachThanhPho.map((city) => (
+                              <option key={city.code} value={city.code}>{city.name}</option>
+                            ))}
+                          </select>
+                        )}
                       </div>
 
                       {/* Quận huyện */}
@@ -274,18 +336,25 @@ const Thanhtoan = () => {
                         <label className="form-label">
                           <i className="bi bi-geo-alt-fill"></i> Quận/Huyện<sup>*</sup>
                         </label>
-                        <select
-                          className="form-select border-success"
-                          value={tinhthanh}
-                          onChange={handleChonTinhThanh}
-                          disabled={!thanhpho}
-                          required
-                        >
-                          <option value="" disabled>Chọn quận/huyện</option>
-                          {danhSachQuanHuyen.map((district) => (
-                            <option key={district.code} value={district.name}>{district.name}</option>
-                          ))}
-                        </select>
+                        {dangtaiQH ? (
+                          <div className="d-flex align-items-center">
+                            <div className="spinner-border text-success me-2" role="status"></div>
+                            <span>Đang tải Quận huyện...</span>
+                          </div>
+                        ) : (
+                          <select
+                            className="form-select border-success"
+                            value={tinhthanh}
+                            onChange={handleChonTinhThanh}
+                            disabled={!thanhpho}
+                            required
+                          >
+                            <option value="" disabled>Chọn quận/huyện</option>
+                            {danhSachQuanHuyen.map((district) => (
+                              <option key={district.code} value={district.name}>{district.name}</option>
+                            ))}
+                          </select>
+                        )}
                       </div>
 
                       {/* Xã/Phường */}
@@ -293,18 +362,25 @@ const Thanhtoan = () => {
                         <label className="form-label">
                           <i className="bi bi-geo-alt"></i> Xã/Phường<sup>*</sup>
                         </label>
-                        <select
-                          className="form-select border-success"
-                          value={xaphuong}
-                          onChange={handleChonXaPhuong}
-                          disabled={!tinhthanh}
-                          required
-                        >
-                          <option value="" disabled>Chọn xã/phường</option>
-                          {danhSachXaPhuong.map((ward) => (
-                            <option key={ward.code} value={ward.name}>{ward.name}</option>
-                          ))}
-                        </select>
+                        {dangtaiXP ? (
+                          <div className="d-flex align-items-center">
+                            <div className="spinner-border text-success me-2" role="status"></div>
+                            <span>Đang tải xã phường...</span>
+                          </div>
+                        ) : (
+                          <select
+                            className="form-select border-success"
+                            value={xaphuong}
+                            onChange={handleChonXaPhuong}
+                            disabled={!tinhthanh}
+                            required
+                          >
+                            <option value="" disabled>Chọn xã/phường</option>
+                            {danhSachXaPhuong.map((ward) => (
+                              <option key={ward.code} value={ward.name}>{ward.name}</option>
+                            ))}
+                          </select>
+                        )}
                       </div>
 
                       {/* Số điện thoại */}
@@ -350,6 +426,7 @@ const Thanhtoan = () => {
                           placeholder="Nhập ghi chú của bạn"
                         ></textarea>
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -386,11 +463,12 @@ const Thanhtoan = () => {
                               </td>
                               <td>{sanPham.tieude}</td>
                               <td className="text-nowrap">
-                                {parseFloat(sanPham.gia).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "} {"VND"}
+                                {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                                {/* {parseFloat(sanPham.gia).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "} {"VND"} */}
                               </td>
                               <td>{sanPham.soLuong}</td>
                               <td className="text-nowrap">
-                                {(sanPham.soLuong * parseFloat(sanPham.gia)).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} {"VND"}
+                                {(sanPham.soLuong * parseFloat(sanPham.gia)).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })} {"VND"}
                               </td>
                             </tr>
                           ))
@@ -402,11 +480,74 @@ const Thanhtoan = () => {
                         <tr>
                           <td colSpan="4" className="text-end fw-bold">Tổng cộng:</td>
                           <td className="text-nowrap text-success fw-bold">
-                            {parseFloat(tongTienGioHang).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" VND"}
+                            {parseFloat(tongTienGioHang).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })}{" VND"}
                           </td>
                         </tr>
                       </tbody>
+
                     </table>
+                    <div className="card border-0 shadow-lg mt-4">
+                      <div className="card-body p-4">
+                        <h5 className="card-title fw-bold mb-4 text-success">
+                          <i className="bi bi-credit-card"></i> Phương thức thanh toán
+                        </h5>
+                        <div className="list-group">
+                          {/* Thanh toán khi nhận hàng */}
+                          <label className="list-group-item d-flex align-items-center">
+                            <input
+                              type="radio"
+                              name="paymentMethod"
+                              value="cod"
+                              checked={paymentMethod === "cod"}
+                              onChange={(e) => setPaymentMethod(e.target.value)}
+                              className="form-check-input me-2"
+                            />
+                            <i className="bi bi-truck fs-4 me-3 text-success"></i>
+                            <span>Thanh toán khi giao hàng (Cash On Delivery)</span>
+                          </label>
+
+                          {/* MoMo */}
+                          <label className="list-group-item d-flex align-items-center">
+                            <input
+                              type="radio"
+                              name="paymentMethod"
+                              value="Momo"
+                              checked={paymentMethod === "Momo"}
+                              onChange={(e) => setPaymentMethod(e.target.value)}
+                              className="form-check-input me-2"
+                            />
+                           <img
+                              src={`${process.env.PUBLIC_URL}/img/momo.png`}
+                              alt="ATM"
+                              className="me-3"
+                              style={{ height: "30px" }}
+                            />
+                            <span>Thanh toán online qua ví MoMo</span>
+                          </label>
+
+                          {/* OnePay ATM */}
+                          <label className="list-group-item d-flex align-items-center">
+                            <input
+                              type="radio"
+                              name="paymentMethod"
+                              value="VnPay"
+                              checked={paymentMethod === "VnPay"}
+                              onChange={(e) => setPaymentMethod(e.target.value)}
+                              className="form-check-input me-2"
+                            />
+                            <img
+                              src={`${process.env.PUBLIC_URL}/img/vnpay.png`}
+                              alt="ATM"
+                              className="me-3"
+                              style={{ height: "30px" }}
+                            />
+
+                            <span>Thẻ ATM nội địa qua cổng VnPay</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
                     <button
                       type="submit"
                       className="btn btn-success w-100 fw-bold text-uppercase py-3 mt-3"
