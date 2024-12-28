@@ -73,16 +73,19 @@ const ModlaAdddanhsachsanpham = ({ show, handleClose, isEdit, danhmuc, fetchdanh
         handleClose(); // Đóng modal
       }
     } catch (error) {
-      console.error(isEdit ? "Có lỗi khi sửa danh mục!" : "Có lỗi xảy ra khi thêm mới danh mục.", error);
-
-      // Hiển thị thông báo lỗi
-      toast.error(
-        isEdit ? "Có lỗi xảy ra khi cập nhật danh mục. Vui lòng thử lại." : `Có lỗi xảy ra khi thêm mới danh mục ${name}`,
-        {
-          position: 'top-right',
-          autoClose: 3000,
-        }
+      console.error(
+        isEdit ? "Có lỗi xảy ra khi cập nhật danh mục!" : "Có lỗi xảy ra khi thêm mới danh mục!",
+        error
       );
+    
+      // Lấy thông báo từ backend
+      const message = error.response?.data?.message || "Có lỗi xảy ra. Vui lòng thử lại.";
+    
+      // Hiển thị thông báo lỗi từ backend
+      toast.error(message, {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
   };
 

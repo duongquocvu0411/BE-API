@@ -380,24 +380,25 @@ const ModlaSanpham = ({
               </Form.Label>
               <Form.Control
                 type="text"
-                value={giatien}
+                value={new Intl.NumberFormat("vi-VN").format(giatien)} // Định dạng hiển thị
                 onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (/^\d*\.?\d*$/.test(inputValue)) {
-                    setGiatien(inputValue); // Chỉ cho phép nhập số và dấu chấm
+                  const rawValue = e.target.value.replace(/\./g, ""); // Loại bỏ dấu chấm
+                  if (/^\d*$/.test(rawValue)) {
+                    setGiatien(rawValue); // Chỉ cập nhật nếu là số hợp lệ
                   }
                 }}
                 onBlur={() => {
-                  if (!giatien || parseFloat(giatien) <= 0) {
-                    setGiatien(""); // Reset giá trị nếu không hợp lệ
+                  const parsedValue = parseInt(giatien, 10);
+                  if (parsedValue && parsedValue > 0) {
+                    setGiatien(parsedValue.toString()); // Lưu giá trị dạng số
                   } else {
-                    setGiatien(parseFloat(giatien).toFixed(0)); // Định dạng giá trị
+                    setGiatien(""); // Reset nếu giá trị không hợp lệ
                   }
                 }}
                 placeholder="Nhập giá sản phẩm"
                 className="shadow-sm"
               />
-              {(!giatien || parseFloat(giatien) <= 0) && (
+              {(!giatien || parseInt(giatien, 10) <= 0) && (
                 <small className="text-danger">
                   Giá sản phẩm phải lớn hơn 0.
                 </small>

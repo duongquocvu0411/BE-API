@@ -49,51 +49,38 @@ const ModlaSanphamsale = ({ show, handleClose, saleData, setSaleData, isEdit }) 
         </Modal.Header>
         <Modal.Body>
           <Form>
+
             <Form.Group className="mb-4">
               <Form.Label className="fw-bold">
                 <i className="bi bi-currency-dollar"></i> Giá
               </Form.Label>
               <Form.Control
                 type="text"
-                value={giasale}
+                value={new Intl.NumberFormat("vi-VN").format(giasale)} // Định dạng hiển thị
                 onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (/^\d*\.?\d*$/.test(inputValue)) {
-                    setGiasale(inputValue); // Chỉ cho phép nhập số và dấu chấm
+                  const rawValue = e.target.value.replace(/\./g, ""); // Loại bỏ dấu chấm
+                  if (/^\d*$/.test(rawValue)) {
+                    setGiasale(rawValue); // Chỉ cập nhật nếu là số hợp lệ
                   }
                 }}
                 onBlur={() => {
-                  if (!giasale || parseFloat(giasale) <= 0) {
-                    setGiasale(""); // Reset giá trị nếu không hợp lệ
+                  const parsedValue = parseInt(giasale, 10);
+                  if (parsedValue && parsedValue > 0) {
+                    setGiasale(parsedValue.toString()); // Lưu giá trị dạng số
                   } else {
-                    setGiasale(parseFloat(giasale).toFixed(3)); // Định dạng giá trị
+                    setGiasale(""); // Reset nếu giá trị không hợp lệ
                   }
                 }}
                 placeholder="Nhập giá sản phẩm"
                 className="shadow-sm"
               />
-              {(!giasale || parseFloat(giasale) <= 0) && (
+              {(!giasale || parseInt(giasale, 10) <= 0) && (
                 <small className="text-danger">
                   Giá sản phẩm phải lớn hơn 0.
                 </small>
               )}
             </Form.Group>
 
-
-            {/* Giá Sale */}
-            {/* <Form.Group controlId="giasale" className="mb-4">
-          <Form.Label className="fw-bold">
-            <i className="bi bi-tag me-2"></i>Giá Sale
-          </Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Nhập giá sale"
-            value={giasale}
-            onChange={(e) => setGiasale(e.target.value)}
-            className="shadow-sm border-0 rounded"
-            style={{ backgroundColor: "#f8f9fa", fontSize: "1rem" }}
-          />
-        </Form.Group> */}
 
             {/* Thời gian bắt đầu */}
             <Form.Group controlId="thoigianbatdau" className="mb-4">

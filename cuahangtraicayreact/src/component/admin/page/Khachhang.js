@@ -453,7 +453,7 @@ const Khachhangs = () => {
                           })
                         ) : (
                           <tr>
-                            <td colSpan="11" className="text-center">Không tìm thấy khách hàng</td>
+                            <td colSpan="12" className="text-center">Không tìm thấy khách hàng</td>
                           </tr>
                         )}
                       </tbody>

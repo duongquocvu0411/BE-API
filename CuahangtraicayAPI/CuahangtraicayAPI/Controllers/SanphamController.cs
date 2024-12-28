@@ -112,10 +112,14 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<Sanpham>> PostSanpham([FromForm] SanphamDTO.SanphamCreateRequest request)
         {
             // Kiểm tra giá gốc hợp lệ
-            if (request.Giatien <= 0)
+          
+            if (request.Giatien < 1000)
             {
-                return BadRequest(new { message = "Giá gốc của sản phẩm phải là số dương lớn hơn 0." });
+                return BadRequest(new { message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
             }
+
+      
+
 
             // Tạo đối tượng sản phẩm mới
             var sanpham = new Sanpham
@@ -190,9 +194,14 @@ namespace CuahangtraicayAPI.Controllers
                     return BadRequest(new { message = "Giá sale phải là số dương lớn hơn 0." });
                 }
 
-                if (request.Sale.Giasale >= request.Giatien)
+                if (request.Sale.Giasale >= sanpham.Giatien)
                 {
                     return BadRequest(new { message = "Giá sale phải nhỏ hơn giá gốc của sản phẩm." });
+                }
+
+                if (request.Sale.Giasale < 1000)
+                {
+                    return BadRequest(new { message = "Giá sale phải nhỏ hơn 1000." });
                 }
 
                 if (request.Sale.Thoigianketthuc <= request.Sale.Thoigianbatdau)
@@ -239,10 +248,12 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Sản phẩm không tồn tại" });
 
             // Kiểm tra giá gốc hợp lệ
-            if (request.Giatien <= 0)
+            if (request.Giatien < 1000)
             {
-                return BadRequest(new { message = "Giá gốc của sản phẩm phải là số dương lớn hơn 0." });
+                return BadRequest(new { message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
             }
+
+
 
             // Cập nhật thông tin sản phẩm
             if (!string.IsNullOrEmpty(request.Tieude)) sanpham.Tieude = request.Tieude;
@@ -328,6 +339,11 @@ namespace CuahangtraicayAPI.Controllers
                 if (request.Sale.Giasale >= sanpham.Giatien)
                 {
                     return BadRequest(new { message = "Giá sale phải nhỏ hơn giá gốc của sản phẩm." });
+                }
+
+                if (request.Sale.Giasale < 1000)
+                {
+                    return BadRequest(new { message = "Giá sale phải nhỏ hơn 1000." });
                 }
 
                 if (request.Sale.Thoigianketthuc <= request.Sale.Thoigianbatdau)

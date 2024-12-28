@@ -66,6 +66,13 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize]
         public async Task<ActionResult<Danhmucsanpham>> PostDanhmucsanpham([FromBody] PostDanhmucDTO dto)
         {
+            // Kiểm tra xem tên danh mục đã tồn tại chưa
+            var exists = await _context.Danhmucsanpham.AnyAsync(dm => dm.Name == dto.Name);
+            if (exists)
+            {
+                return BadRequest(new { message = "Tên danh mục đã tồn tại" });
+            }
+
             var danhmucsanpham = new Danhmucsanpham
             {
                 Name = dto.Name,
@@ -93,7 +100,14 @@ namespace CuahangtraicayAPI.Controllers
             var danhmucsanpham = await _context.Danhmucsanpham.FindAsync(id);
             if (danhmucsanpham == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Danh mục không tồn tại" });
+            }
+
+            // Kiểm tra xem tên danh mục đã tồn tại chưa (ngoại trừ danh mục hiện tại)
+            var exists = await _context.Danhmucsanpham.AnyAsync(dm => dm.Name == dto.Name && dm.ID != id);
+            if (exists)
+            {
+                return BadRequest(new { message = "Tên danh mục đã tồn tại" });
             }
 
             danhmucsanpham.Name = dto.Name;
@@ -109,7 +123,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 if (!DanhmucsanphamExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { message = "Danh mục không tồn tại trong quá trình cập nhật" });
                 }
                 else
                 {
@@ -117,8 +131,9 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-            return Ok(danhmucsanpham);
+            return Ok(new { message = $"Danh mục '{danhmucsanpham.Name}' đã được cập nhật thành công", danhmucsanpham });
         }
+
 
 
         /// <summary>
