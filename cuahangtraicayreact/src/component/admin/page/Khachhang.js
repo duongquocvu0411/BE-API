@@ -389,6 +389,8 @@ const Khachhangs = () => {
                     <option value="Hủy đơn">Hủy đơn</option>
                     <option value="Giao không thành công">Giao không thành công</option>
                     <option value="Chờ xử lý">Chờ xử lý</option>
+                    <option value="Đã Thanh toán">Đã Thanh toán</option>
+                    <option value="Thanh toán thất bại">Thanh toán thất bại</option>
                   </select>
                 </div>
 
