@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ProGCoder_MomoAPI.Models.Momo;
-using ProGCoder_MomoAPI.Services;
+using CuahangtraicayAPI.Model.Momo;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -16,6 +15,11 @@ namespace CuahangtraicayAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Thêm AppDbContext với SQL Server
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+            );
             builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
 
             builder.Services.AddScoped<IMomoService, MomoService>();
@@ -79,11 +83,6 @@ namespace CuahangtraicayAPI
         }
     });
             });
-
-            // Thêm AppDbContext với SQL Server
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-            );
 
             // Cấu hình xác thực JWT
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

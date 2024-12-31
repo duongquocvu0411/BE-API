@@ -263,6 +263,7 @@ const ModlaSanpham = ({
     setTrangthai("");
     setGiatien("");
     setDvt("");
+    setSoLuong("");
     setHinhanh(null);
     setXemtruocHinhAnh("");
     setDanhmucsanphamID("");
@@ -335,13 +336,13 @@ const ModlaSanpham = ({
                 value={soLuong}
                 onChange={(e) => {
                   const inputValue = e.target.value;
-                  // Chỉ cho phép nhập số nguyên
+                  // Chỉ cho phép nhập số nguyên không âm
                   if (/^\d*$/.test(inputValue)) {
                     setSoLuong(inputValue);
                   }
                 }}
                 onBlur={() => {
-                  if (!soLuong || parseInt(soLuong, 10) <= 0) {
+                  if (soLuong === "") {
                     setSoLuong(""); // Reset giá trị nếu không hợp lệ
                   } else {
                     setSoLuong(parseInt(soLuong, 10).toString()); // Đảm bảo giá trị là số nguyên
@@ -350,12 +351,13 @@ const ModlaSanpham = ({
                 placeholder="Nhập số lượng sản phẩm"
                 className="shadow-sm"
               />
-              {(!soLuong || parseInt(soLuong, 10) <= 0) && (
+              {soLuong === "" && (
                 <small className="text-danger">
-                  Số lượng sản phẩm phải lớn hơn 0.
+                  Số lượng sản phẩm phải lớn hơn hoặc bằng 0.
                 </small>
               )}
             </Form.Group>
+
             {/* Trạng thái */}
             <Form.Group className="mb-4">
               <Form.Label className="fw-bold">

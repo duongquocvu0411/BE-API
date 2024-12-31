@@ -237,7 +237,7 @@ const CuahangChitiet = () => {
                         </p>
                       </div>
                     ) : (
-                      <h5 className="fw-bold mb-3">{parseFloat(sanPham.giatien).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "} vnđ / {sanPham.don_vi_tinh}</h5>
+                      <h5 className="fw-bold mb-3">{parseFloat(sanPham.giatien).toLocaleString("vi-VN", {style: 'decimal', minimumFractionDigits: 0})}{" "} vnđ / {sanPham.don_vi_tinh}</h5>
                     )}
 
                     {/* Kiểm tra trạng thái Hết hàng */}

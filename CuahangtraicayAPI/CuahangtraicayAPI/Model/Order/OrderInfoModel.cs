@@ -1,4 +1,4 @@
-namespace ProGCoder_MomoAPI.Models.Order;
+namespace CuahangtraicayAPI.Model.Order;
 
 public class OrderInfoModel
 {

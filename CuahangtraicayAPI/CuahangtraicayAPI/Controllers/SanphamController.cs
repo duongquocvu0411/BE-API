@@ -117,8 +117,11 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return BadRequest(new { message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
             }
+            if (request.so_luong <= 0)
+            {
+                return BadRequest(new { message = "Số lượng sản phẩm phải lớn hơn hoặc bằng 1." });
+            }
 
-      
 
 
             // Tạo đối tượng sản phẩm mới
@@ -252,7 +255,10 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return BadRequest(new { message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
             }
-
+            //if (request.So_luong <= 0)
+            //{
+            //    return BadRequest(new { message = "Số lượng sản phẩm phải lớn hơn hoặc bằng 1." });
+            //}
 
 
             // Cập nhật thông tin sản phẩm
@@ -263,7 +269,27 @@ namespace CuahangtraicayAPI.Controllers
             if (request.DanhmucsanphamId != 0) sanpham.danhmucsanpham_id = request.DanhmucsanphamId;
             sanpham.UpdatedBy = request.Updated_By;
             sanpham.Xoa = request.Xoasp;
-            if (request.So_luong.HasValue) sanpham.Soluong = request.So_luong.Value;
+            //if (request.So_luong !=0 ) sanpham.Soluong = request.So_luong.Value;
+
+
+            // Kiểm tra và cập nhật số lượng
+            if (request.So_luong.HasValue)
+            {
+                // Cập nhật số lượng
+                sanpham.Soluong = request.So_luong.Value;
+
+                // Nếu số lượng là 0, đặt trạng thái thành "Hết hàng"
+                if (sanpham.Soluong == 0)
+                {
+                    sanpham.Trangthai = "Hết hàng";
+                }
+                // Nếu số lượng lớn hơn 0 và trạng thái hiện tại là "Hết hàng", đặt lại trạng thái thành "Còn hàng"
+                else if (sanpham.Trangthai == "Hết hàng")
+                {
+                    sanpham.Trangthai = "Còn hàng";
+                }
+            }
+
 
             // Lưu ảnh chính (giống như gioithieu)
             if (request.Hinhanh != null)
@@ -486,6 +512,7 @@ namespace CuahangtraicayAPI.Controllers
                 s.Giatien,
                 Hinhanh = !string.IsNullOrEmpty(s.Hinhanh) ? GetImageUrl(s.Hinhanh) : string.Empty,
                 s.Trangthai,
+                s.Soluong,
                 s.don_vi_tinh,
                 s.CreatedBy,
                 s.UpdatedBy,
@@ -558,6 +585,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/Sanpham/TongSanPham
         [HttpGet("TongSanPham")]
+        [Authorize]
         public async Task<ActionResult<object>> GetTongSanPham()
         {
             var tongSanPham = await _context.Sanpham.CountAsync();

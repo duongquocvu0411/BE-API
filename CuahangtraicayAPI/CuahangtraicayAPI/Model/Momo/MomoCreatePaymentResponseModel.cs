@@ -1,4 +1,4 @@
-namespace ProGCoder_MomoAPI.Models.Momo;
+namespace CuahangtraicayAPI.Model.Momo;
 
 public class MomoCreatePaymentResponseModel
 {

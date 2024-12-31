@@ -1,4 +1,4 @@
-﻿namespace CuahangtraicayAPI.Model;
+﻿namespace CuahangtraicayAPI.Model.VnPay;
 
 public class PaymentResponseModel
 {

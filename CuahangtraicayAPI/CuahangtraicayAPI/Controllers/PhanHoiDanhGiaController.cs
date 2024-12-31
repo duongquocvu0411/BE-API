@@ -109,6 +109,7 @@ namespace CuahangtraicayAPI.Controllers
         /// Xóa phản hồi theo ID
         /// </summary>
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeletePhanHoi(int id)
         {
             var phanhoi = await _context.PhanHoiDanhGias.FindAsync(id);

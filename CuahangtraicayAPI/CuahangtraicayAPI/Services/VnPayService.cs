@@ -1,4 +1,4 @@
-﻿using CuahangtraicayAPI.Model;
+﻿using CuahangtraicayAPI.Model.VnPay;
 
 namespace CuahangtraicayAPI.Services
 {

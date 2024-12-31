@@ -24,6 +24,7 @@ namespace CuahangtraicayAPI.Controllers
             _configuration = configuration;
         }
 
+
         /// <summary>
         ///login Admin
         /// </summary>
@@ -53,15 +54,6 @@ namespace CuahangtraicayAPI.Controllers
             return Unauthorized(new { status = "error", message = "Thông tin không hợp lệ, vui lòng kiểm tra lại" });
         }
 
-        // POST: api/Admin/logout
-        //[HttpPost("logout")]
-        //[Authorize] // Bảo vệ endpoint, yêu cầu JWT token
-        //public IActionResult Logout()
-        //{
-        //    // Server không thực sự xoá token vì JWT là stateless.
-        //    // Client sẽ chịu trách nhiệm xoá token khỏi bộ nhớ sau khi nhận phản hồi thành công.
-        //    return Ok(new { status = "success", message = "Đăng xuất thành công" });
-        //}
 
         private string GenerateJwtToken(string username)
         {

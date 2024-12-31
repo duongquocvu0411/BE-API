@@ -56,8 +56,8 @@ const PaymentResult = () => {
                 <p className="mt-3">
                   Cảm ơn bạn đã mua hàng. Mọi thông tin giao dịch đã được lưu lại.
                 </p>
-               <p>
-                  <strong>Mã giao Đơn hàng của bạn:</strong> {paymentStatus.response?.orderId || "Không có"}
+                <p>
+                  <strong>Mã giao Đơn hàng của bạn:</strong> {paymentStatus.response?.orderId}
                 </p>
                 <a href="/" className="btn btn-primary mt-3">
                   Quay về trang chủ
@@ -67,11 +67,11 @@ const PaymentResult = () => {
               <div className="alert alert-danger text-center p-4 rounded">
                 <h1 className="display-6">Thanh toán thất bại</h1>
                 <p>{paymentStatus.message}</p>
-                {/* {paymentStatus.errorDetail && (
+                {paymentStatus.errorDetail && (
                   <pre className="text-start text-danger">
                     {JSON.stringify(paymentStatus.errorDetail, null, 2)}
                   </pre>
-                )} */}
+                )}
                 <a href="/" className="btn btn-secondary mt-3">
                   Thử lại
                 </a>

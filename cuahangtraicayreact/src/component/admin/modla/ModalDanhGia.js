@@ -212,63 +212,88 @@ const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
 
       {/* Modal con cho phản hồi */}
       <Modal
-        show={showPhanHoiModal}
-        onHide={() => setShowPhanHoiModal(false)}
-        centered
-         backdrop="static"
-      >
-        <Modal.Header closeButton className="bg-info text-white">
-          <Modal.Title className="text-center w-100">
-            {currentPhanHoi.isEdit ? (
-              <>
-                <i className="bi bi-pencil me-2"></i> Chỉnh sửa phản hồi
-              </>
-            ) : (
-              <>
-                <i className="bi bi-plus me-2"></i> Thêm phản hồi
-              </>
-            )}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>
-              <i className="bi bi-chat-text me-2 text-secondary"></i>
-              Nội dung phản hồi
-            </Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              value={currentPhanHoi.noi_dung}
-              onChange={(e) =>
-                setCurrentPhanHoi((prev) => ({
-                  ...prev,
-                  noi_dung: e.target.value,
-                }))
-              }
-              className="p-3 rounded-3"
-              style={{ borderColor: "#ced4da", backgroundColor: "#f8f9fa" }}
-              placeholder="Nhập nội dung phản hồi..."
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer className="d-flex justify-content-between">
-          <Button
-            variant="outline-secondary"
-            onClick={() => setShowPhanHoiModal(false)}
-            className="px-4 py-2"
+  show={showPhanHoiModal}
+  onHide={() => setShowPhanHoiModal(false)}
+  centered
+  backdrop="static"
+>
+  <Modal.Header closeButton className="bg-info text-white">
+    <Modal.Title className="text-center w-100">
+      {currentPhanHoi.isEdit ? (
+        <>
+          <i className="bi bi-pencil me-2"></i> Chỉnh sửa phản hồi
+        </>
+      ) : (
+        <>
+          <i className="bi bi-plus me-2"></i> Thêm phản hồi
+        </>
+      )}
+    </Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form.Group>
+      <Form.Label>
+        <i className="bi bi-chat-text me-2 text-secondary"></i>
+        Nội dung phản hồi
+      </Form.Label>
+      <Form.Control
+        as="textarea"
+        rows={3}
+        value={currentPhanHoi.noi_dung}
+        onChange={(e) =>
+          setCurrentPhanHoi((prev) => ({
+            ...prev,
+            noi_dung: e.target.value,
+          }))
+        }
+        className="p-3 rounded-3"
+        style={{ borderColor: "#ced4da", backgroundColor: "#f8f9fa" }}
+        placeholder="Nhập nội dung phản hồi..."
+      />
+    </Form.Group>
+    <div className="mt-3">
+      <Form.Label>
+        <i className="bi bi-emoji-smile me-2 text-secondary"></i>
+        Chọn biểu tượng phản hồi
+      </Form.Label>
+      <div className="d-flex flex-wrap gap-2">
+        {["👍", "😊", "❤️", "🎉", "🚀", "😢", "😡"].map((icon, index) => (
+          <button
+            key={index}
+            type="button"
+            onClick={() =>
+              setCurrentPhanHoi((prev) => ({
+                ...prev,
+                noi_dung: prev.noi_dung + " " + icon,
+              }))
+            }
+            className="btn btn-outline-secondary rounded-circle p-3"
+            style={{ fontSize: "1.5rem" }}
           >
-            <i className="bi bi-x-circle me-2"></i> Hủy
-          </Button>
-          <Button
-            variant="primary"
-            onClick={luuPhanHoi}
-            className="px-4 py-2"
-          >
-            <i className="bi bi-check-circle me-2"></i> Lưu phản hồi
-          </Button>
-        </Modal.Footer>
-      </Modal>
+            {icon}
+          </button>
+        ))}
+      </div>
+    </div>
+  </Modal.Body>
+  <Modal.Footer className="d-flex justify-content-between">
+    <Button
+      variant="outline-secondary"
+      onClick={() => setShowPhanHoiModal(false)}
+      className="px-4 py-2"
+    >
+      <i className="bi bi-x-circle me-2"></i> Hủy
+    </Button>
+    <Button
+      variant="primary"
+      onClick={luuPhanHoi}
+      className="px-4 py-2"
+    >
+      <i className="bi bi-check-circle me-2"></i> Lưu phản hồi
+    </Button>
+  </Modal.Footer>
+</Modal>
+
 
     </>
   );

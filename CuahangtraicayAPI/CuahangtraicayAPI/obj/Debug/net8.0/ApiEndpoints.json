@@ -2506,6 +2506,11 @@
         "IsRequired": false
       },
       {
+        "Name": "PhuDe",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "Favicon",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
@@ -2574,6 +2579,11 @@
       },
       {
         "Name": "TieuDe",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PhuDe",
         "Type": "System.String",
         "IsRequired": false
       },

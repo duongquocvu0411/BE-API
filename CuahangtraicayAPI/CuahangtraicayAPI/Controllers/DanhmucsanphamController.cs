@@ -153,19 +153,23 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Danh mục sản phẩm không tồn tại" });
             }
 
-            // Kiểm tra xem có sản phẩm nào trong danh mục này hay không
-            var khoaSP = await _context.Sanpham.AnyAsync(sp => sp.danhmucsanpham_id == id);
-            if (khoaSP)
+            // Kiểm tra xem danh mục này có sản phẩm nào hay không
+            var hasActiveProducts = await _context.Sanpham
+                .Where(sp => sp.danhmucsanpham_id == id)
+                .AnyAsync(sp => sp.Xoa == false); // Chỉ kiểm tra sản phẩm chưa bị xóa (Xoa == 0)
+
+            if (hasActiveProducts)
             {
-                return BadRequest(new { message = "Không thể xóa vì danh mục này đang chứa sản phẩm" });
+                return BadRequest(new { message = "Không thể xóa vì danh mục này đang chứa sản phẩm chưa được xóa." });
             }
 
-            // Xóa danh mục nếu không có sản phẩm nào
+            // Xóa danh mục nếu không có sản phẩm nào chưa bị xóa
             _context.Danhmucsanpham.Remove(danhmucsanpham);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Xóa danh mục sản phẩm thành công" });
+            return Ok(new { message = "Xóa danh mục sản phẩm thành công." });
         }
+
 
 
         private bool DanhmucsanphamExists(int id)

@@ -9,6 +9,7 @@ namespace CuahangtraicayAPI.Model
         [Key]
         public int Id { get; set; }
         public string Tieu_de { get; set; }
+        public string Phu_de { get; set; }
         public string Favicon { get; set; }
         public string Email { get; set; }
 

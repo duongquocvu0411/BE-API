@@ -41,7 +41,7 @@ const TenFooterAdmin = () => {
     layDanhSachTenFooters();
   }, []);
 
-  const layDanhSachTenFooters = async () => {
+  const layDanhSachTenFooters = async () => { 
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/TenFooter`);

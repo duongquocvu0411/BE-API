@@ -1,7 +1,7 @@
-using ProGCoder_MomoAPI.Models.Momo;
-using ProGCoder_MomoAPI.Models.Order;
+using CuahangtraicayAPI.Model.Momo;
+using CuahangtraicayAPI.Model.Order;
 
-namespace ProGCoder_MomoAPI.Services;
+namespace CuahangtraicayAPI.Services;
 
 public interface IMomoService
 {

@@ -99,9 +99,15 @@ const layDoanhThuThang = async () => {
 
   const laySanPhamBanChay = async () => {
     setDangtai(true);
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
     try {
       // Cập nhật URL API theo API mới đã tạo
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/HoaDon/SanPhamBanChayHienTai`);
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/HoaDon/SanPhamBanChayHienTai`,{
+        headers:{
+          Authorization:`Bearer ${token}`,
+        }
+      });
       setSanPhamBanChay(response.data); // Lưu dữ liệu sản phẩm bán chạy vào state
       setDangtai(false);
     } catch (error) {
@@ -113,8 +119,14 @@ const layDoanhThuThang = async () => {
 
   const layTongSanPhamTonKho = async () => {
     setDangtai(true);
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/sanpham/TongSanPham`);
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/sanpham/TongSanPham`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setTongSanPhamTonKho(response.data.tongSanPham);
       setDangtai(false);
     } catch (error) {

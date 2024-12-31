@@ -142,7 +142,7 @@ const ResetForm = () => {
   setTieude("");
   setPhude("");
   setLinks([]);
-  setHienCo([]);
+  setHienCo([]); 
   setHinhanhs([]);
 
 }

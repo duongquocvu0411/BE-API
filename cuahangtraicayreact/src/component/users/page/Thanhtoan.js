@@ -231,8 +231,9 @@ const Thanhtoan = () => {
         <HeaderUsers />
         {/* Header */}
 
+
         <div className="container-fluid page-header text-white py-5">
-          <div className="text-center">
+          <div className="text-center py-5">
             <h1 className="display-4 fw-bold text-animation">
               <span className="animated-letter">T</span>
               <span className="animated-letter">h</span>

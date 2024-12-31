@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\danhmucsanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\danhmucsanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,14 +23,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "DanhmucsanphamController.cs",
-              "DocumentMoniker": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\DanhmucsanphamController.cs",
-              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\DanhmucsanphamController.cs",
-              "ToolTip": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\DanhmucsanphamController.cs*",
-              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\DanhmucsanphamController.cs*",
-              "ViewState": "AgIAAFcAAAAAAAAAAADwv4cAAAAAAAAAAAAAAA==",
+              "Title": "PaymentController.cs",
+              "DocumentMoniker": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\PaymentController.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\PaymentController.cs",
+              "ToolTip": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\PaymentController.cs*",
+              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\PaymentController.cs*",
+              "ViewState": "AgIAAJsAAAAAAAAAAAAcwL4AAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-28T10:19:52.208Z",
+              "WhenOpened": "2024-12-31T09:29:27.268Z",
               "EditorCaption": ""
             },
             {
@@ -41,9 +41,9 @@
               "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
               "ToolTip": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
               "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
-              "ViewState": "AgIAAHAAAAAAAAAAAAAkwH4AAAB8AAAAAAAAAA==",
+              "ViewState": "AgIAAI4AAAAAAAAAAAAiwH4AAABuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-28T09:54:53.394Z",
+              "WhenOpened": "2024-12-31T06:38:55.283Z",
               "EditorCaption": ""
             }
           ]

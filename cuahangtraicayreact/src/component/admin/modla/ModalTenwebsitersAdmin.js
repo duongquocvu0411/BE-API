@@ -6,6 +6,7 @@ import axios from "axios";
 const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwebsite }) => {
   const defaultFormState = {
     tieu_de: "",
+    phu_de: "",
     favicon: null,
     Email: "",
     sdt: "",
@@ -23,6 +24,7 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
     if (isEdit && Website) {
       setFormData({
         tieu_de: Website.tieu_de || "",
+        phu_de: Website.phu_de || "",
         favicon: null,
         Diachi: Website.diachi || "",
         Email: Website.email || "",
@@ -74,6 +76,7 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
       const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
       const form = new FormData();
       form.append("TieuDe", formData.tieu_de);
+      form.append("Phude", formData.phu_de);
       form.append("Favicon", formData.favicon);
       form.append("Email", formData.Email);
       form.append("Diachi", formData.Diachi);
@@ -156,22 +159,37 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
               required
             />
           </Form.Group>
-          <Form.Group className="mb-4" controlId="formEmail">
+          <Form.Group className="mb-4" controlId="formPhude">
             <Form.Label className="fw-bold">
-              <i className="bi bi-card-text me-2"></i> Email *
+              <i className="bi bi-globe"></i> Phụu đề Website *
             </Form.Label>
             <Form.Control
               type="text"
-              name="Email"
-              value={formData.Email}
+              name="phu_de"
+              value={formData.phu_de}
               onChange={handleInputChange}
-              placeholder="Nhập tiêu đề Website"
+              placeholder="Nhập Email Website"
               className="shadow-sm"
               style={{ borderRadius: "8px" }}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-4" controlId="formTieuDe">
+          <Form.Group className="mb-4" controlId="formEmail">
+            <Form.Label className="fw-bold">
+              <i className="bi bi-card-text me-2"></i> Email *
+            </Form.Label>
+            <Form.Control
+              type="email"
+              name="Email"
+              value={formData.Email}
+              onChange={handleInputChange}
+              placeholder="Nhập Email Website"
+              className="shadow-sm"
+              style={{ borderRadius: "8px" }}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-4" controlId="formDiachi">
             <Form.Label className="fw-bold">
               <i className="bi bi-card-text me-2"></i> Địa chỉ  *
             </Form.Label>
@@ -180,7 +198,7 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
               name="Diachi"
               value={formData.Diachi}
               onChange={handleInputChange}
-              placeholder="Nhập tiêu đề Website"
+              placeholder="Nhập địa chỉ Website"
               className="shadow-sm"
               style={{ borderRadius: "8px" }}
               required
@@ -191,17 +209,24 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
               <i className="bi bi-card-text me-2"></i> Số điện thoại *
             </Form.Label>
             <Form.Control
-              type="text"
-              name="Sodienthoai" // Đúng
+              type="tel"
+              name="Sodienthoai"
               value={formData.Sodienthoai}
               onChange={handleInputChange}
+              onKeyPress={(e) => {
+                const charCode = e.which ? e.which : e.keyCode;
+                if (charCode < 48 || charCode > 57) {
+                  e.preventDefault(); // Ngăn không cho nhập ký tự không phải số
+                }
+              }}
               placeholder="Nhập số điện thoại"
               className="shadow-sm"
               style={{ borderRadius: "8px" }}
+              pattern="[0-9]*" // Optional: Đảm bảo chỉ nhận số khi submit form
               required
             />
-
           </Form.Group>
+
 
           <Form.Group className="mb-4" controlId="formFavicon">
             <Form.Label className="fw-bold">
@@ -231,20 +256,6 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
               </div>
             )}
           </Form.Group>
-
-          {/* <Form.Group className="mb-4" controlId="formTrangThai">
-            <Form.Label className="fw-bold">
-              <i className="bi bi-toggle-on me-2"></i> Trạng thái
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="trangThai"
-              value={formData.trangThai}
-              readOnly
-              className="shadow-sm bg-light"
-              style={{ borderRadius: "8px" }}
-            />
-          </Form.Group> */}
         </Modal.Body>
         <Modal.Footer>
           <Button

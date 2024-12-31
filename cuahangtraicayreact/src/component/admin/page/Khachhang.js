@@ -161,11 +161,11 @@ const Khachhangs = () => {
       const token = isLoggedIn
         ? localStorage.getItem('adminToken')
         : sessionStorage.getItem('adminToken');
-  
+
       const loggedInUser = isLoggedIn
         ? localStorage.getItem("loginhoten")
         : sessionStorage.getItem("loginhoten");
-  
+
       await axios.put(
         `${process.env.REACT_APP_BASEURL}/api/HoaDon/UpdateStatus/${billId}`,
         {
@@ -179,12 +179,12 @@ const Khachhangs = () => {
           },
         }
       );
-  
+
       toast.success('Đã cập nhật trạng thái đơn hàng thành công!', {
         position: 'top-right',
         autoClose: 3000,
       });
-  
+
       setDanhSachKhachHang((prevList) =>
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
@@ -195,7 +195,7 @@ const Khachhangs = () => {
           return khachHang;
         })
       );
-  
+
       setKhachHangHienThi((prevList) =>
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
@@ -206,7 +206,7 @@ const Khachhangs = () => {
           return khachHang;
         })
       );
-  
+
       setHienThiModal(false); // Đóng modal sau khi cập nhật thành công
     } catch (error) {
       console.error('Có lỗi khi cập nhật trạng thái đơn hàng:', error);
@@ -218,7 +218,7 @@ const Khachhangs = () => {
       setIsLoading(false); // Tắt hiệu ứng loading sau khi hoàn thành
     }
   };
-  
+
 
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
@@ -235,10 +235,10 @@ const Khachhangs = () => {
     }
     const hoadonChoThanhToan = hoaDons.find(h => h.status === 'Đã Thanh toán');
     if (hoadonChoThanhToan) {
-        return {
-            text: 'Đã Thanh toán',
-            bgColor: 'badge bg-info text-dark border border-info',
-        };
+      return {
+        text: 'Đã Thanh toán',
+        bgColor: 'badge bg-info text-dark border border-info',
+      };
     }
     // Trạng thái "Đang giao"
     const hoadonDangGiao = hoaDons.find(h => h.status === 'Đang giao');
@@ -249,7 +249,7 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-  
+
     // Trạng thái "Đã giao thành công"
     const hoadonGiaoThanhCong = hoaDons.find(h => h.status === 'Đã giao thành công');
     if (hoadonGiaoThanhCong) {
@@ -268,7 +268,7 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-  
+
     // Trạng thái "Giao không thành công"
     const hoadonKhongGiaoThanhCong = hoaDons.find(h => h.status === 'Giao không thành công');
     if (hoadonKhongGiaoThanhCong) {
@@ -278,7 +278,7 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-  
+
     // Trạng thái "Chờ xử lý" (bổ sung logic kiểm tra)
     const hoadonChoXuLy = hoaDons.find(h => h.status === 'Chờ xử lý');
     if (hoadonChoXuLy) {
@@ -288,7 +288,25 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-  
+    const hoadonChothanhtoan = hoaDons.find(h => h.status === 'Chờ thanh toán');
+    if (hoadonChothanhtoan) {
+      return {
+        text: 'Chờ thanh toán',
+        bgColor: 'badge bg-warning text-dark border border-warning shadow-lg', // Màu vàng nổi bật
+        textColor: ''
+      };
+    }
+
+    const hoadonThanhtoanthatbai = hoaDons.find(h => h.status === 'Thanh toán thất bại');
+    if (hoadonThanhtoanthatbai) {
+      return {
+        text: 'Thanh toán thất bại',
+        bgColor: 'badge bg-danger text-dark border border-warning shadow-lg', // Màu vàng nổi bật
+        textColor: ''
+      };
+    }
+
+
     // Mặc định nếu không có trạng thái phù hợp
     return {
       text: 'Chưa có đơn hàng',
@@ -296,7 +314,7 @@ const Khachhangs = () => {
       textColor: ''
     };
   };
-  
+
   const handleHienThiModalXoa = (khachHang) => {
     setKhachHangXoa(khachHang); // Lưu thông tin khách hàng cần xóa
     setShowModalXoa(true); // Hiển thị modal
@@ -416,7 +434,7 @@ const Khachhangs = () => {
                                 <td>{item.diaChiCuThe}</td>
                                 <td>{item.xaphuong}, {item.tinhthanhquanhuyen}, {item.thanhPho}</td>
                                 <td>{item.ghiChu}</td>
-                                <td> {item.hoaDons.map((hoaDon,idx) => (
+                                <td> {item.hoaDons.map((hoaDon, idx) => (
                                   <div key={nanoid()}>{hoaDon.thanhtoan}</div>))}</td>
                                 <td className={`${trangThaiDonHang.bgColor} ${trangThaiDonHang.textColor}`}>
                                   {trangThaiDonHang.text}
@@ -439,7 +457,7 @@ const Khachhangs = () => {
                                     {/* Icon xóa */}
                                     {kiemTraTrangThaiHoaDon(item.hoaDons) && (
                                       <button
-                                         className="btn btn-outline-danger btn-sm"
+                                        className="btn btn-outline-danger btn-sm"
                                         title="Xóa khách hàng"
                                         onClick={() => handleHienThiModalXoa(item)}
                                       >

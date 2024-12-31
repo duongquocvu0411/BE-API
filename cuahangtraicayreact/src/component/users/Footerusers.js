@@ -2,12 +2,14 @@ import Aos from "aos";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Footerusers = () => {
   const [chiTietDiaChi, setChiTietDiaChi] = useState({ diachi: '', email: '', sdt: '' });
   const [tenFooter, setTenFooter] = useState({ tieude: "", phude: "", footerIMG: [] });
   const [menuFooter, setMenuFooter] = useState([]);
   const [footerActive, setFooterActive] = useState([]);
+   const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "",phu_de:"", favicon: "", email: "", diachi: "", sdt: "" });
   useEffect(() => {
     const fetchCurrentDiaChi = async () => {
       try {
@@ -78,8 +80,37 @@ const Footerusers = () => {
     fetchTenFooter();
     fetchCurrentDiaChi();
     fetchMenuFooter();
+    layThongTinWebsiteHoatDong();
   }, []);
-
+  const layThongTinWebsiteHoatDong = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite`);
+      if (response.data && response.data.length > 0) {
+        const baseURL = process.env.REACT_APP_BASEURL;
+        setThongTinWebsite({
+          tieu_de: response.data[0].tieu_de,
+          phu_de:response.data[0].phu_de,
+          email: response.data[0].email,
+          diachi: response.data[0].diachi,
+          sdt: response.data[0].sdt,
+          favicon: `${baseURL}${response.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
+        });
+        console.log(thongTinWebsite.favicon)
+      } else {
+        toast.info("Không có website đang hoạt động", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        console.log("Không có website đang hoạt động");
+      }
+    } catch (err) {
+      console.error("Lỗi khi gọi API thông tin website:", err);
+      toast.error("Lỗi khi lấy thông tin website hoạt động", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  };
   return (
     <>
 {/* Footer Starts */}
@@ -96,10 +127,12 @@ const Footerusers = () => {
     <div className="row mb-4 pb-4 border-bottom border-secondary">
       <div className="col-lg-6 text-center text-lg-start">
         <h1 className="text-primary mb-0" style={{ fontSize: "2.5rem", fontWeight: "700" }}>
-          {tenFooter.tieude || "Trái cây"}
+          {/* {tenFooter.tieude || "Trái cây"} */}
+          {thongTinWebsite.tieu_de}
         </h1>
         <p className="text-secondary glowing-subtitle mb-0" style={{ fontSize: "1.2rem" }}>
-          {tenFooter.phude || "Sản phẩm tươi"}
+          {/* {tenFooter.phude || "Sản phẩm tươi"} */}
+          {thongTinWebsite.phu_de}
         </p>
       </div>
       {/* Social Media Links */}
@@ -154,7 +187,7 @@ const Footerusers = () => {
             />
           </div>
         </div>
-      ))}
+      ))} 
     </div>
   </div>
 </div>

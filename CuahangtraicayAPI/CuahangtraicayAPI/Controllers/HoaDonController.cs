@@ -9,8 +9,8 @@ using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.Services;
 using System.Globalization;
-using ProGCoder_MomoAPI.Services;
-using ProGCoder_MomoAPI.Models.Order;
+
+using CuahangtraicayAPI.Model.Order;
 
 
 namespace CuahangtraicayAPI.Controllers
@@ -124,7 +124,7 @@ namespace CuahangtraicayAPI.Controllers
                 total_price = totalPrice,
                 order_code = orderCode,
                 Thanhtoan = hoaDonDto.PaymentMethod,
-                status = hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.Thanhtoan == "Momo" ? "Đã Thanh toán" : "Chờ xử lý", // Xử lý đúng trạng thái
+                status = hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.Thanhtoan == "Momo" ? "Chờ thanh toán" : "Chờ xử lý", // Xử lý đúng trạng thái
                 UpdatedBy = hoaDonDto.Updated_By ?? "Chưa có tác động"
             };
 
@@ -150,17 +150,17 @@ namespace CuahangtraicayAPI.Controllers
                         price = (gia) * hoaDonDto.Quantities[i],
                         quantity = hoaDonDto.Quantities[i]
                     };
-                    // Trừ số lượng sản phẩm trong kho nếu không phải thanh toán qua VnPay
-                    if (hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.PaymentMethod == "Momo")
-                    {
-                        sanpham.Soluong -= hoaDonDto.Quantities[i];
-                        if (sanpham.Soluong <= 0)
-                        {
-                            sanpham.Soluong = 0; // Đảm bảo số lượng không bị âm
-                            sanpham.Trangthai = "Hết hàng"; // Cập nhật trạng thái thành "Hết hàng"
-                        }
-                        _context.Sanpham.Update(sanpham);
-                    }
+                    //// Trừ số lượng sản phẩm trong kho nếu không phải thanh toán qua VnPay
+                    //if (hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.PaymentMethod == "Momo")
+                    //{
+                    //    sanpham.Soluong -= hoaDonDto.Quantities[i];
+                    //    if (sanpham.Soluong <= 0)
+                    //    {
+                    //        sanpham.Soluong = 0; // Đảm bảo số lượng không bị âm
+                    //        sanpham.Trangthai = "Hết hàng"; // Cập nhật trạng thái thành "Hết hàng"
+                    //    }
+                    //    _context.Sanpham.Update(sanpham);
+                    //}
                     _context.HoaDonChiTiets.Add(chiTiet);
                 }
             }
@@ -174,7 +174,7 @@ namespace CuahangtraicayAPI.Controllers
             if (hoaDonDto.PaymentMethod == "VnPay")
             {
                 // Tạo URL thanh toán VnPay
-                var paymentInfo = new PaymentInformationModel
+                var paymentInfo = new Model.VnPay.PaymentInformationModel
                 {
                     OrderType = "billpayment",
                     Amount = (double)totalPrice,
@@ -466,7 +466,7 @@ namespace CuahangtraicayAPI.Controllers
                 var EmailSub = "Cập nhật trạng thái đơn hàng";
                 var emailNoidung = $"Đơn hàng của bạn (Mã đơn: {bill.order_code}) đã được cập nhật trạng thái thành: {bill.status}.";
 
-                // Gửi email trong nền
+                // Gửi email trong nền không cần phải chờ gữi mail trước rồi mới cập nhật trạng thái sau
                 Task.Run(async () =>
                 {
                     try
@@ -555,6 +555,7 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         /// <returns>Danh sách sản phẩm bán chạy trong tháng và năm hiện tại</returns>
         [HttpGet("SanPhamBanChayHienTai")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<object>>> GetSanPhamBanChayHienTai()
         {
             // Lấy năm và tháng hiện tại

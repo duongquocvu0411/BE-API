@@ -95,7 +95,7 @@ const TenwebSitersAdmin = () => {
     }
   };
 
-
+ 
   const handleHienThiModalXoa = (Website) => {
     setWebsiteXoa(Website); // Lưu Website cần xóa
     setShowModalXoa(true); // Hiển thị modal xác nhận
@@ -213,6 +213,7 @@ const TenwebSitersAdmin = () => {
                       <tr>
                         <th scope="col">STT</th>
                         <th scope="col">Tiêu đề</th>
+                        <th scope='col'>Phụ đề</th>
                         <th scope="col">Email</th>
                         <th scope="col">Địa chỉ</th>
                         <th scope="col">Số điện thoại</th>
@@ -227,6 +228,7 @@ const TenwebSitersAdmin = () => {
                         <tr key={nanoid()} className="hover-effect">
                           <td>{viTriWebsiteDau + index + 1}</td>
                           <td>{Website.tieu_de}</td>
+                          <td>{Website.phu_de}</td>
                           <td>{Website.email}</td>
                           <td>{Website.diachi}</td>
                           <td>{Website.sdt}</td>

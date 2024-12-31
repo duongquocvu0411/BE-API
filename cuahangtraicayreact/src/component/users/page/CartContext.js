@@ -114,7 +114,7 @@ export const CartProvider = ({ children }) => {
         success = true; // Đánh dấu thêm thành công
         return [
           ...giohanghientai,
-          {
+          { 
             ...sanPham,
             soLuong: 1,
             gia: giaSanPham,

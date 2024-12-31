@@ -2,11 +2,11 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using ProGCoder_MomoAPI.Models.Momo;
-using ProGCoder_MomoAPI.Models.Order;
+using CuahangtraicayAPI.Model.Momo;
+using CuahangtraicayAPI.Model.Order;
 using RestSharp;
 
-namespace ProGCoder_MomoAPI.Services;
+namespace CuahangtraicayAPI.Services;
 
 public class MomoService : IMomoService
 {

@@ -14,7 +14,7 @@ const Giohang = () => {
   const handleModalShow = () => {
     if (giohang.length === 0) {
       toast.warning("Giỏ hàng của bạn đang trống!", {
-        position: "top-right",
+        position: "top-right", 
         autoClose: 3000,
       });
     } else {
@@ -106,8 +106,8 @@ const Giohang = () => {
                         </td>
                         <td>{sanPham.tieude}</td>
                         <td>
-                          {/* {parseFloat(sanPham.gia).toLocaleString("vi-VN", { minimumFractionDigits: 3 })} {"VND"} */}
-                          {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                          {parseFloat(sanPham.gia).toLocaleString("vi-VN", { style:"decimal",minimumFractionDigits: 0})} 
+                         VNĐ
 
                           / {sanPham.don_vi_tinh}
                         </td>
@@ -137,10 +137,6 @@ const Giohang = () => {
                         </td>
                         <td>
                         {(parseFloat(sanPham.gia) * sanPham.soLuong).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
-
-                          {/* {(parseFloat(sanPham.gia) * sanPham.soLuong).toLocaleString("vi-VN", {
-                            minimumFractionDigits: 3,
-                          })} {"VND"} */}
                         </td>
                         <td>
                           <button

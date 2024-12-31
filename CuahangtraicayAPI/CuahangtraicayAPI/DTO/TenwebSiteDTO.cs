@@ -8,6 +8,9 @@ namespace CuahangtraicayAPI.DTO
         {
             [Required]
             public string TieuDe { get; set; } // Tiêu đề trang
+
+            [Required]
+            public string PhuDe { get; set;}
             [Required]
             public IFormFile Favicon { get; set; } // Favicon (file upload)
 
@@ -18,8 +21,6 @@ namespace CuahangtraicayAPI.DTO
             [Required]
             public string Diachi { get; set; }
             [Required]
-            //public string UpdatedBy { get; set; } // Người tạo (hoặc cập nhật ban đầu)
-
             public string Created_By { get; set; }
             [Required]
             public string Updated_By { get; set; }
@@ -29,8 +30,8 @@ namespace CuahangtraicayAPI.DTO
         public class UpdateTenWebSiteDto
         {
             public string? TieuDe { get; set; } // Tiêu đề mới
+            public string? PhuDe { get; set; }
             public IFormFile? Favicon { get; set; } // Favicon mới (có thể null)
-            //public string? UpdatedBy { get; set; } // Người cập nhật
             public string? Email { get; set; }
             public string? Sodienthoai { get; set; }
             public string? Diachi { get; set; }
