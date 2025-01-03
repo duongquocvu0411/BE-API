@@ -11,6 +11,7 @@ using CuahangtraicayAPI.Services;
 using System.Globalization;
 
 using CuahangtraicayAPI.Model.Order;
+using CuahangtraicayAPI.Model.VnPay;
 
 
 namespace CuahangtraicayAPI.Controllers
@@ -22,9 +23,9 @@ namespace CuahangtraicayAPI.Controllers
         private readonly AppDbContext _context;
         private readonly EmailHelper _emailHelper;
         private readonly IVnPayService _vnPayService;
-        private readonly IMomoService _momoService;
+        private readonly MoMoPaymentService _momoService;
 
-        public HoaDonController(AppDbContext context, EmailHelper emailHelper, IVnPayService vnPayService, IMomoService momoService)
+        public HoaDonController(AppDbContext context, EmailHelper emailHelper, IVnPayService vnPayService, MoMoPaymentService momoService)
         {
             _context = context;
             _emailHelper = emailHelper;
@@ -150,7 +151,7 @@ namespace CuahangtraicayAPI.Controllers
                         price = (gia) * hoaDonDto.Quantities[i],
                         quantity = hoaDonDto.Quantities[i]
                     };
-                    //// Trừ số lượng sản phẩm trong kho nếu không phải thanh toán qua VnPay
+                    // Trừ số lượng sản phẩm trong kho nếu không phải thanh toán qua VnPay
                     //if (hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.PaymentMethod == "Momo")
                     //{
                     //    sanpham.Soluong -= hoaDonDto.Quantities[i];
@@ -174,7 +175,7 @@ namespace CuahangtraicayAPI.Controllers
             if (hoaDonDto.PaymentMethod == "VnPay")
             {
                 // Tạo URL thanh toán VnPay
-                var paymentInfo = new Model.VnPay.PaymentInformationModel
+                var paymentInfo = new PaymentInformationModel
                 {
                     OrderType = "billpayment",
                     Amount = (double)totalPrice,
@@ -197,7 +198,8 @@ namespace CuahangtraicayAPI.Controllers
                 {
                     FullName = "Khách hàng",
                     Amount = (double)totalPrice,
-                    OrderInfo = $"Thanh toán hóa đơn {orderCode}"
+                    OrderInfo = $"Thanh toán hóa đơn {orderCode}",
+                    OrderCode = orderCode
                 };
 
                 var momoResponse = await _momoService.CreatePaymentAsync(momoRequest);
@@ -223,7 +225,6 @@ namespace CuahangtraicayAPI.Controllers
             }
 
         }
-
         private async Task GuiEmailHoaDon(HoaDon bill, decimal totalPrice, string orderCode)
         {
             var Kh = await _context.KhachHangs.FirstOrDefaultAsync(kh => kh.Id == bill.khachhang_id);

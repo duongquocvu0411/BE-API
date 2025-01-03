@@ -10,4 +10,6 @@ public class PaymentResponseModel
     public bool Success { get; set; }
     public string Token { get; set; }
     public string VnPayResponseCode { get; set; }
+    public decimal Amount { get; set; } // Thêm Amount
+    public string AmountFormatted => Amount.ToString("#,##0");
 }

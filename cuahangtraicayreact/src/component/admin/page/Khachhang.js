@@ -222,7 +222,7 @@ const Khachhangs = () => {
 
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
-    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn');
+    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status ==='Thanh toán không thành công');
   };
 
   const layTrangThaiDonHang = (hoaDons) => {

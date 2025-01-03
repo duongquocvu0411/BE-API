@@ -72,10 +72,10 @@ const SiderbarAdmin = () => {
                 <i className="fas fa-list-alt"></i> {/* Icon menu footer */}
                 Menu Footer
               </Link>
-              <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Footer' ? 'active' : ''}`} to="/admin/Footer">
-                <i className="fas fa-border-all"></i> {/* Icon footer */}
+              {/* <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Footer' ? 'active' : ''}`} to="/admin/Footer">
+                <i className="fas fa-border-all"></i> 
                 Footer
-              </Link>
+              </Link> */}
             </div>
           </div>
         </li>

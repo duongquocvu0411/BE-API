@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\momoconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\momoconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\services\\momopaymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\services\\momopaymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|e:\\cdsg\\be\\project\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +30,72 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MoMoConfig.cs",
+              "DocumentMoniker": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\MoMoConfig.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\MoMoConfig.cs",
+              "ToolTip": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\MoMoConfig.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\MoMoConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-02T17:10:22.569Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MoMoPaymentService.cs",
+              "DocumentMoniker": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Services\\MoMoPaymentService.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Services\\MoMoPaymentService.cs",
+              "ToolTip": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Services\\MoMoPaymentService.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Services\\MoMoPaymentService.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAowEwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-02T16:32:06.231Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Program.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Program.cs",
+              "ToolTip": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Program.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Program.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-02T16:12:23.06Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\appsettings.json",
+              "ToolTip": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\appsettings.json",
+              "RelativeToolTip": "CuahangtraicayAPI\\appsettings.json",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACMAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-01-02T05:58:25.188Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "PaymentController.cs",
               "DocumentMoniker": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\PaymentController.cs",
               "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\PaymentController.cs",
               "ToolTip": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\PaymentController.cs",
               "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\PaymentController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAYwBcAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-31T09:29:27.268Z",
+              "WhenOpened": "2025-01-02T05:58:04.721Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HoaDonController.cs",
-              "DocumentMoniker": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
-              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
-              "ToolTip": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
-              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
-              "ViewState": "AgIAAL4AAAAAAAAAAAAiwH4AAABuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-31T06:38:55.283Z"
             }
           ]
         }

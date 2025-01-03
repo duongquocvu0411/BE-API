@@ -136,6 +136,8 @@ const ModlaSanpham = ({
     const updatedHinhanhs = hinhanhPhu.filter((_, i) => i !== index);
     setHinhanhPhu(updatedHinhanhs);
   };
+
+  // thêm sản phẩm
   const handleSubmit = async () => {
     let hasError = false;
 

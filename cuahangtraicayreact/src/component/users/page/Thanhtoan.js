@@ -26,7 +26,7 @@ const Thanhtoan = () => {
   const [dangtaiTP, setdangtaiTP] = useState(false);
   const [dangtaiQH, setdangtaiTQH] = useState(false);
   const [dangtaiXP, setdangtaiXP] = useState(false);
-
+  const [paymentMethod, setPaymentMethod] = useState("cod"); // Mặc định là COD
 
   useEffect(() => {
     fetchCities();
@@ -223,7 +223,7 @@ const Thanhtoan = () => {
     setEmail("");
     setGhichu("");
   }
-  const [paymentMethod, setPaymentMethod] = useState("cod"); // Mặc định là COD
+
 
   return (
     <>

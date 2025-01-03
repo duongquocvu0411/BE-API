@@ -93,18 +93,18 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
 
                         {/* Hành động */}
                         <div className="d-flex align-items-center">
-                          {bill.status === "Hủy đơn" && (
+                          {bill.status === "Hủy đơn" || bill.status ==='Thanh toán thất bại' && (
                             <button
                               className="btn btn-outline-danger btn-sm"
                               onClick={handleHienThiModalXoa}
-                              disabled={!chiTietKhachHang || !chiTietKhachHang.hoaDons?.some(hd => hd.status === "Hủy đơn")}
+                              disabled={!chiTietKhachHang || !chiTietKhachHang.hoaDons?.some(hd => hd.status === "Hủy đơn" || hd.status ==="Thanh toán thất bại")}
                             >
                               <i className="bi bi-trash-fill"></i> Xóa Khách Hàng
                             </button>
 
                           )}
 
-                          {bill.status !== "Hủy đơn" && bill.status !== "Đã giao thành công" && (
+                          {bill.status !== "Hủy đơn" && bill.status !== "Đã giao thành công" && bill.status !="Thanh toán thất bại" && bill.status !="Chờ thanh toán" &&(
                             <Form.Group controlId="formTrangThai" className="ms-3">
                               <Form.Label><i className="bi bi-toggle-on"></i> Cập nhật trạng thái:</Form.Label>
                               <Form.Control
@@ -151,7 +151,6 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
           </Button>
         </Modal.Footer>
       </Modal>
-
 
       <Modal
         show={showModalXoa}

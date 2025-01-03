@@ -1,0 +1,59 @@
+.success-page {
+    background-color: #f8f9fa;
+    text-align: center;
+  }
+  
+  .wallet-animation {
+    position: relative;
+    width: 120px;
+    height: 80px;
+  }
+  
+  .wallet {
+    position: relative;
+    width: 120px;
+    height: 80px;
+    background-color: #28a745;
+    border-radius: 10px;
+    overflow: hidden;
+    animation: wallet-bounce 2s infinite ease-in-out;
+  }
+  
+  .wallet-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px;
+    height: 40px;
+    background-color: #218838;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    animation: wallet-flap 2s infinite ease-in-out;
+  }
+  
+  .wallet-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 120px;
+    height: 40px;
+    background-color: #20c997;
+  }
+  
+  @keyframes wallet-bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes wallet-flap {
+    0%, 100% {
+      transform: rotateX(0deg);
+    }
+    50% {
+      transform: rotateX(20deg);
+    }
+  }

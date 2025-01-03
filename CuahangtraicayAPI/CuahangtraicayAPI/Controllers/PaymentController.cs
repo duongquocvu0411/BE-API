@@ -12,9 +12,9 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly IVnPayService _vnPayService;
         private readonly AppDbContext _context;
-        private readonly IMomoService _momoService;
+        private readonly MoMoPaymentService _momoService;
 
-        public PaymentController(IVnPayService vnPayService, AppDbContext appDbContext, IMomoService momoService)
+        public PaymentController(IVnPayService vnPayService, AppDbContext appDbContext, MoMoPaymentService momoService)
         {
             _vnPayService = vnPayService;
             _context = appDbContext;
@@ -26,18 +26,27 @@ namespace CuahangtraicayAPI.Controllers
         {
             try
             {
+                // Lấy thông tin từ query string
                 var queryParams = Request.Query;
-                var response = _momoService.PaymentExecuteAsync(queryParams);
 
-                if (response == null)
+                // Lấy các tham số cần thiết từ query string
+                var orderId = queryParams["orderId"].ToString(); // Chuyển đổi từ StringValues sang string
+                var errorCode = queryParams["resultCode"].ToString();
+                var message = queryParams["message"].ToString();
+                var amount = queryParams["amount"].ToString();
+
+                if (string.IsNullOrEmpty(orderId) || string.IsNullOrEmpty(errorCode))
                 {
-                    return BadRequest(new { success = false, message = "Không tìm thấy thông tin giao dịch." });
+                    return BadRequest(new { success = false, message = "Thiếu thông tin cần thiết từ MoMo callback." });
                 }
 
-                var errorCode = queryParams["errorCode"];
+                // Xử lý thành công giao dịch
                 if (errorCode == "0")
                 {
-                    var sanitizedOrderId = response.OrderId.Replace("Thanh toán hóa đơn ", "");
+                    // Chuẩn hóa OrderId để khớp với cột order_code trong cơ sở dữ liệu
+                    var sanitizedOrderId = orderId;
+
+                    // Tìm hóa đơn dựa trên order_code
                     var hoaDon = await _context.HoaDons.FirstOrDefaultAsync(hd => hd.order_code == sanitizedOrderId);
 
                     if (hoaDon == null)
@@ -47,51 +56,72 @@ namespace CuahangtraicayAPI.Controllers
 
                     if (hoaDon.status != "Đã Thanh toán")
                     {
+                        // Cập nhật trạng thái hóa đơn
                         hoaDon.status = "Đã Thanh toán";
                         hoaDon.Updated_at = DateTime.Now;
 
+                        // Giảm số lượng sản phẩm trong kho
                         var chiTietHoaDons = await _context.HoaDonChiTiets.Where(ct => ct.bill_id == hoaDon.Id).ToListAsync();
 
                         foreach (var chiTiet in chiTietHoaDons)
                         {
-                            var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == int.Parse(chiTiet.sanpham_ids));
+                            var sanphamId = int.Parse(chiTiet.sanpham_ids);
+                            var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == sanphamId);
+
                             if (sanpham != null)
                             {
                                 sanpham.Soluong -= chiTiet.quantity;
+
                                 if (sanpham.Soluong <= 0)
                                 {
-                                    sanpham.Soluong = 0;
-                                    sanpham.Trangthai = "Hết hàng";
+                                    sanpham.Soluong = 0; // Đảm bảo số lượng không bị âm
+                                    sanpham.Trangthai = "Hết hàng"; // Cập nhật trạng thái thành "Hết hàng"
                                 }
+
                                 _context.Sanpham.Update(sanpham);
                             }
                         }
 
                         await _context.SaveChangesAsync();
                     }
-
-                    return Ok(new { success = true, message = "Thanh toán thành công.", data = new { orderId = sanitizedOrderId, amount = response.Amount, orderInfo = response.OrderInfo, status = hoaDon.status } });
+                    // Định dạng amount với dấu chấm
+                    var formattedAmount = double.Parse(amount).ToString("N0", new System.Globalization.CultureInfo("vi-VN"));
+                    return Ok(new
+                    {
+                        success = true,
+                        message = "Thanh toán thành công.",
+                        data = new
+                        {
+                            orderId = sanitizedOrderId,
+                            amount = formattedAmount,
+                            status = hoaDon.status,
+                            orderInfo = hoaDon.order_code,
+                            
+                        }
+                    });
                 }
                 else
                 {
-                    var sanitizedOrderId = queryParams["orderId"].ToString().Replace("Thanh toán hóa đơn ", "");
-                    var hoaDon = await _context.HoaDons.FirstOrDefaultAsync(hd => hd.order_code == sanitizedOrderId);
-
-                    if (hoaDon != null)
+                    // Xử lý giao dịch thất bại
+                    return BadRequest(new
                     {
-                        hoaDon.status = "Thanh toán thất bại";
-                        await _context.SaveChangesAsync();
-                    }
-
-                    return BadRequest(new { success = false, message = "Thanh toán thất bại hoặc bị hủy.", errorCode, errorMessage = queryParams["message"] });
+                        success = false,
+                        message = "Thanh toán thất bại hoặc bị hủy.",
+                        errorCode,
+                        errorMessage = message
+                    });
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "Đã xảy ra lỗi khi xử lý phản hồi thanh toán.", error = ex.Message });
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Đã xảy ra lỗi khi xử lý phản hồi thanh toán.",
+                    error = ex.Message
+                });
             }
         }
-
 
         //[HttpGet("PaymentResponse")]
         //public IActionResult PaymentResponse()
@@ -194,6 +224,7 @@ namespace CuahangtraicayAPI.Controllers
                 {
                     success = true,
                     message = "Thanh toán thành công.",
+                    amount = response.AmountFormatted, // Số tiền định dạng
                     response
                 });
             }

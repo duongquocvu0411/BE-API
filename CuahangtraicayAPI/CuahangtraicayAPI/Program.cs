@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using CuahangtraicayAPI.Model.Momo;
 using System.Text;
 using System.Text.Json.Serialization;
+using CuahangtraicayAPI.Model;
 
 namespace CuahangtraicayAPI
 {
@@ -21,8 +22,11 @@ namespace CuahangtraicayAPI
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
             builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
-
-            builder.Services.AddScoped<IMomoService, MomoService>();
+            // Đọc cấu hình từ appsettings.json
+            builder.Services.Configure<MoMoConfig>(builder.Configuration.GetSection("MoMoConfig"));
+            // Thêm MoMoPaymentService
+            builder.Services.AddScoped<MoMoPaymentService>();
+            //builder.Services.AddScoped<IMomoService, MomoService>();
 
             // đăng ký VnPay service
             builder.Services.AddScoped<IVnPayService, VnPayService>();

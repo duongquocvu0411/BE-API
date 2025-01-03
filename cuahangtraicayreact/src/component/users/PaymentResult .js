@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import HeaderUsers from "./HeaderUsers";
 import Footerusers from "./Footerusers";
+import "./PaymentResult.css"; // Custom CSS for effects
 
 const PaymentResult = () => {
   const [paymentStatus, setPaymentStatus] = useState(null);
@@ -45,42 +45,42 @@ const PaymentResult = () => {
 
   return (
     <>
-      <HeaderUsers /> {/* Component HeaderUser */}
-      <div className="py-5"></div>
-      <div className="container mt-5 py-5 ">
-        <div className="row justify-content-center ">
-          <div className="col-md-8">
-            {paymentStatus && paymentStatus.success ? (
-              <div className="alert alert-success text-center p-4 rounded">
-                <h1 className="display-6">Thanh toán thành công!</h1>
-                <p className="mt-3">
-                  Cảm ơn bạn đã mua hàng. Mọi thông tin giao dịch đã được lưu lại.
-                </p>
-                <p>
-                  <strong>Mã giao Đơn hàng của bạn:</strong> {paymentStatus.response?.orderId}
-                </p>
-                <a href="/" className="btn btn-primary mt-3">
-                  Quay về trang chủ
-                </a>
-              </div>
-            ) : (
-              <div className="alert alert-danger text-center p-4 rounded">
-                <h1 className="display-6">Thanh toán thất bại</h1>
-                <p>{paymentStatus.message}</p>
-                {paymentStatus.errorDetail && (
-                  <pre className="text-start text-danger">
-                    {JSON.stringify(paymentStatus.errorDetail, null, 2)}
-                  </pre>
-                )}
-                <a href="/" className="btn btn-secondary mt-3">
-                  Thử lại
-                </a>
-              </div>
-            )}
+      <HeaderUsers />
+      {paymentStatus && paymentStatus.success ? (
+        <div className="success-page d-flex flex-column align-items-center justify-content-center vh-100">
+          <div className="wallet-animation mb-4">
+            <div className="wallet">
+              <div className="wallet-flap"></div>
+              <div className="wallet-body"></div>
+            </div>
           </div>
+          <h1 className="text-success fw-bold">Thanh toán thành công!</h1>
+          <p className="text-muted">Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</p>
+          <p><strong>Mã đơn hàng:</strong> {paymentStatus.response?.orderId}</p>
+          <p>
+            <strong>Số tiền:</strong>{" "}
+            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(paymentStatus.response?.amount)}
+          </p>
+
+          <button className="btn btn-primary mt-3" onClick={() => window.location.href = "/"}>Quay lại trang chủ</button>
         </div>
-      </div>
-      <Footerusers /> {/* Component FooterUser */}
+      ) : (
+        <div className="failure-page d-flex flex-column align-items-center justify-content-center vh-100">
+          <div className="wallet-animation mb-4">
+            <div className="wallet wallet-failure">
+              <div className="wallet-flap"></div>
+              <div className="wallet-body"></div>
+            </div>
+          </div>
+          <h1 className="text-danger fw-bold">Thanh toán thất bại</h1>
+          <p className="text-muted">{paymentStatus?.message || "Đã xảy ra lỗi trong quá trình xử lý thanh toán."}</p>
+          {paymentStatus?.errorDetail && (
+            <pre className="text-danger">{JSON.stringify(paymentStatus.errorDetail, null, 2)}</pre>
+          )}
+          <button className="btn btn-secondary mt-3" onClick={() => window.location.href = "/"}>Thử lại</button>
+        </div>
+      )}
+      <Footerusers />
     </>
   );
 };

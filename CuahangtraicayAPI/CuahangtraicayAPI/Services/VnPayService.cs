@@ -98,7 +98,9 @@ namespace CuahangtraicayAPI.Services
             {
                 throw new Exception("Chữ ký bảo mật không hợp lệ.");
             }
-
+            // Lấy thông tin Amount (giá trị vnp_Amount được trả về là giá trị * 100)
+            var amount = int.Parse(pay.GetResponseData("vnp_Amount")) / 100;
+            
             // Log OrderId từ VNPAY
             var orderId = pay.GetResponseData("vnp_TxnRef");
             Console.WriteLine($"OrderId từ VNPAY: {orderId}");
@@ -108,7 +110,8 @@ namespace CuahangtraicayAPI.Services
                 OrderId = orderId,
                 TransactionId = pay.GetResponseData("vnp_TransactionNo"),
                 Success = pay.GetResponseData("vnp_ResponseCode") == "00",
-                VnPayResponseCode = pay.GetResponseData("vnp_ResponseCode")
+                VnPayResponseCode = pay.GetResponseData("vnp_ResponseCode"),
+                  Amount = amount // Gắn Amount vào phản hồi
             };
         }
     }
