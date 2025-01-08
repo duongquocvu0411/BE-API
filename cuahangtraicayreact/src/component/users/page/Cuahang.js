@@ -322,12 +322,14 @@ const Cuahang = () => {
                               e.currentTarget.style.boxShadow = "none";
                             }}
                           >
-                            {/* Hiển thị số lượng ở góc trên bên phải */}
-                            <div
-                              className="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 rounded-bottom-left"
+                             {/* Hiển thị số lượng ở dưới thời gian sale */}
+                             <div
+                              className="position-absolute top-0 start-0 bg-success text-white px-2 py-1 mt-4 rounded-end"
                               style={{
                                 fontSize: "0.8rem",
                                 fontWeight: "bold",
+                                zIndex: 2,
+                                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
                               }}
                             >
                               Số lượng: {sanPham.soluong || 0}
