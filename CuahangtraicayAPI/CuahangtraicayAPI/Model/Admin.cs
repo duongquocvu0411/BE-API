@@ -11,7 +11,7 @@ namespace CuahangtraicayAPI.Model
 
         public string hoten { get; set; }
 
-  
+  public string Email { get; set; }
        
         public string Username { get; set; }
      

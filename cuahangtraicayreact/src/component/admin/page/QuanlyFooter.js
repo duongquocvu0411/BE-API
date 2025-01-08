@@ -11,6 +11,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import SiderbarAdmin from '../SidebarAdmin';
 import { Link } from 'react-router-dom';
 import ModlalQuanlyFooter from '../modla/ModalQuanlyFooter';
+import { useCookies } from 'react-cookie';
 
 const QuanlyFooter = () => {
   const [danhSachFooter, setDanhSachFooter] = useState([]);
@@ -19,7 +20,7 @@ const QuanlyFooter = () => {
   const FooterMoiTrang = 4;
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xóa
   const [FooterXoa, setFooterXoa] = useState(null); // Lưu thông tin Footer cần xóa
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   // Thêm state để lưu trữ giá trị tìm kiếm
   const [timKiem, setTimKiem] = useState('');
 
@@ -81,8 +82,7 @@ const QuanlyFooter = () => {
   // Xóa Footer
   const xoaFooter = async (id, name) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const token = cookies.adminToken; // Lấy token từ cookie
 
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/Footer/${id}`
@@ -128,10 +128,8 @@ const QuanlyFooter = () => {
   };
   
   const suDungFooters = async (id) => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-  
-    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const token = cookies.adminToken; // Lấy token từ cookie
+      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
   
     try {
       // Gọi API với headers đặt đúng chỗ

@@ -12,10 +12,10 @@ namespace CuahangtraicayAPI.DTO
             [Required]
             public string noi_dung { get; set; }
 
-            [Required]
-            public string CreatedBy { get; set; }
-            [Required]
-            public string UpdatedBy { get; set; }
+            //[Required]
+            //public string CreatedBy { get; set; }
+            //[Required]
+            //public string UpdatedBy { get; set; }
         }
 
         public class PhanhoiPUTDTO
@@ -23,7 +23,7 @@ namespace CuahangtraicayAPI.DTO
          
             public string noi_dung { get; set; }
 
-            public string UpdatedBy { get; set; }
+            //public string UpdatedBy { get; set; }
         }
     }
 }

@@ -65,8 +65,9 @@ namespace CuahangtraicayAPI.Controllers
 
                         foreach (var chiTiet in chiTietHoaDons)
                         {
-                            var sanphamId = int.Parse(chiTiet.sanpham_ids);
-                            var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == sanphamId);
+                            //var sanphamId = int.Parse(chiTiet.sanpham_ids);
+                            //var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == sanphamId);
+                            var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
 
                             if (sanpham != null)
                             {
@@ -96,13 +97,25 @@ namespace CuahangtraicayAPI.Controllers
                             amount = formattedAmount,
                             status = hoaDon.status,
                             orderInfo = hoaDon.order_code,
-                            
+
                         }
                     });
                 }
                 else
                 {
                     // Xử lý giao dịch thất bại
+                    var donhang = orderId;
+
+                    // tìm hóa đơn dựa trên orderId là order_code 
+                    var hoadon = await _context.HoaDons.FirstOrDefaultAsync(hd => hd.order_code == donhang);
+
+                    if (hoadon != null && hoadon.status != "Đã Thanh toán") 
+                    {
+                        hoadon.status = "Thanh toán thất bại";
+                        hoadon.Updated_at = DateTime.Now;
+
+                        await _context.SaveChangesAsync();
+                    }
                     return BadRequest(new
                     {
                         success = false,
@@ -151,7 +164,7 @@ namespace CuahangtraicayAPI.Controllers
         //        });
         //    }
         //}
-        [HttpGet("PaymentResponse")]    
+        [HttpGet("PaymentResponse")]
         public async Task<IActionResult> PaymentResponse()
         {
             try
@@ -199,8 +212,9 @@ namespace CuahangtraicayAPI.Controllers
 
                     foreach (var chiTiet in chiTietHoaDons)
                     {
-                        var sanphamId = int.Parse(chiTiet.sanpham_ids);
-                        var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == sanphamId);
+                        //var sanphamId = int.Parse(chiTiet.sanpham_ids);
+                        //var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == sanphamId);
+                        var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
 
                         if (sanpham != null)
                         {
@@ -218,8 +232,8 @@ namespace CuahangtraicayAPI.Controllers
 
                     await _context.SaveChangesAsync();
                 }
-               
-               
+
+
                 return Ok(new
                 {
                     success = true,

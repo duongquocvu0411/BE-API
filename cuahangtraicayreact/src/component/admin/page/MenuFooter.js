@@ -9,6 +9,7 @@ import SiderbarAdmin from '../SidebarAdmin';
 import { nanoid } from 'nanoid';
 
 import ModalMenuFooter from '../modla/ModalMenuFooter';
+import { useCookies } from 'react-cookie';
 
 const MenuFooter = () => {
   const [MenuFooters, setMenuFooters] = useState([]);
@@ -16,7 +17,7 @@ const MenuFooter = () => {
   const [trangHienTai, setTrangHienTai] = useState(1);
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xác nhận xóa
   const [MenuFooterXoa, setMenuFooterXoa] = useState(null); // Lưu thông tin MenuFooter cần xóa
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   const MenuFootersMoiTrang = 4;
 
   // Logic tìm kiếm MenuFooters
@@ -45,7 +46,7 @@ const MenuFooter = () => {
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/MenuFooter`);
-      setMenuFooters(response.data);
+      setMenuFooters(response.data.data);
     } catch (error) {
       console.error('Lỗi khi lấy danh sách MenuFooters:', error);
       toast.error('Có lỗi khi lấy danh sách MenuFooters!', {
@@ -71,8 +72,8 @@ const MenuFooter = () => {
 
   const xoaMenuFooter = async (id, tieude) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const token = cookies.adminToken; // Lấy token từ cookie
+     
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/MenuFooter/${id}`,
         {

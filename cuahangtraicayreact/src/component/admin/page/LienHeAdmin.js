@@ -8,6 +8,7 @@ import HeaderAdmin from '../HeaderAdmin';
 import SiderbarAdmin from '../SidebarAdmin';
 
 import ModalLienhe from '../modla/ModalLienhe';
+import { useCookies } from 'react-cookie';
 
 const LienHeAdmin = () => {
   const [danhSachLienHe, setDanhSachLienHe] = useState([]);
@@ -20,7 +21,7 @@ const LienHeAdmin = () => {
   const [dangtai, setDangtai] = useState(false);
   const [showModalXoa, setShowModalXoa] = useState(false); // Quản lý trạng thái hiển thị modal xóa
   const [lienHeXoa, setLienHeXoa] = useState(null); // Lưu thông tin liên hệ cần xóa
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
 
   const chiSoPhanTuCuoi = trangHienTai * soPhanTuMotTrang;
   const chiSoPhanTuDau = chiSoPhanTuCuoi - soPhanTuMotTrang;
@@ -33,8 +34,8 @@ const LienHeAdmin = () => {
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/lienhe`);
-      setDanhSachLienHe(response.data);
-      setDanhSachLienHeLoc(response.data);
+      setDanhSachLienHe(response.data.data);
+      setDanhSachLienHeLoc(response.data.data);
       setDangtai(false);
     } catch (error) {
       console.error('Lỗi khi lấy thông tin liên hệ:', error);
@@ -50,7 +51,7 @@ const LienHeAdmin = () => {
   }, []);
 
   const xoaLienHe = async (id) => {
-    const token = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+    const token = cookies.adminToken; // Lấy token từ cookie
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/lienhe/${id}`, {
         headers: { Authorization: `Bearer ${token}` },

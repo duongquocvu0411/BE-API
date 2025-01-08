@@ -38,23 +38,25 @@ const TrangchuNguoidung = () => {
   const chiSoSanPhamDau = chiSoSanPhamCuoi - sanPhamMoiTrang;
   const sanPhamHienTai = sanPham.slice(chiSoSanPhamDau, chiSoSanPhamCuoi);
   const tongSoTrang = Math.ceil(sanPham.length / sanPhamMoiTrang);
-
+  const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "", email: "", diachi: "", sdt: "", phu_de: "" });
   // Gọi API lấy danh mục và sản phẩm
   useEffect(() => {
-    Aos.init({ duration: 1000,
+    Aos.init({
+      duration: 1000,
       easing: 'ease-in-out'
-     });
+    });
     laySanPham();
     layDanhMuc();
     layDactrungs()
     layBanners();
     laySanPhamSale();
+    layThongTinWebsiteHoatDong();
   }, [danhMucDuocChon]); // Chạy lại khi thay đổi danh mục
 
   const layBanners = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/banners/getTrangthaiHien`);
-      setBanners([response.data]); // Đảm bảo banners là mảng và chứa một phần tử
+      setBanners([response.data.data]); // Đảm bảo banners là mảng và chứa một phần tử
     } catch (error) {
       console.error('Lỗi khi lấy banner đang sử dụng:', error);
       toast.error('Không thể tải banner đang sử dụng!', {
@@ -70,7 +72,7 @@ const TrangchuNguoidung = () => {
   const layDanhMuc = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/danhmucsanpham`);
-      setDanhMuc(response.data || []); // Đảm bảo danh mục là mảng
+      setDanhMuc(response.data.data || []); // Đảm bảo danh mục là mảng
     } catch (error) {
       console.error('Lỗi khi lấy danh mục:', error);
       setDanhMuc([]); // Gán giá trị mặc định khi lỗi
@@ -82,7 +84,7 @@ const TrangchuNguoidung = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/dactrung`);
       const data = response.data || [];
-      setDactrungs(data.sort((a, b) => a.thutuhienthi - b.thutuhienthi));
+      setDactrungs(response.data.data);
     } catch (error) {
       console.error('Lỗi khi lấy danh sách đặc trưng:', error);
       toast.error('Không thể tải danh sách đặc trưng!', {
@@ -103,11 +105,11 @@ const TrangchuNguoidung = () => {
         : `${process.env.REACT_APP_BASEURL}/api/Sanpham/spkhongsale`;
       const response = await axios.get(url);
 
-      if (response.data.length === 0) {
+      if (response.data.data.length === 0) {
         // Nếu không có sản phẩm nào
         setSanPham([]); // Đặt danh sách sản phẩm thành mảng rỗng
       } else {
-        setSanPham(response.data || []);
+        setSanPham(response.data.data || []);
       }
     } catch (error) {
       console.error('Lỗi khi lấy sản phẩm thông thường:', error);
@@ -121,12 +123,42 @@ const TrangchuNguoidung = () => {
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Sanpham/spcosale`);
-      setSanPhamSale(response.data || []);
+      setSanPhamSale(response.data.data || []);
     } catch (error) {
       console.error('Lỗi khi lấy sản phẩm khuyến mãi:', error);
       toast.error('Không thể tải sản phẩm khuyến mãi!', { position: 'top-right', autoClose: 3000 });
     } finally {
       setDangtai(false);
+    }
+  };
+
+  const layThongTinWebsiteHoatDong = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite`);
+      if (response.data.data && response.data.data.length > 0) {
+        const baseURL = process.env.REACT_APP_BASEURL;
+        setThongTinWebsite({
+          tieu_de: response.data.data[0].tieu_de,
+          phu_de: response.data.data[0].phu_de,
+          email: response.data.data[0].email,
+          diachi: response.data.data[0].diachi,
+          sdt: response.data.data[0].sdt,
+          favicon: `${baseURL}${response.data.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
+        });
+
+      } else {
+        toast.info("Không có website đang hoạt động", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        console.log("Không có website đang hoạt động");
+      }
+    } catch (err) {
+      console.error("Lỗi khi gọi API thông tin website:", err);
+      toast.error("Lỗi khi lấy thông tin website hoạt động", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 
@@ -143,30 +175,32 @@ const TrangchuNguoidung = () => {
           <div className="row g-5 align-items-center">
             {/* Phần tiêu đề và phụ đề */}
             <div className="col-md-12 col-lg-7">
-              {banners.length > 0 && (
-                <div className="text-center text-lg-start">
-                  <h4
-                    className="mb-3 text-uppercase text-secondary"
-                    style={{
-                      letterSpacing: "3px",
-                      fontWeight: "bold",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {banners[0].tieude}
-                  </h4>
-                  <h1
-                    className="mb-5 display-3 text-primary fw-bold position-relative"
-                    style={{
-                      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-                      lineHeight: "1.2",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <span className="glowing-text">{banners[0].phude}</span>
-                  </h1>
-                </div>
-              )}
+
+              <div className="text-center text-lg-start">
+                <h4
+                  className="mb-3 text-uppercase text-secondary"
+                  style={{
+                    letterSpacing: "3px",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {/* {banners[0].tieude} */}
+                  {thongTinWebsite.tieu_de}
+                </h4>
+                <h1
+                  className="mb-5 display-3 text-primary fw-bold position-relative"
+                  style={{
+                    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+                    lineHeight: "1.2",
+                    overflow: "hidden",
+                  }}
+                >
+                  {/* <span className="glowing-text">{banners[0].phude}</span> */}
+                  <span className="glowing-text">{thongTinWebsite.phu_de}</span>
+                </h1>
+              </div>
+
             </div>
 
             {/* Phần carousel */}
@@ -302,7 +336,7 @@ const TrangchuNguoidung = () => {
                 </p>
               </div>
             </div>
- 
+
 
             {/* Bộ lọc sản phẩm */}
             <div className="row g-4 align-items-center " >
@@ -377,20 +411,21 @@ const TrangchuNguoidung = () => {
                           e.currentTarget.style.boxShadow = "none";
                         }}
                       >
-                         {/* Hiển thị số lượng ở góc trên bên phải */}
-                         <div
-                            className="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 rounded-bottom-left"
-                            style={{
-                              fontSize: "0.8rem",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Số lượng: {sanPham.soluong || 0}
-                          </div>
+                        {/* Hiển thị số lượng ở góc trên bên phải */}
+                        <div
+                          className="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 rounded-bottom-left"
+                          style={{
+                            fontSize: "0.8rem",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Số lượng: {sanPham.soluong || 0}
+                        </div>
 
                         <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`} className="text-decoration-none">
                           <img
-                            src={sanPham.hinhanh}
+                            // src={sanPham.hinhanh}
+                            src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                             className="card-img-top img-fluid rounded-top"
                             alt={sanPham.tieude || "Sản phẩm không có tiêu đề"}
                             style={{ height: 250, objectFit: "cover" }}
@@ -404,15 +439,18 @@ const TrangchuNguoidung = () => {
                             className="card-text text-muted small mb-3"
                             dangerouslySetInnerHTML={{
                               __html:
-                                sanPham.mo_ta_chung?.length > 50
-                                  ? sanPham.mo_ta_chung.slice(0, 50) + "..."
-                                  : sanPham.mo_ta_chung || "Không có mô tả",
+                                sanPham.chiTiet && sanPham.chiTiet.mo_ta_chung // Kiểm tra chiTiet tồn tại
+                                  ? sanPham.chiTiet.mo_ta_chung.length > 50
+                                    ? sanPham.chiTiet.mo_ta_chung.slice(0, 50) + "..."
+                                    : sanPham.chiTiet.mo_ta_chung
+                                  : "Không có mô tả", // Giá trị mặc định nếu chiTiet không tồn tại
                             }}
                           ></p>
 
+
                           <p className="text-dark fs-5 fw-bold">
-                          {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
-                          / {sanPham.don_vi_tinh}
+                            {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                            / {sanPham.don_vi_tinh}
                           </p>
                           {sanPham.trangthai === "Hết hàng" ? (
                             <span className="badge bg-danger py-2 px-3">Hết hàng</span>
@@ -499,21 +537,22 @@ const TrangchuNguoidung = () => {
                               e.currentTarget.style.boxShadow = "none";
                             }}
                           >
-                             {/* Hiển thị số lượng ở góc trên bên phải */}
-                          <div
-                            className="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 rounded-bottom-left"
-                            style={{
-                              fontSize: "0.8rem",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Số lượng: {sanPham.soluong || 0}
-                          </div>
+                            {/* Hiển thị số lượng ở góc trên bên phải */}
+                            <div
+                              className="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 rounded-bottom-left"
+                              style={{
+                                fontSize: "0.8rem",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Số lượng: {sanPham.soluong || 0}
+                            </div>
 
                             {/* Hình ảnh sản phẩm */}
                             <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`} className="text-decoration-none">
                               <img
-                                src={sanPham.hinhanh || "/path/to/default-image.jpg"}
+                                // src={sanPham.hinhanh || "/path/to/default-image.jpg"}
+                                src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                                 className="card-img-top img-fluid rounded-top"
                                 alt={sanPham.tieude || "Không có tiêu đề"}
                                 style={{ height: 250, objectFit: "cover" }}
@@ -541,9 +580,11 @@ const TrangchuNguoidung = () => {
                                 className="card-text text-muted small mb-3"
                                 dangerouslySetInnerHTML={{
                                   __html:
-                                    sanPham.mo_ta_chung?.length > 50
-                                      ? sanPham.mo_ta_chung.slice(0, 50) + "..."
-                                      : sanPham.mo_ta_chung || "Không có mô tả",
+                                    sanPham.chiTiet && sanPham.chiTiet.mo_ta_chung // Kiểm tra chiTiet tồn tại
+                                      ? sanPham.chiTiet.mo_ta_chung.length > 50
+                                        ? sanPham.chiTiet.mo_ta_chung.slice(0, 50) + "..."
+                                        : sanPham.chiTiet.mo_ta_chung
+                                      : "Không có mô tả", // Giá trị mặc định nếu chiTiet không tồn tại
                                 }}
                               ></p>
 
@@ -552,11 +593,11 @@ const TrangchuNguoidung = () => {
                                   className="text-muted mb-0 text-decoration-line-through"
                                   style={{ fontSize: "0.9rem" }}
                                 >
-                                 {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                                  {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
 
                                 </p>
                                 <p className="text-danger fw-bold fs-5 mb-0">
-                                {parseFloat(sale?.giasale || 0).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                                  {parseFloat(sale?.giasale || 0).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
 
                                   {/* {parseFloat(sale?.giasale || 0).toLocaleString("vi-VN", {
                                     minimumFractionDigits: 3,

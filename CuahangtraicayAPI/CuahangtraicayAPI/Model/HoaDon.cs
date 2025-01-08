@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CuahangtraicayAPI.Model;
+using Newtonsoft.Json;
 
 namespace CuahangtraicayAPI.Model
 {
@@ -25,6 +26,7 @@ namespace CuahangtraicayAPI.Model
         public string Thanhtoan { get; set; } // "COD" hoặc "Online"
 
         // Định nghĩa quan hệ một-nhiều với HoaDonChiTiet
-        public ICollection<HoaDonChiTiet> HoaDonChiTiets { get; set; }
+        [JsonIgnore]
+        public ICollection<HoaDonChiTiet>? HoaDonChiTiets { get; set; }
     }
 }

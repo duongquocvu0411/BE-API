@@ -10,6 +10,8 @@ using static CuahangtraicayAPI.DTO.MenuFooterDTO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -75,13 +77,17 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Danh sách các mục menu footer.</returns>
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MenuFooter>>> GetMenuFooters()
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<MenuFooter>>>> GetMenuFooters()
         {
             var MenuFooter = await _context.MenuFooters
               
                 .OrderBy(mn => mn.Thutuhienthi)
                 .ToListAsync();
-            return Ok(MenuFooter);
+            return Ok(new BaseResponseDTO<IEnumerable< MenuFooter>>
+            {
+                Data = MenuFooter,
+                Message = "Success"
+            });
         }
 
         /// <summary>
@@ -91,13 +97,17 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Chi tiết mục menu footer hoặc lỗi 404 nếu không tìm thấy.</returns>
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<MenuFooter>> GetMenuFooter(int id)
+        public async Task<ActionResult<BaseResponseDTO< MenuFooter>>> GetMenuFooter(int id)
         {
             var menuFooter = await _context.MenuFooters.FindAsync(id);
 
             if (menuFooter == null)
             {
-                return NotFound();
+                return BadRequest(new BaseResponseDTO<MenuFooter>
+                {
+                    Code = 404,
+                    Message = "MenuFooter không tồn tại trong hệ thống"
+                });
             }
 
             var menuFooterDto = new MenuFooter
@@ -108,7 +118,11 @@ namespace CuahangtraicayAPI.Controllers
                 Thutuhienthi = menuFooter.Thutuhienthi
             };
 
-            return Ok(menuFooterDto);
+            return Ok(new BaseResponseDTO<MenuFooter>
+            {
+                Data = menuFooterDto,
+                Message = "Success"
+            });
         }
 
         /// <summary>
@@ -119,33 +133,41 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<MenuFooter>> PostMenuFooter(MenuFooterCreateDto menuFooterCreateDto)
+        public async Task<ActionResult<BaseResponseDTO< MenuFooter>>> PostMenuFooter(MenuFooterCreateDto menuFooterCreateDto)
         {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<MenuFooter> {Code=404, Message = "Không thể xác định người dùng từ token." });
+            }
+            var footer = await _context.MenuFooters.AnyAsync(ft => ft.Thutuhienthi == menuFooterCreateDto.Thutuhienthi );
+            if (footer)
+            {
+                return BadRequest(new BaseResponseDTO<MenuFooter>{Code=404 , Message = "Thứ tự hiển thị đã tồn tại trong hệ thông" });
+            }
+
             var menuFooter = new MenuFooter
             {
                 Tieu_de = menuFooterCreateDto.Tieu_de,
                 Noi_dung = menuFooterCreateDto.Noi_dung,
                 Thutuhienthi = menuFooterCreateDto.Thutuhienthi,
-                CreatedBy = menuFooterCreateDto.Created_By,
-                UpdatedBy = menuFooterCreateDto.Updated_By,
+                CreatedBy = hotenToken ,
+                UpdatedBy = hotenToken ,
                
             };
 
             _context.MenuFooters.Add(menuFooter);
             await _context.SaveChangesAsync();
 
-            var menuFooterDto = new MenuFooter
+            return Ok( new BaseResponseDTO<MenuFooter>
             {
-                Id = menuFooter.Id,
-                Tieu_de = menuFooter.Tieu_de,
-                Noi_dung = menuFooter.Noi_dung,
-                Thutuhienthi = menuFooter.Thutuhienthi,
-                CreatedBy = menuFooter.CreatedBy,
-                UpdatedBy = menuFooter.UpdatedBy,
-                
-            };
-
-            return CreatedAtAction("GetMenuFooter", new { id = menuFooter.Id }, menuFooterDto);
+                Data = menuFooter,
+                Message = "Success"
+            });
         }
 
         /// <summary>
@@ -157,29 +179,46 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutMenuFooter(int id, MenuFooterUpdateDto menuFooterUpdateDto)
+        public async Task<ActionResult<MenuFooter>> PutMenuFooter(int id, MenuFooterUpdateDto menuFooterUpdateDto)
         {
-            //if (id != menuFooterUpdateDto.Id)
-            //{
-            //    return BadRequest();
-            //}
+         
+
+            var footer = await _context.MenuFooters.AnyAsync(ft => ft.Thutuhienthi == menuFooterUpdateDto.Thutuhienthi && ft.Id != id);
+            if (footer)
+            {
+                return BadRequest(new { message = "Thứ tự hiển thị đã tồn tại trong hệ thống" });
+            }
 
             var menuFooter = await _context.MenuFooters.FindAsync(id);
             if (menuFooter == null)
             {
-                return NotFound();
+                
+                return BadRequest(new BaseResponseDTO<MenuFooter>
+                {
+                    Code = 404,
+                    Message ="MenuFooter không tồn tại torng hệ thống"
+                });
+               
             }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
 
             menuFooter.Tieu_de = menuFooterUpdateDto.Tieu_de;
             menuFooter.Noi_dung = menuFooterUpdateDto.Noi_dung;
             menuFooter.Thutuhienthi = menuFooterUpdateDto.Thutuhienthi;
-            menuFooter.UpdatedBy = menuFooterUpdateDto.Updated_By;
+            menuFooter.UpdatedBy = hotenToken;
             menuFooter.Updated_at = DateTime.Now;
 
             _context.Entry(menuFooter).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new BaseResponseDTO<MenuFooter>
+            {
+                Data = menuFooter,
+                Message = "Success"
+            });
         }
 
         /// <summary>
@@ -190,18 +229,26 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteMenuFooter(int id)
+        public async Task<ActionResult<MenuFooter>> DeleteMenuFooter(int id)
         {
             var menuFooter = await _context.MenuFooters.FindAsync(id);
             if (menuFooter == null)
             {
-                return NotFound();
+                return BadRequest(new BaseResponseDTO<MenuFooter>
+                {
+                    Code =404,
+                    Message ="MenuFooter không tồn tại trong hệ thóng"
+                });
             }
 
             _context.MenuFooters.Remove(menuFooter);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok( new BaseResponseDTO<MenuFooter>
+            {
+                Data= menuFooter,
+                Message= "Success"
+            });
         }
     }
 }

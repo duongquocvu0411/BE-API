@@ -48,6 +48,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AdminController",
+    "Method": "VerifyOtp",
+    "RelativePath": "api/Admin/verify-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "otp",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AdminController",
+    "Method": "VerifyRegistration",
+    "RelativePath": "api/Admin/verify-registration",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CuahangtraicayAPI.DTO.LoginDTO\u002BVerifyOtpRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CuahangtraicayAPI.Controllers.BannersController",
     "Method": "GetBanners",
     "RelativePath": "api/Banners",
@@ -57,7 +89,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Bannerts, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Bannerts, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -86,16 +118,6 @@
         "IsRequired": false
       },
       {
-        "Name": "Created_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "Hinhanhs",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
@@ -108,7 +130,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Bannerts",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Bannerts, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -134,7 +156,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Bannerts",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Bannerts, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -168,11 +190,6 @@
         "IsRequired": false
       },
       {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "Trangthai",
         "Type": "System.String",
         "IsRequired": false
@@ -183,7 +200,17 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Bannerts, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.BannersController",
@@ -199,7 +226,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Bannerts, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.BannersController",
@@ -227,7 +264,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Bannerts",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Bannerts, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -268,7 +305,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.ChiTiet, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.ChiTiet, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -294,7 +331,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.ChiTiet",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.ChiTiet, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -314,7 +351,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Dactrung, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Dactrung, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -348,16 +385,6 @@
         "IsRequired": false
       },
       {
-        "Name": "Created_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "IconFile",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
@@ -365,7 +392,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Dactrung",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Dactrung, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -391,7 +418,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Dactrung",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Dactrung, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -430,17 +457,22 @@
         "IsRequired": false
       },
       {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "IconFile",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Dactrung, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.DactrungController",
@@ -456,7 +488,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Dactrung, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.DanhGiaKhachHangController",
@@ -562,7 +604,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Danhmucsanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Danhmucsanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -588,7 +630,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Danhmucsanpham",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Danhmucsanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -614,7 +656,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Danhmucsanpham",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Danhmucsanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -643,7 +685,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Danhmucsanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.DanhmucsanphamController",
@@ -659,7 +711,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Danhmucsanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.DiachichitietController",
@@ -969,7 +1031,17 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Gioithieu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.GioithieuController",
@@ -1000,22 +1072,22 @@
         "IsRequired": false
       },
       {
-        "Name": "Created_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "Images",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Gioithieu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.GioithieuController",
@@ -1031,7 +1103,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Gioithieu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.GioithieuController",
@@ -1067,17 +1149,22 @@
         "IsRequired": false
       },
       {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "Images",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Gioithieu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.GioithieuController",
@@ -1093,7 +1180,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Gioithieu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.GioithieuController",
@@ -1131,7 +1228,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.HoaDon, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1155,7 +1252,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.HoaDon, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.HoaDonController",
@@ -1165,7 +1272,17 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.HoaDonController",
@@ -1197,7 +1314,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1221,7 +1338,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.HoaDonController",
@@ -1237,7 +1364,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.HoaDonController",
@@ -1258,7 +1395,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.HoaDon, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.KhachHangController",
@@ -1270,7 +1417,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.KhachHang, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1296,7 +1443,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.KhachHang",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.KhachHang, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1320,7 +1467,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.KhachHangController",
@@ -1348,7 +1505,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Int32",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1368,7 +1525,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Lienhe, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Lienhe, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1394,7 +1551,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Lienhe",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Lienhe, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1418,7 +1575,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Lienhe, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.MenuController",
@@ -1430,7 +1597,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Menu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Menu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1456,7 +1623,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Menu",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Menu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1482,7 +1649,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.Menu",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Menu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1511,7 +1678,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Menu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.MenuController",
@@ -1527,7 +1704,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Menu, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.MenuFooterController",
@@ -1539,7 +1726,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.MenuFooter, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.MenuFooter, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1565,7 +1752,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.MenuFooter",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.MenuFooter, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1591,7 +1778,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.MenuFooter",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.MenuFooter, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1620,7 +1807,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.Model.MenuFooter",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.MenuFooterController",
@@ -1636,7 +1833,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.Model.MenuFooter",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.MenuFooterController",
@@ -1751,7 +1958,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.PhanHoiDanhGia, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.SanphamController",
@@ -1763,7 +1980,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1814,16 +2031,6 @@
       {
         "Name": "Hinhanh",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "Created_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Updated_By",
-        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -1888,7 +2095,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.SanphamController",
@@ -1944,11 +2161,6 @@
         "IsRequired": false
       },
       {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "Images",
         "Type": "Microsoft.AspNetCore.Http.IFormFileCollection",
         "IsRequired": false
@@ -1989,7 +2201,17 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.SanphamController",
@@ -2010,7 +2232,17 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.SanphamController",
@@ -2028,7 +2260,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -2054,7 +2286,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -2110,7 +2342,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -2128,7 +2360,17 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.SanphamController",
@@ -2332,7 +2574,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.TenFooters, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.TenFooters, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -2369,19 +2611,19 @@
         "Name": "Links",
         "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
-      },
-      {
-        "Name": "Created_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.TenFooters, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.TenFooterController",
@@ -2399,7 +2641,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.TenFooters",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.TenFooters, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -2441,14 +2683,19 @@
         "Name": "Links",
         "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
-      },
-      {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.Model.TenFooters",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.TenFooterController",
@@ -2464,7 +2711,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.Model.TenFooters",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.TenFooterController",
@@ -2490,7 +2747,17 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.TenwebSite, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.TenWebSiteController",
@@ -2531,22 +2798,22 @@
         "IsRequired": false
       },
       {
-        "Name": "Created_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "TrangThai",
         "Type": "System.Byte",
         "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.TenwebSite, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.TenWebSiteController",
@@ -2562,7 +2829,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.TenwebSite, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.TenWebSiteController",
@@ -2606,14 +2883,19 @@
         "Name": "Diachi",
         "Type": "System.String",
         "IsRequired": false
-      },
-      {
-        "Name": "Updated_By",
-        "Type": "System.String",
-        "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.TenwebSite, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.TenWebSiteController",
@@ -2629,6 +2911,16 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.TenwebSite, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

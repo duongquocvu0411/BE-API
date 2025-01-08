@@ -9,6 +9,8 @@ import ModalChiTietKhachHang from '../modla/ModaChiTietKhachHang';
 import HeaderAdmin from '../HeaderAdmin';
 import SiderbarAdmin from '../SidebarAdmin';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const Khachhangs = () => {
   const [danhSachKhachHang, setDanhSachKhachHang] = useState([]);
@@ -22,7 +24,7 @@ const Khachhangs = () => {
   const [dangtai, setDangtai] = useState(false);
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xóa
   const [khachHangXoa, setKhachHangXoa] = useState(null); // Thông tin khách hàng cần xóa
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
 
   const chiSoPhanTuCuoi = trangHienTai * soPhanTuMotTrang;
   const chiSoPhanTuDau = chiSoPhanTuCuoi - soPhanTuMotTrang;
@@ -33,8 +35,8 @@ const Khachhangs = () => {
 
   const layDanhSachKhachHang = async () => {
     setDangtai(true);
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const token = cookies.adminToken; // Lấy token từ cookie
+    
     // Gửi trạng thái cập nhật lên backend
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/khachhang`, {
@@ -43,8 +45,8 @@ const Khachhangs = () => {
         }
       }
       );
-      setDanhSachKhachHang(response.data);
-      setKhachHangHienThi(response.data);
+      setDanhSachKhachHang(response.data.data);
+      setKhachHangHienThi(response.data.data);
       setDangtai(false);
     } catch (error) {
       console.log('có lỗi khi lấy danh sách khách hàng', error);
@@ -91,8 +93,7 @@ const Khachhangs = () => {
   };
 
   const xoaKhachHang = async (id, ten) => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const token = cookies.adminToken; // Lấy token từ cookie
 
     try {
       // Gửi yêu cầu DELETE với Authorization header
@@ -127,8 +128,7 @@ const Khachhangs = () => {
   const hienThiChiTiet = async (id) => {
     try {
       // Lấy token từ localStorage hoặc sessionStorage
-      const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-      const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+      const token = cookies.adminToken; // Lấy token từ cookie
 
       // Gửi request với token
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/khachhang/${id}`, {
@@ -138,7 +138,7 @@ const Khachhangs = () => {
       });
 
       // Cập nhật dữ liệu khách hàng và hiển thị modal
-      setChiTietKhachHang(response.data);
+      setChiTietKhachHang(response.data.data);
       setHienThiModal(true);
     } catch (error) {
       console.error('Có lỗi khi lấy chi tiết khách hàng:', error);
@@ -157,20 +157,14 @@ const Khachhangs = () => {
   const capNhatTrangThai = async (billId, trangthaimoi) => {
     setIsLoading(true); // Bắt đầu hiển thị hiệu ứng loading
     try {
-      const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-      const token = isLoggedIn
-        ? localStorage.getItem('adminToken')
-        : sessionStorage.getItem('adminToken');
-
-      const loggedInUser = isLoggedIn
-        ? localStorage.getItem("loginhoten")
-        : sessionStorage.getItem("loginhoten");
-
+      const token = cookies.adminToken; // Lấy token từ cookie
+      const decodedToken = jwtDecode(token); // Giải mã token
+      const updatedBy = decodedToken.hoten; // Lấy hoten từ token
       await axios.put(
         `${process.env.REACT_APP_BASEURL}/api/HoaDon/UpdateStatus/${billId}`,
         {
           status: trangthaimoi,
-          updated_By: loggedInUser
+        
         },
         {
           headers: {
@@ -189,7 +183,7 @@ const Khachhangs = () => {
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
             khachHang.hoaDons = khachHang.hoaDons.map((hoadon) =>
-              hoadon.id === billId ? { ...hoadon, status: trangthaimoi, updatedBy: loggedInUser } : hoadon
+              hoadon.id === billId ? { ...hoadon, status: trangthaimoi,updatedBy:updatedBy  } : hoadon
             );
           }
           return khachHang;
@@ -200,7 +194,7 @@ const Khachhangs = () => {
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
             khachHang.hoaDons = khachHang.hoaDons.map((hoadon) =>
-              hoadon.id === billId ? { ...hoadon, status: trangthaimoi, updatedBy: loggedInUser } : hoadon
+              hoadon.id === billId ? { ...hoadon, status: trangthaimoi,updatedBy:updatedBy } : hoadon
             );
           }
           return khachHang;

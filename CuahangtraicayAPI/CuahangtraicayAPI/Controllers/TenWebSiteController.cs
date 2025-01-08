@@ -4,6 +4,7 @@ using static CuahangtraicayAPI.DTO.TenwebSiteDTO;
 using Microsoft.EntityFrameworkCore;
 using CuahangtraicayAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 namespace CuahangtraicayAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -22,9 +23,14 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Danh sách Website.</returns>
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable< TenwebSite>>>> GetAll()
         {
-            return Ok(await _context.TenwebSites.ToListAsync());
+            var tenwebsite = await _context.TenwebSites.ToListAsync();
+            return  new BaseResponseDTO<IEnumerable <TenwebSite>>
+            {
+                Data = tenwebsite,
+               Message = "success"
+            };
         }
 
         /// <summary>
@@ -35,12 +41,21 @@ namespace CuahangtraicayAPI.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<BaseResponseDTO<TenwebSite>>> GetById(int id)
         {
             var tenWebSite = await _context.TenwebSites.FindAsync(id);
             if (tenWebSite == null)
-                return NotFound();
-            return Ok(tenWebSite);
+                return BadRequest(new BaseResponseDTO<TenwebSite>
+                {
+                    Code = 404,
+                    Message = "Tên website không tồn tại"
+                });
+
+            return Ok(new BaseResponseDTO<TenwebSite>
+            {
+                Data = tenWebSite,
+                Message = "success"
+            });
         }
 
         /// <summary>
@@ -51,8 +66,13 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromForm] CreateTenWebSiteDto createDto)
+        public async Task<ActionResult<BaseResponseDTO<TenwebSite>>> Create([FromForm] CreateTenWebSiteDto createDto)
         {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
             var newTenWebSite = new TenwebSite
             {
                 Tieu_de = createDto.TieuDe,
@@ -60,8 +80,8 @@ namespace CuahangtraicayAPI.Controllers
                 Email = createDto.Email,
                 Diachi = createDto.Diachi,
                 Sdt = createDto.Sodienthoai,
-                CreatedBy = createDto.Created_By,
-                UpdatedBy = createDto.Updated_By,
+                CreatedBy = hotenToken ,
+                UpdatedBy =  hotenToken,
             };
 
             if (createDto.Favicon != null)
@@ -82,7 +102,11 @@ namespace CuahangtraicayAPI.Controllers
             _context.TenwebSites.Add(newTenWebSite);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetById), new { id = newTenWebSite.Id }, newTenWebSite);
+            return Ok( new BaseResponseDTO<TenwebSite>
+            {
+                Data = newTenWebSite,
+                Message = "success"
+            });
         }
 
         /// <summary>
@@ -93,11 +117,15 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái cập nhật.</returns>
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Update(int id, [FromForm] TenwebSiteDTO.UpdateTenWebSiteDto updateDto)
+        public async Task<ActionResult<BaseResponseDTO<TenwebSite>>> Update(int id, [FromForm] UpdateTenWebSiteDto updateDto)
         {
             var edit = await _context.TenwebSites.FindAsync(id);
             if (edit == null)
-                return NotFound();
+                return BadRequest(new BaseResponseDTO<TenwebSite>
+                {
+                    Code =404,
+                    Message = "Tê website không tồn tại trong hệ thống"
+                });
 
             if (!string.IsNullOrEmpty(updateDto.TieuDe))
                 edit.Tieu_de = updateDto.TieuDe;
@@ -113,7 +141,12 @@ namespace CuahangtraicayAPI.Controllers
             if (!string.IsNullOrEmpty(updateDto.Sodienthoai))
                 edit.Sdt = updateDto.Sodienthoai;
 
-            edit.UpdatedBy = updateDto.Updated_By;
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            edit.UpdatedBy = hotenToken;
             edit.Updated_at = DateTime.Now;
 
             if (updateDto.Favicon != null)
@@ -140,7 +173,11 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok( new BaseResponseDTO<TenwebSite>
+            {
+                Data = edit,
+                Message = "success"
+            });
         }
 
         /// <summary>
@@ -151,11 +188,15 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult<BaseResponseDTO<TenwebSite>>> Delete(int id)
         {
             var tenWebSite = await _context.TenwebSites.FindAsync(id);
             if (tenWebSite == null)
-                return NotFound();
+                return BadRequest(new BaseResponseDTO<TenwebSite>
+                {
+                    Code = 404,
+                    Message = " Tên website không tồn tại trong hệ thống"
+                });
 
             // Xóa favicon (nếu tồn tại)
             if (!string.IsNullOrEmpty(tenWebSite.Favicon))
@@ -167,7 +208,11 @@ namespace CuahangtraicayAPI.Controllers
 
             _context.TenwebSites.Remove(tenWebSite);
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok( new BaseResponseDTO<TenwebSite>
+            {
+                Data= tenWebSite,
+                Message = "success"
+            });
         }
 
     }

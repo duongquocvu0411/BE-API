@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using CuahangtraicayAPI.Model;
 using static CuahangtraicayAPI.DTO.BannersDTO;
-using static CuahangtraicayAPI.DTO.TenwebSiteDTO;
 using System.Reflection;
 using CuahangtraicayAPI.DTO;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -65,13 +65,17 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/Banners
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Bannerts>>> GetBanners()
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<Bannerts>>>> GetBanners()
         {
             var banners = await _context.Banners
                 .Include(b => b.BannerImages)
                 .ToListAsync();
 
-            return banners; // Không cần xử lý thêm
+            return new BaseResponseDTO<IEnumerable< Bannerts>>
+            {
+                Data = banners,
+                Message = "Success"
+            };
         }
 
         /// <summary>
@@ -81,7 +85,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/Banners/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Bannerts>> GetBanner(int id)
+        public async Task<ActionResult<BaseResponseDTO< Bannerts>>> GetBanner(int id)
         {
             var banner = await _context.Banners
         .Include(b => b.BannerImages)
@@ -89,7 +93,11 @@ namespace CuahangtraicayAPI.Controllers
 
             if (banner == null)
             {
-                return NotFound();
+                return BadRequest( new BaseResponseDTO<Bannerts>
+                {
+                    Code = 404,
+                    Message = "Banners không tồn tại trong hệ thống"
+                });
             }
 
             // Loại bỏ trường `banner` trong `BannerImages`
@@ -98,7 +106,11 @@ namespace CuahangtraicayAPI.Controllers
                 bannerImage.Banner = null; // Gán null cho trường `Banner`
             }
 
-            return banner;
+            return new BaseResponseDTO<Bannerts>
+            {
+                Data = banner,
+                Message = "Success"
+            };
         }
 
         /// <summary>
@@ -109,15 +121,30 @@ namespace CuahangtraicayAPI.Controllers
         // POST: api/Banners
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Bannerts>> PostBanner([FromForm] BannerPostDTO dto)
+        public async Task<ActionResult<BaseResponseDTO< Bannerts>>> PostBanner([FromForm] BannerPostDTO dto)
         {
+
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Bannerts>
+                {
+                    Code = 404,
+                    Message ="Không thể xác định người dùng từ token"
+                });
+            }
+
             var banner = new Bannerts
             {
                 Tieude = dto.Tieude,
                 Phude = dto.Phude,
                 Trangthai = "không sử dụng",
-                CreatedBy = dto.Created_By,
-                UpdatedBy = dto.Updated_By,
+                CreatedBy = hotenToken,
+                UpdatedBy = hotenToken,
             };
 
             // Xử lý lưu hình ảnh
@@ -133,7 +160,11 @@ namespace CuahangtraicayAPI.Controllers
             _context.Banners.Add(banner);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBanner", new { id = banner.Id }, banner);
+            return Ok(new BaseResponseDTO<Bannerts>
+            {
+                Data = banner,
+                Message = "Success"
+            });
         }
 
 
@@ -144,13 +175,31 @@ namespace CuahangtraicayAPI.Controllers
         // PUT: api/Banners/{id}
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutBanner(int id, [FromForm] BannerPutDTO dto)
+        public async Task<ActionResult<BaseResponseDTO<Bannerts>>> PutBanner(int id, [FromForm] BannerPutDTO dto)
         {
             var banner = await _context.Banners.Include(b => b.BannerImages).FirstOrDefaultAsync(b => b.Id == id);
             if (banner == null)
             {
-                return NotFound();
+                return BadRequest( new BaseResponseDTO<Bannerts>
+                {
+                    Code = 404,
+                    Message = "Banners không tồn tại trong hệ thống"
+                });
             }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Bannerts>
+                {
+                    Code = 404,
+                    Message = " không thể xác định người dùng từ token"
+                });
+            }
+
 
             // Cập nhật các trường
             if (!string.IsNullOrEmpty(dto.Tieude))
@@ -161,7 +210,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 banner.Phude = dto.Phude;
             }
-            banner.UpdatedBy=dto.Updated_By;
+            banner.UpdatedBy=hotenToken;
 
             // Xử lý thêm mới hình ảnh
             if (dto.Hinhanhs != null)
@@ -173,7 +222,7 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
            
-            banner.Updated_at = DateTime.UtcNow;
+            banner.Updated_at = DateTime.Now;
             _context.Entry(banner).State = EntityState.Modified;
 
             try
@@ -192,7 +241,11 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-            return Ok(banner);
+            return Ok(new BaseResponseDTO<Bannerts> 
+            { 
+                Data= banner,
+                Message = "Success"
+            });
         }
 
 
@@ -203,12 +256,16 @@ namespace CuahangtraicayAPI.Controllers
         // DELETE: api/Banners/{id}
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteBanner(int id)
+        public async Task<ActionResult<BaseResponseDTO<Bannerts>>> DeleteBanner(int id)
         {
             var banner = await _context.Banners.Include(b => b.BannerImages).FirstOrDefaultAsync(b => b.Id == id);
             if (banner == null)
             {
-                return NotFound();
+                return BadRequest( new BaseResponseDTO<Bannerts>
+                {
+                    Code = 404,
+                    Message = "Banners không tồn tại trong hệ thống"
+                });
             }
 
             // Xóa tất cả hình ảnh liên quan
@@ -224,7 +281,11 @@ namespace CuahangtraicayAPI.Controllers
             _context.Banners.Remove(banner);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok( new BaseResponseDTO<Bannerts>
+            {
+                Data = banner,
+                Message = "Success"
+            });
         }
 
         private bool BannerExists(int id)
@@ -285,6 +346,15 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound(new { message = "Không tìm thấy banner với id này." });
             }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new { message = "Không thể xác định người dùng từ token." });
+            }
 
             // Cập nhật trạng thái cho tất cả các banner
             foreach (var banner in allBanners)
@@ -293,7 +363,7 @@ namespace CuahangtraicayAPI.Controllers
                 if (banner.Id == id)
                 {
                     banner.Trangthai = "đang sử dụng"; // Cập nhật trạng thái cho banner được chọn
-                    banner.UpdatedBy = dto.Updated_By; // Cập nhật người thực hiện
+                    banner.UpdatedBy = hotenToken; // Cập nhật người thực hiện
                 }
             }
 
@@ -307,16 +377,20 @@ namespace CuahangtraicayAPI.Controllers
         /// Lấy banner có trạng thái "Đang sử dụng".
         /// </summary>
         [HttpGet("getTrangthaiHien")]
-        public async Task<ActionResult<Bannerts>> GetTrangthaiHien()
+        public async Task<ActionResult<BaseResponseDTO< Bannerts>>> GetTrangthaiHien()
         {
             var banner = await _context.Banners.Include(b=> b.BannerImages).FirstOrDefaultAsync(b => b.Trangthai == "đang sử dụng");
 
             if (banner == null)
             {
-                return NotFound(new { message = "Không có banner nào đang sử dụng" });
+                return BadRequest(new BaseResponseDTO<Bannerts>{Code=404, Message = "Không có banner nào đang sử dụng" });
             }
 
-            return Ok(banner);
+            return Ok(new BaseResponseDTO<Bannerts>
+            {
+                Data =banner,
+                Message = "Success"
+            });
         }
         
 

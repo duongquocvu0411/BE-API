@@ -4,6 +4,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const ModalAddGioiThieu = ({ show, onHide, chinhSua, gioithieu, layDanhSachGioithieu }) => {
   const [tieuDe, setTieuDe] = useState('');
@@ -12,7 +14,7 @@ const ModalAddGioiThieu = ({ show, onHide, chinhSua, gioithieu, layDanhSachGioit
   const [trangThai, setTrangThai] = useState(0);
   const [gioithieuImgs, setGioithieuImgs] = useState([]);
   const [newImages, setNewImages] = useState([]);
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   useEffect(() => {
     if (chinhSua && gioithieu) {
       setTieuDe(gioithieu.tieu_de || '');
@@ -70,10 +72,9 @@ const ModalAddGioiThieu = ({ show, onHide, chinhSua, gioithieu, layDanhSachGioit
 
   const handleSubmit = async () => {
     try {
-      const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-      const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
-      const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
-
+      const token = cookies.adminToken; // Lấy token từ cookie
+      // const decodedToken = jwtDecode(token); // Giải mã token
+      // const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
       const formData = new FormData();
       formData.append('Tieu_de', tieuDe);
       formData.append('Phu_de', phuDe);
@@ -91,7 +92,7 @@ const ModalAddGioiThieu = ({ show, onHide, chinhSua, gioithieu, layDanhSachGioit
 
       if (chinhSua) {
         // Cập nhật
-        formData.append('Updated_By',loggedInUser);
+        // formData.append('Updated_By',loggedInUser);
         await axios.put(
           
           `${process.env.REACT_APP_BASEURL}/api/gioithieu/${gioithieu.id}`,
@@ -106,8 +107,8 @@ const ModalAddGioiThieu = ({ show, onHide, chinhSua, gioithieu, layDanhSachGioit
         toast.success('Giới thiệu đã được cập nhật thành công!', { position: 'top-right', autoClose: 3000 });
       } else {
         // Thêm mới
-        formData.append('Created_By',loggedInUser);
-        formData.append('Updated_By',loggedInUser);
+        // formData.append('Created_By',loggedInUser);
+        // formData.append('Updated_By',loggedInUser);
         await axios.post(
           `${process.env.REACT_APP_BASEURL}/api/gioithieu`,
           formData,

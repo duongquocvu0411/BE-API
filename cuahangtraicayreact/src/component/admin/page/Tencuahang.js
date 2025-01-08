@@ -8,6 +8,7 @@ import HeaderAdmin from '../HeaderAdmin';
 import SiderbarAdmin from '../SidebarAdmin';
 import { Link } from 'react-router-dom';
 import ModalTencuahang from './../modla/ModalTencuahang';
+import { useCookies } from 'react-cookie';
 
 const Tencuahang = () => {
   const [danhSachTencuahang, setDanhSachTencuahang] = useState([]);
@@ -18,6 +19,10 @@ const Tencuahang = () => {
   const [timKiem, setTimKiem] = useState('');
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xác nhận xóa
   const [tencuahangXoa, setTencuahangXoa] = useState(null);
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
+
+
+
 
 
   const [trangHienTai, setTrangHienTai] = useState(1);
@@ -62,8 +67,7 @@ const Tencuahang = () => {
   };
 
   const xoaTencuahang = async (id) => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+    const token = cookies.adminToken; // Lấy token từ cookie
 
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/Tencuahang/${id}`, {
@@ -88,13 +92,12 @@ const Tencuahang = () => {
   };
 
   const suDungTencuahang = async (id) => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
-    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+    const token = cookies.adminToken; // Lấy token từ cookie
+    const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
     try {
       await axios.post(
         `${process.env.REACT_APP_BASEURL}/api/Tencuahang/setTencuahang/${id}`,
-        {Updated_By:loggedInUser},
+        { Updated_By: loggedInUser },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -209,46 +212,46 @@ const Tencuahang = () => {
                             <td>{tencuahang.name}</td>
                             <td>
                               <span
-                              className={`badge ${tencuahang.trangthai === 'đang sử dụng' ? 'bg-success' : 'bg-secondary'}`}
-                            >
-                              {tencuahang.trangthai === 'đang sử dụng' ? 'Đang sử dụng' : 'Không sử dụng'}
-                            </span>
+                                className={`badge ${tencuahang.trangthai === 'đang sử dụng' ? 'bg-success' : 'bg-secondary'}`}
+                              >
+                                {tencuahang.trangthai === 'đang sử dụng' ? 'Đang sử dụng' : 'Không sử dụng'}
+                              </span>
                             </td>
                             <td>{tencuahang.createdBy}</td>
                             <td>{tencuahang.updatedBy}</td>
                             <td>
-                            <div className="d-flex gap-2">
+                              <div className="d-flex gap-2">
 
-                              <button
-                                className="btn btn-outline-warning btn-sm"
-                                onClick={() => chinhSuaTencuahang(tencuahang)}
-                                title="Chỉnh sửa Website"
-                              >
-                                <i className="fas fa-edit"></i>
-                              </button>
-
-
-                              <button
-                                className="btn btn-outline-danger btn-sm"
-                                onClick={() => handleHienThiModalXoa(tencuahang)}
-                                title="Xóa Website"
-                              >
-                                <i className="fas fa-trash"></i>
-                              </button>
-
-
-                              {tencuahang.trangthai !== 'đang sử dụng' && (
                                 <button
-                                  className="btn btn-outline-success btn-sm"
-                                  onClick={() => suDungTencuahang(tencuahang.id)}
-                                  title="Sử dụng Website"
+                                  className="btn btn-outline-warning btn-sm"
+                                  onClick={() => chinhSuaTencuahang(tencuahang)}
+                                  title="Chỉnh sửa Website"
                                 >
-                                  <i className="fas fa-check-circle"></i> Sử dụng
+                                  <i className="fas fa-edit"></i>
                                 </button>
-                              )}
-                            </div>
-                          </td>
-                            
+
+
+                                <button
+                                  className="btn btn-outline-danger btn-sm"
+                                  onClick={() => handleHienThiModalXoa(tencuahang)}
+                                  title="Xóa Website"
+                                >
+                                  <i className="fas fa-trash"></i>
+                                </button>
+
+
+                                {tencuahang.trangthai !== 'đang sử dụng' && (
+                                  <button
+                                    className="btn btn-outline-success btn-sm"
+                                    onClick={() => suDungTencuahang(tencuahang.id)}
+                                    title="Sử dụng Website"
+                                  >
+                                    <i className="fas fa-check-circle"></i> Sử dụng
+                                  </button>
+                                )}
+                              </div>
+                            </td>
+
                           </tr>
                         ))}
                       </tbody>

@@ -30,11 +30,11 @@ const Footerusers = () => {
     const fetchTenFooter = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/TenFooter`);
-        if (response.data && response.data.length > 0) {
+        if (response.data.data && response.data.data.length > 0) {
           setTenFooter({
-            tieude: response.data[0].tieude,
-            phude: response.data[0].phude,
-            footerIMG: response.data[0].footerIMG,
+            tieude: response.data.data[0].tieude,
+            phude: response.data.data[0].phude,
+            footerIMG: response.data.data[0].footerIMG,
           });
         } else {
           console.log("Không có dữ liệu TenFooter");
@@ -46,10 +46,10 @@ const Footerusers = () => {
     const fetchMenuFooter = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/MenuFooter`);
-        if (response.data && response.data.length > 0) {
+        if (response.data.data && response.data.data.length > 0) {
           // Sắp xếp theo thutuhienthi
-          const sortedMenu = response.data.sort((a, b) => a.thutuhienthi - b.thutuhienthi);
-          setMenuFooter(sortedMenu);
+        
+          setMenuFooter(response.data.data);
         } else {
           console.log("Không có dữ liệu MenuFooter");
         }
@@ -85,17 +85,17 @@ const Footerusers = () => {
   const layThongTinWebsiteHoatDong = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite`);
-      if (response.data && response.data.length > 0) {
+      if (response.data.data && response.data.data.length > 0) {
         const baseURL = process.env.REACT_APP_BASEURL;
         setThongTinWebsite({
-          tieu_de: response.data[0].tieu_de,
-          phu_de:response.data[0].phu_de,
-          email: response.data[0].email,
-          diachi: response.data[0].diachi,
-          sdt: response.data[0].sdt,
-          favicon: `${baseURL}${response.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
+          tieu_de: response.data.data[0].tieu_de,
+          phu_de:response.data.data[0].phu_de,
+          email: response.data.data[0].email,
+          diachi: response.data.data[0].diachi,
+          sdt: response.data.data[0].sdt,
+          favicon: `${baseURL}${response.data.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
         });
-        console.log(thongTinWebsite.favicon)
+     
       } else {
         toast.info("Không có website đang hoạt động", {
           position: "top-right",

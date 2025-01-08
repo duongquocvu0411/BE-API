@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -70,14 +71,18 @@ namespace CuahangtraicayAPI.Controllers
             if (danhgia == null)
                 return BadRequest(new { message = "Đánh giá không tồn tại" });
 
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
 
             // Thêm phản hồi mới
             var newPhanHoi = new PhanHoiDanhGia
             {
                 danhgia_id = dto.danhgia_id,
                 noi_dung = dto.noi_dung,
-                CreatedBy = dto.CreatedBy,
-                UpdatedBy = dto.UpdatedBy
+                CreatedBy = hotenToken,
+                UpdatedBy = hotenToken
             };
 
             _context.PhanHoiDanhGias.Add(newPhanHoi);
@@ -98,8 +103,14 @@ namespace CuahangtraicayAPI.Controllers
             if (editPhanHoi == null)
                 return NotFound(new { message = "Phản hồi không tồn tại" });
 
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
             editPhanHoi.noi_dung = dto.noi_dung;
-            editPhanHoi.UpdatedBy = dto.UpdatedBy;
+            editPhanHoi.UpdatedBy = hotenToken;
+            editPhanHoi.Updated_at = DateTime.Now;
 
             await _context.SaveChangesAsync();
             return Ok(new { message = "Phản hồi đã được cập nhật thành công" });
@@ -110,7 +121,7 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeletePhanHoi(int id)
+        public async Task<ActionResult<BaseResponseDTO<PhanHoiDanhGia>>> DeletePhanHoi(int id)
         {
             var phanhoi = await _context.PhanHoiDanhGias.FindAsync(id);
             if (phanhoi == null)
@@ -119,7 +130,7 @@ namespace CuahangtraicayAPI.Controllers
             _context.PhanHoiDanhGias.Remove(phanhoi);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Phản hồi đã được xóa thành công" });
+            return Ok(new BaseResponseDTO<PhanHoiDanhGia> {Code=200, Message = "Phản hồi đã được xóa thành công" });
         }
     }
 }

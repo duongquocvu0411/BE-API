@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+import { useCookies } from 'react-cookie';
+import {jwtDecode} from 'jwt-decode';
 const ModalBanner = ({ show, handleClose, isEdit, banner, fetchBanners }) => {
   const [tieude, setTieude] = useState(banner?.tieude || '');
   const [phude, setPhude] = useState(banner?.phude || '');
   const [hinhanhs, setHinhanhs] = useState([]);
-  
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   // Thiết lập trạng thái ban đầu khi chỉnh sửa hoặc thêm banner mới
   useEffect(() => { 
     if (isEdit && banner) {
@@ -48,9 +49,9 @@ const ModalBanner = ({ show, handleClose, isEdit, banner, fetchBanners }) => {
 
   // Xử lý hành động lưu hoặc cập nhật
   const handleSave = async () => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+    const token = cookies.adminToken; // Lấy token từ cookie
+    const decodedToken = jwtDecode(token); // Giải mã token
+    const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
 
     const formData = new FormData();
     formData.append('tieude', tieude);

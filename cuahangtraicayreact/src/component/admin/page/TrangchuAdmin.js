@@ -18,6 +18,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { useCookies } from 'react-cookie';
 
 ChartJS.register(
   CategoryScale,
@@ -38,10 +39,10 @@ const TrangChuAdmin = () => {
   const [sanPhamBanChay, setSanPhamBanChay] = useState([]);
   const [tongSanPhamTonKho, setTongSanPhamTonKho] = useState(0);
   const [dangtai, setDangtai] = useState(false);  
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
 const layDoanhThuThang = async () => {
-  const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-  const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+  const token = cookies.adminToken; // Lấy token từ cookie
+      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
   
   try {
     const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/HoaDon/DoanhThuTheoTungThang`, {
@@ -63,15 +64,15 @@ const layDoanhThuThang = async () => {
 
   const laySoLuongKhachHangMoi = async () => {
     setDangtai(true);
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+    const token = cookies.adminToken; // Lấy token từ cookie
+      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/khachhang/khachhangthangmoi`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setSoLuongKhachHangMoi(response.data.tongSoKachhangmoi);
+      setSoLuongKhachHangMoi(response.data.data.tongSoKhachHangMoi);
       setDangtai(false);
     } catch (error) {
       console.error("Lỗi khi lấy số lượng khách hàng mới:", error);
@@ -80,8 +81,8 @@ const layDoanhThuThang = async () => {
   };
 
   const layDoanhThuHomNay = async () => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+    const token = cookies.adminToken; // Lấy token từ cookie
+      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/hoadon/DoanhThuHomNay`, {
@@ -89,7 +90,7 @@ const layDoanhThuThang = async () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setDoanhThuHomNay(response.data.tongDoanhThu);
+      setDoanhThuHomNay(response.data.data.tongDoanhThu);
       setDangtai(false);
     } catch (error) {
       console.error("Lỗi khi lấy doanh thu hôm nay:", error);
@@ -99,8 +100,8 @@ const layDoanhThuThang = async () => {
 
   const laySanPhamBanChay = async () => {
     setDangtai(true);
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+    const token = cookies.adminToken; // Lấy token từ cookie
+    const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
     try {
       // Cập nhật URL API theo API mới đã tạo
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/HoaDon/SanPhamBanChayHienTai`,{
@@ -108,7 +109,7 @@ const layDoanhThuThang = async () => {
           Authorization:`Bearer ${token}`,
         }
       });
-      setSanPhamBanChay(response.data); // Lưu dữ liệu sản phẩm bán chạy vào state
+      setSanPhamBanChay(response.data.data); // Lưu dữ liệu sản phẩm bán chạy vào state
       setDangtai(false);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu sản phẩm bán chạy:", error);
@@ -119,15 +120,15 @@ const layDoanhThuThang = async () => {
 
   const layTongSanPhamTonKho = async () => {
     setDangtai(true);
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+    const token = cookies.adminToken; // Lấy token từ cookie
+      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/sanpham/TongSanPham`,{
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setTongSanPhamTonKho(response.data.tongSanPham);
+      setTongSanPhamTonKho(response.data.data.tongSanPham);
       setDangtai(false);
     } catch (error) {
       console.error("Lỗi khi lấy tổng sản phẩm tồn kho:", error);
@@ -158,7 +159,7 @@ const layDoanhThuThang = async () => {
   };
 
   const dataBar = {
-    labels: sanPhamBanChay.map((sp) => sp.sanPhamNames),
+    labels: sanPhamBanChay.map((sp) => sp.sanPhamName),
     datasets: [
       {
         label: 'Số lượng bán',
@@ -185,7 +186,7 @@ const layDoanhThuThang = async () => {
     plugins: {
       tooltip: {
         callbacks: {
-          label: (tooltipItem) => `${tooltipItem.raw.toLocaleString('vi-VN',{ minimumFractionDigits: 3})} VND`,
+          label: (tooltipItem) => `${tooltipItem.raw.toLocaleString('vi-VN',{style:'decimal',minimumFractionDigits: 0})} VND`,
         },
       },
     },
@@ -289,7 +290,7 @@ const layDoanhThuThang = async () => {
                   <Card.Title>
                     <i className="bi bi-currency-exchange me-2"></i> Doanh thu hôm nay
                   </Card.Title>
-                  <Card.Text>{`Hôm nay đạt ${doanhThuHomNay.toLocaleString('vi-VN',{ minimumFractionDigits: 3})} VND.`}</Card.Text>
+                  <Card.Text>{`Hôm nay đạt ${doanhThuHomNay.toLocaleString('vi-VN',{style:'decimal', minimumFractionDigits: 0})} VND.`}</Card.Text>
                   <Link to="/admin/hoadon" className="btn btn-light">
                     Chi tiết
                   </Link>

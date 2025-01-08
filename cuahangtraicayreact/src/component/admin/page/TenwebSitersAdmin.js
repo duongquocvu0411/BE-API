@@ -9,6 +9,7 @@ import SiderbarAdmin from '../SidebarAdmin';
 import { nanoid } from 'nanoid';
 
 import ModalTenwebSitersAdmin from '../modla/ModalTenwebsitersAdmin';
+import { useCookies } from 'react-cookie';
 
 const TenwebSitersAdmin = () => {
   const [Tenwebsite, setTenwebsite] = useState([]);
@@ -16,7 +17,7 @@ const TenwebSitersAdmin = () => {
   const [trangHienTai, setTrangHienTai] = useState(1);
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xác nhận xóa
   const [WebsiteXoa, setWebsiteXoa] = useState(null); // Lưu thông tin Website cần xóa
-
+ const [cookies] = useCookies(['adminToken', 'loginhoten'])
   const TenwebsiteMoiTrang = 4;
 
   // Logic tìm kiếm Tenwebsite
@@ -45,7 +46,7 @@ const TenwebSitersAdmin = () => {
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Tenwebsite`);
-      setTenwebsite(response.data);
+      setTenwebsite(response.data.data);
     } catch (error) {
       console.error('Lỗi khi lấy danh sách Tenwebsite:', error);
       toast.error('Có lỗi khi lấy danh sách Tenwebsite!', {
@@ -70,9 +71,8 @@ const TenwebSitersAdmin = () => {
   };
 
   const xoaWebsite = async (id, tieude) => {
-    // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const token = cookies.adminToken; // Lấy token từ cookie
+
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/Tenwebsite/${id}`,
         {
@@ -112,15 +112,14 @@ const TenwebSitersAdmin = () => {
   };
 
   const suDungTenWebsite = async (id) => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
-    const updatedBy = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+    const token = cookies.adminToken; // Lấy token từ cookie
+      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
 
     try {
       // Gọi API với token trong headers và updatedBy trong body
       await axios.post(
         `${process.env.REACT_APP_BASEURL}/api/TenWebSite/setTenwebsiter/${id}`,
-        { Updated_By: updatedBy }, // Gửi updatedBy trong body
+        { Updated_By: loggedInUser }, // Gửi updatedBy trong body
         {
           headers: {
             Authorization: `Bearer ${token}`,

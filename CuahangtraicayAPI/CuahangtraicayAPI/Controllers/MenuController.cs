@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CuahangtraicayAPI.Model;
 using static CuahangtraicayAPI.DTO.MenuDTO;
+using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -23,9 +25,14 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/Menu
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Menu>>> GetMenus()
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Menu>>>> GetMenus()
         {
-            return await _context.Menus.OrderBy(m => m.Thutuhien).ToListAsync();
+            var menu = await _context.Menus.OrderBy(m => m.Thutuhien).ToListAsync();
+            return new BaseResponseDTO< IEnumerable<Menu>>
+            {
+                Data = menu,
+                Message = "Success"
+            };
         }
 
         /// <summary>
@@ -35,16 +42,24 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/Menu/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Menu>> GetMenu(int id)
+        public async Task<ActionResult<BaseResponseDTO< Menu>>> GetMenu(int id)
         {
             var menu = await _context.Menus.FindAsync(id);
 
             if (menu == null)
             {
-                return NotFound();
+                return BadRequest( new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Menu không tồn tại trong hệ thống"
+                });
             }
 
-            return menu;
+            return Ok ( new BaseResponseDTO<Menu>
+            {
+                Data = menu,
+                Message = "Success"
+            });
         }
 
         /// <summary>
@@ -55,21 +70,48 @@ namespace CuahangtraicayAPI.Controllers
         // POST: api/Menu
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Menu>> CreateMenu(MenuCreateDTO menuDTO)
+        public async Task<ActionResult<BaseResponseDTO< Menu>>> CreateMenu(MenuCreateDTO menuDTO)
         {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            var exists = await _context.Menus.AnyAsync(mn => mn.Thutuhien == menuDTO.Thutuhien);
+            if (exists)
+            {
+                return BadRequest(new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Số thứ tự đã tồn tại trong hệ thống"
+                });
+            }
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Không thể xác định người dùng từ token"
+                });
+            }
             var menu = new Menu
             {
                 Name = menuDTO.Name,
                 Thutuhien = menuDTO.Thutuhien,
                 Url = menuDTO.Url,
-                CreatedBy = menuDTO.Created_By,
-                UpdatedBy = menuDTO.Updated_By,
+                CreatedBy =hotenToken ,
+                UpdatedBy = hotenToken ,
             };
 
             _context.Menus.Add(menu);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetMenu), new { id = menu.Id }, menu);
+            return Ok(new BaseResponseDTO<Menu>
+            {
+                Data = menu,
+                Message = "Success"
+            });
         }
 
 
@@ -81,17 +123,48 @@ namespace CuahangtraicayAPI.Controllers
         // PUT: api/Menu/{id}
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateMenu(int id, MenuUpdateDTO menuDTO)
+        public async Task<ActionResult<BaseResponseDTO<Menu>>> UpdateMenu(int id, MenuUpdateDTO menuDTO)
         {
             if (id <= 0)
             {
-                return BadRequest("Invalid ID");
+                return BadRequest(new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Id không hợp lệ"
+                });
             }
 
             var editMenu = await _context.Menus.FindAsync(id);
             if (editMenu == null)
             {
-                return NotFound();
+                return BadRequest( new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Menu không tồn tại trong hệ thống"
+                });
+            }
+            var thutuhienthi = await _context.Menus.AnyAsync(mn => mn.Thutuhien == menuDTO.Thutuhien && mn.Id != id);
+            if (thutuhienthi)
+            {
+                return BadRequest(new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Thứ tự hiển thị đã tồn tại trong hệ thống"
+                });
+            }
+
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Không thể xác định người dùng từ token"
+                });
             }
 
             // Chỉ cập nhật các trường không null trong DTO
@@ -107,7 +180,8 @@ namespace CuahangtraicayAPI.Controllers
             {
                 editMenu.Url = menuDTO.Url;
             }
-            editMenu.UpdatedBy = menuDTO.Updated_By;
+            editMenu.UpdatedBy = hotenToken;
+            editMenu.Updated_at = DateTime.Now;
 
             try
             {
@@ -125,7 +199,11 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok( new BaseResponseDTO<Menu>
+            {
+                Data = editMenu,
+                Message = "Success"
+            });
         }
 
         /// <summary>
@@ -136,18 +214,26 @@ namespace CuahangtraicayAPI.Controllers
         // DELETE: api/Menu/{id}
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteMenu(int id)
+        public async Task<ActionResult<BaseResponseDTO<Menu>>> DeleteMenu(int id)
         {
             var menu = await _context.Menus.FindAsync(id);
             if (menu == null)
             {
-                return NotFound();
+                return BadRequest( new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Menu không tồn tại trong hệ thống"
+                });
             }
 
             _context.Menus.Remove(menu);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok( new BaseResponseDTO<Menu>
+            {
+                Data = menu,
+                Message = "Success"
+            });
         }
 
         private bool MenuExists(int id)

@@ -98,7 +98,7 @@ const Giohang = () => {
                       <tr key={index}>
                         <td>
                           <img
-                            src={sanPham.hinhanh}
+                            src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                             className="img-thumbnail rounded-circle"
                             style={{ width: "60px", height: "60px" }}
                             alt={sanPham.tieude}

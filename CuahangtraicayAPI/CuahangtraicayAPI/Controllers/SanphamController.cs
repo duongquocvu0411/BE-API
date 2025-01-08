@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -40,7 +41,7 @@ namespace CuahangtraicayAPI.Controllers
         // GET: api/Sanpham
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetSanphams()
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Sanpham>>>> GetSanphams()
         {
 
             var sanphams = await _context.Sanpham
@@ -53,16 +54,20 @@ namespace CuahangtraicayAPI.Controllers
                 .ToListAsync();
 
             // Cập nhật Hinhanh cho từng sản phẩm
-            foreach (var sanpham in sanphams)
-            {
-                sanpham.Hinhanh = !string.IsNullOrEmpty(sanpham.Hinhanh) ? GetImageUrl(sanpham.Hinhanh) : string.Empty;
-                foreach (var image in sanpham.Images)
-                {
-                    image.hinhanh = !string.IsNullOrEmpty(image.hinhanh) ? GetImageUrl(image.hinhanh) : string.Empty;
-                }
-            }
+            //foreach (var sanpham in sanphams)
+            //{
+            //    sanpham.Hinhanh = !string.IsNullOrEmpty(sanpham.Hinhanh) ? GetImageUrl(sanpham.Hinhanh) : string.Empty;
+            //    foreach (var image in sanpham.Images)
+            //    {
+            //        image.hinhanh = !string.IsNullOrEmpty(image.hinhanh) ? GetImageUrl(image.hinhanh) : string.Empty;
+            //    }
+            //}
 
-            return Ok(sanphams);
+            return Ok(new BaseResponseDTO<IEnumerable<Sanpham>>
+            {
+                Data =sanphams,
+                Message= "Success"
+            });
         }
 
 
@@ -74,7 +79,7 @@ namespace CuahangtraicayAPI.Controllers
         // GET: api/Sanpham/{id}
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetSanphamById(int id)
+        public async Task<ActionResult<BaseResponseDTO<Sanpham>>> GetSanphamById(int id)
         {
             var sanpham = await _context.Sanpham
                 .Include(s => s.ChiTiet)
@@ -91,15 +96,19 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             // Cập nhật Hinhanh và các đường dẫn ảnh
-            sanpham.Hinhanh = !string.IsNullOrEmpty(sanpham.Hinhanh) ? GetImageUrl(sanpham.Hinhanh) : string.Empty;
-            foreach (var img in sanpham.Images)
+            //sanpham.Hinhanh = !string.IsNullOrEmpty(sanpham.Hinhanh) ? GetImageUrl(sanpham.Hinhanh) : string.Empty;
+            //foreach (var img in sanpham.Images)
+            //{
+            //    img.hinhanh = !string.IsNullOrEmpty(img.hinhanh) ? GetImageUrl(img.hinhanh) : string.Empty;
+            //}
+
+            return Ok(new BaseResponseDTO<Sanpham>
             {
-                img.hinhanh = !string.IsNullOrEmpty(img.hinhanh) ? GetImageUrl(img.hinhanh) : string.Empty;
-            }
-
-            return Ok(sanpham);
+                Data = sanpham,
+                Message = "Success"
+            });
         }
-
+      
 
         /// <summary>
         /// Thêm mới sản phẩm
@@ -121,8 +130,19 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return BadRequest(new { message = "Số lượng sản phẩm phải lớn hơn hoặc bằng 1." });
             }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
 
-
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Sanpham>
+                {
+                    Data = null,
+                    Message = "không thể xác định người dùng từ token"
+                });
+            }
 
             // Tạo đối tượng sản phẩm mới
             var sanpham = new Sanpham
@@ -133,8 +153,8 @@ namespace CuahangtraicayAPI.Controllers
                 Trangthai = request.Trangthai,
                 don_vi_tinh = request.DonViTinh,
                 danhmucsanpham_id = request.DanhmucsanphamId,
-                CreatedBy = request.Created_By,
-                UpdatedBy = request.Updated_By,
+                CreatedBy = hotenToken,
+                UpdatedBy = hotenToken,
             };
 
             // Lưu hình ảnh chính nếu có
@@ -238,7 +258,7 @@ namespace CuahangtraicayAPI.Controllers
         // PUT: api/Sanpham/{id} api put sản phẩm
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutSanpham(int id, [FromForm] SanphamDTO.SanphamUpdateRequest request)
+        public async Task<ActionResult<BaseResponseDTO<Sanpham>>> PutSanpham(int id, [FromForm] SanphamDTO.SanphamUpdateRequest request)
         {
             // Tìm sản phẩm trong cơ sở dữ liệu
             var sanpham = await _context.Sanpham
@@ -248,26 +268,37 @@ namespace CuahangtraicayAPI.Controllers
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (sanpham == null)
-                return NotFound(new { message = "Sản phẩm không tồn tại" });
+                return NotFound(new BaseResponseDTO<Sanpham> {Code =404, Message = "Sản phẩm không tồn tại" });
 
             // Kiểm tra giá gốc hợp lệ
             if (request.Giatien < 1000)
             {
-                return BadRequest(new { message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
+                return BadRequest(new BaseResponseDTO<Sanpham> { Code=404,Message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
             }
             //if (request.So_luong <= 0)
             //{
             //    return BadRequest(new { message = "Số lượng sản phẩm phải lớn hơn hoặc bằng 1." });
             //}
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
 
-
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Sanpham>
+                {
+                    Data = null,
+                    Message = "không thể xác định người dùng từ token"
+                });
+            }
             // Cập nhật thông tin sản phẩm
             if (!string.IsNullOrEmpty(request.Tieude)) sanpham.Tieude = request.Tieude;
             if (request.Giatien != 0) sanpham.Giatien = request.Giatien;
             if (!string.IsNullOrEmpty(request.Trangthai)) sanpham.Trangthai = request.Trangthai;
             if (!string.IsNullOrEmpty(request.DonViTinh)) sanpham.don_vi_tinh = request.DonViTinh;
             if (request.DanhmucsanphamId != 0) sanpham.danhmucsanpham_id = request.DanhmucsanphamId;
-            sanpham.UpdatedBy = request.Updated_By;
+            sanpham.UpdatedBy = hotenToken;
             sanpham.Xoa = request.Xoasp;
             //if (request.So_luong !=0 ) sanpham.Soluong = request.So_luong.Value;
 
@@ -359,22 +390,22 @@ namespace CuahangtraicayAPI.Controllers
             {
                 if (request.Sale.Giasale <= 0)
                 {
-                    return BadRequest(new { message = "Giá sale phải là số dương lớn hơn 0." });
+                    return BadRequest(new BaseResponseDTO<Sanpham> { Code=404,Message = "Giá sale phải là số dương lớn hơn 0." });
                 }
 
                 if (request.Sale.Giasale >= sanpham.Giatien)
                 {
-                    return BadRequest(new { message = "Giá sale phải nhỏ hơn giá gốc của sản phẩm." });
+                    return BadRequest(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Giá sale phải nhỏ hơn giá gốc của sản phẩm." });
                 }
 
                 if (request.Sale.Giasale < 1000)
                 {
-                    return BadRequest(new { message = "Giá sale phải nhỏ hơn 1000." });
+                    return BadRequest(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Giá sale phải nhỏ hơn 1000." });
                 }
 
                 if (request.Sale.Thoigianketthuc <= request.Sale.Thoigianbatdau)
                 {
-                    return BadRequest(new { message = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu." });
+                    return BadRequest(new BaseResponseDTO<Sanpham> { Code = 404, Message= "Thời gian kết thúc phải lớn hơn thời gian bắt đầu." });
                 }
 
                 // Xử lý thông tin khuyến mãi
@@ -397,10 +428,10 @@ namespace CuahangtraicayAPI.Controllers
             // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
-            return Ok(new
+            return Ok(new BaseResponseDTO<Sanpham>
             {
-                message = "Sản phẩm đã được cập nhật thành công.",
-                sanpham
+                Message = "Sản phẩm đã được cập nhật thành công.",
+                Data =sanpham,
             });
         }
 
@@ -413,7 +444,7 @@ namespace CuahangtraicayAPI.Controllers
         // DELETE: api/Sanpham/{id}
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteSanpham(int id, [FromQuery] string UpdatedBy)
+        public async Task<ActionResult<BaseResponseDTO<Sanpham>>> DeleteSanpham(int id, [FromQuery] string UpdatedBy)
         {
             var sanpham = await _context.Sanpham
                 .Include(s => s.Images)
@@ -421,12 +452,18 @@ namespace CuahangtraicayAPI.Controllers
 
             if (sanpham == null)
             {
-                return NotFound(new { message = "Sản phẩm không tồn tại" });
+                return NotFound(new BaseResponseDTO<Sanpham>{ Code= 404, Message = "Sản phẩm không tồn tại" });
             }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
 
             // Kiểm tra sản phẩm có liên quan đến đơn hàng chưa hoàn thành không
             var hoaDonChiTiets = await _context.HoaDonChiTiets
-                .Where(hdct => hdct.sanpham_ids.Contains(id.ToString()))
+                 //.Where(hdct => hdct.sanpham_ids.Contains(id.ToString()))
+                 .Where(hdct => hdct.sanpham_ids == id)
                 .Include(hdct => hdct.HoaDon)
                 .ToListAsync();
 
@@ -435,20 +472,24 @@ namespace CuahangtraicayAPI.Controllers
             {
                 if (chiTiet.HoaDon.status != "Đã giao thành công" && chiTiet.HoaDon.status != "Hủy đơn")
                 {
-                    return BadRequest(new { message = "Sản phẩm này liên quan đến đơn hàng chưa hoàn thành, không thể ẩn." });
+                    return BadRequest(new { message = "Sản phẩm này liên quan đến đơn hàng chưa hoàn thành, không thể Xóa." });
                 }
             }
 
             // "Ẩn" sản phẩm thay vì xóa
             sanpham.Xoa = true;
-            sanpham.UpdatedBy = UpdatedBy;
+            sanpham.UpdatedBy = hotenToken;
 
 
 
             // Cập nhật thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new BaseResponseDTO<Sanpham>
+            {
+                Data = sanpham,
+                Message="Success"
+            });
         }
 
 
@@ -491,7 +532,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // lấy sản phẩm theo danhmuc sản phẩm
         [HttpGet("danhmuc/{danhmucId}")]
-        public async Task<ActionResult<IEnumerable<Sanpham>>> GetSanphamsByDanhMuc(int danhmucId)
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Sanpham>>>> GetSanphamsByDanhMuc(int danhmucId)
         {
             var sanphams = await _context.Sanpham
                 .Where(s => s.danhmucsanpham_id == danhmucId && s.Xoa == false)
@@ -521,7 +562,11 @@ namespace CuahangtraicayAPI.Controllers
                 DanhmucsanphamName = s.Danhmucsanpham?.Name,
             });
 
-            return Ok(result);
+            return Ok(new BaseResponseDTO<IEnumerable<Sanpham>>
+            {
+                Data = sanphams,
+                Message = "Success"
+            });
         }
 
         /// <summary>
@@ -529,52 +574,27 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         /// <returns>Danh sách sản phẩm theo danh mục nhưng không có sale "Đang áp dụng"</returns>
         [HttpGet("danhmuc-khongsale/{danhmucId}")]
-        public async Task<ActionResult<IEnumerable<object>>> GetSanphamsByDanhMucWithoutActiveSale(int danhmucId)
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Sanpham>>>> GetSanphamsByDanhMucWithoutActiveSale(int danhmucId)
         {
             var sanphams = await _context.Sanpham
-                .Where(s => s.danhmucsanpham_id == danhmucId && s.Xoa == false)
+                .Where(s => s.danhmucsanpham_id == danhmucId && s.Xoa == false && s.SanphamSales.All(sale => sale.trangthai == "Không áp dụng"))
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.SanphamSales)
+           
                 .Include(s => s.ChiTiet)
                 .ToListAsync();
 
             if (!sanphams.Any())
             {
-                return NotFound(new { message = "Không có sản phẩm nào thuộc danh mục này." });
+                return NotFound(new  BaseResponseDTO<Sanpham>{ Code=404,Message = "Không có sản phẩm nào thuộc danh mục này." });
             }
 
-            // Lọc sản phẩm theo các tiêu chí:
-            // - Không có sale nào ("SanphamSales.Count == 0")
-            // - Hoặc tất cả sale phải có trạng thái "Không áp dụng"
-            var result = sanphams
-                .Where(s => !s.SanphamSales.Any() || s.SanphamSales.All(sale => sale.trangthai == "Không áp dụng"))
-                .Select(s => new
-                {
-                    s.Id,
-                    s.Tieude,
-                    s.Giatien,
-                    Hinhanh = !string.IsNullOrEmpty(s.Hinhanh) ? GetImageUrl(s.Hinhanh) : string.Empty,
-                    s.Trangthai,
-                    s.Soluong,
-                    s.don_vi_tinh,
-                    s.danhmucsanpham_id,
-                    s.ChiTiet?.mo_ta_chung,
-                    DanhmucsanphamName = s.Danhmucsanpham?.Name,
-                    SanphamSales = s.SanphamSales
-                        .Where(sale => sale.trangthai == "Không áp dụng") // Chỉ giữ các sale "Không áp dụng"
-                        .Select(sale => new
-                        {
-                            sale.Id,
-                            sale.giasale,
-                            sale.thoigianbatdau,
-                            sale.thoigianketthuc,
-                            sale.trangthai
-                        })
-                        .ToList()
-                })
-                .ToList();
+            return Ok(new BaseResponseDTO<IEnumerable< Sanpham>>
+            {
+                Data = sanphams,
+                Message = "Success"
 
-            return Ok(result);
+            });
         }
 
 
@@ -586,11 +606,26 @@ namespace CuahangtraicayAPI.Controllers
         // GET: api/Sanpham/TongSanPham
         [HttpGet("TongSanPham")]
         [Authorize]
-        public async Task<ActionResult<object>> GetTongSanPham()
+        public async Task<ActionResult<BaseResponseDTO<object>>> GetTongSanPham()
         {
+            // Tính tổng số sản phẩm
             var tongSanPham = await _context.Sanpham.CountAsync();
-            return Ok(new { TongSanPham = tongSanPham });
+
+            // Chuẩn bị dữ liệu trả về
+            var result = new
+            {
+                TongSanPham = tongSanPham
+            };
+
+            // Trả về kết quả qua BaseResponseDTO
+            return Ok(new BaseResponseDTO<object>
+            {
+                Code = 0,
+                Message = "Success",
+                Data = result
+            });
         }
+
 
 
         /// <summary>
@@ -639,51 +674,24 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         /// <returns>Danh sách sản phẩm và sale không áp dụng hoặc không có sale</returns>
         [HttpGet("spkhongsale")]
-        public async Task<ActionResult<IEnumerable<object>>> GetSanphamkhongsal()
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Sanpham>>>> GetSanphamkhongsal()
         {
             // Lấy danh sách sản phẩm và thông tin sale
             var sanphams = await _context.Sanpham
-                .Where(s => s.Xoa == false)
+               .Where(s =>  s.Xoa == false && s.SanphamSales.All(sale => sale.trangthai == "Không áp dụng"))
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.ChiTiet)
                 .Include(s => s.SanphamSales) // Include thông tin sale
                 .OrderBy(s => s.Danhmucsanpham.ID)
                 .ToListAsync();
 
-            // Lọc và tạo danh sách kết quả
-            var result = sanphams.Select(s => new
-            {
-                s.Id,
-                s.Tieude,
-                s.Giatien,
-                Hinhanh = !string.IsNullOrEmpty(s.Hinhanh) ? GetImageUrl(s.Hinhanh) : string.Empty,
-                s.Trangthai,
-                s.Soluong,
-                s.don_vi_tinh,
-                s.ChiTiet?.mo_ta_chung,
-                DanhmucsanphamName = s.Danhmucsanpham?.Name,
-                SanphamSales = s.SanphamSales
-                    .Where(sale => sale.trangthai == "Không áp dụng") // Chỉ giữ các sale "Không áp dụng"
-                    .Select(sale => new
-                    {
-                        sale.Id,
-                        sale.giasale,
-                        sale.thoigianbatdau,
-                        sale.thoigianketthuc,
-                        sale.trangthai
-                    })
-                    .ToList()
-            }).ToList();
-
-            // Lọc các sản phẩm:
-            // - Hoặc có ít nhất một sale "Không áp dụng"
-            // - Hoặc không có sale nào (SanphamSales.Count == 0)
-            var filteredResult = result
-                .Where(r => r.SanphamSales.Count > 0 || !sanphams.FirstOrDefault(s => s.Id == r.Id)?.SanphamSales.Any() == true)
-                .ToList();
-
+         
             // Trả về kết quả
-            return Ok(filteredResult);
+            return Ok(new BaseResponseDTO<IEnumerable <Sanpham>>
+            {
+                Data =sanphams,
+                Message= "Success"
+            });
         }
 
         /// <summary>
@@ -697,39 +705,17 @@ namespace CuahangtraicayAPI.Controllers
             var sanphams = await _context.Sanpham
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.ChiTiet)
-                .Include(s => s.SanphamSales) // Include thông tin sale
+                .Include(s => s.SanphamSales)
+                .Where(s => s.SanphamSales.Any(sale => sale.trangthai == "Đang áp dụng"))// Include thông tin sale
                 .ToListAsync();
 
-            // Lọc và tạo danh sách kết quả
-            var result = sanphams
-                .Where(s => s.SanphamSales.Any(sale => sale.trangthai == "Đang áp dụng")) // Chỉ giữ sản phẩm có ít nhất một sale "Đang áp dụng"
-                .Select(s => new
-                {
-                    s.Id,
-                    s.Tieude,
-                    s.Giatien,
-                    Hinhanh = !string.IsNullOrEmpty(s.Hinhanh) ? GetImageUrl(s.Hinhanh) : string.Empty,
-                    s.Trangthai,
-                    s.Soluong,
-                    s.don_vi_tinh,
-                    s.ChiTiet?.mo_ta_chung,
-                    DanhmucsanphamName = s.Danhmucsanpham?.Name,
-                    SanphamSales = s.SanphamSales
-                        .Where(sale => sale.trangthai == "Đang áp dụng") // Chỉ giữ các sale "Đang áp dụng"
-                        .Select(sale => new
-                        {
-                            sale.Id,
-                            sale.giasale,
-                            sale.thoigianbatdau,
-                            sale.thoigianketthuc,
-                            sale.trangthai
-                        })
-                        .ToList()
-                })
-                .ToList();
-
+          
             // Trả về kết quả
-            return Ok(result);
+            return Ok(new BaseResponseDTO<IEnumerable<Sanpham>>
+            {
+                Data = sanphams,
+                Message = "Success"
+            });
         }
 
     }

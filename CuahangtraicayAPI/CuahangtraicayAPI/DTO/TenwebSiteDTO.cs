@@ -15,15 +15,17 @@ namespace CuahangtraicayAPI.DTO
             public IFormFile Favicon { get; set; } // Favicon (file upload)
 
             [Required]
+            [EmailAddress]
             public string Email { get; set; }
             [Required]
+            [Phone]
             public string Sodienthoai { get; set; }
             [Required]
             public string Diachi { get; set; }
-            [Required]
-            public string Created_By { get; set; }
-            [Required]
-            public string Updated_By { get; set; }
+            //[Required]
+            //public string Created_By { get; set; }
+            //[Required]
+            //public string Updated_By { get; set; }
             public byte TrangThai { get; set; } = 0;
         }
 
@@ -32,10 +34,12 @@ namespace CuahangtraicayAPI.DTO
             public string? TieuDe { get; set; } // Tiêu đề mới
             public string? PhuDe { get; set; }
             public IFormFile? Favicon { get; set; } // Favicon mới (có thể null)
+            [EmailAddress]
             public string? Email { get; set; }
+            [Phone]
             public string? Sodienthoai { get; set; }
             public string? Diachi { get; set; }
-            public string Updated_By { get; set; }
+            //public string Updated_By { get; set; }
         }
         public class SetTenwebSiteDto
         {

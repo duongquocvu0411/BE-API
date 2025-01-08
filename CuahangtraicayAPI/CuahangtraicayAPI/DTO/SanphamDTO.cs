@@ -29,11 +29,11 @@ namespace CuahangtraicayAPI.DTO
             [Required]
             public IFormFile Hinhanh { get; set; } // Main image
 
-            [Required]
-            public string Created_By { get; set; }
+            //[Required]
+            //public string Created_By { get; set; }
 
-            [Required]
-            public string Updated_By { get; set; }
+            //[Required]
+            //public string Updated_By { get; set; }
             public IFormFileCollection? Images { get; set; } // Secondary images
             public ChiTietDto? ChiTiet { get; set; } // Product details
             public SanphamSaleCreateRequest? Sale { get; set; } // Thêm thông tin sale
@@ -53,8 +53,8 @@ namespace CuahangtraicayAPI.DTO
             public bool Xoasp { get; set; }
 
             public IFormFile? Hinhanh { get; set; } // Main image, optional for PUT
-            [Required]
-            public string Updated_By { get; set; }
+            //[Required]
+            //public string Updated_By { get; set; }
             public IFormFileCollection? Images { get; set; } // Secondary images
             public ChiTietDto? ChiTiet { get; set; } // Product details
             public List<int>? ExistingImageIds { get; set; } // Thêm danh sách ID ảnh phụ hiện có

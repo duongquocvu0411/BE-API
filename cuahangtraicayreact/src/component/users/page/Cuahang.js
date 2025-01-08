@@ -54,7 +54,7 @@ const Cuahang = () => {
   const layDanhMuc = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/danhmucsanpham`);
-      setDanhMuc(response.data || []); // Đảm bảo danh mục là mảng
+      setDanhMuc(response.data.data || []); // Đảm bảo danh mục là mảng
     } catch (error) {
       console.error('Lỗi khi lấy danh mục:', error);
       setDanhMuc([]); // Gán giá trị mặc định khi lỗi
@@ -69,11 +69,11 @@ const Cuahang = () => {
         : `${process.env.REACT_APP_BASEURL}/api/Sanpham/spkhongsale`;
       const response = await axios.get(url);
 
-      if (response.data.length === 0) {
+      if (response.data.data.length === 0) {
         // Nếu không có sản phẩm nào
         setSanPham([]); // Đặt danh sách sản phẩm thành mảng rỗng
       } else {
-        setSanPham(response.data || []);
+        setSanPham(response.data.data || []);
       }
     } catch (error) {
       console.error('Lỗi khi lấy sản phẩm thông thường:', error);
@@ -87,7 +87,7 @@ const Cuahang = () => {
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Sanpham/spcosale`);
-      setSanPhamSale(response.data || []);
+      setSanPhamSale(response.data.data || []);
     } catch (error) {
       console.error('Lỗi khi lấy sản phẩm khuyến mãi:', error);
       toast.error('Không thể tải sản phẩm khuyến mãi!', { position: 'top-right', autoClose: 3000 });
@@ -208,7 +208,8 @@ const Cuahang = () => {
 
                         <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`} className="text-decoration-none">
                           <img
-                            src={sanPham.hinhanh}
+                            // src={sanPham.hinhanh}
+                            src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                             className="card-img-top img-fluid rounded-top"
                             alt={sanPham.tieude || "Sản phẩm không có tiêu đề"}
                             style={{ height: 250, objectFit: "cover" }}
@@ -222,11 +223,14 @@ const Cuahang = () => {
                             className="card-text text-muted small mb-3"
                             dangerouslySetInnerHTML={{
                               __html:
-                                sanPham.mo_ta_chung?.length > 50
-                                  ? sanPham.mo_ta_chung.slice(0, 50) + "..."
-                                  : sanPham.mo_ta_chung || "Không có mô tả",
+                                sanPham.chiTiet && sanPham.chiTiet.mo_ta_chung // Kiểm tra chiTiet tồn tại
+                                  ? sanPham.chiTiet.mo_ta_chung.length > 50
+                                    ? sanPham.chiTiet.mo_ta_chung.slice(0, 50) + "..."
+                                    : sanPham.chiTiet.mo_ta_chung
+                                  : "Không có mô tả", // Giá trị mặc định nếu chiTiet không tồn tại
                             }}
                           ></p>
+
 
                           <p className="text-dark fs-5 fw-bold">
                             {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
@@ -332,7 +336,8 @@ const Cuahang = () => {
                             {/* Hình ảnh sản phẩm */}
                             <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`} className="text-decoration-none">
                               <img
-                                src={sanPham.hinhanh || "/path/to/default-image.jpg"}
+                                // src={sanPham.hinhanh || "/path/to/default-image.jpg"}
+                                src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                                 className="card-img-top img-fluid rounded-top"
                                 alt={sanPham.tieude || "Không có tiêu đề"}
                                 style={{ height: 250, objectFit: "cover" }}
@@ -360,9 +365,11 @@ const Cuahang = () => {
                                 className="card-text text-muted small mb-3"
                                 dangerouslySetInnerHTML={{
                                   __html:
-                                    sanPham.mo_ta_chung?.length > 50
-                                      ? sanPham.mo_ta_chung.slice(0, 50) + "..."
-                                      : sanPham.mo_ta_chung || "Không có mô tả",
+                                    sanPham.chiTiet && sanPham.chiTiet.mo_ta_chung // Kiểm tra chiTiet tồn tại
+                                      ? sanPham.chiTiet.mo_ta_chung.length > 50
+                                        ? sanPham.chiTiet.mo_ta_chung.slice(0, 50) + "..."
+                                        : sanPham.chiTiet.mo_ta_chung
+                                      : "Không có mô tả", // Giá trị mặc định nếu chiTiet không tồn tại
                                 }}
                               ></p>
 

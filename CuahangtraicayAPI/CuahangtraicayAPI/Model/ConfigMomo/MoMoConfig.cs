@@ -1,4 +1,4 @@
-﻿namespace CuahangtraicayAPI.Model
+﻿namespace CuahangtraicayAPI.Model.ConfigMomo
 {
     public class MoMoConfig
     {
@@ -8,6 +8,6 @@
         public string EndPoint { get; set; }
         public string ReturnUrl { get; set; }
         public string NotifyUrl { get; set; }
-       
+
     }
 }

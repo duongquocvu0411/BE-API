@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -28,20 +29,24 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Danh sách các mục giới thiệu.</returns>
 
         [HttpGet]
-        public async Task<ActionResult> GetAllGioithieu()
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable< Gioithieu>>>> GetAllGioithieu()
         {
             var gioithieuList = await _context.Gioithieu.Include(g => g.GioithieuImgs).ToListAsync();
 
             // Duyệt qua danh sách hình ảnh và thêm đường dẫn đầy đủ
-            foreach (var gioithieu in gioithieuList)
-            {
-                foreach (var img in gioithieu.GioithieuImgs)
-                {
-                    img.URL_image = Path.Combine("gioithieu", img.URL_image); // Thêm đường dẫn thư mục
-                }
-            }
+            //foreach (var gioithieu in gioithieuList)
+            //{
+            //    foreach (var img in gioithieu.GioithieuImgs)
+            //    {
+            //        img.URL_image = Path.Combine("gioithieu", img.URL_image); // Thêm đường dẫn thư mục
+            //    }
+            //}
 
-            return Ok(gioithieuList);
+            return Ok(new BaseResponseDTO<IEnumerable< Gioithieu>>
+            {
+                Data = gioithieuList,
+                Message = "Success"
+            });
         }
 
 
@@ -78,7 +83,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <param name="id">ID của mục giới thiệu cần lấy thông tin.</param>
         /// <returns>Thông tin chi tiết của mục giới thiệu.</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetGioithieu(int id)
+        public async Task<ActionResult<BaseResponseDTO<Gioithieu>>> GetGioithieu(int id)
         {
             var gioithieu = await _context.Gioithieu.Include(g => g.GioithieuImgs).FirstOrDefaultAsync(g => g.Id == id);
 
@@ -87,7 +92,11 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(gioithieu);
+            return Ok(new BaseResponseDTO<Gioithieu>
+            {
+                Data = gioithieu,
+                Message ="Success"
+            });
         }
 
         /// <summary>
@@ -98,8 +107,17 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> CreateGioithieu([FromForm] GioithieuCreateDTO dto)
+        public async Task<ActionResult<BaseResponseDTO<Gioithieu>>> CreateGioithieu([FromForm] GioithieuCreateDTO dto)
         {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Gioithieu> { Code=404,Message = "Không thể xác định người dùng từ token." });
+            }
             // Kiểm tra đầu vào từ DTO
             if (!ModelState.IsValid)
             {
@@ -113,8 +131,8 @@ namespace CuahangtraicayAPI.Controllers
                 Phu_de = dto.Phu_de,
                 Noi_dung = dto.Noi_dung,
                 Trang_thai = dto.Trang_thai,
-                CreatedBy = dto.Created_By,
-                UpdatedBy = dto.Updated_By,
+                CreatedBy = hotenToken,
+                UpdatedBy = hotenToken,
             };
 
             // Lưu thông tin hình ảnh
@@ -153,7 +171,11 @@ namespace CuahangtraicayAPI.Controllers
             }
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetGioithieu), new { id = gioithieu.Id }, gioithieu);
+            return Ok(new BaseResponseDTO<Gioithieu>
+            {
+                Data = gioithieu,
+                Message ="Success"
+            });
         }
 
 
@@ -167,12 +189,21 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult> UpdateGioithieu(int id, [FromForm] GioithieuUpdateDTO gioithieuUpdateDTO)
+        public async Task<ActionResult<BaseResponseDTO<Gioithieu>>> UpdateGioithieu(int id, [FromForm] GioithieuUpdateDTO gioithieuUpdateDTO)
         {
             var gioithieu = await _context.Gioithieu.Include(g => g.GioithieuImgs).FirstOrDefaultAsync(g => g.Id == id);
             if (gioithieu == null)
             {
                 return NotFound();
+            }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Gioithieu> { Code=404, Message = "Không thể xác định người dùng từ token." });
             }
 
             // Cập nhật các trường
@@ -180,7 +211,7 @@ namespace CuahangtraicayAPI.Controllers
             gioithieu.Phu_de = gioithieuUpdateDTO.Phu_de ?? gioithieu.Phu_de;
             gioithieu.Noi_dung = gioithieuUpdateDTO.Noi_dung ?? gioithieu.Noi_dung;
             gioithieu.Trang_thai = gioithieuUpdateDTO.Trang_thai ?? gioithieu.Trang_thai;
-            gioithieu.UpdatedBy = gioithieuUpdateDTO.Updated_By;
+            gioithieu.UpdatedBy = hotenToken ;
 
             // Lưu các thay đổi về thông tin trong bảng Gioithieu
             _context.Gioithieu.Update(gioithieu);
@@ -220,7 +251,11 @@ namespace CuahangtraicayAPI.Controllers
             // Lưu tất cả các thay đổi
             await _context.SaveChangesAsync();
 
-            return NoContent(); // Trả về trạng thái NoContent khi thành công
+            return Ok(new BaseResponseDTO<Gioithieu>
+            {
+                Data = gioithieu,
+                Message = "Success"
+            }); 
         }
 
 
@@ -232,13 +267,17 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<ActionResult> DeleteGioithieu(int id)
+        public async Task<ActionResult<BaseResponseDTO<Gioithieu>>> DeleteGioithieu(int id)
         {
             var gioithieu = await _context.Gioithieu.FindAsync(id);
 
             if (gioithieu == null)
             {
-                return NotFound();
+                return BadRequest(new BaseResponseDTO<Gioithieu>
+                {
+                    Code =404,
+                    Message="Giới thiệu không tồn tại trong hệ thống"
+                });
             }
 
             var imagesToDelete = await _context.GioithieuImg.Where(g => g.Id_gioithieu == id).ToListAsync();
@@ -247,7 +286,11 @@ namespace CuahangtraicayAPI.Controllers
             _context.Gioithieu.Remove(gioithieu);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new BaseResponseDTO<Gioithieu>
+            {
+                Data =gioithieu,
+                Message ="Success"
+            });
         }
 
         /// <summary>

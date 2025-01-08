@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using CuahangtraicayAPI.Model;
 using Microsoft.AspNetCore.Authorization;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -25,9 +26,15 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/LienHe
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Lienhe>>> GetLienHes()
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Lienhe>>>> GetLienHes()
         {
-            return await _context.Lienhes.ToListAsync();
+            var lh =await _context.Lienhes.ToListAsync();
+            return Ok(new BaseResponseDTO<IEnumerable<Lienhe>>
+            {
+                Data = lh,
+                Message = "Success"
+
+            });
         }
 
         /// <summary>
@@ -37,7 +44,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/LienHe
         [HttpPost]
-        public async Task<ActionResult<Lienhe>> PostLienHe(Lienhe lienHe)
+        public async Task<ActionResult<BaseResponseDTO< Lienhe>>> PostLienHe(Lienhe lienHe)
         {
             //lienHe.created_at = DateTime.UtcNow;
             //lienHe.updated_at = DateTime.UtcNow;
@@ -45,7 +52,11 @@ namespace CuahangtraicayAPI.Controllers
             _context.Lienhes.Add(lienHe);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetLienHes), new { id = lienHe.id }, lienHe);
+            return Ok(new BaseResponseDTO<Lienhe>
+            {
+                Data= lienHe,
+                Message="Success"
+            });
         }
 
         /// <summary>
@@ -56,18 +67,18 @@ namespace CuahangtraicayAPI.Controllers
         // DELETE: api/LienHe/{id}
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteLienHe(int id)
+        public async Task<ActionResult<BaseResponseDTO<Lienhe>>> DeleteLienHe(int id)
         {
             var lienHe = await _context.Lienhes.FindAsync(id);
             if (lienHe == null)
             {
-                return NotFound(new { message = "Không tìm thấy liên hệ!" });
+                return BadRequest(new BaseResponseDTO<Lienhe>{ Code=404, Message= "Không tìm thấy liên hệ!" });
             }
 
             _context.Lienhes.Remove(lienHe);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Liên hệ đã được xóa thành công!" });
+            return Ok(new BaseResponseDTO<Lienhe>{ Code=404,Message = "Liên hệ đã được xóa thành công!" });
         }
     }
 }

@@ -3,27 +3,31 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { Helmet,HelmetProvider } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const HeaderAdmin = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "" });
-
+  const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "" });
+  const [cookies, setCookie, removeCookie] = useCookies(['adminToken', 'loginhoten', 'loginTime','isAdminLoggedIn']);
   // Get admin name from storage
-  const hoten = localStorage.getItem('loginhoten') || sessionStorage.getItem('loginhoten');
-
-  useEffect(() =>{
+  const token = cookies.adminToken; // Lấy token từ cookie
+  const decodedToken = jwtDecode(token); // Giải mã token
+  const hoten = decodedToken.hoten; // Lấy hoten từ token
+ 
+  useEffect(() => {
     layThongTinWebsiteHoatDong();
-  },[])
+  }, [])
   const layThongTinWebsiteHoatDong = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite`);
-      if (response.data && response.data.length > 0) {
+      if (response.data.data && response.data.data.length > 0) {
         const baseURL = process.env.REACT_APP_BASEURL;
         setThongTinWebsite({
-          tieu_de: response.data[0].tieu_de,
-          favicon: `${baseURL}${response.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
+          tieu_de: response.data.data[0].tieu_de,
+          favicon: `${baseURL}${response.data.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
         });
         console.log(thongTinWebsite.favicon)
       }
@@ -41,23 +45,75 @@ const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "
   };
 
   // Confirm logout
+  // const handleXacNhanDangXuatTaiKhoan = async () => {
+  //   try {
+  //     const token = cookies.adminToken; // Lấy token từ cookie
+  
+  //     if (!token) {
+  //       toast.error("Không tìm thấy token đăng nhập. Vui lòng đăng nhập lại.", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //       });
+  //       navigate('/admin/Login');
+  //       return;
+  //     }
+  
+  //     console.log("Đang gửi yêu cầu logout với token:", token); // Debug token
+  
+  //     // Gọi API logout
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_BASEURL}/api/Admin/logout`,
+  //       {}, // Payload rỗng
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`, // Đính kèm token trong header
+  //         },
+  //       }
+  //     );
+  
+  //     if (response.status === 200 && response.data.status === "success") {
+  //       console.log("Logout thành công:", response.data.message); // Log thông báo thành công
+  
+  //       // Xóa token và các thông tin khác khỏi cookies
+  //       removeCookie('adminToken', { path: '/' });
+  //       removeCookie('loginTime', { path: '/' });
+  //       removeCookie('isAdminLoggedIn', { path: '/' });
+  
+  //       // Hiển thị thông báo thành công
+  //       toast.success("Đăng xuất thành công!", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //       });
+  
+  //       // Đóng modal và chuyển hướng đến trang đăng nhập
+  //       setShowModal(false);
+  //       navigate('/admin/Login');
+  //     } else {
+  //       throw new Error(response.data.message || "Đăng xuất thất bại.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Lỗi khi đăng xuất:", error);
+  
+  //     // Hiển thị thông báo lỗi nếu API thất bại
+  //     toast.error("Đăng xuất thất bại. Vui lòng thử lại.", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //     });
+  //   }
+  // };
+
   const handleXacNhanDangXuatTaiKhoan = () => {
     // Clear localStorage and sessionStorage
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('loginTime');
-    localStorage.removeItem('isAdminLoggedIn');
-    localStorage.removeItem('loginhoten');
-
-    sessionStorage.removeItem('adminToken');
-    sessionStorage.removeItem('loginTime');
-    sessionStorage.removeItem('isAdminLoggedIn');
-    sessionStorage.removeItem('loginhoten');
+    removeCookie('adminToken', { path: '/' });
+    // removeCookie('loginhoten', { path: '/' });
+    removeCookie('loginTime', { path: '/' });
+    removeCookie('isAdminLoggedIn', { path: '/' });
 
     // Close modal and navigate to login page
     setShowModal(false);
     navigate('/admin/Login');
   };
-
+  
   // Close modal
   const handleDongModal = () => {
     setShowModal(false);
@@ -65,14 +121,14 @@ const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "
 
   return (
     <>
- <HelmetProvider>
-      <Helmet>
-        <title>{thongTinWebsite.tieu_de || "Tên website mặc định"}</title>
-        {thongTinWebsite.favicon && (
-          <link rel="icon" type="image/x-icon" href={thongTinWebsite.favicon} />
-        )}
-      </Helmet>
-    </HelmetProvider>
+      <HelmetProvider>
+        <Helmet>
+          <title>{thongTinWebsite.tieu_de || "Tên website mặc định"}</title>
+          {thongTinWebsite.favicon && (
+            <link rel="icon" type="image/x-icon" href={thongTinWebsite.favicon} />
+          )}
+        </Helmet>
+      </HelmetProvider>
       {/* Topbar */}
       <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
         {/* Sidebar Toggle (Topbar) */}
@@ -101,7 +157,7 @@ const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <span className="mr-2 d-none d-lg-inline text-gray-600 small">{hoten || 'Admin'}</span>
+              <span className="mr-2 d-none d-lg-inline text-gray-600 small">{hoten }</span>
               <img
                 className="img-profile rounded-circle"
                 src={`${process.env.PUBLIC_URL}/lte/img/undraw_profile.svg`}
@@ -123,31 +179,31 @@ const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "
 
       {/* Logout Confirmation Modal (React-Bootstrap) */}
       <Modal show={showModal} onHide={handleDongModal} centered backdrop="static" >
-  <Modal.Header closeButton className="bg-light border-0">
-    <Modal.Title className="text-center w-100">
-      <i className="fas fa-exclamation-circle text-warning fa-2x mb-2"></i>
-      <h5 className="text-danger mb-0">Xác nhận đăng xuất</h5>
-    </Modal.Title>
-  </Modal.Header>
-  <Modal.Body className="text-center bg-light">
-    <div className="py-3">
-      <p className="fw-semibold fs-5">
-        Bạn có chắc muốn <span className="text-danger">đăng xuất</span> không?
-      </p>
-      <p className="text-muted small">
-        Tất cả các phiên làm việc hiện tại sẽ kết thúc và bạn cần đăng nhập lại.
-      </p>
-    </div>
-  </Modal.Body>
-  <Modal.Footer className="d-flex justify-content-between bg-light border-0">
-    <Button variant="secondary" className="fw-bold px-4 py-2" onClick={handleDongModal}>
-      Thoát
-    </Button>
-    <Button variant="danger" className="fw-bold px-4 py-2" onClick={handleXacNhanDangXuatTaiKhoan}>
-      Xác nhận
-    </Button>
-  </Modal.Footer>
-</Modal>
+        <Modal.Header closeButton className="bg-light border-0">
+          <Modal.Title className="text-center w-100">
+            <i className="fas fa-exclamation-circle text-warning fa-2x mb-2"></i>
+            <h5 className="text-danger mb-0">Xác nhận đăng xuất</h5>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center bg-light">
+          <div className="py-3">
+            <p className="fw-semibold fs-5">
+              Bạn có chắc muốn <span className="text-danger">đăng xuất</span> không?
+            </p>
+            <p className="text-muted small">
+              Tất cả các phiên làm việc hiện tại sẽ kết thúc và bạn cần đăng nhập lại.
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="d-flex justify-content-between bg-light border-0">
+          <Button variant="secondary" className="fw-bold px-4 py-2" onClick={handleDongModal}>
+            Thoát
+          </Button>
+          <Button variant="danger" className="fw-bold px-4 py-2" onClick={handleXacNhanDangXuatTaiKhoan}>
+            Xác nhận
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
 
     </>

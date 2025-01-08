@@ -4,10 +4,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { useCookies } from 'react-cookie';
 const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters }) => {
     const [name, setName] = useState('');
     const [Trangthai, setTrangthai] = useState('');
-
+    const [cookies] = useCookies(['adminToken', 'loginhoten'])
 
     useEffect(() => {
         if (isEdit && Footer) {
@@ -22,18 +23,14 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
     const handleSubmit = async () => {
         try {
             // Kiểm tra trạng thái lưu đăng nhập
-            const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-            const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
-            const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
-
+           
+            const token = cookies.adminToken; // Lấy token từ cookie
             const footerData = {
                 noiDungFooter: name,
                 trangthai: Trangthai, // Đảm bảo Trangthai có giá trị hợp lệ (0 hoặc 1)
             };
  
             if (isEdit) {
-                // Thêm updatedBy khi cập nhật
-                footerData.updated_By = loggedInUser;
 
                 // Gọi API PUT để cập nhật Footer
                 await axios.put(
@@ -58,8 +55,7 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
                 handleClose(); // Đóng modal
             } else {
                 // Thêm createdBy và updatedBy khi tạo mới
-                footerData.created_By = loggedInUser;
-                footerData.updated_By = loggedInUser;
+
 
                 // Gọi API POST để tạo mới Footer
                 await axios.post(
@@ -154,7 +150,7 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
                             required
                         >
                             {/* Chỉ hiển thị "chọn trạng thái" nếu trạng thái chưa được chọn */}
-                            <option value={""}>Chọn trạng thái</option>
+                            
                             <option value={0}>Ẩn</option>
                             <option value={1}>Hiển thị</option>
                         </Form.Select>

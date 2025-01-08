@@ -28,8 +28,8 @@ const Menu = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/menu`);
       // Sắp xếp danh sách menu theo thứ tự hiển thị
-      const sortedMenu = response.data.sort((a, b) => a.thutuhien - b.thutuhien);
-      setMenuList(sortedMenu);
+     
+      setMenuList(response.data.data);
     } catch (error) {
       toast.error('Có lỗi khi lấy danh sách menu', {
         position: 'top-right',

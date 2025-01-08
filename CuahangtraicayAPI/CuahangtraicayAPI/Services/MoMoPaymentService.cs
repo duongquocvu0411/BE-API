@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.Model.ConfigMomo;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;

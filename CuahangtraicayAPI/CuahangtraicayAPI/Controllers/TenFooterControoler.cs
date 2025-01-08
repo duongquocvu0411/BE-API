@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
 using static CuahangtraicayAPI.DTO.TenFooterDTO;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -29,11 +31,17 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Xem danh sách Tên Footer</returns>
         // GET: api/TenFooters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TenFooters>>> GetTenFooters()
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<TenFooters>>>> GetTenFooters()
         {
-            return await _context.TenFooters
+            var ft =await _context.TenFooters
                 .Include(tf => tf.FooterIMG)
                 .ToListAsync();
+           
+            return  new BaseResponseDTO<IEnumerable<TenFooters>>()
+            {
+                Data= ft,
+                Message = "Success"
+            };
         }
 
 
@@ -44,7 +52,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/TenFooters/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TenFooters>> GetTenFooter(int id)
+        public async Task<ActionResult<BaseResponseDTO< TenFooters>>> GetTenFooter(int id)
         {
             var tenFooter = await _context.TenFooters
                 .Include(tf => tf.FooterIMG)
@@ -52,10 +60,18 @@ namespace CuahangtraicayAPI.Controllers
 
             if (tenFooter == null)
             {
-                return NotFound();
+                return BadRequest(new BaseResponseDTO<TenFooters>
+                {
+                    Code = 404,
+                    Message = "Tên footer không tồn tại trong hệ thông"
+                });
             }
 
-            return tenFooter;
+            return new BaseResponseDTO<TenFooters>
+            {
+                Data = tenFooter,
+                Message= "Success"
+            };
         }
 
 
@@ -67,14 +83,26 @@ namespace CuahangtraicayAPI.Controllers
         // POST: api/TenFooters
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> PostTenFooter([FromForm] TenFooterPostDto dto)
+        public async Task<ActionResult<BaseResponseDTO<TenFooters>>> PostTenFooter([FromForm] TenFooterPostDto dto)
         {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Danhmucsanpham>
+                {
+                    Data = null,
+                    Message = " Không thể xác định người dùng từ token"
+                });
+            }
             var tenFooter = new TenFooters
             {
                 tieude = dto.Tieude,
                 phude = dto.Phude,
-                CreatedBy=dto.Created_By,
-                UpdatedBy=dto.Updated_By,
+                CreatedBy=hotenToken,
+                UpdatedBy=hotenToken,
             };
 
             if (dto.Images != null && dto.Images.Count > 0)
@@ -111,7 +139,12 @@ namespace CuahangtraicayAPI.Controllers
             _context.TenFooters.Add(tenFooter);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTenFooter", new { id = tenFooter.Id }, tenFooter);
+            return Ok(new BaseResponseDTO<TenFooters>
+            {
+                Data = tenFooter,
+                Message = "Success"
+
+            });
         }
 
 
@@ -123,7 +156,7 @@ namespace CuahangtraicayAPI.Controllers
         // PUT: api/TenFooters/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutTenFooter(int id, [FromForm] TenFooterPuttDto dto)
+        public async Task<ActionResult<TenFooters>> PutTenFooter(int id, [FromForm] TenFooterPuttDto dto)
         {
             var editTenFooter = await _context.TenFooters
                 .Include(tf => tf.FooterIMG)
@@ -131,9 +164,24 @@ namespace CuahangtraicayAPI.Controllers
 
             if (editTenFooter == null)
             {
-                return NotFound();
+                return BadRequest( new BaseResponseDTO<TenFooters>
+                {
+                    Code = 404,
+                    Message ="Tên footer không tồn tại trong hệ thóng"
+                });
             }
-
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Danhmucsanpham>
+                {
+                    Data = null,
+                    Message = " Không thể xác định người dùng từ token"
+                });
+            }
             // Update basic fields (nếu DTO có giá trị)
             if (!string.IsNullOrWhiteSpace(dto.Tieude))
             {
@@ -144,7 +192,8 @@ namespace CuahangtraicayAPI.Controllers
                 editTenFooter.phude = dto.Phude;
             }
 
-            editTenFooter.UpdatedBy =dto.Updated_By;
+            editTenFooter.UpdatedBy =hotenToken;
+            editTenFooter.Updated_at=DateTime.Now;
             // Handle images
             if (dto.Images != null && dto.Images.Count > 0)
             {
@@ -194,7 +243,10 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new BaseResponseDTO<TenFooters>{
+                Data = editTenFooter,
+                Message = "Success"
+            });
         }
 
 
@@ -206,7 +258,7 @@ namespace CuahangtraicayAPI.Controllers
         // DELETE: api/TenFooters/5
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteTenFooter(int id)
+        public async Task<ActionResult<TenFooters>> DeleteTenFooter(int id)
         {
             var tenFooter = await _context.TenFooters
                 .Include(tf => tf.FooterIMG)
@@ -214,7 +266,11 @@ namespace CuahangtraicayAPI.Controllers
 
             if (tenFooter == null)
             {
-                return NotFound();
+                return BadRequest(new BaseResponseDTO<TenFooters>
+                {
+                    Code = 404,
+                    Message = "Tên footer không tồn tại trong hệ thống"
+                });
             }
 
             // Delete images
@@ -230,7 +286,11 @@ namespace CuahangtraicayAPI.Controllers
             _context.TenFooters.Remove(tenFooter);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new BaseResponseDTO<TenFooters>
+            {
+                Data = tenFooter,
+                Message = "Success"
+            });
         }
 
         /// <summary>

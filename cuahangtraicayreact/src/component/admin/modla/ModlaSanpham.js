@@ -4,6 +4,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import MoadlChitietsanpham from "./ModlaSanphamchitiet";
 import ModlaSanphamsale from './ModlaSanphamsale';
+import { useCookies } from "react-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const ModlaSanpham = ({
   show,
@@ -33,58 +35,67 @@ const ModlaSanpham = ({
     baiViet: "",
   });
   const [soLuong, setSoLuong] = useState("");
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
 
+  const getImageUrl = (path) => {
+    const BASE_URL = process.env.REACT_APP_BASEURL ;
+    return path ? `${BASE_URL}/${path}` : "";
+  };
+  
   useEffect(() => {
-
     axios
       .get(`${process.env.REACT_APP_BASEURL}/api/danhmucsanpham`)
       .then((response) => {
-        setDanhmuc(response.data);
+        setDanhmuc(response.data.data);
       })
       .catch((error) => {
         console.log("Có lỗi khi lấy dữ liệu từ API ", error);
       });
+  
     console.log("Product data:", product); // Kiểm tra giá trị của `product`
+  
     if (isEdit && product) {
       setTieude(product.tieude || "");
       setTrangthai(product.trangthai || "");
       setGiatien(product.giatien || "");
-      setDvt(product.don_vi_tinh || ""); // Đảm bảo `dvt` có giá trị mặc định
+      setDvt(product.don_vi_tinh || "");
       setDanhmucsanphamID(product.danhmucsanpham_id || "");
       setSoLuong(product.soluong || "");
-
+  
       setSaleData(
         product.sanphamSales && product.sanphamSales.length > 0
           ? {
-            ...product.sanphamSales[0],
-            thoigianbatdau: product.sanphamSales[0].thoigianbatdau
-              ? product.sanphamSales[0].thoigianbatdau.substring(0, 16)
-              : "",
-            thoigianketthuc: product.sanphamSales[0].thoigianketthuc
-              ? product.sanphamSales[0].thoigianketthuc.substring(0, 16)
-              : "",
-          }
+              ...product.sanphamSales[0],
+              thoigianbatdau: product.sanphamSales[0].thoigianbatdau
+                ? product.sanphamSales[0].thoigianbatdau.substring(0, 16)
+                : "",
+              thoigianketthuc: product.sanphamSales[0].thoigianketthuc
+                ? product.sanphamSales[0].thoigianketthuc.substring(0, 16)
+                : "",
+            }
           : null
       );
-
-
+  
       // Hiển thị ảnh chính
       if (product.hinhanh) {
-        setXemtruocHinhAnh(product.hinhanh); // Đảm bảo URL đầy đủ từ API
+        setXemtruocHinhAnh(getImageUrl(product.hinhanh)); // Chuyển thành URL đầy đủ
       } else {
-        setXemtruocHinhAnh(""); // Reset nếu không có ảnh chính
+        setXemtruocHinhAnh("");
       }
-
-      // Hiển thị ảnh phụ từ API
+  
+      // Hiển thị ảnh phụ
       if (product.images) {
-        setExistingHinhanhPhu(product.images);
-        setFileanhphu(product.images.map(() => ({}))); // Tạo input tương ứng với số ảnh phụ
+        const formattedImages = product.images.map((img) => ({
+          ...img,
+          hinhanh: getImageUrl(img.hinhanh), // Chuyển thành URL đầy đủ
+        }));
+        setExistingHinhanhPhu(formattedImages);
+        setFileanhphu(formattedImages.map(() => ({}))); // Tạo input tương ứng với số ảnh phụ
       }
-
+  
       if (product.chiTiet) {
         setChiTiet({
           moTaChung: product.chiTiet.mo_ta_chung || "",
-
           baiViet: product.chiTiet.bai_viet || "",
         });
       } else {
@@ -94,11 +105,12 @@ const ModlaSanpham = ({
       // Khi thêm mới sản phẩm
       resetForm();
       resetChiTiet();
-      setHinhanhPhu([]); // Reset ảnh phụ
-      setExistingHinhanhPhu([]); // Reset danh sách ảnh phụ hiện có
-      setFileanhphu([{}]); // Reset input fields
+      setHinhanhPhu([]);
+      setExistingHinhanhPhu([]);
+      setFileanhphu([{}]);
     }
   }, [isEdit, product]);
+  
 
 
 
@@ -214,9 +226,9 @@ const ModlaSanpham = ({
 
     try {
       // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-      const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-      const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-      const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+      const token = cookies.adminToken; // Lấy token từ cookie
+      const decodedToken = jwtDecode(token); // Giải mã token
+      const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
       const method = isEdit ? "put" : "post";
       const url = isEdit
         ? `${process.env.REACT_APP_BASEURL}/api/sanpham/${product.id}`

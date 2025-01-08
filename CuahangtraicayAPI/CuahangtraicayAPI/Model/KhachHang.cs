@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CuahangtraicayAPI.Model;
+using Newtonsoft.Json;
 
 namespace CuahangtraicayAPI.Model
 {
@@ -33,6 +34,7 @@ namespace CuahangtraicayAPI.Model
 
 
         // Định nghĩa quan hệ một-nhiều với Hóa Đơn (HoaDon)
-        public ICollection<HoaDon>? HoaDons { get; set; }
+        [JsonIgnore]
+        public ICollection<HoaDon> HoaDons { get; set; }
     }
 }

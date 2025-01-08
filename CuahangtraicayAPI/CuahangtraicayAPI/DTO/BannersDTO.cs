@@ -11,10 +11,10 @@ namespace CuahangtraicayAPI.DTO
 
             [Required]
             public string Phude { get; set; } = string.Empty;
-            [Required]  
-            public string Created_By { get; set; }
-            [Required]
-            public string Updated_By { get; set; }
+            //[Required]  
+            //public string Created_By { get; set; }
+            //[Required]
+            //public string Updated_By { get; set; }
             public List<IFormFile>? Hinhanhs { get; set; } // Nhiều file hình ảnh
             public string Trangthai { get; set; } = "không sử dụng"; // Giá trị mặc định
         }
@@ -25,7 +25,7 @@ namespace CuahangtraicayAPI.DTO
 
             public string? Phude { get; set; }
           
-            public string Updated_By { get; set; }
+            //public string Updated_By { get; set; }
 
             public string? Trangthai { get; set; }
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useCookies } from "react-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const ModalDactrung = ({ show, handleClose, isEdit, dactrung, fetchDactrungs }) => {
   const [tieude, setTieude] = useState("");
@@ -9,7 +11,7 @@ const ModalDactrung = ({ show, handleClose, isEdit, dactrung, fetchDactrungs }) 
   const [thutuhienthi, setThutuhienthi] = useState("");
   const [iconFile, setIconFile] = useState(null); // Trường iconFile (file ảnh biểu tượng)
   const [iconPreview, setIconPreview] = useState(""); // Dùng để hiển thị ảnh đại diện (preview)
- 
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   // Gán dữ liệu khi mở modal (trường hợp chỉnh sửa)
   useEffect(() => {
     if (isEdit && dactrung) {
@@ -54,11 +56,9 @@ const ModalDactrung = ({ show, handleClose, isEdit, dactrung, fetchDactrungs }) 
     }
 
     try {
-       // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-     const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
-
+      const token = cookies.adminToken; // Lấy token từ cookie
+      const decodedToken = jwtDecode(token); // Giải mã token
+      const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
       if (isEdit) {
         // PUT: Cập nhật đặc trưng
         formData.append("Updated_By",loggedInUser);

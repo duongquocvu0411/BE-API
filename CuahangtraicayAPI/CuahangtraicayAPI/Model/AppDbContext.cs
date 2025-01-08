@@ -117,6 +117,18 @@ public class AppDbContext : DbContext
        .HasForeignKey(gi => gi.Id_gioithieu) // Khóa ngoại từ GioithieuImg đến Gioithieu
        .OnDelete(DeleteBehavior.Cascade); // Xóa Cascade: Xóa Gioithieu thì xóa GioithieuImg
 
+        // Cấu hình khóa ngoại cho bảng HoaDonChiTiet
+        modelBuilder.Entity<HoaDonChiTiet>()
+            .HasOne(hdct => hdct.HoaDon)
+            .WithMany(hd => hd.HoaDonChiTiets)
+            .HasForeignKey(hdct => hdct.bill_id)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<HoaDonChiTiet>()
+            .HasOne(hdct => hdct.SanPham)
+            .WithMany(sp => sp.HoaDonChiTiets)
+            .HasForeignKey(hdct => hdct.sanpham_ids)
+            .OnDelete(DeleteBehavior.Cascade);
 
         base.OnModelCreating(modelBuilder);
     }

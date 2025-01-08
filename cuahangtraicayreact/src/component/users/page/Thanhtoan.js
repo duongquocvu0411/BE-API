@@ -144,33 +144,34 @@ const Thanhtoan = () => {
     const khachhangData = {
       ten: firstName,
       ho: lastName,
-      diachicuthe: address,
-      thanhpho: tenThanhpho,
+      diaChiCuThe: address, // Đổi "diachicuthe" thành "diaChiCuThe"
+      thanhPho: tenThanhpho,
       tinhthanhquanhuyen: tinhthanh,
       xaphuong: xaphuong,
       sdt: sdt,
-      Emaildiachi: email,
-      ghichu: ghichu,
+      emailDiaChi: email, // Đổi "Emaildiachi" thành "emailDiaChi"
+      ghiChu: ghichu,     // Đổi "ghichu" thành "ghiChu"
     };
+    
 
     try {
       // Gửi thông tin khách hàng
       const khachhangResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/khachhang`, khachhangData);
-      const khachhangId = khachhangResponse.data.id;
+      const khachhangId = khachhangResponse.data.data.id;
 
       // Gửi thông tin hóa đơn
       const billData = {
-        KhachHangId: khachhangId,
+        khachHangId: khachhangId,
         thanhtoan: paymentMethod,
-        SanphamIds: giohang.map((sanpham) => sanpham.id),
-        Quantities: giohang.map((sanpham) => sanpham.soLuong),
-        PaymentMethod: paymentMethod, // Lựa chọn phương thức thanh toán
+        sanphamIds: giohang.map((sanpham) => sanpham.id),
+        quantities: giohang.map((sanpham) => sanpham.soLuong),
+        paymentMethod: paymentMethod, // Lựa chọn phương thức thanh toán
         updated_By: "Chưa có tác động",
       };
 
       const billResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/HoaDon`, billData);
 
-      const newOrderCode = billResponse.data.order_code;
+      const newOrderCode = billResponse.data.orderCode;
       setOrderCode(newOrderCode);
 
       // Kiểm tra nếu thanh toán online và URL thanh toán tồn tại
@@ -192,9 +193,9 @@ const Thanhtoan = () => {
       const storedCustomerData = {
         ten: khachhangData.ten,
         ho: khachhangData.ho,
-        diachicuthe: khachhangData.diachicuthe,
+        diachicuthe: khachhangData.diaChiCuThe,
         sdt: khachhangData.sdt,
-        Emaildiachi: khachhangData.Emaildiachi,
+        Emaildiachi: khachhangData.emailDiaChi,
       };
       // Lưu thông tin khách hàng vào bộ nhớ của trình duyệt
       localStorage.setItem("khachhang", JSON.stringify(storedCustomerData));
@@ -456,7 +457,7 @@ const Thanhtoan = () => {
                             <tr key={index}>
                               <td>
                                 <img
-                                  src={sanPham.hinhanh}
+                                 src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                                   alt={sanPham.tieude}
                                   className="img-fluid rounded-circle"
                                   style={{ width: 50, height: 50 }}

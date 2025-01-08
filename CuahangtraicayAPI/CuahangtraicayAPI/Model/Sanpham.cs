@@ -32,6 +32,7 @@ namespace CuahangtraicayAPI.Model
 
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
+
         public bool Xoa { get; set; }
 
         // Foreign Key cho Danhmucsanpham
@@ -57,6 +58,9 @@ namespace CuahangtraicayAPI.Model
 
         // Liên kết với hình ảnh sản phẩm
         public virtual ICollection<HinhAnhSanPham> Images { get; set; } = new List<HinhAnhSanPham>();
+
+        // Quan hệ một-nhiều với HoaDonChiTiet
+        public ICollection<HoaDonChiTiet> HoaDonChiTiets { get; set; }
 
     }
 }

@@ -33,30 +33,57 @@ const CuahangChitiet = () => {
   }, [id]);
 
   
+  // const layThongTinSanPham = async () => {
+  //   try {
+  //     setDangtai(true);
+  //     const response = await fetch(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}`);
+  //     if (!response.ok) {
+  //       throw new Error("Không thể tải thông tin sản phẩm");
+  //     }
+  //     const data = await response.data.json();
+  //     if (!data) {
+  //       throw new Error("Dữ liệu sản phẩm không hợp lệ");
+  //     }
+  //     setSanPham(data); // Lưu dữ liệu sản phẩm
+  //     setChiTiet(data.data.chiTiet || {}); // Lưu chi tiết sản phẩm
+  //     setHinhanhPhu(data.images || []); // Lưu danh sách hình ảnh phụ
+  //   } catch (error) {
+  //     console.error("Lỗi khi lấy thông tin sản phẩm:", error);
+  //     setSanPham(null); // Đảm bảo không để undefined
+  //   } finally {
+  //     setDangtai(false);
+  //   }
+  // };
+
+
+  // Hàm mở modal để viết đánh giá
+  
   const layThongTinSanPham = async () => {
     try {
-      setDangtai(true);
+      setDangtai(true); // Bắt đầu trạng thái tải
       const response = await fetch(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}`);
       if (!response.ok) {
         throw new Error("Không thể tải thông tin sản phẩm");
       }
-      const data = await response.json();
-      if (!data) {
+      const result = await response.json(); // Lấy dữ liệu JSON
+      console.log("Dữ liệu sản phẩm từ API:", result);
+  
+      if (!result || !result.data) {
         throw new Error("Dữ liệu sản phẩm không hợp lệ");
       }
-      setSanPham(data); // Lưu dữ liệu sản phẩm
-      setChiTiet(data.chiTiet || {}); // Lưu chi tiết sản phẩm
-      setHinhanhPhu(data.images || []); // Lưu danh sách hình ảnh phụ
+  
+      // Cập nhật state với dữ liệu từ API
+      setSanPham(result.data); // Lưu toàn bộ sản phẩm
+      setChiTiet(result.data.chiTiet || {}); // Lưu chi tiết sản phẩm
+      setHinhanhPhu(result.data.images || []); // Lưu danh sách hình ảnh phụ
     } catch (error) {
       console.error("Lỗi khi lấy thông tin sản phẩm:", error);
-      setSanPham(null); // Đảm bảo không để undefined
+      setSanPham(null); // Đặt `sanPham` là null nếu xảy ra lỗi
     } finally {
-      setDangtai(false);
+      setDangtai(false); // Kết thúc trạng thái tải
     }
   };
-
-
-  // Hàm mở modal để viết đánh giá
+  
   const moModalVietDanhGia = (soSao) => {
     setSoSao(soSao); // Lưu số sao mà khách hàng chọn
     setShowModal(true); // Hiển thị modal
@@ -185,7 +212,8 @@ const CuahangChitiet = () => {
                   <div className="col-lg-6">
                     <div className="border rounded">
                       <img
-                        src={sanPham.hinhanh}
+                        // src={sanPham.hinhanh}
+                        src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                         className="img-fluid w-100 rounded"
 
                         style={{
@@ -203,7 +231,8 @@ const CuahangChitiet = () => {
                           hinhanhPhu.map((img, index) => (
                             <img
                               key={index}
-                              src={img.hinhanh}
+                              // src={img.hinhanh}
+                              src={`${process.env.REACT_APP_BASEURL}/${img.hinhanh}`}
                               className="img-thumbnail me-2"
                               alt={`Hình ảnh phụ ${index + 1}`}
                               style={{ width: "100px", height: "100px", cursor: "pointer" }}
@@ -219,7 +248,7 @@ const CuahangChitiet = () => {
                   </div>
                   <div className="col-lg-6">
                     <h4 className="fw-bold mb-3">{sanPham.tieude}</h4>
-                    <p className="mb-3">Danh Mục: {sanPham.danhmucsanpham.name}</p>
+                    <p className="mb-3">Danh Mục: {sanPham.danhmucsanpham?.name}</p>
                     {isSaleActive ? (
                       <div>
                         <p className="text-muted mb-2" style={{ textDecoration: "line-through" }}>
@@ -259,12 +288,16 @@ const CuahangChitiet = () => {
             </div>
 
             {/* Lightbox để hiển thị hình ảnh lớn */}
-            {largeImage && (
+            {/* {largeImage && (
               <Lightbox
-                large={largeImage}
-                onClose={() => setLargeImage(null)} // Đóng lightbox khi nhấn nút đóng
+              large={`${process.env.REACT_APP_BASEURL}/${largeImage}`}
+              alt="Hình ảnh sản phẩm"
+              onClose={() => setLargeImage(null)} // Đóng Lightbox
+             
+              hideZoom={false} // Hiển thị nút phóng to/thu nhỏ
+               
               />
-            )}
+            )} */}
 
             {/* Tabs để chọn xem chi tiết sản phẩm, bài viết hoặc đánh giá */}
             <div className="d-flex justify-content-start mb-3">

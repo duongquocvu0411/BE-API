@@ -29,57 +29,21 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/KhachHang
         [HttpGet]
-
-        public async Task<ActionResult<IEnumerable<object>>> GetKhachHangs()
+        [Authorize]
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<KhachHang>>>> GetKhachHangs()
         {
             var khachHangs = await _context.KhachHangs
                 .Include(kh => kh.HoaDons)
 
                 .ToListAsync();
 
-            var result = new List<object>();
+           
 
-            // Lặp qua các khách hàng và lấy thông tin của họ cùng hóa đơn chi tiết
-            foreach (var kh in khachHangs)
+            return Ok(new BaseResponseDTO<IEnumerable <KhachHang>>
             {
-                var hoaDons = new List<object>();
-
-                foreach (var bill in kh.HoaDons)
-                {
-
-                    hoaDons.Add(new
-                    {
-                        bill.Id,
-                        bill.khachhang_id,
-                        bill.total_price,
-                        bill.order_code,
-                        bill.status,
-                        bill.Thanhtoan,
-                        bill.UpdatedBy,
-                        bill.Created_at,
-                        bill.Updated_at
-
-                    });
-                }
-
-                result.Add(new
-                {
-                    kh.Id,
-                    kh.Ten,
-                    kh.Ho,
-                    kh.ThanhPho,
-                    kh.tinhthanhquanhuyen,
-                    kh.xaphuong,
-                    kh.DiaChiCuThe,
-                    kh.Sdt,
-                    kh.EmailDiaChi,
-                    kh.GhiChu,
-                    kh.Created_at,
-                    HoaDons = hoaDons
-                });
-            }
-
-            return Ok(result);
+                Data = khachHangs,
+                Message =" Success"
+            });
         }
 
         /// <summary>
@@ -93,76 +57,60 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         /// <returns> xem khách hàng theo id có hóa đơn , hóa đơn chi tiết </returns>
 
-        // GET: api/KhachHang/5
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetKhachHang(int id)
+        [Authorize]
+        public async Task<ActionResult<BaseResponseDTO<Object>>> GetKhachHang(int id)
         {
             var khachHang = await _context.KhachHangs
                 .Include(kh => kh.HoaDons)
                     .ThenInclude(hd => hd.HoaDonChiTiets)
+                    .ThenInclude(sp => sp.SanPham)
                 .FirstOrDefaultAsync(kh => kh.Id == id);
 
             if (khachHang == null)
             {
-                return NotFound(new { message = "Không tìm thấy khách hàng với ID này." });
+                return NotFound(new BaseResponseDTO<KhachHang> { Code=404, Message = "Không tìm thấy khách hàng với ID này." });
             }
-
-            // Lấy tất cả các hóa đơn của khách hàng và các chi tiết hóa đơn
-            var hoaDons = new List<object>();
-
-            foreach (var bill in khachHang.HoaDons)
+            // Xử lý dữ liệu trả về ngắn gọn
+            var response = new
             {
-                var hoaDonChiTiets = new List<object>();
-
-                // Lặp qua các chi tiết hóa đơn và lấy thông tin sản phẩm
-                foreach (var chiTiet in bill.HoaDonChiTiets)
+                
+                ten = khachHang.Ten,
+                ho = khachHang.Ho,
+                diaChiCuThe = khachHang.DiaChiCuThe,
+                thanhpho = khachHang.ThanhPho,
+                tinhthanh = khachHang.tinhthanhquanhuyen,
+                xaphuong = khachHang.xaphuong,
+                sdt = khachHang.Sdt,
+                email = khachHang.EmailDiaChi,
+                ghichu = khachHang.GhiChu,
+                hoaDons = khachHang.HoaDons.Select(hd => new
                 {
-                    // Lấy thông tin chi tiết sản phẩm từ các sanPhamIds
-                    var sanphamDetails = await GetSanPhamDetails(chiTiet.sanpham_ids);
-
-                    hoaDonChiTiets.Add(new
+                    id=hd.Id,
+                    ngaytao = hd.Created_at,
+                    total_price = hd.total_price,
+                    order_code = hd.order_code,
+                    thanhtoan = hd.Thanhtoan,
+                    status = hd.status,
+                    hoaDonChiTiets = hd.HoaDonChiTiets.Select(hdct => new
                     {
-                        chiTiet.Id,
-                        chiTiet.bill_id,
-                        chiTiet.price,
-                        chiTiet.quantity,
-                        SanphamNames = sanphamDetails.SanphamNames, // Tên sản phẩm
-                        SanphamDonViTinh = sanphamDetails.SanphamDonViTinh, // Đơn vị tính
-                        IsDeleted = sanphamDetails.IsDeleted // Trạng thái xóa
-                    });
-                }
-
-                hoaDons.Add(new
-                {
-                    bill.Id,
-                    bill.khachhang_id,
-                    bill.total_price,
-                    bill.Thanhtoan,
-                    bill.order_code,
-                    bill.status,
-                    bill.Created_at,
-                    HoaDonChiTiets = hoaDonChiTiets
-                });
-            }
-
-            var result = new
-            {
-                khachHang.Id,
-                khachHang.Ten,
-                khachHang.Ho,
-                khachHang.DiaChiCuThe,
-                khachHang.ThanhPho,
-                khachHang.tinhthanhquanhuyen,
-                khachHang.xaphuong,
-                khachHang.Sdt,
-                khachHang.EmailDiaChi,
-                khachHang.GhiChu,
-                HoaDons = hoaDons
+                        tieude = hdct.SanPham?.Tieude,
+                        don_vi_tinh = hdct.SanPham?.don_vi_tinh,
+                        price = hdct.price,
+                        quantity = hdct.quantity,
+                        id=hdct.Id,
+                        bill_id =hdct.bill_id
+                    })
+                })
             };
 
-            return Ok(result);
+            return Ok(new BaseResponseDTO<Object>
+            {
+                Data =response,
+                Message =" Success"
+            });
         }
-
 
         /// <summary>
         /// Thêm mới khách hàng
@@ -171,7 +119,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/KhachHang
         [HttpPost]
-        public async Task<ActionResult<KhachHang>> PostKhachHang(DTO.KhachHangCreateDto kh)
+        public async Task<ActionResult<BaseResponseDTO< KhachHang>>> PostKhachHang(DTO.KhachHangCreateDto kh)
         { // Kiểm tra tính hợp lệ của dữ liệu
             if (!ModelState.IsValid)
             {
@@ -196,7 +144,11 @@ namespace CuahangtraicayAPI.Controllers
             await _context.SaveChangesAsync();
 
             // Trả về kết quả sau khi thêm thành công
-            return CreatedAtAction(nameof(GetKhachHang), new { id = khachHang.Id }, khachHang);
+            return Ok(new BaseResponseDTO<KhachHang>
+            {
+                Data = khachHang,
+                Message = "Success"
+            });
         }
 
         /// <summary>
@@ -233,18 +185,32 @@ namespace CuahangtraicayAPI.Controllers
         // GET: api/KhachHang/NewCustomersInMonth
         [HttpGet("khachhangthangmoi")]
         [Authorize]
-        public async Task<ActionResult<int>> LayTongKhachHangMoiTrongThang()
+        public async Task<ActionResult<BaseResponseDTO<object>>> LayTongKhachHangMoiTrongThang()
         {
             var thangHientai = DateTime.Now.Month;
             var namHientai = DateTime.Now.Year;
 
-            // LỌC CÁC KHÁCH HÀNG CÓ CREATEAT TRONG THÁNG HIỆN TẠI
-            var tongSoKachhangmoi = await _context.KhachHangs
+            // Lọc các khách hàng có Created_at trong tháng hiện tại
+            var tongSoKhachHangMoi = await _context.KhachHangs
                 .Where(kh => kh.Created_at.Month == thangHientai && kh.Created_at.Year == namHientai)
                 .CountAsync();
 
-            return Ok(new { tongSoKachhangmoi = tongSoKachhangmoi });
+            // Tạo đối tượng phản hồi
+            var response = new
+            {
+                tongSoKhachHangMoi = tongSoKhachHangMoi,
+                thangHienTai = thangHientai,
+                namHienTai = namHientai
+            };
+
+            return Ok(new BaseResponseDTO<object>
+            {
+                Code = 0,
+                Message = "Success",
+                Data = response
+            });
         }
+
 
         // Phương thức kiểm tra sự tồn tại của KhachHang
         private bool KhachHangExists(int id)
@@ -254,52 +220,52 @@ namespace CuahangtraicayAPI.Controllers
 
 
         // hàm lấy tên sản phẩm và đon vị tính 
-        private async Task<(string SanphamNames, string SanphamDonViTinh, bool IsDeleted)> GetSanPhamDetails(string sanPhamIds)
-        {
-            if (string.IsNullOrWhiteSpace(sanPhamIds))
-            {
-                return (null, null, false); // Nếu chuỗi rỗng hoặc chỉ có khoảng trắng, trả về null
-            }
+        //private async Task<(string SanphamNames, string SanphamDonViTinh, bool IsDeleted)> GetSanPhamDetails(string sanPhamIds)
+        //{
+        //    if (string.IsNullOrWhiteSpace(sanPhamIds))
+        //    {
+        //        return (null, null, false); // Nếu chuỗi rỗng hoặc chỉ có khoảng trắng, trả về null
+        //    }
 
-            // Tách chuỗi sanPhamIds thành danh sách các ID
-            var ids = sanPhamIds.Trim('[', ']').Split(',')
-                .Select(id =>
-                {
-                    int result;
-                    return int.TryParse(id, out result) ? result : (int?)null;
-                })
-                .Where(id => id.HasValue)  // Lọc bỏ các giá trị null
-                .Select(id => id.Value)
-                .ToList();
+        //    // Tách chuỗi sanPhamIds thành danh sách các ID
+        //    var ids = sanPhamIds.Trim('[', ']').Split(',')
+        //        .Select(id =>
+        //        {
+        //            int result;
+        //            return int.TryParse(id, out result) ? result : (int?)null;
+        //        })
+        //        .Where(id => id.HasValue)  // Lọc bỏ các giá trị null
+        //        .Select(id => id.Value)
+        //        .ToList();
 
-            if (!ids.Any())
-            {
-                return (null, null, false); // Nếu không có ID hợp lệ, trả về null
-            }
+        //    if (!ids.Any())
+        //    {
+        //        return (null, null, false); // Nếu không có ID hợp lệ, trả về null
+        //    }
 
-            // Lấy thông tin sản phẩm từ cơ sở dữ liệu, bao gồm các sản phẩm đã xóa và chưa xóa
-            var sanphams = await _context.Sanpham
-                .Where(sp => ids.Contains(sp.Id)) // Lấy tất cả sản phẩm theo ID
-                .Select(sp => new
-                {
-                    sp.Tieude,  // Tên sản phẩm
-                    sp.don_vi_tinh, // Đơn vị tính
-                    sp.Xoa // Kiểm tra xem sản phẩm có bị xóa không
-                })
-                .ToListAsync();
+        //    // Lấy thông tin sản phẩm từ cơ sở dữ liệu, bao gồm các sản phẩm đã xóa và chưa xóa
+        //    var sanphams = await _context.Sanpham
+        //        .Where(sp => ids.Contains(sp.Id)) // Lấy tất cả sản phẩm theo ID
+        //        .Select(sp => new
+        //        {
+        //            sp.Tieude,  // Tên sản phẩm
+        //            sp.don_vi_tinh, // Đơn vị tính
+        //            sp.Xoa // Kiểm tra xem sản phẩm có bị xóa không
+        //        })
+        //        .ToListAsync();
 
-            if (!sanphams.Any())
-            {
-                return (null, null, false); // Nếu không có sản phẩm hợp lệ, trả về null
-            }
+        //    if (!sanphams.Any())
+        //    {
+        //        return (null, null, false); // Nếu không có sản phẩm hợp lệ, trả về null
+        //    }
 
-            // Kiểm tra xem sản phẩm có bị xóa không và trả về tên/đơn vị tính phù hợp
-            string sanphamNames = string.Join(", ", sanphams.Select(sp => sp.Xoa ? $"{sp.Tieude} (Đã xóa)" : sp.Tieude));
-            string donViTinh = string.Join(", ", sanphams.Select(sp => sp.Xoa ? $"{sp.don_vi_tinh} (Đã xóa)" : sp.don_vi_tinh));
+        //    // Kiểm tra xem sản phẩm có bị xóa không và trả về tên/đơn vị tính phù hợp
+        //    string sanphamNames = string.Join(", ", sanphams.Select(sp => sp.Xoa ? $"{sp.Tieude} (Đã xóa)" : sp.Tieude));
+        //    string donViTinh = string.Join(", ", sanphams.Select(sp => sp.Xoa ? $"{sp.don_vi_tinh} (Đã xóa)" : sp.don_vi_tinh));
 
-            // Trả về thông tin tên sản phẩm, đơn vị tính và trạng thái bị xóa
-            return (sanphamNames, donViTinh, sanphams.Any(sp => sp.Xoa));
-        }
+        //    // Trả về thông tin tên sản phẩm, đơn vị tính và trạng thái bị xóa
+        //    return (sanphamNames, donViTinh, sanphams.Any(sp => sp.Xoa));
+        //}
 
 
     }

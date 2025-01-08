@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid';
 import { toast, ToastContainer } from 'react-toastify';
 import SiderbarAdmin from '../SidebarAdmin';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const Dactrung = () => {
   const [danhSachDactrung, setDanhSachDactrung] = useState([]);
@@ -32,7 +33,7 @@ const Dactrung = () => {
   const [hienThiModal, setHienThiModal] = useState(false);
   const [chinhSua, setChinhSua] = useState(false);
   const [dactrungHienTai, setDactrungHienTai] = useState(null);
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   useEffect(() => {
     layDanhSachDactrung();
   }, []);
@@ -41,7 +42,7 @@ const Dactrung = () => {
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/dactrung`);
-      setDanhSachDactrung(response.data);
+      setDanhSachDactrung(response.data.data);
     } catch (error) {
       console.error('Có lỗi khi lấy danh sách đặc trưng:', error);
       toast.error('Có lỗi khi lấy danh sách đặc trưng!', {
@@ -79,8 +80,8 @@ const Dactrung = () => {
     if (dactrungXoa) {
       try {
         // Kiểm tra xem người dùng có lưu thông tin đăng nhập hay không
-        const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-        const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+        const token = cookies.adminToken; // Lấy token từ cookie
+
 
         // Xóa đặc trưng
         await axios.delete(`${process.env.REACT_APP_BASEURL}/api/dactrung/${dactrungXoa.id}`, {

@@ -32,7 +32,7 @@ const Tracuu = () => {
 
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/hoadon/tracuu/${madonhang}`);
-      setDathangchitiet(response.data);
+      setDathangchitiet(response.data.data);
       setError("");
     } catch (error) {
       console.error("Lỗi khi tra cứu đơn hàng:", error);
@@ -58,7 +58,7 @@ const Tracuu = () => {
       });
     }
   };
-  
+
   // hàm để chọn class cho trạng thái đơn hàng
   const getStatusClass = (status) => {
     switch (status) {
@@ -131,13 +131,17 @@ const Tracuu = () => {
         {dathangchitiet && (
           <div className="card shadow-lg border-0 mb-5">
             <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top">
-              <h5 className="mb-0">Chi tiết đơn hàng: {dathangchitiet.orderCode}</h5>
-              <small className="text-white">Ngày đặt hàng: {new Date(dathangchitiet.created_at).toLocaleDateString()}</small>
+              <h5 className="mb-0">Chi tiết đơn hàng: {dathangchitiet.maDonHang}</h5>
+              <small className="text-white">Ngày đặt hàng: {new Date(dathangchitiet.ngayTao).toLocaleDateString()}</small>
             </div>
             <div className="card-body">
               <p className="card-text">
                 <strong>Trạng thái đơn hàng:</strong>{" "}
-                <span className={`badge ${getStatusClass(dathangchitiet.status)}`}>{dathangchitiet.status}</span>
+                <span className={`badge ${getStatusClass(dathangchitiet.trangThai)}`}>{dathangchitiet.trangThai}</span>
+              </p>
+              <p className="card-text">
+                <strong>Phương thức thanh toán:</strong>{" "}
+                <span className="">{dathangchitiet.phuongThucThanhToan}</span>
               </p>
 
               {/* Chi tiết sản phẩm */}
@@ -154,12 +158,12 @@ const Tracuu = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {dathangchitiet.hoaDonChiTiets && Array.isArray(dathangchitiet.hoaDonChiTiets) ? (
-                      dathangchitiet.hoaDonChiTiets.map((item, index) => (
+                    {dathangchitiet.chiTietHoaDon && Array.isArray(dathangchitiet.chiTietHoaDon) ? (
+                      dathangchitiet.chiTietHoaDon.map((item, index) => (
                         <tr key={index}>
-                          <td>{item.sanPhamNames}</td>
-                          <td>{item.quantity} {item.sanPhamDonViTinh}</td>
-                          <td>{parseFloat(item.price).toLocaleString("vi-VN", {style:'decimal', minimumFractionDigits: 0 })} VND</td>
+                          <td>{item.tenSanPham}</td>
+                          <td>{item.soLuong} {item.donViTinh}</td>
+                          <td>{parseFloat(item.gia).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })} VND</td>
                         </tr>
                       ))
                     ) : (
@@ -173,11 +177,12 @@ const Tracuu = () => {
 
               {/* Tổng giá trị đơn hàng */}
               <p className="card-text">
-                <strong>Tổng giá trị đơn hàng:</strong> {parseFloat(dathangchitiet.total_price).toLocaleString("vi-VN", { style:'decimal',minimumFractionDigits: 0 })} VND
+                <strong>Tổng giá trị đơn hàng:</strong> {parseFloat(dathangchitiet.tongTien).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })} VND
               </p>
 
               {/* Nút hủy đơn hàng */}
-              {dathangchitiet.status === "Chờ xử lý" && dathangchitiet.thanhtoan !== "VnPay" && dathangchitiet.thanhtoan !== "Momo" && (
+              {/* Nút hủy đơn hàng */}
+              {dathangchitiet.trangThai === "Chờ xử lý" && dathangchitiet.phuongThucThanhToan === "cod" && (
                 <div className="text-center mt-4">
                   <button
                     className="btn btn-danger rounded-3 py-2 px-4"
@@ -189,6 +194,7 @@ const Tracuu = () => {
                   </button>
                 </div>
               )}
+
 
             </div>
           </div>

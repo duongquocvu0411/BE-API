@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+import { useCookies } from 'react-cookie';
+import {jwtDecode} from 'jwt-decode';
 const ModlaAdddanhsachsanpham = ({ show, handleClose, isEdit, danhmuc, fetchdanhmucs }) => {
   const [name, setName] = useState('');
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
 
   useEffect(() => {
     if (isEdit && danhmuc) {
@@ -21,13 +22,13 @@ const ModlaAdddanhsachsanpham = ({ show, handleClose, isEdit, danhmuc, fetchdanh
       name
     }
     try {
-      // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-      const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-      const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-      const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+      const token = cookies.adminToken; // Lấy token từ cookie
+    // const decodedToken = jwtDecode(token); // Giải mã token
+    // const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
+
       if (isEdit) {
         // Cập nhật danh mục hiện tại
-        fom.updated_By = loggedInUser;
+        // fom.updated_By = loggedInUser;
         await axios.put(
           `${process.env.REACT_APP_BASEURL}/api/danhmucsanpham/${danhmuc.id}`,fom
       
@@ -50,8 +51,8 @@ const ModlaAdddanhsachsanpham = ({ show, handleClose, isEdit, danhmuc, fetchdanh
 
       } else {
         // Thêm mới danh mục
-        fom.created_By = loggedInUser;
-        fom.updated_By = loggedInUser;
+        // fom.created_By = loggedInUser;
+        // fom.updated_By = loggedInUser;
         await axios.post(
           `${process.env.REACT_APP_BASEURL}/api/danhmucsanpham`,fom
           

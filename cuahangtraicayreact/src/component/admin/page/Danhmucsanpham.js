@@ -10,6 +10,7 @@ import { nanoid } from 'nanoid';
 import { toast, ToastContainer } from 'react-toastify';
 import SiderbarAdmin from '../SidebarAdmin';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const Danhmucsanpham = () => {
   const [danhSachDanhMuc, setDanhSachDanhMuc] = useState([]);
@@ -38,6 +39,9 @@ const Danhmucsanpham = () => {
   const [hienThiModal, setHienThiModal] = useState(false);
   const [chinhSua, setChinhSua] = useState(false);
   const [danhMucHienTai, setDanhMucHienTai] = useState(null);
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
+
+
 
   useEffect(() => {
     layDanhSachDanhMuc();
@@ -48,7 +52,7 @@ const Danhmucsanpham = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/danhmucsanpham`)
 
-      setDanhSachDanhMuc(response.data);
+      setDanhSachDanhMuc(response.data.data);
       setDangtai(false);
     }
     catch (error) {
@@ -80,22 +84,22 @@ const Danhmucsanpham = () => {
   // Xóa danh mục
   const xoaDanhMuc = async (id, name) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-  
+
+    const token = cookies.adminToken; // Lấy token từ cookie
+
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/danhmucsanpham/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Thêm token vào header
         },
       });
-  
+
       // Thông báo thành công
       toast.success(`Xóa danh mục "${name}" thành công`, {
         position: 'top-right',
         autoClose: 3000,
       });
-  
+
       // Lấy lại danh sách danh mục và reset trang hiện tại
       layDanhSachDanhMuc();
       setTrangHienTai(1);
@@ -103,9 +107,9 @@ const Danhmucsanpham = () => {
       // Kiểm tra lỗi từ phản hồi API
       if (error.response) {
         const { status, data } = error.response;
-  
+
         if (status === 400 && data.message === 'Không thể xóa vì danh mục này đang chứa sản phẩm') {
-          toast.error(`Không thể xóa danh mục "${name}" vì đang chứa sản phẩm`, {
+          toast.error( {
             position: 'top-right',
             autoClose: 3000,
           });
@@ -115,11 +119,11 @@ const Danhmucsanpham = () => {
             autoClose: 3000,
           });
         }
-      } 
-      
+      }
+
     }
   };
-  
+
 
   const handleHienThiModalXoa = (danhMuc) => {
     setDanhMucXoa(danhMuc); // Lưu thông tin danh mục cần xóa

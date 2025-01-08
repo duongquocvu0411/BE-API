@@ -8,6 +8,7 @@ import HeaderAdmin from '../HeaderAdmin';
 import SiderbarAdmin from '../SidebarAdmin';
 import { nanoid } from 'nanoid';
 import ModalBanner from './../modla/ModalBanner';
+import { useCookies } from 'react-cookie';
 
 const Banners = () => {
   const [banners, setBanners] = useState([]);
@@ -15,7 +16,7 @@ const Banners = () => {
   const [trangHienTai, setTrangHienTai] = useState(1);
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xác nhận xóa
   const [bannerXoa, setBannerXoa] = useState(null); // Lưu thông tin banner cần xóa
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   const bannersMoiTrang = 4;
 
   // Logic tìm kiếm banners
@@ -44,7 +45,7 @@ const Banners = () => {
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/banners`);
-      setBanners(response.data);
+      setBanners(response.data.data);
     } catch (error) {
       console.error('Lỗi khi lấy danh sách banners:', error);
       toast.error('Có lỗi khi lấy danh sách banners!', {
@@ -70,8 +71,8 @@ const Banners = () => {
 
   const xoaBanner = async (id, tieude) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const token = cookies.adminToken; // Lấy token từ cookie
+     
     
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/banners/${id}`,
@@ -96,10 +97,8 @@ const Banners = () => {
   };
   const suDungBanners = async (id) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-  
-    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const token = cookies.adminToken; // Lấy token từ cookie
+      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
     try {
       // Gọi API với token trong headers
       await axios.post(

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using static CuahangtraicayAPI.DTO.FooterDto;
 using static CuahangtraicayAPI.DTO.TenFooterDTO;
 
@@ -71,13 +72,18 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize]
         public async Task<ActionResult<Footer>> CreateFooter([FromBody] DTO.FooterDto.FooterCreateDto dto)
         {
+
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
             var footer = new Footer
             {
                 NoiDungFooter = dto.NoiDungFooter,
                 //UpdatedBy = dto.UpdatedBy,
                 TrangThai = dto.Trangthai,
-                CreatedBy = dto.Created_By,
-                UpdatedBy = dto.Updated_By,
+                CreatedBy = hotenToken,
+                UpdatedBy = hotenToken,
             };
             _context.Footers.Add(footer);
             await _context.SaveChangesAsync();
@@ -100,6 +106,10 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound();
             }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
 
             footer.NoiDungFooter = footerDto.NoiDungFooter;
             //footer.UpdatedBy = footerDto.UpdatedBy;
@@ -108,7 +118,7 @@ namespace CuahangtraicayAPI.Controllers
                 footer.TrangThai = footerDto.Trangthai.Value;
             }
 
-            footer.UpdatedBy = footerDto.Updated_By;
+            footer.UpdatedBy = hotenToken;
             footer.Updated_at = DateTime.Now;
 
             _context.Entry(footer).State = EntityState.Modified;
@@ -165,7 +175,10 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound(new { message = "Không tìm thấy Footer với id này." });
             }
-
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
             // Cập nhật trạng thái cho tất cả các Footer
             foreach (var footer in allFooters)
             {
@@ -175,7 +188,7 @@ namespace CuahangtraicayAPI.Controllers
                 if (footer.Id == id)
                 {
                     footer.TrangThai = 1; // Cập nhật trạng thái cho Footer được chọn
-                    footer.UpdatedBy = dto.Updated_By; // Ghi lại người thực hiện
+                    footer.UpdatedBy =hotenToken; // Ghi lại người thực hiện
                 }
             }
 

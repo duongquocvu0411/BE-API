@@ -28,16 +28,16 @@ const HeaderUsers = ({ tieudeSanPham }) => {
   const layThongTinWebsiteHoatDong = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/tenwebsite`);
-      if (response.data && response.data.length > 0) {
+      if (response.data.data && response.data.data.length > 0) {
         const baseURL = process.env.REACT_APP_BASEURL;
         setThongTinWebsite({
-          tieu_de: response.data[0].tieu_de,
-          email: response.data[0].email,
-          diachi: response.data[0].diachi,
-          sdt: response.data[0].sdt,
-          favicon: `${baseURL}${response.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
+          tieu_de: response.data.data[0].tieu_de,
+          email: response.data.data[0].email,
+          diachi: response.data.data[0].diachi,
+          sdt: response.data.data[0].sdt,
+          favicon: `${baseURL}${response.data.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
         });
-        console.log(thongTinWebsite.favicon)
+      
       } else {
         toast.info("Không có website đang hoạt động", {
           position: "top-right",
@@ -52,7 +52,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
         autoClose: 3000,
       });
     }
-  };
+  }; 
 
   // const fetchCurrentDiaChi = async () => {
   //   try {
@@ -91,8 +91,8 @@ const HeaderUsers = ({ tieudeSanPham }) => {
   const fetchMenuData = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Menu`);
-      if (response.data) {
-        setMenuData(response.data);
+      if (response.data.data) {
+        setMenuData(response.data.data);
       } else {
         console.log("Không có dữ liệu menu");
       }

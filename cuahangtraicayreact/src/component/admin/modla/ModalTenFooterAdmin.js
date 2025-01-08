@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFooters }) => {
   const [tieude, setTieude] = useState('');
@@ -9,7 +11,7 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
   const [hinhanhs, setHinhanhs] = useState([]); // Hình ảnh mới thêm
   const [links, setLinks] = useState([]); // Link cho hình ảnh mới
   const [hienCo, setHienCo] = useState([]); // Hình ảnh và link hiện có từ API
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   useEffect(() => {
     if (isEdit && tenFooter) {
       setTieude(tenFooter.tieude || '');
@@ -73,10 +75,9 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
   };
 
   const handleSave = async () => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
-
+    const token = cookies.adminToken; // Lấy token từ cookie
+    const decodedToken = jwtDecode(token); // Giải mã token
+    const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
     // Kiểm tra nếu không có token thì yêu cầu đăng nhập lại
     if (!token) {
       toast.error("Vui lòng đăng nhập để tiếp tục!", {

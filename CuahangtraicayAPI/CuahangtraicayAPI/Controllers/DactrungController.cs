@@ -4,6 +4,8 @@ using CuahangtraicayAPI.Model;
 using System.IO;
 using static CuahangtraicayAPI.DTO.DactrungDTO;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -26,9 +28,15 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Xem danh sách Đặc trưng</returns>
         // GET: api/Dactrung
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Dactrung>>> GetDactrungs()
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Dactrung>>>> GetDactrungs()
         {
-            return await _context.Dactrungs.ToListAsync();
+            var dt = await _context.Dactrungs.OrderBy(dt => dt.Thutuhienthi).ToListAsync();
+
+            return new BaseResponseDTO<IEnumerable<Dactrung>>()
+            {
+                Data = dt,
+                Message = "Success"
+            };
         }
 
 
@@ -39,16 +47,24 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/Dactrung/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Dactrung>> GetDactrung(int id)
+        public async Task<ActionResult<BaseResponseDTO< Dactrung>>> GetDactrung(int id)
         {
             var dactrung = await _context.Dactrungs.FindAsync(id);
 
             if (dactrung == null)
             {
-                return NotFound();
+                return BadRequest(new BaseResponseDTO<Dactrung>
+                {
+                    Code =404,
+                    Message = "Đặc trưng không tồn tại trong hệ thống"
+                });
             }
 
-            return dactrung;
+            return Ok(new BaseResponseDTO<Dactrung>
+            {
+                Data = dactrung,
+                Message = "Success"
+            });
         }
 
         /// <summary>
@@ -59,15 +75,29 @@ namespace CuahangtraicayAPI.Controllers
         // POST: api/Dactrung
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Dactrung>> PostDactrung([FromForm] DactrungCreateDTO dto)
+        public async Task<ActionResult<BaseResponseDTO< Dactrung>>> PostDactrung([FromForm] DactrungCreateDTO dto)
         {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Dactrung>
+                {
+                    Code = 404,
+                    Message = "Không thể xác định người dùng từ token"
+                });
+            }
+
             var dactrung = new Dactrung
             {
                 Tieude = dto.Tieude,
                 Phude = dto.Phude,
                 Thutuhienthi = dto.Thutuhienthi,
-                CreatedBy = dto.Created_By,
-                UpdatedBy = dto.Updated_By,
+                CreatedBy = hotenToken ,
+                UpdatedBy = hotenToken ,
             };
 
             // Xử lý lưu file icon nếu có
@@ -82,7 +112,12 @@ namespace CuahangtraicayAPI.Controllers
             await _context.SaveChangesAsync();
 
             // Trả về đối tượng vừa được tạo
-            return CreatedAtAction("GetDactrung", new { id = dactrung.ID }, dactrung);
+            return Ok(new BaseResponseDTO<Dactrung>
+            {
+                Data = dactrung,
+                Message = "Success"
+
+            });
         }
 
         /// <summary>
@@ -93,12 +128,29 @@ namespace CuahangtraicayAPI.Controllers
         // PUT: api/Dactrung/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutDactrung(int id, [FromForm] DactrungUpdateDTO dto)
+        public async Task<ActionResult<BaseResponseDTO<Dactrung>>> PutDactrung(int id, [FromForm] DactrungUpdateDTO dto)
         {
             var dactrung = await _context.Dactrungs.FindAsync(id);
             if (dactrung == null)
             {
-                return NotFound(); // Trả về 404 nếu không tìm thấy bản ghi
+                return BadRequest( new BaseResponseDTO<Dactrung>
+                {
+                    Code = 404,
+                    Message = "Đặc trưng không tồn tại trong hệ thông"
+                }); // Trả về 404 nếu không tìm thấy bản ghi
+            }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Dactrung>
+                {
+                    Code = 404,
+                    Message = "Không thể xác định người dùng từ token"
+                });
             }
 
             // Cập nhật các trường từ DTO
@@ -114,7 +166,8 @@ namespace CuahangtraicayAPI.Controllers
             {
                 dactrung.Thutuhienthi = dto.Thutuhienthi.Value; // Cập nhật thứ tự hiển thị (nếu có)
             }
-            dactrung.UpdatedBy=dto.Updated_By;
+            dactrung.UpdatedBy=hotenToken;
+            dactrung.Updated_at=DateTime.Now;
 
             // Xử lý file icon mới (nếu có)
             if (dto.IconFile != null)
@@ -157,7 +210,11 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-            return Ok(dactrung); // Trả về đối tượng đã được cập nhật
+            return Ok( new BaseResponseDTO<Dactrung>
+            {
+                Data = dactrung,
+                Message = "Success"
+            }); // Trả về đối tượng đã được cập nhật
         }
 
         /// <summary>
@@ -168,12 +225,16 @@ namespace CuahangtraicayAPI.Controllers
         // DELETE: api/Dactrung/5
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteDactrung(int id)
+        public async Task<ActionResult<BaseResponseDTO<Dactrung>>> DeleteDactrung(int id)
         {
             var dactrung = await _context.Dactrungs.FindAsync(id);
             if (dactrung == null)
             {
-                return NotFound();
+                return BadRequest( new BaseResponseDTO<Dactrung>
+                {
+                    Code = 404,
+                    Message = "Đặc trưng không tồn tại trong hệ thống"
+                });
             }
 
             // Xóa tệp tin icon nếu có
@@ -189,7 +250,11 @@ namespace CuahangtraicayAPI.Controllers
             _context.Dactrungs.Remove(dactrung);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok( new BaseResponseDTO<Dactrung>
+            {
+                Data = dactrung,
+                Message = "Success"
+            });
         }
 
         private bool DactrungExists(int id)

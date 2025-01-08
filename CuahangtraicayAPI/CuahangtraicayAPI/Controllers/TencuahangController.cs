@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CuahangtraicayAPI.Model;
 using static CuahangtraicayAPI.DTO.TencuahangDTO;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -57,13 +58,17 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
 
             var cuahang = new Tencuahang
             {
                 Name = dto.Name,
                 Trangthai = "không sử dụng",
-                CreatedBy= dto.Created_By,
-                UpdatedBy= dto.Updated_By,
+                CreatedBy= hotenToken,
+                UpdatedBy= hotenToken,
             };
 
             _context.Tencuahangs.Add(cuahang);
@@ -89,6 +94,11 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Không tìm thấy cửa hàng với id này" });
             }
 
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
             // Chỉ cập nhật các thuộc tính nếu chúng có giá trị
             if (!string.IsNullOrEmpty(dto.Name))
             {
@@ -97,7 +107,7 @@ namespace CuahangtraicayAPI.Controllers
 
             if (!string.IsNullOrEmpty(dto.Updated_By))
             {
-                editCuaHang.UpdatedBy = dto.Updated_By;
+                editCuaHang.UpdatedBy = hotenToken;
             }
 
             // Đánh dấu thực thể là đã thay đổi
@@ -164,6 +174,10 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound(new { message = "Không tìm thấy cửa hàng với id này." });
             }
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
 
             // Cập nhật trạng thái cho tất cả các cửa hàng
             foreach (var store in allStores)
@@ -174,7 +188,7 @@ namespace CuahangtraicayAPI.Controllers
                 if (store.Id == id)
                 {
                     store.Trangthai = "đang sử dụng"; // Cập nhật trạng thái cho cửa hàng được chọn
-                    store.UpdatedBy = dto.Updated_By; // Cập nhật người thực hiện
+                    store.UpdatedBy = hotenToken; // Cập nhật người thực hiện
                 }
             }
 

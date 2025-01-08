@@ -8,6 +8,7 @@ import HeaderAdmin from '../HeaderAdmin';
 import SiderbarAdmin from '../SidebarAdmin';
 import { nanoid } from 'nanoid';
 import ModalTenFooterAdmin from '../modla/ModalTenFooterAdmin';
+import { useCookies } from 'react-cookie';
 
 
 const TenFooterAdmin = () => {
@@ -16,7 +17,7 @@ const TenFooterAdmin = () => {
   const [trangHienTai, setTrangHienTai] = useState(1);
   const [showModalXoa, setShowModalXoa] = useState(false); // Trạng thái hiển thị modal xóa
   const [tenFooterXoa, setTenFooterXoa] = useState(null); // Lưu thông tin footer cần xóa
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   const tenFooterMoiTrang = 4;
 
   // Logic tìm kiếm
@@ -45,7 +46,7 @@ const TenFooterAdmin = () => {
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/TenFooter`);
-      setTenFooters(response.data);
+      setTenFooters(response.data.data);
     } catch (error) {
       console.error('Lỗi khi lấy danh sách footer:', error);
       toast.error('Có lỗi khi lấy danh sách footer!', {
@@ -70,8 +71,8 @@ const TenFooterAdmin = () => {
   };
 
   const xoaTenFooter = async (id, tieude) => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
+    const token = cookies.adminToken; // Lấy token từ cookie
+
 
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/TenFooter/${id}`, {

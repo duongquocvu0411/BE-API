@@ -14,17 +14,17 @@ namespace CuahangtraicayAPI.DTO
 
             [Required]
             public string Url { get; set; }
-            [Required]
-            public string Created_By { get; set; }
-            [Required]
-            public string Updated_By { get; set; }
+            //[Required]
+            //public string Created_By { get; set; }
+            //[Required]
+            //public string Updated_By { get; set; }
         }
         public class MenuUpdateDTO
         {
             public string Name { get; set; }
             public int? Thutuhien { get; set; } // Nullable để có thể không truyền giá trị này khi cập nhật
             public string Url { get; set; }
-            public string Updated_By { get; set; }
+            //public string Updated_By { get; set; }
         }
     }
 }

@@ -10,17 +10,29 @@
              </summary>
              <returns>login Admin</returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AdminController.VerifyOtp(System.String)">
+            <summary>
+            Xác thực mã OTP
+            </summary>
+            <returns>Xác thực mã OTP</returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.AdminController.AddAdmin(CuahangtraicayAPI.DTO.LoginDTO.AddRequest)">
-             <summary>
-            Thêm mới tài khoản Admin
-             </summary>
-             <returns>Thêm mới tài khoản Admin</returns>
+            <summary>
+            Thêm mới tài khoản Admin (với xác nhận OTP qua email)
+            </summary>
+            <returns>Thêm mới tài khoản Admin</returns>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.AdminController.DeleteAdmin(System.Int32)">
             <summary>
             Xóa tài khoản Admin
             </summary>
             <returns>Xóa tài khoản Admin</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AdminController.VerifyRegistration(CuahangtraicayAPI.DTO.LoginDTO.VerifyOtpRequest)">
+            <summary>
+            Xác nhận OTP và hoàn tất đăng ký
+            </summary>
+            <returns>Xác nhận OTP</returns>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.BannersController.GetBanners">
             <summary>

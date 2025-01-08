@@ -9,9 +9,8 @@ using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.Services;
 using System.Globalization;
-
-using CuahangtraicayAPI.Model.Order;
 using CuahangtraicayAPI.Model.VnPay;
+using System.IdentityModel.Tokens.Jwt;
 
 
 namespace CuahangtraicayAPI.Controllers
@@ -37,88 +36,51 @@ namespace CuahangtraicayAPI.Controllers
         /// Lấy danh sách hóa đơn
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetHoaDons()
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<HoaDon>>>> GetHoaDons()
         {
             var hoadons = await _context.HoaDons.ToListAsync();
-            var result = new List<object>();
+          
 
-            foreach (var hd in hoadons)
+            return Ok(new BaseResponseDTO<IEnumerable< HoaDon>>
             {
-                result.Add(new
-                {
-                    hd.Id,
-                    hd.khachhang_id,
-                    hd.total_price,
-                    hd.Thanhtoan,
-                    hd.order_code,
-                    hd.UpdatedBy,
-                    hd.status,
-                });
-            }
-
-            return Ok(result);
-        }
-
-
-        // Lấy thông tin sản phẩm từ SanPhamIds
-        private async Task<(string SanphamNames, string SanphamDonViTinh)> GetSanPhamDetails(string sanPhamIds)
-        {
-            // Loại bỏ dấu ngoặc vuông và tách chuỗi thành các ID sản phẩm
-            var ids = sanPhamIds.Trim('[', ']').Split(',').Select(int.Parse).ToList();
-
-            // Truy vấn thông tin sản phẩm từ database
-            var sanphams = await _context.Sanpham
-                .Where(sp => ids.Contains(sp.Id))
-                .Select(sp => new
-                {
-                    sp.Tieude, // Lấy Tên sản phẩm
-                    sp.don_vi_tinh // Lấy Đơn vị tính
-                })
-                .ToListAsync();
-
-            // Gộp tất cả tên sản phẩm thành một chuỗi (nếu có nhiều sản phẩm)
-            string sanphamNames = string.Join(", ", sanphams.Select(sp => sp.Tieude));
-
-            // Lấy tất cả đơn vị tính, sẽ lấy đơn vị tính đầu tiên hoặc gộp lại nếu có nhiều đơn vị tính
-            string donViTinh = sanphams.Select(sp => sp.don_vi_tinh).FirstOrDefault(); // Lấy đơn vị tính đầu tiên
-
-            // Trả về tên sản phẩm và đơn vị tính dưới dạng chuỗi đơn giản
-            return (sanphamNames, donViTinh);
+                Data =hoadons,
+                Message= "Success"
+            });
         }
 
         /// <summary>
         /// Tạo hóa đơn mới
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult> CreateHoaDon(HoadonDTO.HoaDonDto hoaDonDto)
+        public async Task<ActionResult<BaseResponseDTO<HoaDon>>> CreateHoaDon(HoadonDTO.HoaDonDto hoaDonDto)
         {
             var orderCode = GenerateOrderCode(); // Tạo mã đơn hàng
             var totalPrice = 0m;
 
             // Tính tổng giá trị đơn hàng
-            for (int i = 0; i < hoaDonDto.SanphamIds.Count; i++)
+            foreach (var (sanphamId, quantity) in hoaDonDto.SanphamIds.Zip(hoaDonDto.Quantities))
             {
                 var sanpham = await _context.Sanpham
                     .Include(sp => sp.SanphamSales)
-                    .FirstOrDefaultAsync(sp => sp.Id == hoaDonDto.SanphamIds[i]);
+                    .FirstOrDefaultAsync(sp => sp.Id == sanphamId);
 
                 if (sanpham == null)
                 {
-                    return BadRequest(new { message = $"Sản phẩm với ID {hoaDonDto.SanphamIds[i]} không tồn tại." });
+                    return BadRequest(new { message = $"Sản phẩm với ID {sanphamId} không tồn tại." });
                 }
 
                 var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
                 var gia = activeSale != null ? activeSale.giasale : sanpham.Giatien;
 
-                if (sanpham.Soluong < hoaDonDto.Quantities[i])
+                if (sanpham.Soluong < quantity)
                 {
                     return BadRequest(new { message = $"Số lượng sản phẩm '{sanpham.Tieude}' không đủ." });
                 }
 
-                totalPrice += (gia) * hoaDonDto.Quantities[i];
+                totalPrice += gia * quantity;
             }
 
-            // Tạo hóa đơn trước khi thanh toán
+            // Tạo hóa đơn
             var bill = new HoaDon
             {
                 khachhang_id = hoaDonDto.KhachHangId,
@@ -126,52 +88,39 @@ namespace CuahangtraicayAPI.Controllers
                 order_code = orderCode,
                 Thanhtoan = hoaDonDto.PaymentMethod,
                 status = hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.Thanhtoan == "Momo" ? "Chờ thanh toán" : "Chờ xử lý", // Xử lý đúng trạng thái
-                UpdatedBy = hoaDonDto.Updated_By ?? "Chưa có tác động"
+                UpdatedBy = "Chưa có tác động"
             };
 
             _context.HoaDons.Add(bill);
             await _context.SaveChangesAsync();
 
-            // Xử lý chi tiết hóa đơn
-            for (int i = 0; i < hoaDonDto.SanphamIds.Count; i++)
+            // Thêm chi tiết hóa đơn
+            foreach (var (sanphamId, quantity) in hoaDonDto.SanphamIds.Zip(hoaDonDto.Quantities))
             {
-                var sanpham = await _context.Sanpham
-                    .Include(sp => sp.SanphamSales)
-                    .FirstOrDefaultAsync(sp => sp.Id == hoaDonDto.SanphamIds[i]);
+                var sanpham = await _context.Sanpham.FindAsync(sanphamId);
 
                 if (sanpham != null)
-                {
-                    var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
-                    var gia = activeSale != null ? activeSale.giasale : sanpham.Giatien;
 
+                {
+                     var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
+                    var gia = activeSale != null ? activeSale.giasale : sanpham.Giatien;
                     var chiTiet = new HoaDonChiTiet
                     {
                         bill_id = bill.Id,
-                        sanpham_ids = hoaDonDto.SanphamIds[i].ToString(),
-                        price = (gia) * hoaDonDto.Quantities[i],
-                        quantity = hoaDonDto.Quantities[i]
+                        sanpham_ids = sanphamId,
+                        //price = sanpham.Giatien * quantity,
+                        price = (gia) * hoaDonDto.Quantities.FirstOrDefault(),
+                        quantity = quantity
                     };
-                    // Trừ số lượng sản phẩm trong kho nếu không phải thanh toán qua VnPay
-                    //if (hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.PaymentMethod == "Momo")
-                    //{
-                    //    sanpham.Soluong -= hoaDonDto.Quantities[i];
-                    //    if (sanpham.Soluong <= 0)
-                    //    {
-                    //        sanpham.Soluong = 0; // Đảm bảo số lượng không bị âm
-                    //        sanpham.Trangthai = "Hết hàng"; // Cập nhật trạng thái thành "Hết hàng"
-                    //    }
-                    //    _context.Sanpham.Update(sanpham);
-                    //}
+
                     _context.HoaDonChiTiets.Add(chiTiet);
                 }
             }
 
-            await _context.SaveChangesAsync(); // Lưu thông tin hóa đơn và chi tiết hóa đơn
+            await _context.SaveChangesAsync();
+            await Task.Run(() => GuiEmailHoaDon(bill, totalPrice, orderCode));
 
-            // Gửi email thông báo hóa đơn                             
-            await GuiEmailHoaDon(bill, totalPrice, orderCode);
-
-            // Xử lý phương thức thanh toán
+            // Xử lý thanh toán
             if (hoaDonDto.PaymentMethod == "VnPay")
             {
                 // Tạo URL thanh toán VnPay
@@ -189,7 +138,18 @@ namespace CuahangtraicayAPI.Controllers
                 //bill.status = "Chờ thanh toán qua VnPay";
                 await _context.SaveChangesAsync();
 
-                return Ok(new { message = "URL thanh toán VnPay được tạo thành công.", paymentUrl, bill });
+                return Ok(new
+                {
+                    Message = "URL thanh toán VnPay được tạo thành công.",
+                    PaymentUrl = paymentUrl,
+                    Bill = new
+                    {
+                        bill.Id,
+                        bill.order_code,
+                        bill.total_price,
+                        bill.status
+                    }
+                });
             }
             else if (hoaDonDto.PaymentMethod == "Momo")
             {
@@ -209,70 +169,136 @@ namespace CuahangtraicayAPI.Controllers
                     //bill.status = "Chờ thanh toán qua Momo";
                     await _context.SaveChangesAsync();
 
-                    return Ok(new { message = "URL thanh toán Momo được tạo thành công.", payUrl = momoResponse.PayUrl, bill });
+                    return Ok(new
+                    {
+                        Message = "URL thanh toán Momo được tạo thành công.",
+                        PayUrl = momoResponse.PayUrl,
+                        Bill = new
+                        {
+                            bill.Id,
+                            bill.order_code,
+                            bill.total_price,
+                            bill.status
+                        }
+                    });
                 }
                 else
                 {
                     return BadRequest(new { message = "Không thể tạo thanh toán qua Momo.", error = momoResponse.Message });
                 }
             }
-            else
+
+            // Trả về thông tin khách hàng, hóa đơn và chi tiết hóa đơn
+            var khachHang = await _context.KhachHangs.FindAsync(hoaDonDto.KhachHangId);
+            var chiTietHoaDon = await _context.HoaDonChiTiets
+                .Where(ct => ct.bill_id == bill.Id)
+                .Select(ct => new
+                {
+                    ct.Id,
+                    ct.price,
+                    ct.quantity,
+                    SanPhamTitle = _context.Sanpham
+                        .Where(sp => sp.Id == ct.sanpham_ids)
+                        .Select(sp => sp.Tieude)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+
+            var result = new
             {
-                //bill.status = "Chờ xử lý";
-                await _context.SaveChangesAsync();
+                Message = "Đơn hàng đã được tạo thành công",
+                OrderCode = bill.order_code,
+                KhachHang = new
+                {
+                    khachHang.Id,
+                    khachHang.Ten,
+                    khachHang.Ho,
+                    khachHang.DiaChiCuThe,
+                    khachHang.tinhthanhquanhuyen,
+                    khachHang.ThanhPho,
+                    khachHang.xaphuong,
+                    khachHang.Sdt,
+                    khachHang.EmailDiaChi
+                },
+                HoaDon = new
+                {
+                    bill.Id,
+                    bill.total_price,
+                    bill.order_code,
+                    bill.status,
+                    bill.Thanhtoan,
+                    ChiTietHoaDon = chiTietHoaDon
+                }
+            };
 
-                return Ok(new { message = "Đơn hàng đã được tạo thành công", order_code = orderCode, bill });
-            }
-
+            return Ok(result);
         }
+
+
+
+
         private async Task GuiEmailHoaDon(HoaDon bill, decimal totalPrice, string orderCode)
         {
             var Kh = await _context.KhachHangs.FirstOrDefaultAsync(kh => kh.Id == bill.khachhang_id);
 
-            var ChudeEmail = "Thông báo: Đơn hàng mới được tạo";
+            var ChudeEmail = "Xác nhận đơn hàng từ cửa hàng của chúng tôi";
             var NoidungEmail = $@"
-                        <h2>Thông tin hóa đơn mới</h2>
-                        <p><strong>Khách hàng:</strong> {Kh?.Ho} {Kh?.Ten}</p>
-                        <p><strong>Email:</strong> {Kh?.EmailDiaChi}</p>
-                        <p><strong>Số điện thoại:</strong> {Kh?.Sdt}</p>
-                        <p><strong>Địa chỉ:</strong> {Kh?.DiaChiCuThe}, {Kh?.xaphuong}, {Kh?.tinhthanhquanhuyen}, {Kh?.ThanhPho}</p>
-                        <p><strong>Mã đơn hàng:</strong> {orderCode}</p>
-                        <h3>Chi tiết đơn hàng</h3>
-                        <table style='width: 100%; border-collapse: collapse; border: 1px solid #ddd;'>
-                            <thead>
-                                <tr style='background-color: #f8f9fa;'>
-                                    <th style='border: 1px solid #ddd; padding: 8px;'>STT</th>
-                                    <th style='border: 1px solid #ddd; padding: 8px;'>Sản phẩm</th>
-                                    <th style='border: 1px solid #ddd; padding: 8px;'>Số lượng</th>
-                                    <th style='border: 1px solid #ddd; padding: 8px;'>Đơn giá</th>
-                                    <th style='border: 1px solid #ddd; padding: 8px;'>Thành tiền</th>
-                                </tr>
-                            </thead>
-                            <tbody>";
+    <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>
+        <div style='background-color: #4CAF50; padding: 20px; text-align: center; color: #fff;'>
+            <h1 style='margin: 0;'>Cửa Hàng Online</h1>
+            <p style='margin: 0; font-size: 16px;'>Cảm ơn bạn đã đặt hàng!</p>
+        </div>
+        <div style='padding: 20px;'>
+            <h2 style='color: #4CAF50; border-bottom: 2px solid #f8f9fa; padding-bottom: 10px;'>Thông tin đơn hàng</h2>
+            <p><strong>Khách hàng:</strong> {Kh?.Ho} {Kh?.Ten}</p>
+            <p><strong>Email:</strong> {Kh?.EmailDiaChi}</p>
+            <p><strong>Số điện thoại:</strong> {Kh?.Sdt}</p>
+            <p><strong>Địa chỉ:</strong> {Kh?.DiaChiCuThe}, {Kh?.xaphuong}, {Kh?.tinhthanhquanhuyen}, {Kh?.ThanhPho}</p>
+             <p><strong>Phương thức thanh toán</strong> {bill.Thanhtoan}</p>
+            <p><strong>Mã đơn hàng:</strong> <span style='color: #FF5722;'>{orderCode}</span></p>
+        </div>
+        <div style='padding: 20px;'>
+            <h3 style='color: #2196F3; border-bottom: 1px solid #ddd; padding-bottom: 10px;'>Chi tiết sản phẩm</h3>
+            <table style='width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px;'>
+                <thead>
+                    <tr style='background-color: #f8f9fa; text-align: left;'>
+                        <th style='border: 1px solid #ddd; padding: 10px;'>#</th>
+                        <th style='border: 1px solid #ddd; padding: 10px;'>Sản phẩm</th>
+                        <th style='border: 1px solid #ddd; padding: 10px;'>Số lượng</th>
+                        <th style='border: 1px solid #ddd; padding: 10px;'>Đơn giá</th>
+                        <th style='border: 1px solid #ddd; padding: 10px;'>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>";
 
             int stt = 1;
             foreach (var chiTiet in _context.HoaDonChiTiets.Where(ct => ct.bill_id == bill.Id))
             {
-                var sanphamId = int.Parse(chiTiet.sanpham_ids);
-                var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == sanphamId);
+                var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
 
                 NoidungEmail += $@"
-                            <tr>
-                                <td style='border: 1px solid #ddd; padding: 8px; text-align: center;'>{stt++}</td>
-                                <td style='border: 1px solid #ddd; padding: 8px;'>{sanpham?.Tieude ?? "Sản phẩm đã bị xóa"}</td>
-                                <td style='border: 1px solid #ddd; padding: 8px; text-align: center;'>{chiTiet.quantity}</td>
-                                <td style='border: 1px solid #ddd; padding: 8px; text-align: right;'>{(chiTiet.price / chiTiet.quantity).ToString("N0", new CultureInfo("vi-VN"))} VND</td>
-                                <td style='border: 1px solid #ddd; padding: 8px; text-align: right;'>{chiTiet.price.ToString("N0", new CultureInfo("vi-VN"))} VND</td>
-                            </tr>";
+                    <tr style='border-bottom: 1px solid #ddd;'>
+                        <td style='padding: 10px; text-align: center;'>{stt++}</td>
+                        <td style='padding: 10px;'>{sanpham?.Tieude ?? "Sản phẩm đã bị xóa"}</td>
+                        <td style='padding: 10px; text-align: center;'>{chiTiet.quantity}</td>
+                        <td style='padding: 10px; text-align: right;'>{(chiTiet.price / chiTiet.quantity).ToString("N0", new CultureInfo("vi-VN"))} VND</td>
+                        <td style='padding: 10px; text-align: right;'>{chiTiet.price.ToString("N0", new CultureInfo("vi-VN"))} VND</td>
+                    </tr>";
             }
 
             NoidungEmail += $@"
-                            <tr style='background-color: #f8f9fa; font-weight: bold;'>
-                                <td colspan='5' style='border: 1px solid #ddd; padding: 8px; text-align: right;'>Tổng cộng: {totalPrice.ToString("N0", new CultureInfo("vi-VN"))} VND</td>
-                          
-                            </tr>
-                        </tbody>
-                    </table>";
+                    <tr style='background-color: #f8f9fa; font-weight: bold;'>
+                        <td colspan='4' style='padding: 10px; text-align: right;'>Tổng cộng:</td>
+                        <td style='padding: 10px; text-align: right;'>{totalPrice.ToString("N0", new CultureInfo("vi-VN"))} VND</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style='background-color: #f8f9fa; padding: 20px; text-align: center;'>
+            <p style='margin: 0; font-size: 16px; font-weight: bold;'>Cảm ơn bạn đã mua sắm tại cửa hàng chúng tôi!</p>
+            <p style='margin: 0; font-size: 14px;'>Nếu có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua <a href='mailto:quocvu0411@gmail.com' style='color: #2196F3;'>quocvu0411@gmail.com</a>.</p>
+        </div>
+    </div>";
 
             // Gửi email bất đồng bộ
 #pragma warning disable CS4014
@@ -280,10 +306,10 @@ namespace CuahangtraicayAPI.Controllers
             {
                 try
                 {
-                    await _emailHelper.GuiEmailAsync("quocvu0411@gmail.com", ChudeEmail, NoidungEmail); // gửi mail chính cho mail quocvu0411@gmail.com 
+                    await _emailHelper.GuiEmailAsync("quocvu0411@gmail.com", ChudeEmail, NoidungEmail); // gửi email chính
                     if (!string.IsNullOrEmpty(Kh?.EmailDiaChi))
                     {
-                        await _emailHelper.GuiEmailAsync(Kh.EmailDiaChi, ChudeEmail, NoidungEmail); // gửi mail cho người mua hàng 
+                        await _emailHelper.GuiEmailAsync(Kh.EmailDiaChi, ChudeEmail, NoidungEmail); // gửi email cho người mua hàng
                     }
                 }
                 catch (Exception ex)
@@ -293,7 +319,6 @@ namespace CuahangtraicayAPI.Controllers
             });
         }
 
-      
 
         /// <summary>
         /// Tra cứu theo mã của hóa đơn
@@ -301,11 +326,12 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Tra cứu theo mã của hóa đơn</returns>
         // GET: api/HoaDon/TraCuu/{orderCode}
         [HttpGet("TraCuu/{orderCode}")]
-        public async Task<ActionResult<object>> GetHoaDonByOrderCode(string orderCode)
+        public async Task<ActionResult<BaseResponseDTO<object>>> GetHoaDonByOrderCode(string orderCode)
         {
             // Tìm hóa đơn dựa trên OrderCode
             var hoaDon = await _context.HoaDons
-                .Include(hd => hd.HoaDonChiTiets) // Bao gồm chi tiết hóa đơn
+                .Include(hd => hd.HoaDonChiTiets)
+                .ThenInclude(sp => sp.SanPham)
                 .FirstOrDefaultAsync(hd => hd.order_code == orderCode);
 
             if (hoaDon == null)
@@ -313,40 +339,32 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Không tìm thấy hóa đơn với mã đơn hàng này." });
             }
 
-            // Chuẩn bị danh sách chi tiết hóa đơn với tên sản phẩm
-            var chiTietHoaDon = new List<object>();
-
-            foreach (var ct in hoaDon.HoaDonChiTiets)
-            {
-                // Lấy thông tin sản phẩm dựa trên SanPhamIds
-                var sanphamId = int.Parse(ct.sanpham_ids);
-                var sanpham = await _context.Sanpham.FindAsync(sanphamId);
-
-                chiTietHoaDon.Add(new
-                {
-                    ct.Id,
-                    ct.bill_id,
-                    SanPhamNames = sanpham?.Tieude, // Lấy tên sản phẩm từ bảng Sanpham
-                    SanPhamDonViTinh = sanpham?.don_vi_tinh, // Lấy đơn vị tính từ bảng Sanpham
-                    ct.price,
-                    ct.quantity
-                });
-            }
-
-            var result = new
+            // Chuẩn bị phản hồi
+            var response = new
             {
                 hoaDon.Id,
                 hoaDon.khachhang_id,
-                hoaDon.Created_at,
-                hoaDon.total_price,
-                hoaDon.order_code,
-                hoaDon.status,
-                hoaDon.Thanhtoan,
-
-                HoaDonChiTiets = chiTietHoaDon
+                NgayTao = hoaDon.Created_at,
+                TongTien = hoaDon.total_price,
+                MaDonHang = hoaDon.order_code,
+                TrangThai = hoaDon.status,
+                PhuongThucThanhToan = hoaDon.Thanhtoan,
+                ChiTietHoaDon = hoaDon.HoaDonChiTiets.Select(ct => new
+                {
+                  
+                  
+                    TenSanPham = ct.SanPham.Tieude, // Lấy tên sản phẩm
+                    DonViTinh = ct.SanPham.don_vi_tinh, // Lấy đơn vị tính
+                    Gia = ct.price,
+                    SoLuong = ct.quantity
+                })
             };
 
-            return Ok(result);
+            return Ok(new BaseResponseDTO<Object>
+            {
+                Data= response,
+                Message = "Success"
+            });
         }
 
 
@@ -357,24 +375,38 @@ namespace CuahangtraicayAPI.Controllers
 
         // PUT: api/HoaDon/TraCuu/{orderCode}/HuyDon
         [HttpPut("TraCuu/{orderCode}/HuyDon")]
-        public async Task<ActionResult> CancelOrder(string orderCode)
+
+        public async Task<ActionResult<BaseResponseDTO<object>>> CancelOrder(string orderCode)
         {
             // Tìm hóa đơn dựa trên OrderCode
             var hoaDon = await _context.HoaDons.FirstOrDefaultAsync(hd => hd.order_code == orderCode);
 
             if (hoaDon == null)
             {
-                return NotFound(new { message = "Không tìm thấy đơn hàng với mã này." });
+                return NotFound(new BaseResponseDTO<object>
+                {
+                    Code = 404,
+                    Message = "Không tìm thấy đơn hàng với mã này."
+                });
             }
 
             // Kiểm tra trạng thái hiện tại của đơn hàng
             if (hoaDon.status == "Hủy đơn")
             {
-                return BadRequest(new { message = "Đơn hàng đã bị hủy trước đó." });
+                return BadRequest(new BaseResponseDTO<object>
+                {
+                    Code = 400,
+                    Message = "Đơn hàng đã bị hủy trước đó."
+                });
             }
+
             if (hoaDon.status != "Chờ xử lý")
             {
-                return BadRequest(new { message = "Đơn hàng đã được xử lý và không thể hủy." });
+                return BadRequest(new BaseResponseDTO<object>
+                {
+                    Code = 400,
+                    Message = "Đơn hàng không ở trạng thái 'Chờ xử lý' và không thể hủy."
+                });
             }
 
             // Cập nhật trạng thái đơn hàng thành "Hủy đơn"
@@ -382,8 +414,19 @@ namespace CuahangtraicayAPI.Controllers
             hoaDon.Updated_at = DateTime.Now;
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Đơn hàng đã được hủy thành công." });
+            return Ok(new BaseResponseDTO<object>
+            {
+                Code = 0,
+                Message = "Đơn hàng đã được hủy thành công.",
+                Data = new
+                {
+                    hoaDon.order_code,
+                    hoaDon.status,
+                    UpdatedAt = hoaDon.Updated_at
+                }
+            });
         }
+
 
 
         /// <summary>
@@ -393,7 +436,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // PUT: api/HoaDon/UpdateStatus/{id}
         [HttpPut("UpdateStatus/{id}")]
-        public async Task<ActionResult> UpdateStatus(int id, [FromBody] HoadonDTO.UpdateStatusDto dto)
+        public async Task<ActionResult<BaseResponseDTO<HoaDon>>> UpdateStatus(int id, [FromBody] HoadonDTO.UpdateStatusDto dto)
         {
             // Tìm hóa đơn và bao gồm thông tin khách hàng
             var bill = await _context.HoaDons
@@ -403,6 +446,16 @@ namespace CuahangtraicayAPI.Controllers
 
             if (bill == null)
                 return NotFound(new { message = "Không tìm thấy đơn hàng" });
+
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new { message = "Không thể xác định người dùng từ token." });
+            }
 
             Console.WriteLine($"Phương thức thanh toán: {bill.Thanhtoan}");
 
@@ -419,8 +472,7 @@ namespace CuahangtraicayAPI.Controllers
                 {
                     foreach (var chiTiet in bill.HoaDonChiTiets)
                     {
-                        var sanphamId = int.Parse(chiTiet.sanpham_ids);
-                        var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == sanphamId);
+                        var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
 
                         if (sanpham != null)
                         {
@@ -442,7 +494,7 @@ namespace CuahangtraicayAPI.Controllers
             if (bill.status != dto.Status)
             {
                 bill.status = dto.Status;
-                bill.UpdatedBy = dto.Updated_By;
+                bill.UpdatedBy = hotenToken;
                 bill.Updated_at = DateTime.Now;
             }
 
@@ -465,7 +517,36 @@ namespace CuahangtraicayAPI.Controllers
             if (!string.IsNullOrEmpty(khEmail))
             {
                 var EmailSub = "Cập nhật trạng thái đơn hàng";
-                var emailNoidung = $"Đơn hàng của bạn (Mã đơn: {bill.order_code}) đã được cập nhật trạng thái thành: {bill.status}.";
+                var emailNoidung = $@"
+            <html>
+            <body>
+                <table align='center' border='0' cellpadding='0' cellspacing='0' width='600' style='border: 1px solid #cccccc;'>
+                    <tr>
+                        <td align='center' bgcolor='#007bff' style='padding: 20px 0;'>
+                            <h1 style='color: #ffffff; margin: 0;'>Cửa hàng trái cây</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 20px;'>
+                            <p style='margin: 0; font-size: 18px;'>Xin chào,</p>
+                            <p style='margin: 10px 0;'>
+                                Đơn hàng của bạn (<strong>Mã đơn: {bill.order_code}</strong>) đã được cập nhật trạng thái thành:
+                            </p>
+                            <p style='font-size: 20px; font-weight: bold; color: #28a745; margin: 10px 0;'>{bill.status}</p>
+                            <p style='margin: 10px 0;'>
+                                Nếu bạn có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua email hoặc số điện thoại hỗ trợ.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align='center' bgcolor='#f8f9fa' style='padding: 20px;'>
+                            <p style='margin: 0; font-size: 14px; color: #999999;'>Đây là email tự động, vui lòng không trả lời email này.</p>
+                            <p style='margin: 5px 0; font-size: 14px; color: #999999;'>&copy; 2025 Công ty TNHH. All rights reserved.</p>
+                        </td>
+                    </tr>
+                </table>
+            </body>
+            </html>";
 
                 // Gửi email trong nền không cần phải chờ gữi mail trước rồi mới cập nhật trạng thái sau
                 Task.Run(async () =>
@@ -487,8 +568,10 @@ namespace CuahangtraicayAPI.Controllers
                 Console.WriteLine("Không có email khách hàng để gửi thông báo.");
             }
 
-            return Ok(new { message = "Trạng thái đơn hàng đã được cập nhật", bill });
+            return Ok(new BaseResponseDTO<HoaDon> { Data = bill,
+            Message ="Success"});
         }
+
 
 
 
@@ -499,7 +582,7 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpGet("DoanhThuHomNay")]
         [Authorize]
-        public async Task<ActionResult<object>> GetDoanhThuHomNay()
+        public async Task<ActionResult<BaseResponseDTO<object>>> GetDoanhThuHomNay()
         {
             // Lấy ngày hiện tại và thiết lập mốc thời gian đầu và cuối của ngày
             DateTime today = DateTime.Today;
@@ -510,8 +593,22 @@ namespace CuahangtraicayAPI.Controllers
                 .Where(hd => hd.Created_at >= today && hd.Created_at < tomorrow)
                 .SumAsync(hd => hd.total_price);
 
-            return Ok(new { Ngay = today.ToString("yyyy-MM-dd"), TongDoanhThu = doanhThuHomNay });
+            // Chuẩn bị dữ liệu trả về
+            var result = new
+            {
+                Ngay = today.ToString("yyyy-MM-dd"),
+                TongDoanhThu = doanhThuHomNay
+            };
+
+            // Trả về kết quả qua BaseResponseDTO
+            return Ok(new BaseResponseDTO<object>
+            {
+                Code = 0,
+                Message = "Success",
+                Data = result
+            });
         }
+
 
         /// <summary>
         /// Lấy toàn bộ danh thu của các tháng
@@ -557,7 +654,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Danh sách sản phẩm bán chạy trong tháng và năm hiện tại</returns>
         [HttpGet("SanPhamBanChayHienTai")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<object>>> GetSanPhamBanChayHienTai()
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<object>>>> GetSanPhamBanChayHienTai()
         {
             // Lấy năm và tháng hiện tại
             var currentYear = DateTime.Now.Year;
@@ -580,22 +677,32 @@ namespace CuahangtraicayAPI.Controllers
 
             foreach (var item in sanPhamBanChay)
             {
-                var sanphamIds = item.SanPhamIds.Split(',').Select(int.Parse).ToList();
-                var sanphams = await _context.Sanpham
-                    .Where(sp => sanphamIds.Contains(sp.Id))
+                // Truy vấn thông tin chi tiết sản phẩm theo ID
+                var sanpham = await _context.Sanpham
+                    .Where(sp => sp.Id == item.SanPhamIds)
                     .Select(sp => new { sp.Tieude, sp.don_vi_tinh })
-                    .ToListAsync();
+                    .FirstOrDefaultAsync();
 
-                result.Add(new
+                if (sanpham != null)
                 {
-                    SanPhamIds = item.SanPhamIds,
-                    SanPhamNames = string.Join(", ", sanphams.Select(sp => sp.Tieude)),
-                    TotalQuantity = item.TotalQuantity,
-                    SanPhamDonViTinh = string.Join(", ", sanphams.Select(sp => sp.don_vi_tinh)),
-                });
+                    result.Add(new
+                    {
+                        SanPhamIds = item.SanPhamIds,
+                        SanPhamName = sanpham.Tieude,
+                        SanPhamDonViTinh = sanpham.don_vi_tinh,
+                        TotalQuantity = item.TotalQuantity,
+                    });
+                }
             }
 
-            return Ok(result);
+            // Trả về kết quả qua BaseResponseDTO
+            return Ok(new BaseResponseDTO<IEnumerable<object>>
+            {
+                Code = 0,
+                Message = "Lấy danh sách sản phẩm bán chạy hiện tại thành công",
+                Data = result
+            });
         }
+
     }
 }

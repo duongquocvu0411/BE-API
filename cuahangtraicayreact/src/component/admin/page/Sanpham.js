@@ -11,6 +11,7 @@ import SiderbarAdmin from '../SidebarAdmin';
 import ModalDanhGia from '../modla/ModalDanhGia';
 import Countdown from 'react-countdown';
 import ModalChiTietSanPham from '../modla/ModalChiTietSanPham';
+import { useCookies } from 'react-cookie';
 
 const SanPham = () => {
   // State lưu trữ danh mục sản phẩma
@@ -30,7 +31,7 @@ const SanPham = () => {
   const [showModalXoa, setShowModalXoa] = useState(false); // Hiển thị modal xóa
   const [sanPhamXoa, setSanPhamXoa] = useState(null); // Lưu thông tin sản phẩm cần xóa
 
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   // State quản lý trang hiện tại của phân trang
   const [trangHienTai, setTrangHienTai] = useState(1);
 
@@ -70,7 +71,7 @@ const SanPham = () => {
         : `${process.env.REACT_APP_BASEURL}/api/sanpham`;
 
       const response = await axios.get(url);
-      setDanhSachSanPham(response.data || []); // Lưu danh sách sản phẩm vào state
+      setDanhSachSanPham(response.data.data || []); // Lưu danh sách sản phẩm vào state
       setTrangHienTai(1); // Đặt lại trang hiện tại về 1 khi thay đổi danh mục
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -91,7 +92,7 @@ const SanPham = () => {
   const layDanhMuc = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/danhmucsanpham`);
-      setDanhMuc(response.data); // Lưu danh mục sản phẩm vào state
+      setDanhMuc(response.data.data); // Lưu danh mục sản phẩm vào state
     } catch (error) {
       console.error('Lỗi khi lấy danh mục sản phẩm:', error);
     }
@@ -110,7 +111,7 @@ const SanPham = () => {
   const moModalSuaSanPham = async (sanPham) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/sanpham/${sanPham.id}`);
-      const productData = response.data;
+      const productData = response.data.data;
 
       setSanPhamHienTai(productData); // Lưu sản phẩm hiện tại với chi tiết đầy đủ
       setChinhSua(true); // Đặt trạng thái chỉnh sửa
@@ -129,12 +130,11 @@ const SanPham = () => {
   // Hàm xóa sản phẩm
   const xoaSanPham = async (id) => {
     const SanphamXoa = danhSachSanPham.find((sanpham) => sanpham.id === id);
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+    const token = cookies.adminToken; // Lấy token từ cookie
+    // const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
     try {
       // ?UpdatedBy=${encodeURIComponent(loggedInUser)} truyền updatedBy vào api xóa để lấy thông tin người cập nhật cuối cùng 
-      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}?UpdatedBy=${encodeURIComponent(loggedInUser)}`, {
+      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}?UpdatedBy=${encodeURIComponent(token)}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Thêm token vào header
         },
@@ -170,8 +170,8 @@ const SanPham = () => {
   const moModalChiTiet = async (sanphams_id) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/chitiets/${sanphams_id}`);
-      console.log(response.data);  // Xem dữ liệu có đầy đủ thông tin không
-      setNoiDungChiTiet(response.data); // Lưu dữ liệu chi tiết sản phẩm
+      console.log(response.data.data);  // Xem dữ liệu có đầy đủ thông tin không
+      setNoiDungChiTiet(response.data.data); // Lưu dữ liệu chi tiết sản phẩm
       setHienThiModalChiTiet(true); // Hiển thị modal chi tiết
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -311,7 +311,8 @@ const SanPham = () => {
                               <td className="text-center">{viTriSanPhamDau + index + 1}</td>
                               <td className="text-center">
                                 <img
-                                  src={sanPham.hinhanh}
+                                  // src={sanPham.hinhanh}
+                                  src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                                   alt={sanPham.tieude}
                                   className="rounded img-thumbnail"
                                   style={{ width: '60px', height: '60px', objectFit: 'cover' }}

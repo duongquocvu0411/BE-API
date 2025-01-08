@@ -4,12 +4,14 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
 const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFooters }) => {
   const [tieude, setTieude] = useState(MenuFooter?.tieu_de || '');
   const [noidung, setNoidung] = useState(MenuFooter?.noi_dung || '');
   const [thutuhienthi, setThutuhienthi] = useState(MenuFooter?.thutuhienthi || '');
   // const [hinhanhs, setHinhanhs] = useState([]);
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   // Thiết lập trạng thái ban đầu khi chỉnh sửa hoặc thêm MenuFooter mới
   useEffect(() => {
     if (isEdit && MenuFooter) {
@@ -26,9 +28,9 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
 
   // Xử lý hành động lưu hoặc cập nhật
   const handleSave = async () => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
-    const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+    const token = cookies.adminToken; // Lấy token từ cookie
+    const decodedToken = jwtDecode(token); // Giải mã token
+    const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
     const body = {
       tieu_de: tieude,
       noi_dung: noidung,

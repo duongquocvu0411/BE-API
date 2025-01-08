@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useCookies } from "react-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwebsite }) => {
   const defaultFormState = {
@@ -16,6 +18,7 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
   const [formData, setFormData] = useState(defaultFormState);
   const [dangTai, setDangTai] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
 
 
   useEffect(() => {
@@ -69,11 +72,9 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
     setDangTai(true);
 
     try {
-      const isLoggedIn = localStorage.getItem("isAdminLoggedIn") === "true";
-      const token = isLoggedIn
-        ? localStorage.getItem("adminToken")
-        : sessionStorage.getItem("adminToken");
-      const loggedInUser = isLoggedIn ? localStorage.getItem('loginhoten') : sessionStorage.getItem('loginhoten');
+      const token = cookies.adminToken; // Lấy token từ cookie
+      const decodedToken = jwtDecode(token); // Giải mã token
+      const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
       const form = new FormData();
       form.append("TieuDe", formData.tieu_de);
       form.append("Phude", formData.phu_de);
@@ -161,7 +162,7 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
           </Form.Group>
           <Form.Group className="mb-4" controlId="formPhude">
             <Form.Label className="fw-bold">
-              <i className="bi bi-globe"></i> Phụu đề Website *
+              <i className="bi bi-globe"></i> Phụ đề Website *
             </Form.Label>
             <Form.Control
               type="text"

@@ -12,10 +12,10 @@ namespace CuahangtraicayAPI.DTO
             public string Noi_dung { get; set; }
             [Required]
             public int Thutuhienthi { get; set; }
-            [Required]
-            public string Created_By { get; set; }
-            [Required]  
-            public string Updated_By { get; set; }
+            //[Required]
+            //public string Created_By { get; set; }
+            //[Required]  
+            //public string Updated_By { get; set; }
         }
         public class MenuFooterUpdateDto
         {
@@ -23,7 +23,7 @@ namespace CuahangtraicayAPI.DTO
             public string Tieu_de { get; set; }
             public string Noi_dung { get; set; }
             public int Thutuhienthi { get; set; }
-            public string Updated_By { get; set; }
+            //public string Updated_By { get; set; }
         }
         //public class MenuFooterDto
         //{

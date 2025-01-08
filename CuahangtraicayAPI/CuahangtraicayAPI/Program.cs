@@ -7,7 +7,8 @@ using Microsoft.OpenApi.Models;
 using CuahangtraicayAPI.Model.Momo;
 using System.Text;
 using System.Text.Json.Serialization;
-using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.Model.ConfigMomo;
+using CuahangtraicayAPI.token;
 
 namespace CuahangtraicayAPI
 {
@@ -28,10 +29,19 @@ namespace CuahangtraicayAPI
             builder.Services.AddScoped<MoMoPaymentService>();
             //builder.Services.AddScoped<IMomoService, MomoService>();
 
+            // Đăng ký dịch vụ IMemoryCache lưu bộ nhớ mã xác thực và username trong adminController
+            builder.Services.AddMemoryCache();
+
             // đăng ký VnPay service
             builder.Services.AddScoped<IVnPayService, VnPayService>();
             // đang ký email
             builder.Services.AddSingleton<EmailHelper>();
+
+            // đăng ký backroud service 
+            builder.Services.AddHostedService<SaleUpdateService>();
+            //đăng ký giao hàng nhanh
+            builder.Services.AddHttpClient<GHNService>();
+
             var API = "allApi";
             builder.Services.AddCors(ots =>
             {
@@ -66,19 +76,21 @@ namespace CuahangtraicayAPI
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
 
-                // Cấu hình để Swagger có thể sử dụng JWT token
+                // Cấu hình để Swagger có thể sử dụng JWT token ổ khóa 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
                     Description = "Vui lòng nhập token JWT với định dạng Bearer {token}",
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
+                    //Type = SecuritySchemeType.ApiKey, // phải thêm bearer và mã token 
+                    Type = SecuritySchemeType.Http, // không cần phải thêm bearer
                     Scheme = "Bearer"
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
+                        // cấu hình jwt sau mổi controller 
             new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
@@ -112,6 +124,7 @@ namespace CuahangtraicayAPI
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                             context.Response.ContentType = "application/json";
                             var result = System.Text.Json.JsonSerializer.Serialize(new { status = "error", message = "Bạn không có quyền với hành động này" });
+
                             return context.Response.WriteAsync(result);
                         }
                     };
@@ -135,10 +148,12 @@ namespace CuahangtraicayAPI
          
             app.UseCors("allApi");
             app.UseHttpsRedirection();
+            //app.UseMiddleware<TokenRevocationMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseStaticFiles();
             app.MapControllers();
+     
 
             app.Run();
 

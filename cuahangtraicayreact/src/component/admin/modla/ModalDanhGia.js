@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Card, Alert } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
+import { useCookies } from "react-cookie";
 
 const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
   const [danhGias, setDanhGias] = useState([]);
   const [currentPhanHoi, setCurrentPhanHoi] = useState({}); // State cho phản hồi hiện tại
   const [showPhanHoiModal, setShowPhanHoiModal] = useState(false); // Modal con phản hồi
   const [trangHienTai, setTrangHienTai] = useState(1);
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
 
   const danhGiaMoiTrang = 4;
   const viTriDanhGiaCuoi = trangHienTai * danhGiaMoiTrang;
@@ -26,7 +29,7 @@ const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
   const fetchDanhGias = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/sanpham/${sanphamId}`);
-      const danhGiasData = response.data.danhgiakhachhangs;
+      const danhGiasData = response.data.data.danhgiakhachhangs;
       setDanhGias(Array.isArray(danhGiasData) ? danhGiasData : []);
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -45,13 +48,9 @@ const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
     }
 
     try {
-      const isLoggedIn = localStorage.getItem("isAdminLoggedIn") === "true";
-      const token = isLoggedIn
-        ? localStorage.getItem("adminToken")
-        : sessionStorage.getItem("adminToken");
-      const loggedInUser = isLoggedIn
-        ? localStorage.getItem("loginhoten")
-        : sessionStorage.getItem("loginhoten");
+      const token = cookies.adminToken; // Lấy token từ cookie
+      const decodedToken = jwtDecode(token); // Giải mã token
+      const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
 
       const response = await axios({
         method: isEdit ? "put" : "post",
@@ -60,8 +59,8 @@ const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
           : `${process.env.REACT_APP_BASEURL}/api/phanhoidanhgia`,
         data: {
           noi_dung,
-          updatedBy: loggedInUser,
-          ...(isEdit ? {} : { createdBy: loggedInUser, danhgia_id }),
+         
+          ...(isEdit ? {} : { danhgia_id }),
         },
         headers: {
           Authorization: `Bearer ${token}`,

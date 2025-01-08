@@ -9,6 +9,7 @@ import SiderbarAdmin from '../SidebarAdmin';
 import { Link } from 'react-router-dom';
 
 import ModalAddGioiThieu from '../modla/ModalThemGioithieu';
+import { useCookies } from 'react-cookie';
 
 const GioithieuAdmin = () => {
   const [danhSachGioithieu, setDanhSachGioithieu] = useState([]);
@@ -19,7 +20,7 @@ const GioithieuAdmin = () => {
   const [gioithieuXoa, setGioithieuXoa] = useState(null);
 
   const [timKiem, setTimKiem] = useState('');
-
+  const [cookies] = useCookies(['adminToken', 'loginhoten'])
   // Lọc dữ liệu theo từ khóa tìm kiếm
   const gioithieuDaLoc = danhSachGioithieu.filter((gioithieu) =>
     gioithieu.tieu_de && gioithieu.tieu_de.toLowerCase().includes(timKiem.toLowerCase())
@@ -45,7 +46,7 @@ const GioithieuAdmin = () => {
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/gioithieu`);
-      setDanhSachGioithieu(response.data);
+      setDanhSachGioithieu(response.data.data);
       setDangtai(false);
     } catch (error) {
       console.log('Có lỗi khi lấy danh sách giới thiệu', error);
@@ -69,8 +70,7 @@ const GioithieuAdmin = () => {
   };
 
   const xoaGioithieu = async (id, tieu_de) => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken');
+    const token = cookies.adminToken; // Lấy token từ cookie
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/gioithieu/${id}`, {
         headers: {

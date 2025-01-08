@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.DTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -23,9 +24,14 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns> lấy toàn bộ danh sách chitiets</returns>
         // GET: api/Chitiets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ChiTiet>>> GetChitiets()
+        public async Task<ActionResult<BaseResponseDTO< IEnumerable<ChiTiet>>>> GetChitiets()
         {
-            return await _context.ChiTiets.ToListAsync();
+            var ct = await _context.ChiTiets.ToListAsync();
+            return Ok(new BaseResponseDTO<IEnumerable< ChiTiet>>
+            {
+                Data =ct,
+                Message ="Success"
+            });
         }
 
         /// <summary>
@@ -35,7 +41,7 @@ namespace CuahangtraicayAPI.Controllers
         // GET: api/Chitiets/{sanphamsId}
 
         [HttpGet("{sanphamsId}")]
-        public async Task<ActionResult<ChiTiet>> GetChitiet(int sanphamsId)
+        public async Task<ActionResult <BaseResponseDTO<ChiTiet>>> GetChitiet(int sanphamsId)
         {
             var chitiet = await _context.ChiTiets.FirstOrDefaultAsync(c => c.sanphams_id == sanphamsId);
 
@@ -44,7 +50,11 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Chi tiết sản phẩm không tồn tại" });
             }
 
-            return chitiet;
+            return Ok(new BaseResponseDTO<ChiTiet>
+            {
+                Data = chitiet,
+                Message ="Success"
+            });
         }
       
     }
