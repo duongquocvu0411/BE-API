@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import HeaderUsers from "./HeaderUsers";
 import Footerusers from "./Footerusers";
-import "./PaymentResult.css"; // Custom CSS for effects
+import "./PaymentResult.css";
 
 const PaymentResult = () => {
   const [paymentStatus, setPaymentStatus] = useState(null);
@@ -56,13 +56,24 @@ const PaymentResult = () => {
           </div>
           <h1 className="text-success fw-bold">Thanh toán thành công!</h1>
           <p className="text-muted">Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</p>
-          <p><strong>Mã đơn hàng:</strong> {paymentStatus.response?.orderId}</p>
+          <p>
+            <strong>Mã đơn hàng:</strong> {paymentStatus?.data?.orderId}
+          </p>
           <p>
             <strong>Số tiền:</strong>{" "}
-            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(paymentStatus.response?.amount)}
+            {paymentStatus?.data?.amount &&
+              new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(Number(paymentStatus.data.amount.replace(/\./g, "")))}
           </p>
 
-          <button className="btn btn-primary mt-3" onClick={() => window.location.href = "/"}>Quay lại trang chủ</button>
+          <button
+            className="btn btn-primary mt-3"
+            onClick={() => (window.location.href = "/")}
+          >
+            Quay lại trang chủ
+          </button>
         </div>
       ) : (
         <div className="failure-page d-flex flex-column align-items-center justify-content-center vh-100">
@@ -73,11 +84,21 @@ const PaymentResult = () => {
             </div>
           </div>
           <h1 className="text-danger fw-bold">Thanh toán thất bại</h1>
-          <p className="text-muted">{paymentStatus?.message || "Đã xảy ra lỗi trong quá trình xử lý thanh toán."}</p>
+          <p className="text-muted">
+            {paymentStatus?.message ||
+              "Đã xảy ra lỗi trong quá trình xử lý thanh toán."}
+          </p>
           {paymentStatus?.errorDetail && (
-            <pre className="text-danger">{JSON.stringify(paymentStatus.errorDetail, null, 2)}</pre>
+            <pre className="text-danger">
+              {JSON.stringify(paymentStatus.errorDetail, null, 2)}
+            </pre>
           )}
-          <button className="btn btn-secondary mt-3" onClick={() => window.location.href = "/"}>Thử lại</button>
+          <button
+            className="btn btn-secondary mt-3"
+            onClick={() => (window.location.href = "/")}
+          >
+            Thử lại
+          </button>
         </div>
       )}
       <Footerusers />

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aKewQM1p4J4=",
+  "dgSpecHash": "NtSmSTg0Od4=",
   "success": true,
-  "projectFilePath": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
+  "projectFilePath": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DELL\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

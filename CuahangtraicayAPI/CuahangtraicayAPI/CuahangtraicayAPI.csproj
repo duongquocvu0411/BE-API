@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Model\ghn\" />
     <Folder Include="wwwroot\banners\" />
     <Folder Include="wwwroot\gioithieu\" />
     <Folder Include="wwwroot\hinhanhphu\" />

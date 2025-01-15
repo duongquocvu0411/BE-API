@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "29UpKIVpGYcg7nkehXwok3gkkHX4C3wl0b3ZVaz/Llk=",
+  "Hash": "lOdpMzgDjtXcWIOWQIsjwkpVaxuCyNPmPjaGXayQeo4=",
   "Source": "CuahangtraicayAPI",
   "BasePath": "_content/CuahangtraicayAPI",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "CuahangtraicayAPI\\wwwroot",
       "Source": "CuahangtraicayAPI",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\24c0490b-ec4d-41bc-bfd8-5961d0756ad4.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\24c0490b-ec4d-41bc-bfd8-5961d0756ad4.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "banners/24c0490b-ec4d-41bc-bfd8-5961d0756ad4.jpg",
       "AssetKind": "All",
@@ -36,10 +36,10 @@
       "OriginalItemSpec": "wwwroot\\banners\\24c0490b-ec4d-41bc-bfd8-5961d0756ad4.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\52034344-c885-4934-acd1-215a2c18ee0f.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\52034344-c885-4934-acd1-215a2c18ee0f.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "banners/52034344-c885-4934-acd1-215a2c18ee0f.jpg",
       "AssetKind": "All",
@@ -55,10 +55,10 @@
       "OriginalItemSpec": "wwwroot\\banners\\52034344-c885-4934-acd1-215a2c18ee0f.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\6a17c216-f442-4142-a242-6c31f9947e49.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\6a17c216-f442-4142-a242-6c31f9947e49.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "banners/6a17c216-f442-4142-a242-6c31f9947e49.jpg",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\banners\\6a17c216-f442-4142-a242-6c31f9947e49.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\ddfdb405-c4ee-4df1-9ee4-584ce2a7e8e7.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\ddfdb405-c4ee-4df1-9ee4-584ce2a7e8e7.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "banners/ddfdb405-c4ee-4df1-9ee4-584ce2a7e8e7.jpg",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\banners\\ddfdb405-c4ee-4df1-9ee4-584ce2a7e8e7.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\ffa0e3ab-237d-4af5-bdd3-08205e3f32c3.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\ffa0e3ab-237d-4af5-bdd3-08205e3f32c3.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "banners/ffa0e3ab-237d-4af5-bdd3-08205e3f32c3.jpg",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot\\banners\\ffa0e3ab-237d-4af5-bdd3-08205e3f32c3.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\footer\\6abfb39626c24d83a371f7b504fc4ff5.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\footer\\6abfb39626c24d83a371f7b504fc4ff5.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "footer/6abfb39626c24d83a371f7b504fc4ff5.jpg",
       "AssetKind": "All",
@@ -131,10 +131,10 @@
       "OriginalItemSpec": "wwwroot\\footer\\6abfb39626c24d83a371f7b504fc4ff5.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\footer\\7594967205534e10a832f4a456104ecf.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\footer\\7594967205534e10a832f4a456104ecf.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "footer/7594967205534e10a832f4a456104ecf.jpg",
       "AssetKind": "All",
@@ -150,10 +150,10 @@
       "OriginalItemSpec": "wwwroot\\footer\\7594967205534e10a832f4a456104ecf.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\footer\\7ccad64f745e490c924e910dc8737137.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\footer\\7ccad64f745e490c924e910dc8737137.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "footer/7ccad64f745e490c924e910dc8737137.jpg",
       "AssetKind": "All",
@@ -169,10 +169,10 @@
       "OriginalItemSpec": "wwwroot\\footer\\7ccad64f745e490c924e910dc8737137.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\footer\\e04460d3bf984fdf89412506d3a6e55e.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\footer\\e04460d3bf984fdf89412506d3a6e55e.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "footer/e04460d3bf984fdf89412506d3a6e55e.jpg",
       "AssetKind": "All",
@@ -188,10 +188,10 @@
       "OriginalItemSpec": "wwwroot\\footer\\e04460d3bf984fdf89412506d3a6e55e.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\gioithieu\\e2u2duss0az.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\gioithieu\\e2u2duss0az.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "gioithieu/e2u2duss0az.webp",
       "AssetKind": "All",
@@ -207,10 +207,10 @@
       "OriginalItemSpec": "wwwroot\\gioithieu\\e2u2duss0az.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\gioithieu\\ghbe5lqf0bh.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\gioithieu\\ghbe5lqf0bh.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "gioithieu/ghbe5lqf0bh.webp",
       "AssetKind": "All",
@@ -226,10 +226,10 @@
       "OriginalItemSpec": "wwwroot\\gioithieu\\ghbe5lqf0bh.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\gioithieu\\he2emgcberr.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\gioithieu\\he2emgcberr.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "gioithieu/he2emgcberr.jpg",
       "AssetKind": "All",
@@ -245,10 +245,10 @@
       "OriginalItemSpec": "wwwroot\\gioithieu\\he2emgcberr.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\gioithieu\\k2s1xfi5iim.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\gioithieu\\k2s1xfi5iim.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "gioithieu/k2s1xfi5iim.jpg",
       "AssetKind": "All",
@@ -264,10 +264,10 @@
       "OriginalItemSpec": "wwwroot\\gioithieu\\k2s1xfi5iim.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\05a66f7a-a088-4e31-909d-61418c09c838.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\05a66f7a-a088-4e31-909d-61418c09c838.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/05a66f7a-a088-4e31-909d-61418c09c838.jpg",
       "AssetKind": "All",
@@ -283,10 +283,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\05a66f7a-a088-4e31-909d-61418c09c838.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0b40555c-50b6-4a6c-8a5f-9e0443d33428.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0b40555c-50b6-4a6c-8a5f-9e0443d33428.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/0b40555c-50b6-4a6c-8a5f-9e0443d33428.jpg",
       "AssetKind": "All",
@@ -302,10 +302,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\0b40555c-50b6-4a6c-8a5f-9e0443d33428.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0cca49b4-6578-4e6d-aecd-1731c1cd0156.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0cca49b4-6578-4e6d-aecd-1731c1cd0156.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/0cca49b4-6578-4e6d-aecd-1731c1cd0156.jpg",
       "AssetKind": "All",
@@ -321,10 +321,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\0cca49b4-6578-4e6d-aecd-1731c1cd0156.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0cd6bf7d-6652-4984-b6cb-89a813e66509.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0cd6bf7d-6652-4984-b6cb-89a813e66509.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/0cd6bf7d-6652-4984-b6cb-89a813e66509.jpg",
       "AssetKind": "All",
@@ -340,10 +340,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\0cd6bf7d-6652-4984-b6cb-89a813e66509.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0cf2bc25-b46f-4f11-9dfb-e787ec357ebc.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0cf2bc25-b46f-4f11-9dfb-e787ec357ebc.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/0cf2bc25-b46f-4f11-9dfb-e787ec357ebc.jpg",
       "AssetKind": "All",
@@ -359,10 +359,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\0cf2bc25-b46f-4f11-9dfb-e787ec357ebc.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0d3c06cb-56cc-46dd-a196-d6e8e6f90755.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\0d3c06cb-56cc-46dd-a196-d6e8e6f90755.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/0d3c06cb-56cc-46dd-a196-d6e8e6f90755.jpg",
       "AssetKind": "All",
@@ -378,10 +378,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\0d3c06cb-56cc-46dd-a196-d6e8e6f90755.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\15b08257-3cd2-4797-a9d2-804ff96c3e31.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\15b08257-3cd2-4797-a9d2-804ff96c3e31.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/15b08257-3cd2-4797-a9d2-804ff96c3e31.jpg",
       "AssetKind": "All",
@@ -397,10 +397,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\15b08257-3cd2-4797-a9d2-804ff96c3e31.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\16a68e67-9a21-4b58-bb7c-a73802090934.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\16a68e67-9a21-4b58-bb7c-a73802090934.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/16a68e67-9a21-4b58-bb7c-a73802090934.jpg",
       "AssetKind": "All",
@@ -416,10 +416,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\16a68e67-9a21-4b58-bb7c-a73802090934.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\17ab68da-52b1-4399-bdeb-a93721e1ad7f.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\17ab68da-52b1-4399-bdeb-a93721e1ad7f.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/17ab68da-52b1-4399-bdeb-a93721e1ad7f.jpg",
       "AssetKind": "All",
@@ -435,10 +435,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\17ab68da-52b1-4399-bdeb-a93721e1ad7f.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\1b260f3d-6f05-4d02-b405-6c55e06aec98.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\1b260f3d-6f05-4d02-b405-6c55e06aec98.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/1b260f3d-6f05-4d02-b405-6c55e06aec98.jpg",
       "AssetKind": "All",
@@ -454,10 +454,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\1b260f3d-6f05-4d02-b405-6c55e06aec98.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\1d080349-9aa8-4455-9030-1e192711b11f.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\1d080349-9aa8-4455-9030-1e192711b11f.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/1d080349-9aa8-4455-9030-1e192711b11f.jpg",
       "AssetKind": "All",
@@ -473,10 +473,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\1d080349-9aa8-4455-9030-1e192711b11f.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\1f6a642c-690a-4d7b-ac05-db0b5c009b4d.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\1f6a642c-690a-4d7b-ac05-db0b5c009b4d.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/1f6a642c-690a-4d7b-ac05-db0b5c009b4d.jpg",
       "AssetKind": "All",
@@ -492,10 +492,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\1f6a642c-690a-4d7b-ac05-db0b5c009b4d.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\273201e2-130f-4608-80d3-50e36061b2e1.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\273201e2-130f-4608-80d3-50e36061b2e1.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/273201e2-130f-4608-80d3-50e36061b2e1.jpg",
       "AssetKind": "All",
@@ -511,10 +511,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\273201e2-130f-4608-80d3-50e36061b2e1.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\2f758b06-5180-46a6-bd2b-a6bbd05968d5.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\2f758b06-5180-46a6-bd2b-a6bbd05968d5.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/2f758b06-5180-46a6-bd2b-a6bbd05968d5.jpg",
       "AssetKind": "All",
@@ -530,10 +530,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\2f758b06-5180-46a6-bd2b-a6bbd05968d5.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\2f90083b-783a-4675-a15d-507a8f81d57c.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\2f90083b-783a-4675-a15d-507a8f81d57c.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/2f90083b-783a-4675-a15d-507a8f81d57c.jpg",
       "AssetKind": "All",
@@ -549,10 +549,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\2f90083b-783a-4675-a15d-507a8f81d57c.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\30f189d8-c799-4a7e-9ac7-f8258b2a8d55.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\30f189d8-c799-4a7e-9ac7-f8258b2a8d55.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/30f189d8-c799-4a7e-9ac7-f8258b2a8d55.jpg",
       "AssetKind": "All",
@@ -568,10 +568,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\30f189d8-c799-4a7e-9ac7-f8258b2a8d55.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\35d55663-a4d7-467d-b669-f820823d39d6.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\35d55663-a4d7-467d-b669-f820823d39d6.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/35d55663-a4d7-467d-b669-f820823d39d6.jpg",
       "AssetKind": "All",
@@ -587,10 +587,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\35d55663-a4d7-467d-b669-f820823d39d6.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\3cf20bce-83a9-4edb-bd6e-f3399297b78c.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\3cf20bce-83a9-4edb-bd6e-f3399297b78c.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/3cf20bce-83a9-4edb-bd6e-f3399297b78c.jpg",
       "AssetKind": "All",
@@ -606,10 +606,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\3cf20bce-83a9-4edb-bd6e-f3399297b78c.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\3e6af65e-afea-4cdd-9387-1d76ebf2c940.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\3e6af65e-afea-4cdd-9387-1d76ebf2c940.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/3e6af65e-afea-4cdd-9387-1d76ebf2c940.jpg",
       "AssetKind": "All",
@@ -625,10 +625,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\3e6af65e-afea-4cdd-9387-1d76ebf2c940.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\4acc3bb6-b8fb-423a-a15a-3fc3da364789.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\4acc3bb6-b8fb-423a-a15a-3fc3da364789.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/4acc3bb6-b8fb-423a-a15a-3fc3da364789.jpg",
       "AssetKind": "All",
@@ -644,10 +644,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\4acc3bb6-b8fb-423a-a15a-3fc3da364789.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\4b9a8d24-d562-407d-804a-96bf95308562.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\4b9a8d24-d562-407d-804a-96bf95308562.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/4b9a8d24-d562-407d-804a-96bf95308562.jpg",
       "AssetKind": "All",
@@ -663,10 +663,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\4b9a8d24-d562-407d-804a-96bf95308562.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\4fed4776-5f1b-42b7-8e75-4bb399a7e485.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\4fed4776-5f1b-42b7-8e75-4bb399a7e485.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/4fed4776-5f1b-42b7-8e75-4bb399a7e485.jpg",
       "AssetKind": "All",
@@ -682,10 +682,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\4fed4776-5f1b-42b7-8e75-4bb399a7e485.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\543eab8b-5901-4649-bc07-90f5e7bfd6d8.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\543eab8b-5901-4649-bc07-90f5e7bfd6d8.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/543eab8b-5901-4649-bc07-90f5e7bfd6d8.jpg",
       "AssetKind": "All",
@@ -701,10 +701,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\543eab8b-5901-4649-bc07-90f5e7bfd6d8.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\5b52eeff-01f4-4911-bb65-13fc89525beb.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\5b52eeff-01f4-4911-bb65-13fc89525beb.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/5b52eeff-01f4-4911-bb65-13fc89525beb.jpg",
       "AssetKind": "All",
@@ -720,10 +720,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\5b52eeff-01f4-4911-bb65-13fc89525beb.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\5c7ab02a-ff58-4b26-9690-cec80341de7b.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\5c7ab02a-ff58-4b26-9690-cec80341de7b.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/5c7ab02a-ff58-4b26-9690-cec80341de7b.jpg",
       "AssetKind": "All",
@@ -739,10 +739,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\5c7ab02a-ff58-4b26-9690-cec80341de7b.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\5c7be786-88d2-4326-b495-304b8372ff69.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\5c7be786-88d2-4326-b495-304b8372ff69.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/5c7be786-88d2-4326-b495-304b8372ff69.jpg",
       "AssetKind": "All",
@@ -758,10 +758,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\5c7be786-88d2-4326-b495-304b8372ff69.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\5fd17b38-ed3a-42b9-a791-5484bbf154b3.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\5fd17b38-ed3a-42b9-a791-5484bbf154b3.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/5fd17b38-ed3a-42b9-a791-5484bbf154b3.jpg",
       "AssetKind": "All",
@@ -777,10 +777,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\5fd17b38-ed3a-42b9-a791-5484bbf154b3.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\65cf29ee-a54d-4f8e-ac12-7dbaab222dc4.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\65cf29ee-a54d-4f8e-ac12-7dbaab222dc4.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/65cf29ee-a54d-4f8e-ac12-7dbaab222dc4.jpg",
       "AssetKind": "All",
@@ -796,10 +796,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\65cf29ee-a54d-4f8e-ac12-7dbaab222dc4.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\68d89297-c108-4e7e-947b-d58b8d00adb7.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\68d89297-c108-4e7e-947b-d58b8d00adb7.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/68d89297-c108-4e7e-947b-d58b8d00adb7.jpg",
       "AssetKind": "All",
@@ -815,10 +815,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\68d89297-c108-4e7e-947b-d58b8d00adb7.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\6f65c726-aac2-4375-9abe-39381570fa67.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\6f65c726-aac2-4375-9abe-39381570fa67.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/6f65c726-aac2-4375-9abe-39381570fa67.jpg",
       "AssetKind": "All",
@@ -834,10 +834,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\6f65c726-aac2-4375-9abe-39381570fa67.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\76dc1d52-9bb3-4c99-980c-47b63c05f0a1.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\76dc1d52-9bb3-4c99-980c-47b63c05f0a1.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/76dc1d52-9bb3-4c99-980c-47b63c05f0a1.jpg",
       "AssetKind": "All",
@@ -853,10 +853,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\76dc1d52-9bb3-4c99-980c-47b63c05f0a1.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\7b4cd07a-7f64-4c73-a330-fd52461515c4.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\7b4cd07a-7f64-4c73-a330-fd52461515c4.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/7b4cd07a-7f64-4c73-a330-fd52461515c4.jpg",
       "AssetKind": "All",
@@ -872,10 +872,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\7b4cd07a-7f64-4c73-a330-fd52461515c4.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\7b53f016-17e7-4d86-8d7b-5262c8f02dce.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\7b53f016-17e7-4d86-8d7b-5262c8f02dce.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/7b53f016-17e7-4d86-8d7b-5262c8f02dce.jpg",
       "AssetKind": "All",
@@ -891,10 +891,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\7b53f016-17e7-4d86-8d7b-5262c8f02dce.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\7eab88bc-7641-4323-8224-5eeb97c3005e.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\7eab88bc-7641-4323-8224-5eeb97c3005e.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/7eab88bc-7641-4323-8224-5eeb97c3005e.jpg",
       "AssetKind": "All",
@@ -910,10 +910,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\7eab88bc-7641-4323-8224-5eeb97c3005e.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\800b6e41-7700-46e0-b821-564f41e19502.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\800b6e41-7700-46e0-b821-564f41e19502.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/800b6e41-7700-46e0-b821-564f41e19502.jpg",
       "AssetKind": "All",
@@ -929,10 +929,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\800b6e41-7700-46e0-b821-564f41e19502.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\873b7ef7-2205-4369-a9a1-851c5798c14c.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\873b7ef7-2205-4369-a9a1-851c5798c14c.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/873b7ef7-2205-4369-a9a1-851c5798c14c.jpg",
       "AssetKind": "All",
@@ -948,10 +948,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\873b7ef7-2205-4369-a9a1-851c5798c14c.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\88eb7adb-c64b-44f8-ac23-73191a3ba008.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\88eb7adb-c64b-44f8-ac23-73191a3ba008.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/88eb7adb-c64b-44f8-ac23-73191a3ba008.jpg",
       "AssetKind": "All",
@@ -967,10 +967,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\88eb7adb-c64b-44f8-ac23-73191a3ba008.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\8ca4c7da-d3d8-4a46-bf26-f271aa8b7c38.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\8ca4c7da-d3d8-4a46-bf26-f271aa8b7c38.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/8ca4c7da-d3d8-4a46-bf26-f271aa8b7c38.jpg",
       "AssetKind": "All",
@@ -986,10 +986,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\8ca4c7da-d3d8-4a46-bf26-f271aa8b7c38.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\93e667fc-764f-4b85-958e-07a3601a2898.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\93e667fc-764f-4b85-958e-07a3601a2898.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/93e667fc-764f-4b85-958e-07a3601a2898.jpg",
       "AssetKind": "All",
@@ -1005,10 +1005,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\93e667fc-764f-4b85-958e-07a3601a2898.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\94b07a5e-3f2d-4320-af73-d5020ae691b6.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\94b07a5e-3f2d-4320-af73-d5020ae691b6.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/94b07a5e-3f2d-4320-af73-d5020ae691b6.jpg",
       "AssetKind": "All",
@@ -1024,10 +1024,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\94b07a5e-3f2d-4320-af73-d5020ae691b6.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\99dc7c18-80f0-45f1-a92f-f27bf3c3c1ef.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\99dc7c18-80f0-45f1-a92f-f27bf3c3c1ef.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/99dc7c18-80f0-45f1-a92f-f27bf3c3c1ef.jpg",
       "AssetKind": "All",
@@ -1043,10 +1043,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\99dc7c18-80f0-45f1-a92f-f27bf3c3c1ef.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\9d752a4d-99ae-4a00-bc0a-d54163febb9a.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\9d752a4d-99ae-4a00-bc0a-d54163febb9a.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/9d752a4d-99ae-4a00-bc0a-d54163febb9a.jpg",
       "AssetKind": "All",
@@ -1062,10 +1062,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\9d752a4d-99ae-4a00-bc0a-d54163febb9a.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\a29d90b3-ad68-4098-8ecc-18c10cc718d2.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\a29d90b3-ad68-4098-8ecc-18c10cc718d2.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/a29d90b3-ad68-4098-8ecc-18c10cc718d2.jpg",
       "AssetKind": "All",
@@ -1081,10 +1081,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\a29d90b3-ad68-4098-8ecc-18c10cc718d2.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\a33f5865-779d-4024-8bb5-193d6cf1a6e1.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\a33f5865-779d-4024-8bb5-193d6cf1a6e1.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/a33f5865-779d-4024-8bb5-193d6cf1a6e1.jpg",
       "AssetKind": "All",
@@ -1100,10 +1100,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\a33f5865-779d-4024-8bb5-193d6cf1a6e1.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ac76a4cf-d612-4886-9d58-5895cac0ffcf.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ac76a4cf-d612-4886-9d58-5895cac0ffcf.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/ac76a4cf-d612-4886-9d58-5895cac0ffcf.jpg",
       "AssetKind": "All",
@@ -1119,10 +1119,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\ac76a4cf-d612-4886-9d58-5895cac0ffcf.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ae3c3dc5-2615-44a3-8f46-7acd12a32b50.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ae3c3dc5-2615-44a3-8f46-7acd12a32b50.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/ae3c3dc5-2615-44a3-8f46-7acd12a32b50.jpg",
       "AssetKind": "All",
@@ -1138,10 +1138,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\ae3c3dc5-2615-44a3-8f46-7acd12a32b50.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b14e3795-b9a5-4360-9cf5-928360ca0d30.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b14e3795-b9a5-4360-9cf5-928360ca0d30.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/b14e3795-b9a5-4360-9cf5-928360ca0d30.jpg",
       "AssetKind": "All",
@@ -1157,10 +1157,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\b14e3795-b9a5-4360-9cf5-928360ca0d30.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b4d7cb1f-7fd8-4809-8740-bf1f81959afe.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b4d7cb1f-7fd8-4809-8740-bf1f81959afe.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/b4d7cb1f-7fd8-4809-8740-bf1f81959afe.jpg",
       "AssetKind": "All",
@@ -1176,10 +1176,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\b4d7cb1f-7fd8-4809-8740-bf1f81959afe.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b628104f-602d-4c3d-b934-26cf4654119b.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b628104f-602d-4c3d-b934-26cf4654119b.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/b628104f-602d-4c3d-b934-26cf4654119b.jpg",
       "AssetKind": "All",
@@ -1195,10 +1195,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\b628104f-602d-4c3d-b934-26cf4654119b.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b699dec1-d100-4f1f-82d3-ff700c962ea9.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b699dec1-d100-4f1f-82d3-ff700c962ea9.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/b699dec1-d100-4f1f-82d3-ff700c962ea9.jpg",
       "AssetKind": "All",
@@ -1214,10 +1214,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\b699dec1-d100-4f1f-82d3-ff700c962ea9.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b755ad92-5ccd-4a9e-921d-7ddcd28162ba.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b755ad92-5ccd-4a9e-921d-7ddcd28162ba.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/b755ad92-5ccd-4a9e-921d-7ddcd28162ba.jpg",
       "AssetKind": "All",
@@ -1233,10 +1233,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\b755ad92-5ccd-4a9e-921d-7ddcd28162ba.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b7a2e33f-4528-48c6-b227-cf2d4cc93b00.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b7a2e33f-4528-48c6-b227-cf2d4cc93b00.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/b7a2e33f-4528-48c6-b227-cf2d4cc93b00.jpg",
       "AssetKind": "All",
@@ -1252,10 +1252,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\b7a2e33f-4528-48c6-b227-cf2d4cc93b00.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b7dbf2f8-64b2-45dc-a762-c68587d1f0b1.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\b7dbf2f8-64b2-45dc-a762-c68587d1f0b1.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/b7dbf2f8-64b2-45dc-a762-c68587d1f0b1.jpg",
       "AssetKind": "All",
@@ -1271,10 +1271,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\b7dbf2f8-64b2-45dc-a762-c68587d1f0b1.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ba2b6759-10aa-40f3-9913-761378e5737f.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ba2b6759-10aa-40f3-9913-761378e5737f.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/ba2b6759-10aa-40f3-9913-761378e5737f.jpg",
       "AssetKind": "All",
@@ -1290,10 +1290,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\ba2b6759-10aa-40f3-9913-761378e5737f.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\bc6fef00-3215-4d8c-ab52-a5f9af7fc65d.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\bc6fef00-3215-4d8c-ab52-a5f9af7fc65d.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/bc6fef00-3215-4d8c-ab52-a5f9af7fc65d.jpg",
       "AssetKind": "All",
@@ -1309,10 +1309,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\bc6fef00-3215-4d8c-ab52-a5f9af7fc65d.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\bc711bbd-9881-429b-9ed6-1ad60214293f.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\bc711bbd-9881-429b-9ed6-1ad60214293f.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/bc711bbd-9881-429b-9ed6-1ad60214293f.jpg",
       "AssetKind": "All",
@@ -1328,10 +1328,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\bc711bbd-9881-429b-9ed6-1ad60214293f.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\bd53d77a-4857-491a-81ce-a4f5de3b1f3a.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\bd53d77a-4857-491a-81ce-a4f5de3b1f3a.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/bd53d77a-4857-491a-81ce-a4f5de3b1f3a.webp",
       "AssetKind": "All",
@@ -1347,10 +1347,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\bd53d77a-4857-491a-81ce-a4f5de3b1f3a.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\bf1c2717-3de6-4166-9884-d8e72815eb48.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\bf1c2717-3de6-4166-9884-d8e72815eb48.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/bf1c2717-3de6-4166-9884-d8e72815eb48.jpg",
       "AssetKind": "All",
@@ -1366,10 +1366,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\bf1c2717-3de6-4166-9884-d8e72815eb48.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ca8c43ab-8d08-48fe-bcc5-9c04a438ca30.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ca8c43ab-8d08-48fe-bcc5-9c04a438ca30.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/ca8c43ab-8d08-48fe-bcc5-9c04a438ca30.jpg",
       "AssetKind": "All",
@@ -1385,10 +1385,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\ca8c43ab-8d08-48fe-bcc5-9c04a438ca30.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\cd771261-5d99-48c9-bd28-46a438c1d41b.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\cd771261-5d99-48c9-bd28-46a438c1d41b.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/cd771261-5d99-48c9-bd28-46a438c1d41b.jpg",
       "AssetKind": "All",
@@ -1404,10 +1404,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\cd771261-5d99-48c9-bd28-46a438c1d41b.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\d0ef3ba4-5fb4-423c-9c3f-f07a0614edfe.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\d0ef3ba4-5fb4-423c-9c3f-f07a0614edfe.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/d0ef3ba4-5fb4-423c-9c3f-f07a0614edfe.jpg",
       "AssetKind": "All",
@@ -1423,10 +1423,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\d0ef3ba4-5fb4-423c-9c3f-f07a0614edfe.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\db6f581d-f4ff-405b-bfcf-d9d9895a2bc4.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\db6f581d-f4ff-405b-bfcf-d9d9895a2bc4.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/db6f581d-f4ff-405b-bfcf-d9d9895a2bc4.jpg",
       "AssetKind": "All",
@@ -1442,10 +1442,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\db6f581d-f4ff-405b-bfcf-d9d9895a2bc4.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\dcbef824-5583-40c5-a9b0-307bb4f88c4c.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\dcbef824-5583-40c5-a9b0-307bb4f88c4c.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/dcbef824-5583-40c5-a9b0-307bb4f88c4c.jpg",
       "AssetKind": "All",
@@ -1461,10 +1461,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\dcbef824-5583-40c5-a9b0-307bb4f88c4c.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\dcd8bae2-1aeb-41dd-b691-6b6eeac524a2.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\dcd8bae2-1aeb-41dd-b691-6b6eeac524a2.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/dcd8bae2-1aeb-41dd-b691-6b6eeac524a2.jpg",
       "AssetKind": "All",
@@ -1480,10 +1480,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\dcd8bae2-1aeb-41dd-b691-6b6eeac524a2.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\de2503c7-58e4-452a-a12c-b8e6d627efe4.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\de2503c7-58e4-452a-a12c-b8e6d627efe4.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/de2503c7-58e4-452a-a12c-b8e6d627efe4.jpg",
       "AssetKind": "All",
@@ -1499,10 +1499,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\de2503c7-58e4-452a-a12c-b8e6d627efe4.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\e440cf74-0b6c-4d7b-895a-746c37c42c61.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\e440cf74-0b6c-4d7b-895a-746c37c42c61.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/e440cf74-0b6c-4d7b-895a-746c37c42c61.jpg",
       "AssetKind": "All",
@@ -1518,10 +1518,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\e440cf74-0b6c-4d7b-895a-746c37c42c61.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\e45a4c62-078a-483d-95c5-cbfeffa4a10d.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\e45a4c62-078a-483d-95c5-cbfeffa4a10d.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/e45a4c62-078a-483d-95c5-cbfeffa4a10d.png",
       "AssetKind": "All",
@@ -1537,10 +1537,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\e45a4c62-078a-483d-95c5-cbfeffa4a10d.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\e97a0ebf-0bb1-4c45-84d6-7b007d0997c8.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\e97a0ebf-0bb1-4c45-84d6-7b007d0997c8.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/e97a0ebf-0bb1-4c45-84d6-7b007d0997c8.jpg",
       "AssetKind": "All",
@@ -1556,10 +1556,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\e97a0ebf-0bb1-4c45-84d6-7b007d0997c8.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\eba92fd3-de5a-4661-bdce-5bc4108b9333.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\eba92fd3-de5a-4661-bdce-5bc4108b9333.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/eba92fd3-de5a-4661-bdce-5bc4108b9333.jpg",
       "AssetKind": "All",
@@ -1575,10 +1575,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\eba92fd3-de5a-4661-bdce-5bc4108b9333.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\eeb9b6f5-0bb3-4034-91da-e6f34e1198b9.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\eeb9b6f5-0bb3-4034-91da-e6f34e1198b9.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/eeb9b6f5-0bb3-4034-91da-e6f34e1198b9.jpg",
       "AssetKind": "All",
@@ -1594,10 +1594,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\eeb9b6f5-0bb3-4034-91da-e6f34e1198b9.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\f090ec1e-6958-42d4-9fff-dac348651346.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\f090ec1e-6958-42d4-9fff-dac348651346.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/f090ec1e-6958-42d4-9fff-dac348651346.webp",
       "AssetKind": "All",
@@ -1613,10 +1613,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\f090ec1e-6958-42d4-9fff-dac348651346.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\f7742254-a477-4223-8dd1-2459b95b4d77.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\f7742254-a477-4223-8dd1-2459b95b4d77.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/f7742254-a477-4223-8dd1-2459b95b4d77.jpg",
       "AssetKind": "All",
@@ -1632,10 +1632,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\f7742254-a477-4223-8dd1-2459b95b4d77.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\f9c1c3cd-28fb-4bc3-b549-e7afedc6051b.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\f9c1c3cd-28fb-4bc3-b549-e7afedc6051b.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/f9c1c3cd-28fb-4bc3-b549-e7afedc6051b.jpg",
       "AssetKind": "All",
@@ -1651,10 +1651,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\f9c1c3cd-28fb-4bc3-b549-e7afedc6051b.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ffa27d0e-6692-4ba9-804b-3d68dee411a9.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\ffa27d0e-6692-4ba9-804b-3d68dee411a9.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "hinhanhphu/ffa27d0e-6692-4ba9-804b-3d68dee411a9.webp",
       "AssetKind": "All",
@@ -1670,10 +1670,10 @@
       "OriginalItemSpec": "wwwroot\\hinhanhphu\\ffa27d0e-6692-4ba9-804b-3d68dee411a9.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\icon\\0f3c4fba-f580-4637-9e3c-dc3e656b2571.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\icon\\0f3c4fba-f580-4637-9e3c-dc3e656b2571.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "icon/0f3c4fba-f580-4637-9e3c-dc3e656b2571.webp",
       "AssetKind": "All",
@@ -1689,10 +1689,10 @@
       "OriginalItemSpec": "wwwroot\\icon\\0f3c4fba-f580-4637-9e3c-dc3e656b2571.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\icon\\278ff881-2cd6-4935-9677-770aecce9d64.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\icon\\278ff881-2cd6-4935-9677-770aecce9d64.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "icon/278ff881-2cd6-4935-9677-770aecce9d64.jpg",
       "AssetKind": "All",
@@ -1708,10 +1708,10 @@
       "OriginalItemSpec": "wwwroot\\icon\\278ff881-2cd6-4935-9677-770aecce9d64.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\icon\\ae5d4857-9009-4dc9-af0d-1c90e604d99a.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\icon\\ae5d4857-9009-4dc9-af0d-1c90e604d99a.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "icon/ae5d4857-9009-4dc9-af0d-1c90e604d99a.webp",
       "AssetKind": "All",
@@ -1727,10 +1727,10 @@
       "OriginalItemSpec": "wwwroot\\icon\\ae5d4857-9009-4dc9-af0d-1c90e604d99a.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\icon\\da0ce9d6-d95a-4c57-bd78-02e28249af39.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\icon\\da0ce9d6-d95a-4c57-bd78-02e28249af39.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "icon/da0ce9d6-d95a-4c57-bd78-02e28249af39.webp",
       "AssetKind": "All",
@@ -1746,10 +1746,10 @@
       "OriginalItemSpec": "wwwroot\\icon\\da0ce9d6-d95a-4c57-bd78-02e28249af39.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638700522801186825_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638700522801186825_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638700522801186825_payment.png",
       "AssetKind": "All",
@@ -1765,10 +1765,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638700522801186825_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638700524165567529_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638700524165567529_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638700524165567529_payment.png",
       "AssetKind": "All",
@@ -1784,10 +1784,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638700524165567529_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701253302284329_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701253302284329_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701253302284329_payment.png",
       "AssetKind": "All",
@@ -1803,10 +1803,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701253302284329_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701254542948151_baner-1.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701254542948151_baner-1.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701254542948151_baner-1.png",
       "AssetKind": "All",
@@ -1822,10 +1822,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701254542948151_baner-1.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701256024146049_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701256024146049_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701256024146049_payment.png",
       "AssetKind": "All",
@@ -1841,10 +1841,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701256024146049_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701260258105336_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701260258105336_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701260258105336_payment.png",
       "AssetKind": "All",
@@ -1860,10 +1860,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701260258105336_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701260885843195_avatar.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701260885843195_avatar.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701260885843195_avatar.jpg",
       "AssetKind": "All",
@@ -1879,10 +1879,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701260885843195_avatar.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701262304832751_banner-fruits.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701262304832751_banner-fruits.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701262304832751_banner-fruits.jpg",
       "AssetKind": "All",
@@ -1898,10 +1898,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701262304832751_banner-fruits.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701262692412869_best-product-1.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701262692412869_best-product-1.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701262692412869_best-product-1.jpg",
       "AssetKind": "All",
@@ -1917,10 +1917,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701262692412869_best-product-1.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701262822808745_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701262822808745_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701262822808745_payment.png",
       "AssetKind": "All",
@@ -1936,10 +1936,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701262822808745_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701264806174689_573ad75a-6ab3-4e85-b1fa-febf05b2a44d.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701264806174689_573ad75a-6ab3-4e85-b1fa-febf05b2a44d.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701264806174689_573ad75a-6ab3-4e85-b1fa-febf05b2a44d.webp",
       "AssetKind": "All",
@@ -1955,10 +1955,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701264806174689_573ad75a-6ab3-4e85-b1fa-febf05b2a44d.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701265029108408_best-product-1.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701265029108408_best-product-1.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701265029108408_best-product-1.jpg",
       "AssetKind": "All",
@@ -1974,10 +1974,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701265029108408_best-product-1.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701266918885036_banner-fruits.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701266918885036_banner-fruits.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701266918885036_banner-fruits.jpg",
       "AssetKind": "All",
@@ -1993,10 +1993,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701266918885036_banner-fruits.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701267092466738_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701267092466738_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701267092466738_payment.png",
       "AssetKind": "All",
@@ -2012,10 +2012,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701267092466738_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701267223818396_banner-fruits.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701267223818396_banner-fruits.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701267223818396_banner-fruits.jpg",
       "AssetKind": "All",
@@ -2031,10 +2031,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701267223818396_banner-fruits.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701267522710060_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701267522710060_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701267522710060_payment.png",
       "AssetKind": "All",
@@ -2050,10 +2050,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701267522710060_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701268666907343_avatar.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701268666907343_avatar.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701268666907343_avatar.jpg",
       "AssetKind": "All",
@@ -2069,10 +2069,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701268666907343_avatar.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701269327886043_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701269327886043_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701269327886043_payment.png",
       "AssetKind": "All",
@@ -2088,10 +2088,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701269327886043_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701270602700988_banner-fruits.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701270602700988_banner-fruits.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701270602700988_banner-fruits.jpg",
       "AssetKind": "All",
@@ -2107,10 +2107,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701270602700988_banner-fruits.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701270835491810_baner-1.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701270835491810_baner-1.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701270835491810_baner-1.png",
       "AssetKind": "All",
@@ -2126,10 +2126,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701270835491810_baner-1.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701270952467569_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701270952467569_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701270952467569_payment.png",
       "AssetKind": "All",
@@ -2145,10 +2145,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701270952467569_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701271473651674_payment.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638701271473651674_payment.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638701271473651674_payment.png",
       "AssetKind": "All",
@@ -2164,10 +2164,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638701271473651674_payment.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638717755388202199_footer_payment_img.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638717755388202199_footer_payment_img.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "menuFooter/638717755388202199_footer_payment_img.webp",
       "AssetKind": "All",
@@ -2183,10 +2183,10 @@
       "OriginalItemSpec": "wwwroot\\menuFooter\\638717755388202199_footer_payment_img.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg",
       "AssetKind": "All",
@@ -2202,10 +2202,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1c9a6a65-4a1b-4535-9099-27c3dd185ff2.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1c9a6a65-4a1b-4535-9099-27c3dd185ff2.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/1c9a6a65-4a1b-4535-9099-27c3dd185ff2.jpg",
       "AssetKind": "All",
@@ -2221,10 +2221,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\1c9a6a65-4a1b-4535-9099-27c3dd185ff2.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1d76715b-c51f-492a-9072-9f77518116ff.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1d76715b-c51f-492a-9072-9f77518116ff.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/1d76715b-c51f-492a-9072-9f77518116ff.jpg",
       "AssetKind": "All",
@@ -2240,10 +2240,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\1d76715b-c51f-492a-9072-9f77518116ff.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1e216401-623b-4db0-93a7-8cfb0d7b7d0b.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1e216401-623b-4db0-93a7-8cfb0d7b7d0b.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/1e216401-623b-4db0-93a7-8cfb0d7b7d0b.jpg",
       "AssetKind": "All",
@@ -2259,10 +2259,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\1e216401-623b-4db0-93a7-8cfb0d7b7d0b.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1fb4d919-9f90-4087-8695-c3e9a5bd0228.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1fb4d919-9f90-4087-8695-c3e9a5bd0228.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/1fb4d919-9f90-4087-8695-c3e9a5bd0228.jpg",
       "AssetKind": "All",
@@ -2278,10 +2278,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\1fb4d919-9f90-4087-8695-c3e9a5bd0228.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\20b763fe-0958-4862-beea-1966251feb11.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\20b763fe-0958-4862-beea-1966251feb11.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/20b763fe-0958-4862-beea-1966251feb11.jpg",
       "AssetKind": "All",
@@ -2297,10 +2297,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\20b763fe-0958-4862-beea-1966251feb11.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\215da0cb-c9a1-4a11-9f46-2072a4cfde6d.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\215da0cb-c9a1-4a11-9f46-2072a4cfde6d.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/215da0cb-c9a1-4a11-9f46-2072a4cfde6d.jpg",
       "AssetKind": "All",
@@ -2316,10 +2316,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\215da0cb-c9a1-4a11-9f46-2072a4cfde6d.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\21db1d97-392d-42c4-90d4-35a52cbba3ec.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\21db1d97-392d-42c4-90d4-35a52cbba3ec.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/21db1d97-392d-42c4-90d4-35a52cbba3ec.jpg",
       "AssetKind": "All",
@@ -2335,10 +2335,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\21db1d97-392d-42c4-90d4-35a52cbba3ec.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\25100f99-fc58-474a-af84-54e3e9a650a5.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\25100f99-fc58-474a-af84-54e3e9a650a5.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/25100f99-fc58-474a-af84-54e3e9a650a5.jpg",
       "AssetKind": "All",
@@ -2354,10 +2354,29 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\25100f99-fc58-474a-af84-54e3e9a650a5.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\41d047ec-b894-416b-8e9e-3ae3cd7c1679.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\2973c75d-b532-4318-a0c7-e9734da19488.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "sanpham/2973c75d-b532-4318-a0c7-e9734da19488.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\sanpham\\2973c75d-b532-4318-a0c7-e9734da19488.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\41d047ec-b894-416b-8e9e-3ae3cd7c1679.jpg",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/41d047ec-b894-416b-8e9e-3ae3cd7c1679.jpg",
       "AssetKind": "All",
@@ -2373,10 +2392,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\41d047ec-b894-416b-8e9e-3ae3cd7c1679.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\4511f325-1d32-4575-9637-e6dce767c420.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\4511f325-1d32-4575-9637-e6dce767c420.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/4511f325-1d32-4575-9637-e6dce767c420.jpg",
       "AssetKind": "All",
@@ -2392,10 +2411,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\4511f325-1d32-4575-9637-e6dce767c420.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\45ab3cc8-6c88-439f-aa89-fafd7a69dc18.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\45ab3cc8-6c88-439f-aa89-fafd7a69dc18.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/45ab3cc8-6c88-439f-aa89-fafd7a69dc18.jpg",
       "AssetKind": "All",
@@ -2411,10 +2430,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\45ab3cc8-6c88-439f-aa89-fafd7a69dc18.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\474bc023-e8e6-4299-bc81-5580c53045aa.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\474bc023-e8e6-4299-bc81-5580c53045aa.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/474bc023-e8e6-4299-bc81-5580c53045aa.jpg",
       "AssetKind": "All",
@@ -2430,10 +2449,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\474bc023-e8e6-4299-bc81-5580c53045aa.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\48904915-73cb-48e6-a864-e735ee20cdaa.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\48904915-73cb-48e6-a864-e735ee20cdaa.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/48904915-73cb-48e6-a864-e735ee20cdaa.jpg",
       "AssetKind": "All",
@@ -2449,10 +2468,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\48904915-73cb-48e6-a864-e735ee20cdaa.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\5254b4f3-545a-4ba7-be85-023832e0a53c.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\5254b4f3-545a-4ba7-be85-023832e0a53c.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/5254b4f3-545a-4ba7-be85-023832e0a53c.jpg",
       "AssetKind": "All",
@@ -2468,10 +2487,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\5254b4f3-545a-4ba7-be85-023832e0a53c.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\559de3fb-dfc3-420c-96f1-2109976ab9a3.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\559de3fb-dfc3-420c-96f1-2109976ab9a3.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/559de3fb-dfc3-420c-96f1-2109976ab9a3.jpg",
       "AssetKind": "All",
@@ -2487,10 +2506,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\559de3fb-dfc3-420c-96f1-2109976ab9a3.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\5f8fd845-b28a-48ec-85a6-ec5ee3f61343.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\5f8fd845-b28a-48ec-85a6-ec5ee3f61343.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/5f8fd845-b28a-48ec-85a6-ec5ee3f61343.jpg",
       "AssetKind": "All",
@@ -2506,10 +2525,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\5f8fd845-b28a-48ec-85a6-ec5ee3f61343.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\6c312081-9059-4b92-b3f6-99676e0844d0.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\6c312081-9059-4b92-b3f6-99676e0844d0.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/6c312081-9059-4b92-b3f6-99676e0844d0.jpg",
       "AssetKind": "All",
@@ -2525,10 +2544,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\6c312081-9059-4b92-b3f6-99676e0844d0.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\6f10f7a5-9d34-4135-b825-8b2801e89dc7.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\6f10f7a5-9d34-4135-b825-8b2801e89dc7.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/6f10f7a5-9d34-4135-b825-8b2801e89dc7.jpg",
       "AssetKind": "All",
@@ -2544,10 +2563,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\6f10f7a5-9d34-4135-b825-8b2801e89dc7.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\713f263c-6a3b-44eb-9033-742a735c3cc0.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\713f263c-6a3b-44eb-9033-742a735c3cc0.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/713f263c-6a3b-44eb-9033-742a735c3cc0.jpg",
       "AssetKind": "All",
@@ -2563,10 +2582,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\713f263c-6a3b-44eb-9033-742a735c3cc0.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\751b114b-edd9-4c12-aa7b-510f24e97a74.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\751b114b-edd9-4c12-aa7b-510f24e97a74.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/751b114b-edd9-4c12-aa7b-510f24e97a74.jpg",
       "AssetKind": "All",
@@ -2582,10 +2601,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\751b114b-edd9-4c12-aa7b-510f24e97a74.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\782e01e7-df01-47fa-b3aa-9c230278b8f0.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\782e01e7-df01-47fa-b3aa-9c230278b8f0.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/782e01e7-df01-47fa-b3aa-9c230278b8f0.jpg",
       "AssetKind": "All",
@@ -2601,10 +2620,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\782e01e7-df01-47fa-b3aa-9c230278b8f0.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\78331073-93b1-4c05-a708-444d67fb66e7.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\78331073-93b1-4c05-a708-444d67fb66e7.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/78331073-93b1-4c05-a708-444d67fb66e7.jpg",
       "AssetKind": "All",
@@ -2620,10 +2639,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\78331073-93b1-4c05-a708-444d67fb66e7.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\88e02163-6697-49c1-afc8-325fddffde47.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\88e02163-6697-49c1-afc8-325fddffde47.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/88e02163-6697-49c1-afc8-325fddffde47.jpg",
       "AssetKind": "All",
@@ -2639,10 +2658,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\88e02163-6697-49c1-afc8-325fddffde47.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\8e2bb45f-7c78-4bf4-b0f1-1ecbd980425b.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\8e2bb45f-7c78-4bf4-b0f1-1ecbd980425b.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/8e2bb45f-7c78-4bf4-b0f1-1ecbd980425b.jpg",
       "AssetKind": "All",
@@ -2658,10 +2677,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\8e2bb45f-7c78-4bf4-b0f1-1ecbd980425b.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\90a5db53-2c27-4f17-aa01-d3a927efc81f.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\90a5db53-2c27-4f17-aa01-d3a927efc81f.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/90a5db53-2c27-4f17-aa01-d3a927efc81f.jpg",
       "AssetKind": "All",
@@ -2677,10 +2696,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\90a5db53-2c27-4f17-aa01-d3a927efc81f.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\9a4b5f7f-7f1e-4615-8e41-272aae352ed9.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\9a4b5f7f-7f1e-4615-8e41-272aae352ed9.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/9a4b5f7f-7f1e-4615-8e41-272aae352ed9.jpg",
       "AssetKind": "All",
@@ -2696,10 +2715,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\9a4b5f7f-7f1e-4615-8e41-272aae352ed9.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\ad64e5d6-8bf8-42b2-9421-d5491209ad21.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\ad64e5d6-8bf8-42b2-9421-d5491209ad21.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/ad64e5d6-8bf8-42b2-9421-d5491209ad21.jpg",
       "AssetKind": "All",
@@ -2715,10 +2734,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\ad64e5d6-8bf8-42b2-9421-d5491209ad21.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\bc5c870b-d67c-4923-ab22-0530954292c3.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\bc5c870b-d67c-4923-ab22-0530954292c3.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/bc5c870b-d67c-4923-ab22-0530954292c3.jpg",
       "AssetKind": "All",
@@ -2734,10 +2753,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\bc5c870b-d67c-4923-ab22-0530954292c3.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\c38e2932-ecbf-4000-825b-d67bbbccb289.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\c38e2932-ecbf-4000-825b-d67bbbccb289.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/c38e2932-ecbf-4000-825b-d67bbbccb289.jpg",
       "AssetKind": "All",
@@ -2753,10 +2772,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\c38e2932-ecbf-4000-825b-d67bbbccb289.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\c509b89a-5b8a-4ea0-b682-8ae23609ec2b.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\c509b89a-5b8a-4ea0-b682-8ae23609ec2b.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/c509b89a-5b8a-4ea0-b682-8ae23609ec2b.jpg",
       "AssetKind": "All",
@@ -2772,10 +2791,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\c509b89a-5b8a-4ea0-b682-8ae23609ec2b.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\cade1122-e50c-4b0c-900b-39afd30bd76e.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\cade1122-e50c-4b0c-900b-39afd30bd76e.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/cade1122-e50c-4b0c-900b-39afd30bd76e.jpg",
       "AssetKind": "All",
@@ -2791,10 +2810,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\cade1122-e50c-4b0c-900b-39afd30bd76e.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\d2a1bd97-cb33-4ac9-afa1-8ff7dd9e0c3e.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\d2a1bd97-cb33-4ac9-afa1-8ff7dd9e0c3e.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/d2a1bd97-cb33-4ac9-afa1-8ff7dd9e0c3e.jpg",
       "AssetKind": "All",
@@ -2810,10 +2829,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\d2a1bd97-cb33-4ac9-afa1-8ff7dd9e0c3e.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\d3f42e46-d76f-4029-8d6e-4ecc6143798d.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\d3f42e46-d76f-4029-8d6e-4ecc6143798d.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/d3f42e46-d76f-4029-8d6e-4ecc6143798d.jpg",
       "AssetKind": "All",
@@ -2829,10 +2848,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\d3f42e46-d76f-4029-8d6e-4ecc6143798d.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\d75b7e9d-1788-435d-9a52-86551da5f18c.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\d75b7e9d-1788-435d-9a52-86551da5f18c.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/d75b7e9d-1788-435d-9a52-86551da5f18c.jpg",
       "AssetKind": "All",
@@ -2848,10 +2867,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\d75b7e9d-1788-435d-9a52-86551da5f18c.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\d7d4581f-a0b1-42ca-a6ef-5aef6a850504.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\d7d4581f-a0b1-42ca-a6ef-5aef6a850504.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/d7d4581f-a0b1-42ca-a6ef-5aef6a850504.jpg",
       "AssetKind": "All",
@@ -2867,10 +2886,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\d7d4581f-a0b1-42ca-a6ef-5aef6a850504.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\da15eb2c-525e-4697-b5ac-36f476a47cb2.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\da15eb2c-525e-4697-b5ac-36f476a47cb2.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/da15eb2c-525e-4697-b5ac-36f476a47cb2.jpg",
       "AssetKind": "All",
@@ -2886,10 +2905,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\da15eb2c-525e-4697-b5ac-36f476a47cb2.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\dcb5ac48-5bd7-4b00-9d32-984ea4099226.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\dcb5ac48-5bd7-4b00-9d32-984ea4099226.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/dcb5ac48-5bd7-4b00-9d32-984ea4099226.jpg",
       "AssetKind": "All",
@@ -2905,10 +2924,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\dcb5ac48-5bd7-4b00-9d32-984ea4099226.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\e16919c2-7494-451a-81e2-3ae2261e984a.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\e16919c2-7494-451a-81e2-3ae2261e984a.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/e16919c2-7494-451a-81e2-3ae2261e984a.jpg",
       "AssetKind": "All",
@@ -2924,10 +2943,29 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\e16919c2-7494-451a-81e2-3ae2261e984a.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\e73fb8a6-f6de-4776-ac5d-0bdad56e6670.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\e564aed7-4749-44d0-ad0a-3b19bc7a5e0e.webp",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "sanpham/e564aed7-4749-44d0-ad0a-3b19bc7a5e0e.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\sanpham\\e564aed7-4749-44d0-ad0a-3b19bc7a5e0e.webp"
+    },
+    {
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\e73fb8a6-f6de-4776-ac5d-0bdad56e6670.jpg",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/e73fb8a6-f6de-4776-ac5d-0bdad56e6670.jpg",
       "AssetKind": "All",
@@ -2943,10 +2981,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\e73fb8a6-f6de-4776-ac5d-0bdad56e6670.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f0882e41-33d5-48a2-b88a-d14ee25c41ab.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f0882e41-33d5-48a2-b88a-d14ee25c41ab.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/f0882e41-33d5-48a2-b88a-d14ee25c41ab.jpg",
       "AssetKind": "All",
@@ -2962,10 +3000,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\f0882e41-33d5-48a2-b88a-d14ee25c41ab.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f3b537a3-c00b-4e3e-b60a-99822e54fb1d.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f3b537a3-c00b-4e3e-b60a-99822e54fb1d.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/f3b537a3-c00b-4e3e-b60a-99822e54fb1d.jpg",
       "AssetKind": "All",
@@ -2981,10 +3019,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\f3b537a3-c00b-4e3e-b60a-99822e54fb1d.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f5a89b21-f243-4b7e-b17b-8ea49d1bd573.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f5a89b21-f243-4b7e-b17b-8ea49d1bd573.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/f5a89b21-f243-4b7e-b17b-8ea49d1bd573.jpg",
       "AssetKind": "All",
@@ -3000,10 +3038,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\f5a89b21-f243-4b7e-b17b-8ea49d1bd573.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f63b6b95-904d-4c97-baa4-c2b9cfba6bf8.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f63b6b95-904d-4c97-baa4-c2b9cfba6bf8.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/f63b6b95-904d-4c97-baa4-c2b9cfba6bf8.jpg",
       "AssetKind": "All",
@@ -3019,10 +3057,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\f63b6b95-904d-4c97-baa4-c2b9cfba6bf8.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f7ebfb2d-68e9-4b79-b7bb-c8a5255d1515.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f7ebfb2d-68e9-4b79-b7bb-c8a5255d1515.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/f7ebfb2d-68e9-4b79-b7bb-c8a5255d1515.jpg",
       "AssetKind": "All",
@@ -3038,10 +3076,10 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\f7ebfb2d-68e9-4b79-b7bb-c8a5255d1515.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\fe5c7bfa-5646-41ff-8610-75b24fb21627.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\fe5c7bfa-5646-41ff-8610-75b24fb21627.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "sanpham/fe5c7bfa-5646-41ff-8610-75b24fb21627.jpg",
       "AssetKind": "All",
@@ -3057,10 +3095,29 @@
       "OriginalItemSpec": "wwwroot\\sanpham\\fe5c7bfa-5646-41ff-8610-75b24fb21627.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\b0010f65-a38a-4d7e-96df-b7b48153792d.webp",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\a0e42fae-75b4-40d8-ae2a-20c3d116d085.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "tenwebsite/a0e42fae-75b4-40d8-ae2a-20c3d116d085.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\tenwebsite\\a0e42fae-75b4-40d8-ae2a-20c3d116d085.png"
+    },
+    {
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\b0010f65-a38a-4d7e-96df-b7b48153792d.webp",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "tenwebsite/b0010f65-a38a-4d7e-96df-b7b48153792d.webp",
       "AssetKind": "All",
@@ -3076,12 +3133,12 @@
       "OriginalItemSpec": "wwwroot\\tenwebsite\\b0010f65-a38a-4d7e-96df-b7b48153792d.webp"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\b37e45bc-346a-4dda-ae2c-45659d9303bb.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\f5488839-85c4-4b7e-9b90-8c0c7e666193.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
-      "RelativePath": "tenwebsite/b37e45bc-346a-4dda-ae2c-45659d9303bb.png",
+      "RelativePath": "tenwebsite/f5488839-85c4-4b7e-9b90-8c0c7e666193.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -3092,13 +3149,13 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\tenwebsite\\b37e45bc-346a-4dda-ae2c-45659d9303bb.png"
+      "OriginalItemSpec": "wwwroot\\tenwebsite\\f5488839-85c4-4b7e-9b90-8c0c7e666193.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700525059693219_c1.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700525059693219_c1.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700525059693219_c1.jpg",
       "AssetKind": "All",
@@ -3114,10 +3171,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700525059693219_c1.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700525416366928_daaaaa.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700525416366928_daaaaa.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700525416366928_daaaaa.jpg",
       "AssetKind": "All",
@@ -3133,10 +3190,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700525416366928_daaaaa.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700525813021337_dddddd.png",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700525813021337_dddddd.png",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700525813021337_dddddd.png",
       "AssetKind": "All",
@@ -3152,10 +3209,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700525813021337_dddddd.png"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700526268861743_n6.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700526268861743_n6.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700526268861743_n6.jpg",
       "AssetKind": "All",
@@ -3171,10 +3228,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700526268861743_n6.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700526424481248_l5.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700526424481248_l5.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700526424481248_l5.jpg",
       "AssetKind": "All",
@@ -3190,10 +3247,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700526424481248_l5.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700527048302925_r6.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700527048302925_r6.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700527048302925_r6.jpg",
       "AssetKind": "All",
@@ -3209,10 +3266,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700527048302925_r6.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700527385061822_mmmmmm.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700527385061822_mmmmmm.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700527385061822_mmmmmm.jpg",
       "AssetKind": "All",
@@ -3228,10 +3285,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700527385061822_mmmmmm.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700527746122897_rdddddd.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700527746122897_rdddddd.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700527746122897_rdddddd.jpg",
       "AssetKind": "All",
@@ -3247,10 +3304,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700527746122897_rdddddd.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700528249262126_nsssss.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700528249262126_nsssss.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700528249262126_nsssss.jpg",
       "AssetKind": "All",
@@ -3266,10 +3323,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700528249262126_nsssss.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700528542355533_lcccc.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700528542355533_lcccc.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700528542355533_lcccc.jpg",
       "AssetKind": "All",
@@ -3285,10 +3342,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700528542355533_lcccc.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700528988825981_bbbbbbb.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700528988825981_bbbbbbb.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700528988825981_bbbbbbb.jpg",
       "AssetKind": "All",
@@ -3304,10 +3361,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700528988825981_bbbbbbb.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700529436042616_ppppppp.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638700529436042616_ppppppp.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638700529436042616_ppppppp.jpg",
       "AssetKind": "All",
@@ -3323,10 +3380,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638700529436042616_ppppppp.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638701265675032889_best-product-1.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638701265675032889_best-product-1.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638701265675032889_best-product-1.jpg",
       "AssetKind": "All",
@@ -3342,10 +3399,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638701265675032889_best-product-1.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638719386553908549_z6157873858164_2089209ea7b66071f678fd13c9a12ff3.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638719386553908549_z6157873858164_2089209ea7b66071f678fd13c9a12ff3.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638719386553908549_z6157873858164_2089209ea7b66071f678fd13c9a12ff3.jpg",
       "AssetKind": "All",
@@ -3361,10 +3418,10 @@
       "OriginalItemSpec": "wwwroot\\upload\\638719386553908549_z6157873858164_2089209ea7b66071f678fd13c9a12ff3.jpg"
     },
     {
-      "Identity": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638719387501152439_nnnnnnn.jpg",
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\upload\\638719387501152439_nnnnnnn.jpg",
       "SourceId": "CuahangtraicayAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\CDSG\\BE\\project\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
       "BasePath": "_content/CuahangtraicayAPI",
       "RelativePath": "upload/638719387501152439_nnnnnnn.jpg",
       "AssetKind": "All",

@@ -17,8 +17,8 @@ namespace CuahangtraicayAPI.DTO
             [Required]
             public int so_luong {  get; set; }
 
-            [Required]
-            public string Trangthai { get; set; }
+            //[Required]
+            //public string Trangthai { get; set; }
 
             [Required]
             public string DonViTinh { get; set; }

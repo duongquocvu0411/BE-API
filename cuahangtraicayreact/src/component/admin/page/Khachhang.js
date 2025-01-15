@@ -36,7 +36,7 @@ const Khachhangs = () => {
   const layDanhSachKhachHang = async () => {
     setDangtai(true);
     const token = cookies.adminToken; // Lấy token từ cookie
-    
+
     // Gửi trạng thái cập nhật lên backend
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/khachhang`, {
@@ -164,7 +164,7 @@ const Khachhangs = () => {
         `${process.env.REACT_APP_BASEURL}/api/HoaDon/UpdateStatus/${billId}`,
         {
           status: trangthaimoi,
-        
+
         },
         {
           headers: {
@@ -183,7 +183,7 @@ const Khachhangs = () => {
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
             khachHang.hoaDons = khachHang.hoaDons.map((hoadon) =>
-              hoadon.id === billId ? { ...hoadon, status: trangthaimoi,updatedBy:updatedBy  } : hoadon
+              hoadon.id === billId ? { ...hoadon, status: trangthaimoi, updatedBy: updatedBy } : hoadon
             );
           }
           return khachHang;
@@ -194,7 +194,7 @@ const Khachhangs = () => {
         prevList.map((khachHang) => {
           if (khachHang.hoaDons) {
             khachHang.hoaDons = khachHang.hoaDons.map((hoadon) =>
-              hoadon.id === billId ? { ...hoadon, status: trangthaimoi,updatedBy:updatedBy } : hoadon
+              hoadon.id === billId ? { ...hoadon, status: trangthaimoi, updatedBy: updatedBy } : hoadon
             );
           }
           return khachHang;
@@ -216,7 +216,7 @@ const Khachhangs = () => {
 
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
-    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status ==='Thanh toán không thành công');
+    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công');
   };
 
   const layTrangThaiDonHang = (hoaDons) => {
@@ -262,7 +262,13 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-
+    const hoadonchoxulyhuydon = hoaDons.find(h => h.status === 'Chờ xử lý hủy đơn');
+    if (hoadonchoxulyhuydon) {
+      return {
+        text: 'Chờ xử lý hủy đơn',
+        bgColor: 'badge bg-warning text-dark border border-warning',
+      };
+    }
     // Trạng thái "Giao không thành công"
     const hoadonKhongGiaoThanhCong = hoaDons.find(h => h.status === 'Giao không thành công');
     if (hoadonKhongGiaoThanhCong) {
@@ -327,7 +333,63 @@ const Khachhangs = () => {
     }
   };
 
-
+  const handleXacNhanHuyDon = async (orderCode) => {
+    const token = cookies.adminToken; // Lấy token từ cookie
+  
+    try {
+      // Gọi API xác nhận hủy đơn
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASEURL}/api/hoadon/XacNhanHuyDon/${orderCode}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Đính kèm token
+          },
+        }
+      );
+  
+      // Hiển thị thông báo thành công
+      toast.success(`Đã hủy đơn hàng thành công!`, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+  
+      // Cập nhật trạng thái đơn hàng trong danh sách
+      setDanhSachKhachHang((prevList) =>
+        prevList.map((khachHang) => { 
+          if (khachHang.hoaDons) {// duyệt qua danh sách hoa don
+            khachHang.hoaDons = khachHang.hoaDons.map((hoaDon) =>
+              hoaDon.order_code === orderCode  // kiểm tra mã hóa đơn trùng với orderCode 
+                ? { ...hoaDon, status: "Hủy đơn" } // cập nhật trạng thái hóa đơn
+                : hoaDon // giữ nguyên hóa đơn
+            );
+          }
+          return khachHang;
+        })
+      );
+  
+      // duyệt qua danh sách hoadon không cần phải load website
+      setKhachHangHienThi((prevList) =>
+        prevList.map((khachHang) => {
+          if (khachHang.hoaDons) {
+            khachHang.hoaDons = khachHang.hoaDons.map((hoaDon) =>
+              hoaDon.order_code === orderCode
+                ? { ...hoaDon, status: "Hủy đơn" }
+                : hoaDon
+            );
+          }
+          return khachHang;
+        })
+      );
+    } catch (error) {
+      console.error("Có lỗi khi hủy đơn hàng:", error);
+      toast.error("Có lỗi khi hủy đơn hàng!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  };
+  
   return (
     <div id="wrapper">
       <SiderbarAdmin />
@@ -450,6 +512,18 @@ const Khachhangs = () => {
                                     >
                                       <i className="bi bi-eye"></i>
                                     </button>
+                                    {item.hoaDons.map((hoaDon) =>
+                                      hoaDon.status === "Chờ xử lý hủy đơn" ? (
+                                        <button
+                                          key={hoaDon.id}
+                                          className="btn btn-outline-warning btn-sm me-2"
+                                          title="Xác nhận hủy đơn hàng"
+                                          onClick={() => handleXacNhanHuyDon(hoaDon.order_code)}
+                                        >
+                                          <i className="fas fa-times-circle"></i> Xác nhận hủy đơn
+                                        </button>
+                                      ) : null
+                                    )}
                                     {/* Icon xóa */}
                                     {kiemTraTrangThaiHoaDon(item.hoaDons) && (
                                       <button

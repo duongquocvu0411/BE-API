@@ -31,6 +31,7 @@ import QuanlyFooter from "./component/admin/page/QuanlyFooter";
 import TenwebSitersAdmin from "./component/admin/page/TenwebSitersAdmin";
 import PaymentResult from "./component/users/PaymentResult ";
 import PaymentInfo from "./component/users/page/PaymentInfo";
+import ThanhToanThanhCong from "./component/users/ThanhToanThanhCong";
 
 // import MenuFooter from "./component/admin/page/MenuFooter";
 
@@ -184,6 +185,7 @@ function App() {
             <Route path="/sanpham/:name/:id" element={<CuahangChitiet />} />
             <Route path="/giohang" element={<Giohang />} />
             <Route path="/gioithieu" element={<Gioithieu />} />
+            <Route path="/thanhtoanthanhcong" element={<ThanhToanThanhCong />} />
 
             <Route path="/lienhe" element={<LienHe />} />
             <Route path="/tracuu" element={<Tracuu />} />

@@ -40,7 +40,7 @@ namespace CuahangtraicayAPI
             // đăng ký backroud service 
             builder.Services.AddHostedService<SaleUpdateService>();
             //đăng ký giao hàng nhanh
-            builder.Services.AddHttpClient<GHNService>();
+            builder.Services.AddHttpClient<GhnService>();
 
             var API = "allApi";
             builder.Services.AddCors(ots =>

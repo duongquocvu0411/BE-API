@@ -150,7 +150,7 @@ namespace CuahangtraicayAPI.Controllers
                 Tieude = request.Tieude,
                 Giatien = request.Giatien,
                 Soluong = request.so_luong,
-                Trangthai = request.Trangthai,
+                Trangthai = request.so_luong > 0 ? "Còn hàng" : "Hết hàng", // Kiểm tra số lượng,
                 don_vi_tinh = request.DonViTinh,
                 danhmucsanpham_id = request.DanhmucsanphamId,
                 CreatedBy = hotenToken,

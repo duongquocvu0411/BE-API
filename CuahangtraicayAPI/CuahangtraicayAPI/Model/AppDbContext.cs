@@ -39,7 +39,7 @@ public class AppDbContext : DbContext
     public DbSet<TenwebSite> TenwebSites { get; set; }
     public DbSet<PhanHoiDanhGia> PhanHoiDanhGias { get; set; }
 
-
+    public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
 
 
     // Cấu hình mối quan hệ và chuyển đổi dữ liệu

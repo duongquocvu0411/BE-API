@@ -12,4 +12,5 @@ public class PaymentResponseModel
     public string VnPayResponseCode { get; set; }
     public decimal Amount { get; set; } // Thêm Amount
     public string AmountFormatted => Amount.ToString("#,##0");
+    public string ResponseMessage { get; set; }
 }

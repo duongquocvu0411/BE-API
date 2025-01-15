@@ -5,6 +5,7 @@ import { CartContext } from "./CartContext";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import Aos from "aos";
+import { useNavigate } from "react-router-dom";
 
 const Thanhtoan = () => {
   const [thanhpho, setThanhpho] = useState("");
@@ -27,7 +28,7 @@ const Thanhtoan = () => {
   const [dangtaiQH, setdangtaiTQH] = useState(false);
   const [dangtaiXP, setdangtaiXP] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod"); // Mặc định là COD
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchCities();
     Aos.init({
@@ -41,7 +42,7 @@ const Thanhtoan = () => {
       const khachHangData = JSON.parse(storedKhachHang);
       setFirstName(khachHangData.ten || "");
       setLastName(khachHangData.ho || "");
-      setAddress(khachHangData.diachicuthe || "");
+      setAddress(khachHangData.diaChiCuThe || "");
       setThanhpho(""); // Nếu cần hiển thị theo mã, cập nhật phù hợp
       setTinhthanh(khachHangData.tinhthanhquanhuyen || "");
       setXaphuong(khachHangData.xaphuong || "");
@@ -59,19 +60,28 @@ const Thanhtoan = () => {
     setSdt(newSdt);
   };
 
-  const handleChonQuanHuyen = async (e) => {
-    const selectedCityCode = e.target.value;
-    setThanhpho(selectedCityCode); // Lưu mã thành phố vào thanhpho
+  const handleChonThanhpho = async (e) => {
+    const ThanhphoId = e.target.value; // ProvinceID từ select
+    setThanhpho(ThanhphoId); // Lưu ProvinceID vào state
     setdangtaiTQH(true);
-    // Gửi request để lấy thông tin về quận huyện của thành phố
-    if (selectedCityCode) {
-      try {
-        const response = await axios.get(`https://provinces.open-api.vn/api/p/${selectedCityCode}?depth=3`);
-        setDanhSachQuanHuyen(response.data.districts);
 
-        // Cập nhật tên thành phố
-        const selectedCityObj = response.data;
-        setTenThanhpho(selectedCityObj.name || '');
+    if (ThanhphoId) {
+      try {
+        const response = await axios.get(
+          `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${ThanhphoId}`,
+          {
+            headers: {
+              "Token": "77cfcf4c-c9b7-11ef-bcc3-2a79af7210fe",
+            },
+          }
+        );
+        setDanhSachQuanHuyen(response.data.data);
+
+        // Lấy tên thành phố (ProvinceName)
+        const selectedCity = danhSachThanhPho.find((city) => city.ProvinceID === parseInt(ThanhphoId));
+        if (selectedCity) {
+          setTenThanhpho(selectedCity.ProvinceName); // Cập nhật tên thành phố
+        }
       } catch (error) {
         console.error("Error fetching districts:", error);
         toast.error("Không thể tải thông tin quận huyện!", { position: "top-right", autoClose: 5000 });
@@ -81,38 +91,56 @@ const Thanhtoan = () => {
     }
   };
 
+
   // Hàm xử lý khi chọn quận huyện
   const handleChonTinhThanh = async (e) => {
-    const selectedDistrict = e.target.value;
-    setTinhthanh(selectedDistrict);
+    const QuanhuyenID = e.target.value; // DistrictID từ select
+    const QuanhuyenChon = danhSachQuanHuyen.find((huyen) => huyen.DistrictID === parseInt(QuanhuyenID));
+    setTinhthanh(QuanhuyenChon ? QuanhuyenChon.DistrictName : ""); // Lấy DistrictName
     setdangtaiXP(true);
-    // Lấy thông tin xã phường của huyện được chọn
-    if (selectedDistrict) {
+
+    if (QuanhuyenID) {
       try {
-        const districtObj = danhSachQuanHuyen.find(district => district.name === selectedDistrict);
-        if (districtObj) {
-          setDanhSachXaPhuong(districtObj.wards || []); // Lấy danh sách xã/phường của huyện
-        }
+        const response = await axios.get(
+          `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${QuanhuyenID}`,
+          {
+            headers: {
+              "Token": "77cfcf4c-c9b7-11ef-bcc3-2a79af7210fe",
+            },
+          }
+        );
+        setDanhSachXaPhuong(response.data.data);
       } catch (error) {
         console.error("Error fetching wards:", error);
         toast.error("Không thể tải thông tin xã/phường!", { position: "top-right", autoClose: 5000 });
-      }
-      finally {
+      } finally {
         setdangtaiXP(false);
       }
     }
   };
 
-  // Hàm xử lý khi chọn xã phường
+  // Hàm xử lý khi chọn xã phườngc
   const handleChonXaPhuong = (e) => {
-    setXaphuong(e.target.value);
+    const maphuong = e.target.value;
+    const Phuongchon = danhSachXaPhuong.find((ward) => ward.WardCode === maphuong);
+
+    if (Phuongchon) {
+      setXaphuong(Phuongchon.WardName); // Đặt WardName (khớp với value)
+
+    }
   };
+
+
 
   const fetchCities = async () => {
     setdangtaiTP(true); // Bắt đầu hiệu ứng loading
     try {
-      const response = await axios.get("https://provinces.open-api.vn/api/?depth=3");
-      setDanhSachThanhPho(response.data);
+      const response = await axios.get("https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province", {
+        headers: {
+          "Token": "77cfcf4c-c9b7-11ef-bcc3-2a79af7210fe",
+        },
+      });
+      setDanhSachThanhPho(response.data.data);
     } catch (error) {
       console.error("Error fetching cities:", error);
       toast.error("Không thể tải thông tin thành phố!", { position: "top-right", autoClose: 5000 });
@@ -152,8 +180,8 @@ const Thanhtoan = () => {
       emailDiaChi: email, // Đổi "Emaildiachi" thành "emailDiaChi"
       ghiChu: ghichu,     // Đổi "ghichu" thành "ghiChu"
     };
-    
 
+    console.log("Khách hàng data gửi đi:", khachhangData);
     try {
       // Gửi thông tin khách hàng
       const khachhangResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/khachhang`, khachhangData);
@@ -183,9 +211,22 @@ const Thanhtoan = () => {
         window.location.href = billResponse.data.payUrl;
       } else {
         // Thông báo thành công nếu là COD
-        toast.success(`Đặt hàng thành công! Mã đơn hàng: ${newOrderCode}`, {
-          position: "top-right",
-          autoClose: 10000,
+        // toast.success(`Đặt hàng thành công! Mã đơn hàng: ${newOrderCode}`, {
+        //   position: "top-right",
+        //   autoClose: 10000,
+        // });
+        const responseData = billResponse.data;
+        const { orderCode, khachHang, hoaDon } = responseData;
+        console.log("Dữ liệu trả về từ API:", responseData);
+
+        // Điều hướng tới trang ThanhToanThanhCong
+        navigate("/thanhtoanthanhcong", {
+          state: {
+            orderCode, // Mã đơn hàng
+            khachHang, // Thông tin khách hàng
+            hoaDon, // Thông tin hóa đơn
+            chiTietHoaDon: hoaDon.chiTietHoaDon, // Chi tiết hóa đơn
+          },
         });
       }
 
@@ -193,7 +234,7 @@ const Thanhtoan = () => {
       const storedCustomerData = {
         ten: khachhangData.ten,
         ho: khachhangData.ho,
-        diachicuthe: khachhangData.diaChiCuThe,
+        diaChiCuThe: khachhangData.diaChiCuThe,
         sdt: khachhangData.sdt,
         Emaildiachi: khachhangData.emailDiaChi,
       };
@@ -201,6 +242,10 @@ const Thanhtoan = () => {
       localStorage.setItem("khachhang", JSON.stringify(storedCustomerData));
       xoagiohangthanhtoanthanhcong();
       ResetForm();
+
+
+      // Lấy dữ liệu trả về từ API
+
     } catch (error) {
       console.error("Lỗi khi gửi đơn hàng:", error);
 
@@ -322,14 +367,15 @@ const Thanhtoan = () => {
                           <select
                             className="form-select border-success"
                             value={thanhpho}
-                            onChange={handleChonQuanHuyen}
+                            onChange={handleChonThanhpho}
                             required
                           >
                             <option value="" disabled>Chọn thành phố</option>
                             {danhSachThanhPho.map((city) => (
-                              <option key={city.code} value={city.code}>{city.name}</option>
+                              <option key={city.ProvinceID} value={city.ProvinceID}>{city.ProvinceName}</option>
                             ))}
                           </select>
+
                         )}
                       </div>
 
@@ -353,7 +399,7 @@ const Thanhtoan = () => {
                           >
                             <option value="" disabled>Chọn quận/huyện</option>
                             {danhSachQuanHuyen.map((district) => (
-                              <option key={district.code} value={district.name}>{district.name}</option>
+                              <option key={district.DistrictID} value={district.DistrictID}>{district.DistrictName}</option>
                             ))}
                           </select>
                         )}
@@ -372,16 +418,19 @@ const Thanhtoan = () => {
                         ) : (
                           <select
                             className="form-select border-success"
-                            value={xaphuong}
-                            onChange={handleChonXaPhuong}
-                            disabled={!tinhthanh}
+                            value={xaphuong} // Giá trị hiện tại của xã/phường
+                            onChange={handleChonXaPhuong} // Hàm xử lý chọn
+                            disabled={!tinhthanh} // Chỉ cho chọn khi đã có quận/huyện
                             required
                           >
                             <option value="" disabled>Chọn xã/phường</option>
                             {danhSachXaPhuong.map((ward) => (
-                              <option key={ward.code} value={ward.name}>{ward.name}</option>
+                              <option key={ward.WardCode} value={ward.WardCode}>
+                                {ward.WardName}
+                              </option>
                             ))}
                           </select>
+
                         )}
                       </div>
 
@@ -457,7 +506,7 @@ const Thanhtoan = () => {
                             <tr key={index}>
                               <td>
                                 <img
-                                 src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
+                                  src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                                   alt={sanPham.tieude}
                                   className="img-fluid rounded-circle"
                                   style={{ width: 50, height: 50 }}
@@ -518,7 +567,7 @@ const Thanhtoan = () => {
                               onChange={(e) => setPaymentMethod(e.target.value)}
                               className="form-check-input me-2"
                             />
-                           <img
+                            <img
                               src={`${process.env.PUBLIC_URL}/img/momo.png`}
                               alt="ATM"
                               className="me-3"

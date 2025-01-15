@@ -1024,6 +1024,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CuahangtraicayAPI.Controllers.GhnController",
+    "Method": "CreateOrder",
+    "RelativePath": "api/Ghn/create-order",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "khachHangId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CuahangtraicayAPI.Controllers.GioithieuController",
     "Method": "GetAllGioithieu",
     "RelativePath": "api/Gioithieu",
@@ -1398,6 +1414,32 @@
     "ReturnTypes": [
       {
         "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.HoaDon, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.HoaDonController",
+    "Method": "XacNhanHuyDon",
+    "RelativePath": "api/HoaDon/XacNhanHuyDon/{orderCode}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderCode",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -2011,11 +2053,6 @@
       {
         "Name": "so_luong",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "Trangthai",
-        "Type": "System.String",
         "IsRequired": false
       },
       {

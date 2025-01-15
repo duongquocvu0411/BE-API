@@ -51,7 +51,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                   <p><i className="bi bi-envelope-fill"></i> <strong>Email:</strong> {chiTietKhachHang.email}</p>
                   <p><i className="bi bi-telephone-fill"></i> <strong>Số Điện Thoại:</strong> {chiTietKhachHang.sdt}</p>
                   <p>
-                    <i className="bi bi-geo-alt-fill"></i> <strong>Địa chỉ:</strong> {chiTietKhachHang.diaChiCuThe}, {chiTietKhachHang.xaphuong}, {chiTietKhachHang.tinhthanhquanhuyen}, {chiTietKhachHang.thanhPho}
+                    <i className="bi bi-geo-alt-fill"></i> <strong>Địa chỉ:</strong> {chiTietKhachHang.diaChiCuThe}, {chiTietKhachHang.xaphuong}, {chiTietKhachHang.tinhthanh},{chiTietKhachHang.thanhpho}
                   </p>
                   <p><i className="bi bi-pencil-fill"></i> <strong>Ghi chú:</strong> {chiTietKhachHang.ghichu || "Không có ghi chú"}</p>
                 </div>
@@ -143,7 +143,9 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                           {bill.status !== "Hủy đơn" &&
                             bill.status !== "Đã giao thành công" &&
                             bill.status !== "Thanh toán thất bại" &&
-                            bill.status !== "Chờ thanh toán" && (
+                            bill.status !== "Chờ thanh toán" &&
+                            bill.status != "Chờ xử lý hủy đơn" &&
+                            (
                               <Form.Group controlId="formTrangThai" className="ms-3">
                                 <Form.Label>
                                   <i className="bi bi-toggle-on"></i> <strong>Cập nhật trạng thái:</strong>

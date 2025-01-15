@@ -3,38 +3,51 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace CuahangtraicayAPI.Services
 {
-    public class GHNService
+    public class GhnService
     {
         private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly string _apiBaseUrl;
+        private readonly string _token;
+        private readonly string _shopId;
+        private readonly ShopInfo _shopInfo;
 
-        public GHNService(HttpClient httpClient, IConfiguration configuration)
+        public GhnService(IConfiguration configuration, HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _configuration = configuration;
+            _apiBaseUrl = configuration["GHN:ApiBaseUrl"];
+            _token = configuration["GHN:Token"];
+            _shopId = configuration["GHN:ShopId"];
+            _shopInfo = configuration.GetSection("GHN:ShopInfo").Get<ShopInfo>();
 
-            // Thêm Token và ShopId vào Header
-            _httpClient.DefaultRequestHeaders.Add("Token", _configuration["GHN:Token"]);
-            _httpClient.DefaultRequestHeaders.Add("ShopId", _configuration["GHN:ShopId"]);
         }
 
-        public async Task<string> CreateOrderAsync(object requestData)
+        public async Task<HttpResponseMessage> CreateOrderAsync(object orderData)
         {
-            var apiUrl = $"{_configuration["GHN:ApiBaseUrl"]}v2/shipping-order/create";
-            var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
+            var request = new HttpRequestMessage(HttpMethod.Post, $"{_apiBaseUrl}v2/shipping-order/create");
+            request.Headers.Add("Token", _token);
+            request.Headers.Add("ShopId", _shopId);
+            request.Content = new StringContent(JsonConvert.SerializeObject(orderData), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync(apiUrl, content);
+            return await _httpClient.SendAsync(request);
+        }
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                throw new HttpRequestException($"Lỗi từ GHN API: {error}");
-            }
-
-            return await response.Content.ReadAsStringAsync();
+        public dynamic GetShopInfo()
+        {
+            return _shopInfo;
+        }
+        public class ShopInfo
+        {
+            public string Name { get; set; }
+            public string Phone { get; set; }
+            public string Address { get; set; }
+            public string WardName { get; set; }
+            public string DistrictName { get; set; }
+            public string ProvinceName { get; set; }
         }
     }
+
 }

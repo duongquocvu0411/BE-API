@@ -9,7 +9,7 @@ namespace CuahangtraicayAPI.Model
     {
         public int Id { get; set; }
 
-       
+      
         public int bill_id { get; set; }
        
         public int sanpham_ids { get; set; }
@@ -24,6 +24,7 @@ namespace CuahangtraicayAPI.Model
         //public List<SanPhamDetail> SanphamDonViTinh { get; set; }
 
         // Định nghĩa quan hệ với HoaDon
+        [ForeignKey("bill_id")]
         public HoaDon HoaDon { get; set; }
         [ForeignKey("sanpham_ids")]
         public Sanpham SanPham { get; set; }

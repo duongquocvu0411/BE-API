@@ -43,21 +43,34 @@ const Tracuu = () => {
 
   const handleCancelOrder = async () => {
     try {
+      // Gửi yêu cầu hủy đơn hàng đến API
       await axios.put(`${process.env.REACT_APP_BASEURL}/api/hoadon/tracuu/${madonhang}/huydon`);
+
+      // Cập nhật trạng thái đơn hàng trong giao diện
       setDathangchitiet({ ...dathangchitiet, status: "Hủy đơn" });
+
+      // Hiển thị thông báo thành công
       toast.success("Đơn hàng của bạn đã hủy thành công", {
-        position: 'top-right',
-        autoClose: 3000
+        position: "top-right",
+        autoClose: 3000,
       });
-      setShowModal(false); // Đóng modal sau khi hủy thành công
+
+      // Đóng modal sau khi hủy thành công
+      setShowModal(false);
+        // Gọi lại API để load lại dữ liệu mới
+    await handleLookupOrder(new Event('submit'));
     } catch (error) {
+      // Hiển thị lỗi chi tiết nếu API trả về lỗi
+      const errorMessage = error.response?.data?.message || "Có lỗi khi hủy đơn hàng của bạn. Vui lòng thử lại.";
+
       console.error("Lỗi khi hủy đơn hàng:", error);
-      toast.error('Có lỗi khi hủy đơn hàng của bạn. Vui lòng thử lại.', {
-        position: 'top-right',
-        autoClose: 3000
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 3000,
       });
     }
   };
+
 
   // hàm để chọn class cho trạng thái đơn hàng
   const getStatusClass = (status) => {
@@ -72,8 +85,12 @@ const Tracuu = () => {
         return 'bg-danger text-white';  // Màu đỏ cho không thành công
       case 'Hủy đơn':
         return 'bg-secondary text-white';  // Màu xám cho hủy đơn
+        case 'Thanh toán thất bại':
+          return 'bg-secondary text-white';
       case 'Chờ xử lý':
         return 'bg-info text-white';  // Màu xanh da trời cho chờ xử lý
+        case 'Chờ xử lý hủy đơn': // Mới thêm
+            return 'bg-warning text-white'; 
       default:
         return '';  // Không có class nếu không có trạng thái
     }
@@ -182,7 +199,8 @@ const Tracuu = () => {
 
               {/* Nút hủy đơn hàng */}
               {/* Nút hủy đơn hàng */}
-              {dathangchitiet.trangThai === "Chờ xử lý" && dathangchitiet.phuongThucThanhToan === "cod" && (
+              {(dathangchitiet.trangThai === "Chờ xử lý" && dathangchitiet.phuongThucThanhToan === "cod") ||
+                (dathangchitiet.trangThai === "Đã Thanh toán" && dathangchitiet.phuongThucThanhToan === "Momo") ? (
                 <div className="text-center mt-4">
                   <button
                     className="btn btn-danger rounded-3 py-2 px-4"
@@ -193,7 +211,7 @@ const Tracuu = () => {
                     <i className="fas fa-ban"></i> Hủy đơn hàng
                   </button>
                 </div>
-              )}
+              ) : null}
 
 
             </div>

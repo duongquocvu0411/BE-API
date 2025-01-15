@@ -118,7 +118,12 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             await _context.SaveChangesAsync();
-            await Task.Run(() => GuiEmailHoaDon(bill, totalPrice, orderCode));
+            // Gửi email nếu thanh toán COD
+            if (hoaDonDto.PaymentMethod == "cod")
+            {
+                await Task.Run(()=> GuiEmailHoaDon(bill, totalPrice, orderCode));
+            }
+          
 
             // Xử lý thanh toán
             if (hoaDonDto.PaymentMethod == "VnPay")
@@ -233,7 +238,6 @@ namespace CuahangtraicayAPI.Controllers
 
             return Ok(result);
         }
-
 
 
 
@@ -391,33 +395,43 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             // Kiểm tra trạng thái hiện tại của đơn hàng
-            if (hoaDon.status == "Hủy đơn")
+            if (hoaDon.status == "Hủy đơn" || hoaDon.status == "Chờ xử lý hủy đơn")
             {
                 return BadRequest(new BaseResponseDTO<object>
                 {
                     Code = 400,
-                    Message = "Đơn hàng đã bị hủy trước đó."
+                    Message = "Đơn hàng đã được yêu cầu hủy trước đó."
                 });
             }
 
-            if (hoaDon.status != "Chờ xử lý")
+            if (hoaDon.status == "Đã Thanh toán" && hoaDon.Thanhtoan == "Momo")
+            {
+                // Cập nhật trạng thái thành "Chờ xử lý hủy đơn" nếu đã thanh toán qua MoMo
+                hoaDon.status = "Chờ xử lý hủy đơn";
+            }
+            else if (hoaDon.status == "Chờ xử lý")
+            {
+                // Trường hợp đơn hàng chưa thanh toán
+                hoaDon.status = "Hủy đơn";
+            }
+            else
             {
                 return BadRequest(new BaseResponseDTO<object>
                 {
                     Code = 400,
-                    Message = "Đơn hàng không ở trạng thái 'Chờ xử lý' và không thể hủy."
+                    Message = "Trạng thái đơn hàng không hợp lệ để hủy."
                 });
             }
 
-            // Cập nhật trạng thái đơn hàng thành "Hủy đơn"
-            hoaDon.status = "Hủy đơn";
             hoaDon.Updated_at = DateTime.Now;
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<object>
             {
                 Code = 0,
-                Message = "Đơn hàng đã được hủy thành công.",
+                Message = hoaDon.status == "Chờ xử lý hủy đơn"
+                    ? "Yêu cầu hủy đơn đã được ghi nhận. Chờ xử lý hoàn tiền."
+                    : "Đơn hàng đã được hủy thành công.",
                 Data = new
                 {
                     hoaDon.order_code,
@@ -427,6 +441,277 @@ namespace CuahangtraicayAPI.Controllers
             });
         }
 
+        //[HttpPut("XacNhanHuyDon/{orderCode}")]
+        //public async Task<ActionResult<BaseResponseDTO<object>>> XacNhanHuyDon(string orderCode)
+        //{
+        //    // Tìm hóa đơn dựa trên OrderCode
+        //    var hoaDon = await _context.HoaDons.FirstOrDefaultAsync(hd => hd.order_code == orderCode);
+
+        //    if (hoaDon == null)
+        //    {
+        //        return NotFound(new BaseResponseDTO<object>
+        //        {
+        //            Code = 404,
+        //            Message = "Không tìm thấy đơn hàng với mã này."
+        //        });
+        //    }
+
+        //    if (hoaDon.status != "Chờ xử lý hủy đơn")
+        //    {
+        //        return BadRequest(new BaseResponseDTO<object>
+        //        {
+        //            Code = 400,
+        //            Message = "Đơn hàng không ở trạng thái 'Chờ xử lý hủy đơn'."
+        //        });
+        //    }
+        //    var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+        //    var handler = new JwtSecurityTokenHandler();
+        //    var jwtToken = handler.ReadJwtToken(token);
+        //    var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+        //    if (hotenToken == null)
+        //    {
+        //        return Unauthorized(new { message = "Không thể xác định người dùng từ token." });
+        //    }
+
+        //    // Tìm giao dịch liên quan trong bảng PaymentTransactions
+        //    var giaodich = await _context.PaymentTransactions
+        //        .FirstOrDefaultAsync(pt => pt.OrderId == orderCode && pt.Status == "Success");
+
+        //    if (giaodich == null)
+        //    {
+        //        return BadRequest(new BaseResponseDTO<object>
+        //        {
+        //            Code = 400,
+        //            Message = "Không tìm thấy giao dịch hợp lệ cho đơn hàng này."
+        //        });
+        //    }
+
+        //    // Gọi API hoàn tiền của MoMo
+        //    var refundResponse = await _momoService.RefundAsync(giaodich.TransactionId, (double)giaodich.Amount);
+
+        //    if (refundResponse.ErrorCode != 0)
+        //    {
+        //        return BadRequest(new BaseResponseDTO<object>
+        //        {
+        //            Code = 400,
+        //            Message = $"Hoàn tiền thất bại: {refundResponse.Message}"
+        //        });
+        //    }
+
+        //    // Cập nhật trạng thái giao dịch thành "Đã hoàn tiền"
+        //    giaodich.Status = "Đã hoàn tiền";
+        //    giaodich.ResponseMessage = "Hoàn tiền thành công";
+        //    giaodich.Updated_at = DateTime.Now;
+        //    giaodich.UpdatedBy = hotenToken;
+        //    _context.PaymentTransactions.Update(giaodich);
+
+        //    // Hoàn lại số lượng sản phẩm
+        //    var chiTietHoaDon = await _context.HoaDonChiTiets.Where(ct => ct.bill_id == hoaDon.Id).ToListAsync();
+        //    foreach (var chiTiet in chiTietHoaDon)
+        //    {
+        //        var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
+        //        if (sanpham != null)
+        //        {
+        //            sanpham.Soluong += chiTiet.quantity; // Hoàn lại số lượng
+        //            if (sanpham.Soluong > 0 && sanpham.Trangthai == "Hết hàng")
+        //            {
+        //                sanpham.Trangthai = "Còn hàng"; // Cập nhật trạng thái nếu cần
+        //            }
+
+        //            _context.Sanpham.Update(sanpham);
+        //        }
+        //    }
+
+        //    // Cập nhật trạng thái hóa đơn
+        //    hoaDon.status = "Hủy đơn";
+        //    hoaDon.Updated_at = DateTime.Now;
+
+        //    await _context.SaveChangesAsync();
+
+        //    return Ok(new BaseResponseDTO<object>
+        //    {
+        //        Code = 0,
+        //        Message = "Hoàn tiền và hủy đơn hàng thành công.",
+        //        Data = new
+        //        {
+        //            hoaDon.order_code,
+        //            hoaDon.status,
+        //            UpdatedAt = hoaDon.Updated_at
+        //        }
+        //    });
+        //}
+
+        /// <summary>
+        /// Xác nhận hủy đơn hàng 
+        /// </summary>
+        /// <param name="orderCode"></param>
+        /// <returns>Xác nhận hủy đơn hàng </returns>
+        [Authorize]
+        [HttpPut("XacNhanHuyDon/{orderCode}")]
+        public async Task<ActionResult<BaseResponseDTO<object>>> XacNhanHuyDon(string orderCode)
+        {
+            // Tìm hóa đơn dựa trên OrderCode
+            var hoaDon = await _context.HoaDons
+                .Include(h => h.KhachHang)  // Bao gồm thông tin khách hàng
+                .FirstOrDefaultAsync(hd => hd.order_code == orderCode);
+
+            if (hoaDon == null)
+            {
+                return NotFound(new BaseResponseDTO<object>
+                {
+                    Code = 404,
+                    Message = "Không tìm thấy đơn hàng với mã này."
+                });
+            }
+            // nếu hoadon khác status Chờ xữ lý hủy đơn
+            if (hoaDon.status != "Chờ xử lý hủy đơn")
+            {
+                return BadRequest(new BaseResponseDTO<object>
+                {
+                    Code = 400,
+                    Message = "Đơn hàng không ở trạng thái 'Chờ xử lý hủy đơn'."
+                });
+            }
+
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler(); // dùng để trích xuất thông tin mã hóa token
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+
+            if (hotenToken == null)
+            {
+                return Unauthorized(new { message = "Không thể xác định người dùng từ token." });
+            }
+
+            // Tìm giao dịch liên quan trong bảng PaymentTransactions
+            var giaodich = await _context.PaymentTransactions
+                .FirstOrDefaultAsync(pt => pt.OrderId == orderCode && pt.Status == "Success");
+
+            if (giaodich == null)
+            {
+                return BadRequest(new BaseResponseDTO<object>
+                {
+                    Code = 400,
+                    Message = "Không tìm thấy giao dịch hợp lệ cho đơn hàng này."
+                });
+            }
+
+            // Gọi API hoàn tiền của MoMo
+            var refundResponse = await _momoService.RefundAsync(giaodich.TransactionId, (double)giaodich.Amount);
+
+            if (refundResponse.ErrorCode != 0)
+            {
+                return BadRequest(new BaseResponseDTO<object>
+                {
+                    Code = 400,
+                    Message = $"Hoàn tiền thất bại: {refundResponse.Message}"
+                });
+            }
+
+            // Cập nhật trạng thái giao dịch thành "Đã hoàn tiền"
+            giaodich.Status = "Đã hoàn tiền";
+            giaodich.ResponseMessage = "Hoàn tiền thành công";
+            giaodich.Updated_at = DateTime.Now;
+            giaodich.UpdatedBy = hotenToken;
+            _context.PaymentTransactions.Update(giaodich);
+
+            // Hoàn lại số lượng sản phẩm
+            var chiTietHoaDon = await _context.HoaDonChiTiets.Where(ct => ct.bill_id == hoaDon.Id).ToListAsync();
+            foreach (var chiTiet in chiTietHoaDon)
+            {
+                var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
+                if (sanpham != null)
+                {
+                    sanpham.Soluong += chiTiet.quantity; // Hoàn lại số lượng
+                    if (sanpham.Soluong > 0 && sanpham.Trangthai == "Hết hàng")
+                    {
+                        sanpham.Trangthai = "Còn hàng"; // Cập nhật trạng thái nếu cần
+                    }
+
+                    _context.Sanpham.Update(sanpham);
+                }
+            }
+
+            // Cập nhật trạng thái hóa đơn
+            hoaDon.status = "Hủy đơn";
+            hoaDon.Updated_at = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            // Lấy email của khách hàng
+            var khEmail = hoaDon.KhachHang?.EmailDiaChi; // Lấy email của khách hàng từ thông tin hóa đơn
+
+            // Kiểm tra nếu có email khách hàng và gửi email thông báo
+            if (!string.IsNullOrEmpty(khEmail))
+            {
+                var emailSub = "Thông báo hủy đơn hàng";
+                var emailContent = $@"
+        <html>
+        <body>
+            <table align='center' border='0' cellpadding='0' cellspacing='0' width='600' style='border: 1px solid #cccccc;'>
+                <tr>
+                    <td align='center' bgcolor='#007bff' style='padding: 20px 0;'>
+                        <h1 style='color: #ffffff; margin: 0;'>Cửa hàng trái cây</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td style='padding: 20px;'>
+                        <p style='margin: 0; font-size: 18px;'>Xin chào,</p>
+                        <p style='margin: 10px 0;'>
+                            Đơn hàng của bạn: (<strong> {hoaDon.order_code}</strong>) đã được hủy 
+                        </p> 
+                          <p style='margin: 10px 0;'>
+                            số tiền:(<strong>:{giaodich.Amount:N0} VND đã được hoàn lại qua MoMo.</strong>) 
+                        </p> 
+
+                        <p style='margin: 10px 0;'>
+                            Nếu bạn có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua email hoặc số điện thoại hỗ trợ.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align='center' bgcolor='#f8f9fa' style='padding: 20px;'>
+                        <p style='margin: 0; font-size: 14px; color: #999999;'>Đây là email tự động, vui lòng không trả lời email này.</p>
+                        <p style='margin: 5px 0; font-size: 14px; color: #999999;'>&copy; 2025 Cửa hàng trái cây. All rights reserved.</p>
+                    </td>
+                </tr>
+            </table>
+        </body>
+        </html>";
+
+                // Gửi email trong nền (background)
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        Console.WriteLine($"Đang gửi email đến: {khEmail}");
+                        await _emailHelper.GuiEmailAsync(khEmail, emailSub, emailContent);
+                        Console.WriteLine("Gửi email thành công!");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Lỗi khi gửi email: {ex.Message}");
+                    }
+                });
+            }
+            else
+            {
+                Console.WriteLine("Không có email khách hàng để gửi thông báo.");
+            }
+
+            return Ok(new BaseResponseDTO<object>
+            {
+                Code = 0,
+                Message = "Hoàn tiền và hủy đơn hàng thành công.",
+                Data = new
+                {
+                    hoaDon.order_code,
+                    hoaDon.status,
+                    UpdatedAt = hoaDon.Updated_at
+                }
+            });
+        }
 
 
         /// <summary>

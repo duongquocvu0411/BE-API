@@ -174,10 +174,10 @@ const ModlaSanpham = ({
       hasError = true;
     }
 
-    if (!trangthai) {
-      toast.error("Vui lòng chọn trạng thái sản phẩm.", { autoClose: 3000 });
-      hasError = true;
-    }
+    // if (!trangthai) {
+    //   toast.error("Vui lòng chọn trạng thái sản phẩm.", { autoClose: 3000 });
+    //   hasError = true;
+    // }
 
     if (!isEdit && !hinhanh) {
       toast.error("Vui lòng chọn hình ảnh chính.", { autoClose: 3000 });
@@ -235,10 +235,10 @@ const ModlaSanpham = ({
         : `${process.env.REACT_APP_BASEURL}/api/sanpham`;
 
       // Gửi CreatedBy khi POST và UpdatedBy khi PUT
-      if (!isEdit) {
-        formData.append("created_By", loggedInUser);  // Chỉ gửi CreatedBy khi POST
-      }
-      formData.append("updated_By", loggedInUser);  // Gửi UpdatedBy cả khi POST và PUT
+      // if (!isEdit) {
+       
+      // }
+    
 
       const response = await axios({
         method,
@@ -373,7 +373,7 @@ const ModlaSanpham = ({
             </Form.Group>
 
             {/* Trạng thái */}
-            <Form.Group className="mb-4">
+            {/* <Form.Group className="mb-4">
               <Form.Label className="fw-bold">
                 <i className="bi bi-toggle2-off"></i> Trạng thái
               </Form.Label>
@@ -387,7 +387,7 @@ const ModlaSanpham = ({
                 <option value="Còn hàng">Còn hàng</option>
                 <option value="Hết hàng">Hết hàng</option>
               </Form.Control>
-            </Form.Group>
+            </Form.Group> */}
 
             {/* Giá */}
             <Form.Group className="mb-4">
