@@ -379,6 +379,14 @@
             </summary>
             <returns> Thêm mới khách hàng</returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.KhachHangController.CreateOrder(System.Int32,System.String)">
+            <summary>
+            Tạo đơn giao hàng nhanh
+            </summary>
+            <param name="id"></param>
+            <param name="idShop"></param>
+            <returns>Tạo đơn giao hàng nhanh</returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.KhachHangController.DeleteKhachHang(System.Int32)">
             <summary>
             Xóa khách hàng theo {id} 

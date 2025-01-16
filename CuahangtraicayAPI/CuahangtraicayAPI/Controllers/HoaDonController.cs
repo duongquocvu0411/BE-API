@@ -88,6 +88,7 @@ namespace CuahangtraicayAPI.Controllers
                 order_code = orderCode,
                 Thanhtoan = hoaDonDto.PaymentMethod,
                 status = hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.Thanhtoan == "Momo" ? "Chờ thanh toán" : "Chờ xử lý", // Xử lý đúng trạng thái
+                Ghn = "Chưa lên đơn",
                 UpdatedBy = "Chưa có tác động"
             };
 

@@ -20,9 +20,11 @@ namespace CuahangtraicayAPI.Model
 
         public string UpdatedBy { get; set; }
         public string status { get; set; }
+        public string Ghn { get; set; }
 
         // Định nghĩa quan hệ với Khách Hàng
         public KhachHang KhachHang { get; set; }
+
         public string Thanhtoan { get; set; } // "COD" hoặc "Online"
 
         // Định nghĩa quan hệ một-nhiều với HoaDonChiTiet

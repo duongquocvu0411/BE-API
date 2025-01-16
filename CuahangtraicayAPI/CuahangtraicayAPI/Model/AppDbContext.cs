@@ -41,7 +41,7 @@ public class AppDbContext : DbContext
 
     public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
 
-
+    public DbSet<GhnOrder> GhnOrders { get; set; }
     // Cấu hình mối quan hệ và chuyển đổi dữ liệu
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

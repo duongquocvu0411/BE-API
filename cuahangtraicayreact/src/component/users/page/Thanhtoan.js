@@ -194,6 +194,7 @@ const Thanhtoan = () => {
         sanphamIds: giohang.map((sanpham) => sanpham.id),
         quantities: giohang.map((sanpham) => sanpham.soLuong),
         paymentMethod: paymentMethod, // Lựa chọn phương thức thanh toán
+        
         updated_By: "Chưa có tác động",
       };
 

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
 using Microsoft.AspNetCore.Authorization;
 using CuahangtraicayAPI.DTO;
+using CuahangtraicayAPI.Services;
+using CuahangtraicayAPI.Model.ghn;
+using System.IdentityModel.Tokens.Jwt;
 
 
 namespace CuahangtraicayAPI.Controllers
@@ -15,12 +18,16 @@ namespace CuahangtraicayAPI.Controllers
     [ApiController]
     public class KhachHangController : ControllerBase
     {
+        private readonly IGhnService _ghnService;
         private readonly AppDbContext _context;
 
-        public KhachHangController(AppDbContext context)
+        public KhachHangController(AppDbContext context, IGhnService ghnService)
         {
             _context = context;
+            _ghnService = ghnService;
         }
+    
+
 
         /// <summary>
         /// Lấy danh sách của Khách hàng và hóa đơn
@@ -45,6 +52,9 @@ namespace CuahangtraicayAPI.Controllers
                 Message =" Success"
             });
         }
+
+
+
 
         /// <summary>
         /// Xem khách hàng theo id có hóa đơn, hóa đơn chi tiết
@@ -93,6 +103,7 @@ namespace CuahangtraicayAPI.Controllers
                     order_code = hd.order_code,
                     thanhtoan = hd.Thanhtoan,
                     status = hd.status,
+                    ghn = hd.Ghn,
                     hoaDonChiTiets = hd.HoaDonChiTiets.Select(hdct => new
                     {
                         tieude = hdct.SanPham?.Tieude,
@@ -151,6 +162,115 @@ namespace CuahangtraicayAPI.Controllers
             });
         }
 
+
+        /// <summary>
+        /// Tạo đơn giao hàng nhanh
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="idShop"></param>
+        /// <returns>Tạo đơn giao hàng nhanh</returns>
+
+        [HttpPost("{id}/create-order")]
+        public async Task<IActionResult> CreateOrder(int id, string idShop)
+        {
+            // Lấy thông tin khách hàng
+            var khachHang = GetKhachHangById(id);
+            if (khachHang == null)
+                return NotFound(new { message = "Khách hàng không tồn tại." });
+
+            // Lấy hóa đơn đầu tiên của khách hàng
+            var hoaDon = khachHang.HoaDons.FirstOrDefault();
+            if (hoaDon == null)
+                return BadRequest(new { message = "Khách hàng không có hóa đơn hợp lệ." });
+
+            // Kiểm tra trạng thái hóa đơn
+            if (hoaDon.status == "Hủy đơn")
+                return BadRequest(new { message = "Không thể lên đơn hàng với trạng thái 'Hủy đơn'." });
+
+            // Kiểm tra nếu ClientOrderCode đã tồn tại trong GhnOrders
+            var existingOrder = await _context.GhnOrders
+                .FirstOrDefaultAsync(o => o.Client_order_code == hoaDon.order_code);
+
+            if (existingOrder != null)
+            {
+                // Nếu mã đã tồn tại, trả về lỗi và không cho phép lên đơn
+                return BadRequest(new
+                {
+                    message = "Mã đơn hàng này đã được sử dụng để tạo đơn GHN.",
+                    //existingOrderId = existingOrder.ghn_order_id // Trả về mã GHN đã tồn tại nếu cần
+                });
+            }
+
+            // Tiếp tục xử lý lên đơn nếu mã không tồn tại
+            int codAmount = (hoaDon.Thanhtoan == "Momo" || hoaDon.Thanhtoan == "VnPay")  ? 0 : (int)hoaDon.total_price;
+
+            var request = new GhnOrderRequest
+            {
+                ShopId = idShop,
+                ToName = $"{khachHang.Ho} {khachHang.Ten}",
+                ToPhone = khachHang.Sdt,
+                ToAddress = khachHang.DiaChiCuThe,
+                ToWardName = khachHang.xaphuong,
+                ToDistrictName = khachHang.tinhthanhquanhuyen,
+                ToProvinceName = khachHang.ThanhPho,
+                ClientOrderCode = hoaDon.order_code,
+                CodAmount = codAmount,
+                InsuranceValue = hoaDon.total_price > 5000000 ? 5000000 : (int)hoaDon.total_price,
+                Items = hoaDon.HoaDonChiTiets.Select(hdct => new GhnOrderItem
+                {
+                    Name = hdct.SanPham?.Tieude ?? "Sản phẩm",
+                    Code = $"SP{hdct.Id}",
+                    Quantity = hdct.quantity,
+                    Price = (int)hdct.price,
+                    Category = new GhnCategory { Level1 = "Thực phẩm" }
+                }).ToList()
+            };
+
+            // Gửi yêu cầu tạo đơn hàng GHN
+            var ghnResponse = await _ghnService.CreateOrderAsync(request);
+
+            // Lấy mã đơn hàng GHN từ phản hồi
+            var ghnOrderId = ghnResponse.Data.OrderCode;
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
+            var handler = new JwtSecurityTokenHandler(); // dùng để trích xuất thông tin mã hóa token
+            var jwtToken = handler.ReadJwtToken(token);
+            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            // Lưu thông tin đơn hàng GHN vào cơ sở dữ liệu
+            var ghnOrder = new GhnOrder
+            {
+                ghn_order_id = ghnOrderId,
+                Client_order_code = hoaDon.order_code,
+                Status = "Created",
+                UpdatedBy = hotenToken,
+                Created_at = DateTime.Now,
+                Updated_at = DateTime.Now
+            };
+
+            _context.GhnOrders.Add(ghnOrder);
+
+            // Cập nhật trạng thái GHN của hóa đơn
+            hoaDon.Ghn = "Đã lên đơn";
+            _context.HoaDons.Update(hoaDon);
+
+
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Tạo đơn hàng thành công.", ghn_order_id = ghnOrderId });
+        }
+
+
+
+
+        // Hàm lấy thông tin khách hàng
+        private KhachHang GetKhachHangById(int id)
+        {
+            return _context.KhachHangs
+                .Include(kh => kh.HoaDons)
+                .ThenInclude(hd => hd.HoaDonChiTiets)
+                .ThenInclude(hdct => hdct.SanPham)
+                .FirstOrDefault(kh => kh.Id == id);
+        }
         /// <summary>
         /// Xóa khách hàng theo {id} 
         /// </summary>

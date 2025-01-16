@@ -333,9 +333,81 @@ const Khachhangs = () => {
     }
   };
 
+
+  const handleLenDonHang = async (idKhachHang) => {
+    const token = cookies.adminToken; // Lấy token từ cookie
+    const idShop = "195758"; // Giá trị idShop mặc định
+
+    try {
+      // Gửi yêu cầu POST tới API lên đơn hàng
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/KhachHang/${idKhachHang}/create-order`,
+        {},
+        {
+          params: {
+            idShop, // Gửi idShop mặc định qua query param
+          },
+          headers: {
+            Authorization: `Bearer ${token}`, // Đính kèm token vào header
+          },
+        }
+      );
+
+      // Lấy mã đơn hàng từ phản hồi
+      const ghnOrderId = response.data.ghn_order_id;
+
+      // Thông báo thành công
+      toast.success(`Lên đơn hàng thành công! Mã đơn: ${ghnOrderId}`, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+
+      // Cập nhật trạng thái `ghn` cho hóa đơn mà không cần tải lại trang
+      setDanhSachKhachHang((prevList) =>
+        prevList.map((khachHang) => {
+          if (khachHang.id === idKhachHang) {
+            return {
+              ...khachHang,
+              hoaDons: khachHang.hoaDons.map((hoaDon) =>
+                hoaDon.ghn === "Chưa lên đơn"
+                  ? { ...hoaDon, ghn: "Đã lên đơn", ghn_order_id: ghnOrderId }
+                  : hoaDon
+              ),
+            };
+          }
+          return khachHang;
+        })
+      );
+
+      // Cập nhật danh sách hiển thị
+      setKhachHangHienThi((prevList) =>
+        prevList.map((khachHang) => {
+          if (khachHang.id === idKhachHang) {
+            return {
+              ...khachHang,
+              hoaDons: khachHang.hoaDons.map((hoaDon) =>
+                hoaDon.ghn === "Chưa lên đơn"
+                  ? { ...hoaDon, ghn: "Đã lên đơn", ghn_order_id: ghnOrderId }
+                  : hoaDon
+              ),
+            };
+          }
+          return khachHang;
+        })
+      );
+    } catch (error) {
+      console.error("Có lỗi khi lên đơn hàng:", error);
+      toast.error("Có lỗi khi lên đơn hàng!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  };
+
+
   const handleXacNhanHuyDon = async (orderCode) => {
     const token = cookies.adminToken; // Lấy token từ cookie
-  
+
     try {
       // Gọi API xác nhận hủy đơn
       const response = await axios.put(
@@ -347,16 +419,16 @@ const Khachhangs = () => {
           },
         }
       );
-  
+
       // Hiển thị thông báo thành công
       toast.success(`Đã hủy đơn hàng thành công!`, {
         position: "top-right",
         autoClose: 3000,
       });
-  
+
       // Cập nhật trạng thái đơn hàng trong danh sách
       setDanhSachKhachHang((prevList) =>
-        prevList.map((khachHang) => { 
+        prevList.map((khachHang) => {
           if (khachHang.hoaDons) {// duyệt qua danh sách hoa don
             khachHang.hoaDons = khachHang.hoaDons.map((hoaDon) =>
               hoaDon.order_code === orderCode  // kiểm tra mã hóa đơn trùng với orderCode 
@@ -367,7 +439,7 @@ const Khachhangs = () => {
           return khachHang;
         })
       );
-  
+
       // duyệt qua danh sách hoadon không cần phải load website
       setKhachHangHienThi((prevList) =>
         prevList.map((khachHang) => {
@@ -389,7 +461,7 @@ const Khachhangs = () => {
       });
     }
   };
-  
+
   return (
     <div id="wrapper">
       <SiderbarAdmin />
@@ -512,6 +584,20 @@ const Khachhangs = () => {
                                     >
                                       <i className="bi bi-eye"></i>
                                     </button>
+                                    {item.hoaDons.map((hoaDon) =>
+                                      hoaDon.ghn === "Chưa lên đơn" ? (
+                                        <button
+                                          key={hoaDon.id}
+                                          className="btn btn-primary btn-sm me-2"
+                                          title="Xác nhận lên đơn hàng"
+                                          onClick={() => handleLenDonHang(item.id)}
+                                        >
+                                          <i className="fas fa-truck"></i> Lên đơn
+                                        </button>
+                                      ) : (
+                                        <span className="badge bg-success">Đã lên đơn</span>
+                                      )
+                                    )}
                                     {item.hoaDons.map((hoaDon) =>
                                       hoaDon.status === "Chờ xử lý hủy đơn" ? (
                                         <button

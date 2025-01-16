@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using CuahangtraicayAPI.Model.ConfigMomo;
 using CuahangtraicayAPI.token;
+using CuahangtraicayAPI.Model.ghn;
 
 namespace CuahangtraicayAPI
 {
@@ -31,7 +32,11 @@ namespace CuahangtraicayAPI
 
             // Đăng ký dịch vụ IMemoryCache lưu bộ nhớ mã xác thực và username trong adminController
             builder.Services.AddMemoryCache();
+            // Đọc cấu hình GHN từ `appsettings.json`
+            builder.Services.Configure<GhnSettings>(builder.Configuration.GetSection("GHN"));
 
+            // Đăng ký HttpClient cho IGhnService
+            builder.Services.AddHttpClient<IGhnService, GhnService>();
             // đăng ký VnPay service
             builder.Services.AddScoped<IVnPayService, VnPayService>();
             // đang ký email
@@ -40,7 +45,7 @@ namespace CuahangtraicayAPI
             // đăng ký backroud service 
             builder.Services.AddHostedService<SaleUpdateService>();
             //đăng ký giao hàng nhanh
-            builder.Services.AddHttpClient<GhnService>();
+            //builder.Services.AddHttpClient<GhnService>();
 
             var API = "allApi";
             builder.Services.AddCors(ots =>
