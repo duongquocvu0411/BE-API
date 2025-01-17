@@ -10,6 +10,8 @@ using System.Text.Json.Serialization;
 using CuahangtraicayAPI.Model.ConfigMomo;
 using CuahangtraicayAPI.token;
 using CuahangtraicayAPI.Model.ghn;
+using CuahangtraicayAPI.Services.gn;
+
 
 namespace CuahangtraicayAPI
 {
@@ -18,6 +20,7 @@ namespace CuahangtraicayAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+        
 
             // Thêm AppDbContext với SQL Server
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -34,7 +37,8 @@ namespace CuahangtraicayAPI
             builder.Services.AddMemoryCache();
             // Đọc cấu hình GHN từ `appsettings.json`
             builder.Services.Configure<GhnSettings>(builder.Configuration.GetSection("GHN"));
-
+    builder.Services.AddScoped<ISyncGhnStatusService, SyncGhnStatusService>();
+            builder.Services.AddHostedService<GhnSyncBackgroundService>();
             // Đăng ký HttpClient cho IGhnService
             builder.Services.AddHttpClient<IGhnService, GhnService>();
             // đăng ký VnPay service
@@ -153,7 +157,7 @@ namespace CuahangtraicayAPI
          
             app.UseCors("allApi");
             app.UseHttpsRedirection();
-            //app.UseMiddleware<TokenRevocationMiddleware>();
+            app.UseMiddleware<TokenRevocationMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseStaticFiles();

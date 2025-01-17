@@ -104,25 +104,73 @@ const Tracuu = () => {
   const getStatusClass = (status) => {
     switch (status) {
       case 'Đã Thanh toán':
-        return ' bg-info text-dark border border-info'
+        return { text: 'Đã Thanh toán', class: 'bg-info text-dark border border-info' }; // Màu xanh nhạt cho đã thanh toán
       case 'Đang giao':
-        return 'bg-warning text-dark';  // Màu vàng cho đang giao
+        return { text: 'Đang giao', class: 'bg-warning text-dark' }; // Màu vàng cho đang giao
       case 'Đã giao thành công':
-        return 'bg-success text-white';  // Màu xanh cho giao thành công
+        return { text: 'Đã giao thành công', class: 'bg-success text-white' }; // Màu xanh lá cho giao thành công
       case 'Giao không thành công':
-        return 'bg-danger text-white';  // Màu đỏ cho không thành công
+        return { text: 'Giao không thành công', class: 'bg-danger text-white' }; // Màu đỏ cho không thành công
       case 'Hủy đơn':
-        return 'bg-secondary text-white';  // Màu xám cho hủy đơn
+        return { text: 'Hủy đơn', class: 'bg-secondary text-white' }; // Màu xám cho hủy đơn
       case 'Thanh toán thất bại':
-        return 'bg-secondary text-white';
+        return { text: 'Thanh toán thất bại', class: 'bg-secondary text-white' }; // Màu xám cho thanh toán thất bại
       case 'Chờ xử lý':
-        return 'bg-info text-white';  // Màu xanh da trời cho chờ xử lý
-      case 'Chờ xử lý hủy đơn': // Mới thêm
-        return 'bg-warning text-white';
+        return { text: 'Chờ xử lý', class: 'bg-info text-white' }; // Màu xanh da trời cho chờ xử lý
+      case 'Chờ xử lý hủy đơn':
+        return { text: 'Chờ xử lý hủy đơn', class: 'bg-warning text-white' }; // Màu vàng cho chờ xử lý hủy đơn
+
+      // Trạng thái từ GHN
+      case 'ready_to_pick':
+        return { text: 'Mới tạo đơn hàng', class: 'bg-light text-dark' };
+      case 'picking':
+        return { text: 'Nhân viên đang lấy hàng', class: 'bg-primary text-white' };
+      case 'cancel':
+        return { text: 'Hủy đơn hàng', class: 'bg-danger text-white' };
+      case 'money_collect_picking':
+        return { text: 'Đang thu tiền người gửi', class: 'bg-warning text-dark' };
+      case 'picked':
+        return { text: 'Nhân viên đã lấy hàng', class: 'bg-info text-white' };
+      case 'storing':
+        return { text: 'Hàng đang nằm ở kho', class: 'bg-secondary text-white' };
+      case 'transporting':
+        return { text: 'Đang luân chuyển hàng', class: 'bg-warning text-dark' };
+      case 'sorting':
+        return { text: 'Đang phân loại hàng hóa', class: 'bg-primary text-white' };
+      case 'delivering':
+        return { text: 'Nhân viên đang giao cho người nhận', class: 'bg-warning text-dark' };
+      case 'money_collect_delivering':
+        return { text: 'Nhân viên đang thu tiền người nhận', class: 'bg-warning text-dark' };
+      case 'delivered':
+        return { text: 'Nhân viên đã giao hàng thành công', class: 'bg-success text-white' };
+      case 'delivery_fail':
+        return { text: 'Nhân viên giao hàng thất bại', class: 'bg-danger text-white' };
+      case 'waiting_to_return':
+        return { text: 'Đang đợi trả hàng về cho người gửi', class: 'bg-secondary text-white' };
+      case 'return':
+        return { text: 'Trả hàng', class: 'bg-warning text-dark' };
+      case 'return_transporting':
+        return { text: 'Đang luân chuyển hàng trả', class: 'bg-warning text-dark' };
+      case 'return_sorting':
+        return { text: 'Đang phân loại hàng trả', class: 'bg-primary text-white' };
+      case 'returning':
+        return { text: 'Nhân viên đang đi trả hàng', class: 'bg-info text-white' };
+      case 'return_fail':
+        return { text: 'Nhân viên trả hàng thất bại', class: 'bg-danger text-white' };
+      case 'returned':
+        return { text: 'Nhân viên trả hàng thành công', class: 'bg-success text-white' };
+      case 'exception':
+        return { text: 'Đơn hàng ngoại lệ không nằm trong quy trình', class: 'bg-dark text-white' };
+      case 'damage':
+        return { text: 'Hàng bị hư hỏng', class: 'bg-danger text-white' };
+      case 'lost':
+        return { text: 'Hàng bị mất', class: 'bg-danger text-white' };
       default:
-        return '';  // Không có class nếu không có trạng thái
+        return { text: 'Trạng thái không xác định', class: 'bg-light text-muted' };
     }
   };
+
+
   const getTrangthaidonhangGHN = (status) => {
     switch (status) {
       case "ready_to_pick":
@@ -175,6 +223,8 @@ const Tracuu = () => {
   };
 
 
+  // const statusInfo = getStatusClass(dathangchitiet.trangThai);
+  const statusInfo = dathangchitiet ? getStatusClass(dathangchitiet.trangThai) : { text: "Trạng thái không xác định", class: "bg-light text-muted" };
 
   return (
     <>
@@ -203,9 +253,9 @@ const Tracuu = () => {
         </div>
       </div>
 
-      {/* <div className="container my-5 py-5" data-aos="fade-up"> */}
+      <div className="container my-5 py-5" data-aos="fade-up">
 
-      {/* <form onSubmit={handleLookupOrder} className="mb-5">
+        <form onSubmit={handleLookupOrder} className="mb-5">
           <div className="input-group input-group-lg shadow-sm">
             <input
               type="text"
@@ -219,10 +269,10 @@ const Tracuu = () => {
               <i className="fas fa-search"></i> Tra cứu
             </button>
           </div>
-        </form> */}
+        </form>
 
 
-      {/* {error && <div className="alert alert-danger text-center">{error}</div>}
+        {error && <div className="alert alert-danger text-center">{error}</div>}
 
 
         {dathangchitiet && (
@@ -233,15 +283,17 @@ const Tracuu = () => {
             </div>
             <div className="card-body">
               <p className="card-text">
-                <strong>Trạng thái đơn hàng:</strong>{" "}
-                <span className={`badge ${getStatusClass(dathangchitiet.trangThai)}`}>{dathangchitiet.trangThai}</span>
+                <strong>Trạng thái đơn hàng:</strong>{' '}
+                <span className={`badge ${statusInfo.class}`}>
+                  {statusInfo.text}
+                </span>
               </p>
               <p className="card-text">
                 <strong>Phương thức thanh toán:</strong>{" "}
                 <span className="">{dathangchitiet.phuongThucThanhToan}</span>
               </p>
 
-        
+
               <h6 className="mt-4 text-primary">
                 <i className="fas fa-cogs"></i> Chi tiết sản phẩm:
               </h6>
@@ -293,80 +345,80 @@ const Tracuu = () => {
 
             </div>
           </div>
-        )} */}
-      <div className="container my-5 py-5" data-aos="fade-up">
-        <h3 className="mb-4 text-center">Tra cứu mã đơn </h3>
-        {/* Form tra cứu mã đơn GHN */}
-        <form onSubmit={handleLookupGhnOrder} className="mb-5">
-          <div className="input-group input-group-lg shadow-sm">
-            <input
-              type="text"
-              className="form-control border-success rounded-3"
-              placeholder="Nhập mã đơn hàng GHN của bạn"
-              value={maDonGhn}
-              onChange={(e) => setMaDonGhn(e.target.value)}
-              aria-label="Mã đơn hàng GHN"
-            />
-            <button className="btn btn-success rounded-3" type="submit">
-              <i className="fas fa-search"></i> Tra cứu GHN
-            </button>
-          </div>
-        </form>
-
-        {/* Hiển thị lỗi nếu có */}
-        {errorGhn && <div className="alert alert-danger text-center">{errorGhn}</div>}
-
-        {/* Hiển thị dữ liệu từ GHN */}
-        {ghnData && (
-          <div className="card shadow-lg border-0 mb-5">
-            <div className="card-header bg-success text-white d-flex justify-content-between align-items-center rounded-top">
-              <h5 className="mb-0">Chi tiết đơn hàng GHN: {ghnData.order_code}</h5>
-              <small className="text-white">Ngày tạo: {new Date(ghnData.created_date).toLocaleDateString()}</small>
+        )}
+        <div className="container my-5 py-5" data-aos="fade-up">
+          <h3 className="mb-4 text-center">Tra cứu mã đơn </h3>
+          {/* Form tra cứu mã đơn GHN */}
+          <form onSubmit={handleLookupGhnOrder} className="mb-5">
+            <div className="input-group input-group-lg shadow-sm">
+              <input
+                type="text"
+                className="form-control border-success rounded-3"
+                placeholder="Nhập mã đơn hàng GHN của bạn"
+                value={maDonGhn}
+                onChange={(e) => setMaDonGhn(e.target.value)}
+                aria-label="Mã đơn hàng GHN"
+              />
+              <button className="btn btn-success rounded-3" type="submit">
+                <i className="fas fa-search"></i> Tra cứu GHN
+              </button>
             </div>
-            <div className="card-body">
-              <p className="card-text">
-                <strong>Trạng thái:</strong>{" "}
-                <span className="badge bg-primary">{getTrangthaidonhangGHN(ghnData.status)}</span>
-              </p>
-              <p className="card-text">
-                <strong>Người nhận:</strong> {ghnData.to_name} - {ghnData.to_phone}
-              </p>
-              <p className="card-text">
-                <strong>Địa chỉ giao hàng:</strong> {ghnData.to_address}
-              </p>
-              <p className="card-text">
-                <strong>Tổng giá trị (COD):</strong> {ghnData.cod_amount.toLocaleString("vi-VN")} VND
-              </p>
+          </form>
 
-              {/* Chi tiết sản phẩm */}
-              <h6 className="mt-4 text-success">
-                <i className="fas fa-box"></i> Chi tiết sản phẩm:
-              </h6>
-              <div className="table-responsive">
-                <table className="table table-striped table-hover">
-                  <thead className="table-success">
-                    <tr>
-                      <th scope="col">Tên sản phẩm</th>
-                      <th scope="col">Mã sản phẩm</th>
-                      <th scope="col">Số lượng</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ghnData.items.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.name}</td>
-                        <td>{item.code}</td>
-                        <td>{item.quantity}</td>
+          {/* Hiển thị lỗi nếu có */}
+          {errorGhn && <div className="alert alert-danger text-center">{errorGhn}</div>}
+
+          {/* Hiển thị dữ liệu từ GHN */}
+          {ghnData && (
+            <div className="card shadow-lg border-0 mb-5">
+              <div className="card-header bg-success text-white d-flex justify-content-between align-items-center rounded-top">
+                <h5 className="mb-0">Chi tiết đơn hàng GHN: {ghnData.order_code}</h5>
+                <small className="text-white">Ngày tạo: {new Date(ghnData.created_date).toLocaleDateString()}</small>
+              </div>
+              <div className="card-body">
+                <p className="card-text">
+                  <strong>Trạng thái:</strong>{" "}
+                  <span className="badge bg-primary">{getTrangthaidonhangGHN(ghnData.status)}</span>
+                </p>
+                <p className="card-text">
+                  <strong>Người nhận:</strong> {ghnData.to_name} - {ghnData.to_phone}
+                </p>
+                <p className="card-text">
+                  <strong>Địa chỉ giao hàng:</strong> {ghnData.to_address}
+                </p>
+                <p className="card-text">
+                  <strong>Tổng giá trị (COD):</strong> {ghnData.cod_amount.toLocaleString("vi-VN")} VND
+                </p>
+
+                {/* Chi tiết sản phẩm */}
+                <h6 className="mt-4 text-success">
+                  <i className="fas fa-box"></i> Chi tiết sản phẩm:
+                </h6>
+                <div className="table-responsive">
+                  <table className="table table-striped table-hover">
+                    <thead className="table-success">
+                      <tr>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Mã sản phẩm</th>
+                        <th scope="col">Số lượng</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {ghnData.items.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.name}</td>
+                          <td>{item.code}</td>
+                          <td>{item.quantity}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-      {/* </div> */}
 
       {/* Modal xác nhận hủy đơn hàng */}
       <Modal

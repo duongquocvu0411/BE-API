@@ -163,7 +163,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                                   </option>
 
                                   {/* Các trạng thái khác */}
-                                  {bill.thanhtoan !== "VnPay" &&
+                                  {/* {bill.thanhtoan !== "VnPay" &&
                                     bill.thanhtoan !== "Momo" &&
                                     bill.status !== "Chờ xử lý" && (
                                       <option value="Chờ xử lý">Chờ xử lý</option>
@@ -179,7 +179,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                                     )}
                                   {bill.status !== "Giao không thành công" && (
                                     <option value="Giao không thành công">Giao không thành công</option>
-                                  )}
+                                  )} */}
                                 </Form.Control>
 
                                 {/* Hiển thị spinner khi đang loading */}

@@ -250,6 +250,8 @@ namespace CuahangtraicayAPI.Controllers
 
             // Cập nhật trạng thái GHN của hóa đơn
             hoaDon.Ghn = "Đã lên đơn";
+            hoaDon.status = "Chờ lấy hàng";
+            hoaDon.UpdatedBy = hotenToken;
             _context.HoaDons.Update(hoaDon);
 
 

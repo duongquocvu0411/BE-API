@@ -212,12 +212,134 @@ const Khachhangs = () => {
       setIsLoading(false); // Tắt hiệu ứng loading sau khi hoàn thành
     }
   };
-
+  const ghnStatusMapping = {
+    ready_to_pick: { text: 'Mới tạo đơn hàng', bgColor: 'badge bg-light text-dark border' },
+    picking: { text: 'Nhân viên đang lấy hàng', bgColor: 'badge bg-primary text-white border' },
+    cancel: { text: 'Hủy đơn hàng', bgColor: 'badge bg-danger text-white border' },
+    money_collect_picking: { text: 'Đang thu tiền người gửi', bgColor: 'badge bg-warning text-dark border' },
+    picked: { text: 'Nhân viên đã lấy hàng', bgColor: 'badge bg-info text-white border' },
+    storing: { text: 'Hàng đang nằm ở kho', bgColor: 'badge bg-secondary text-white border' },
+    transporting: { text: 'Đang luân chuyển hàng', bgColor: 'badge bg-warning text-dark border' },
+    sorting: { text: 'Đang phân loại hàng hóa', bgColor: 'badge bg-primary text-white border' },
+    delivering: { text: 'Đang giao hàng', bgColor: 'badge bg-warning text-dark border' },
+    money_collect_delivering: { text: 'Đang thu tiền người nhận', bgColor: 'badge bg-warning text-dark border' },
+    delivered: { text: 'Giao hàng thành công', bgColor: 'badge bg-success text-white border' },
+    delivery_fail: { text: 'Giao hàng thất bại', bgColor: 'badge bg-danger text-white border' },
+    waiting_to_return: { text: 'Đang đợi trả hàng', bgColor: 'badge bg-secondary text-white border' },
+    return: { text: 'Đang trả hàng', bgColor: 'badge bg-warning text-dark border' },
+    return_transporting: { text: 'Luân chuyển hàng trả', bgColor: 'badge bg-warning text-dark border' },
+    return_sorting: { text: 'Phân loại hàng trả', bgColor: 'badge bg-primary text-white border' },
+    returning: { text: 'Nhân viên đang trả hàng', bgColor: 'badge bg-info text-white border' },
+    return_fail: { text: 'Trả hàng thất bại', bgColor: 'badge bg-danger text-white border' },
+    returned: { text: 'Trả hàng thành công', bgColor: 'badge bg-success text-white border' },
+    exception: { text: 'Đơn hàng ngoại lệ', bgColor: 'badge bg-dark text-white border' },
+    damage: { text: 'Hàng bị hư hỏng', bgColor: 'badge bg-danger text-white border' },
+    lost: { text: 'Hàng bị mất', bgColor: 'badge bg-danger text-white border' },
+    waiting: { text: 'Chờ xử lý', bgColor: 'badge bg-primary text-white border' }, 
+    
+  };
+  
 
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
     return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công');
   };
+
+  // const layTrangThaiDonHang = (hoaDons) => {
+  //   if (!hoaDons || hoaDons.length === 0) {
+  //     return {
+  //       text: 'Chưa có đơn hàng',
+  //       bgColor: 'badge bg-light text-muted border',
+  //       textColor: ''
+  //     };
+  //   }
+  //   const hoadonChoThanhToan = hoaDons.find(h => h.status === 'Đã Thanh toán');
+  //   if (hoadonChoThanhToan) {
+  //     return {
+  //       text: 'Đã Thanh toán',
+  //       bgColor: 'badge bg-info text-dark border border-info',
+  //     };
+  //   }
+  //   // Trạng thái "Đang giao"
+  //   const hoadonDangGiao = hoaDons.find(h => h.status === 'Đang giao');
+  //   if (hoadonDangGiao) {
+  //     return {
+  //       text: 'Đang giao',
+  //       bgColor: 'badge bg-warning text-dark border border-warning',
+  //       textColor: ''
+  //     };
+  //   }
+
+  //   // Trạng thái "Đã giao thành công"
+  //   const hoadonGiaoThanhCong = hoaDons.find(h => h.status === 'Đã giao thành công');
+  //   if (hoadonGiaoThanhCong) {
+  //     return {
+  //       text: 'Thành công',
+  //       bgColor: 'badge bg-success text-white border border-success shadow',
+  //       textColor: ''
+  //     };
+  //   }
+  //   // Trạng thái "Hủy đơn"
+  //   const hoadonHuy = hoaDons.find(h => h.status === 'Hủy đơn');
+  //   if (hoadonHuy) {
+  //     return {
+  //       text: 'Hủy đơn',
+  //       bgColor: 'badge bg-danger text-white border border-danger shadow',
+  //       textColor: ''
+  //     };
+  //   }
+  //   const hoadonchoxulyhuydon = hoaDons.find(h => h.status === 'Chờ xử lý hủy đơn');
+  //   if (hoadonchoxulyhuydon) {
+  //     return {
+  //       text: 'Chờ xử lý hủy đơn',
+  //       bgColor: 'badge bg-warning text-dark border border-warning',
+  //     };
+  //   }
+  //   // Trạng thái "Giao không thành công"
+  //   const hoadonKhongGiaoThanhCong = hoaDons.find(h => h.status === 'Giao không thành công');
+  //   if (hoadonKhongGiaoThanhCong) {
+  //     return {
+  //       text: 'Không thành công',
+  //       bgColor: 'badge bg-dark text-light border border-secondary',
+  //       textColor: ''
+  //     };
+  //   }
+
+  //   // Trạng thái "Chờ xử lý" (bổ sung logic kiểm tra)
+  //   const hoadonChoXuLy = hoaDons.find(h => h.status === 'Chờ xử lý');
+  //   if (hoadonChoXuLy) {
+  //     return {
+  //       text: 'Chờ xử lý',
+  //       bgColor: 'badge bg-primary text-white border border-primary shadow',
+  //       textColor: ''
+  //     };
+  //   }
+  //   const hoadonChothanhtoan = hoaDons.find(h => h.status === 'Chờ thanh toán');
+  //   if (hoadonChothanhtoan) {
+  //     return {
+  //       text: 'Chờ thanh toán',
+  //       bgColor: 'badge bg-warning text-dark border border-warning shadow-lg', // Màu vàng nổi bật
+  //       textColor: ''
+  //     };
+  //   }
+
+  //   const hoadonThanhtoanthatbai = hoaDons.find(h => h.status === 'Thanh toán thất bại');
+  //   if (hoadonThanhtoanthatbai) {
+  //     return {
+  //       text: 'Thanh toán thất bại',
+  //       bgColor: 'badge bg-danger text-dark border border-warning shadow-lg', // Màu vàng nổi bật
+  //       textColor: ''
+  //     };
+  //   }
+
+
+  //   // Mặc định nếu không có trạng thái phù hợp
+  //   return {
+  //     text: 'Chưa có đơn hàng',
+  //     bgColor: 'badge bg-light text-muted border',
+  //     textColor: ''
+  //   };
+  // };
 
   const layTrangThaiDonHang = (hoaDons) => {
     if (!hoaDons || hoaDons.length === 0) {
@@ -227,59 +349,6 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-    const hoadonChoThanhToan = hoaDons.find(h => h.status === 'Đã Thanh toán');
-    if (hoadonChoThanhToan) {
-      return {
-        text: 'Đã Thanh toán',
-        bgColor: 'badge bg-info text-dark border border-info',
-      };
-    }
-    // Trạng thái "Đang giao"
-    const hoadonDangGiao = hoaDons.find(h => h.status === 'Đang giao');
-    if (hoadonDangGiao) {
-      return {
-        text: 'Đang giao',
-        bgColor: 'badge bg-warning text-dark border border-warning',
-        textColor: ''
-      };
-    }
-
-    // Trạng thái "Đã giao thành công"
-    const hoadonGiaoThanhCong = hoaDons.find(h => h.status === 'Đã giao thành công');
-    if (hoadonGiaoThanhCong) {
-      return {
-        text: 'Thành công',
-        bgColor: 'badge bg-success text-white border border-success shadow',
-        textColor: ''
-      };
-    }
-    // Trạng thái "Hủy đơn"
-    const hoadonHuy = hoaDons.find(h => h.status === 'Hủy đơn');
-    if (hoadonHuy) {
-      return {
-        text: 'Hủy đơn',
-        bgColor: 'badge bg-danger text-white border border-danger shadow',
-        textColor: ''
-      };
-    }
-    const hoadonchoxulyhuydon = hoaDons.find(h => h.status === 'Chờ xử lý hủy đơn');
-    if (hoadonchoxulyhuydon) {
-      return {
-        text: 'Chờ xử lý hủy đơn',
-        bgColor: 'badge bg-warning text-dark border border-warning',
-      };
-    }
-    // Trạng thái "Giao không thành công"
-    const hoadonKhongGiaoThanhCong = hoaDons.find(h => h.status === 'Giao không thành công');
-    if (hoadonKhongGiaoThanhCong) {
-      return {
-        text: 'Không thành công',
-        bgColor: 'badge bg-dark text-light border border-secondary',
-        textColor: ''
-      };
-    }
-
-    // Trạng thái "Chờ xử lý" (bổ sung logic kiểm tra)
     const hoadonChoXuLy = hoaDons.find(h => h.status === 'Chờ xử lý');
     if (hoadonChoXuLy) {
       return {
@@ -288,32 +357,26 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-    const hoadonChothanhtoan = hoaDons.find(h => h.status === 'Chờ thanh toán');
-    if (hoadonChothanhtoan) {
+  
+    // Kiểm tra trạng thái từ GHN
+    const ghnOrder = hoaDons.find(h => ghnStatusMapping[h.status]);
+    if (ghnOrder) {
+      const mapping = ghnStatusMapping[ghnOrder.status];
       return {
-        text: 'Chờ thanh toán',
-        bgColor: 'badge bg-warning text-dark border border-warning shadow-lg', // Màu vàng nổi bật
-        textColor: ''
+        text: mapping.text,
+        bgColor: mapping.bgColor,
+        textColor: mapping.textColor || ''
       };
     }
-
-    const hoadonThanhtoanthatbai = hoaDons.find(h => h.status === 'Thanh toán thất bại');
-    if (hoadonThanhtoanthatbai) {
-      return {
-        text: 'Thanh toán thất bại',
-        bgColor: 'badge bg-danger text-dark border border-warning shadow-lg', // Màu vàng nổi bật
-        textColor: ''
-      };
-    }
-
-
+  
     // Mặc định nếu không có trạng thái phù hợp
     return {
-      text: 'Chưa có đơn hàng',
-      bgColor: 'badge bg-light text-muted border',
+      text: 'Trạng thái không xác định',
+      bgColor: 'badge bg-dark text-white border',
       textColor: ''
     };
   };
+  
 
   const handleHienThiModalXoa = (khachHang) => {
     setKhachHangXoa(khachHang); // Lưu thông tin khách hàng cần xóa

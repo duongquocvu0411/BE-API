@@ -42,7 +42,7 @@ const TrangChuAdmin = () => {
   const [cookies] = useCookies(['adminToken', 'loginhoten'])
 const layDoanhThuThang = async () => {
   const token = cookies.adminToken; // Lấy token từ cookie
-      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
+   
   
   try {
     const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/HoaDon/DoanhThuTheoTungThang`, {
@@ -50,7 +50,7 @@ const layDoanhThuThang = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("Data from API:", response.data); // Thêm dòng này
+    // console.log("Data from API:", response.data); // Thêm dòng này
     const duLieuDaSapXep = response.data.sort((a, b) => 
       a.year === b.month ? a.month - b.month : a.year - b.year
     );
@@ -65,7 +65,7 @@ const layDoanhThuThang = async () => {
   const laySoLuongKhachHangMoi = async () => {
     setDangtai(true);
     const token = cookies.adminToken; // Lấy token từ cookie
-      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
+   
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/khachhang/khachhangthangmoi`, {
         headers: {
@@ -82,7 +82,6 @@ const layDoanhThuThang = async () => {
 
   const layDoanhThuHomNay = async () => {
     const token = cookies.adminToken; // Lấy token từ cookie
-      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
     setDangtai(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/hoadon/DoanhThuHomNay`, {
@@ -101,7 +100,7 @@ const layDoanhThuThang = async () => {
   const laySanPhamBanChay = async () => {
     setDangtai(true);
     const token = cookies.adminToken; // Lấy token từ cookie
-    const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
+ 
     try {
       // Cập nhật URL API theo API mới đã tạo
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/HoaDon/SanPhamBanChayHienTai`,{
@@ -121,7 +120,7 @@ const layDoanhThuThang = async () => {
   const layTongSanPhamTonKho = async () => {
     setDangtai(true);
     const token = cookies.adminToken; // Lấy token từ cookie
-      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
+     
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/sanpham/TongSanPham`,{
         headers: {

@@ -388,23 +388,23 @@ namespace CuahangtraicayAPI.Controllers
             return Unauthorized(new { status = "error", message = "Mã OTP không hợp lệ hoặc đã hết hạn." });
         }
 
-        //[HttpPost("logout")]
-        //[Authorize]
-        //public IActionResult Logout()
-        //{
-        //    // Lấy token từ header Authorization
-        //    var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        [HttpPost("logout")]
+        [Authorize]
+        public IActionResult Logout()
+        {
+            // Lấy token từ header Authorization
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-        //    if (string.IsNullOrEmpty(token))
-        //    {
-        //        return BadRequest(new { status = "error", message = "Token không hợp lệ." });
-        //    }
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { status = "error", message = "Token không hợp lệ." });
+            }
 
-        //    // Thêm token vào danh sách bị thu hồi
-        //    _cache.Set($"revoked-token-{token}", true, TimeSpan.FromDays(7)); // Token bị vô hiệu trong 7 ngày (hoặc thời hạn của token)
+            // Thêm token vào danh sách bị thu hồi
+            _cache.Set($"revoked-token-{token}", true, TimeSpan.FromDays(7)); // Token bị vô hiệu trong 7 ngày (hoặc thời hạn của token)
 
-        //    return Ok(new { status = "success", message = "Đăng xuất thành công. Token đã bị vô hiệu hóa." });
-        //}
+            return Ok(new { status = "success", message = "Đăng xuất thành công. Token đã bị vô hiệu hóa." });
+        }
 
     }
 

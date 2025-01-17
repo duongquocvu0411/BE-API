@@ -52,7 +52,7 @@ const ModlaSanpham = ({
         console.log("Có lỗi khi lấy dữ liệu từ API ", error);
       });
   
-    console.log("Product data:", product); // Kiểm tra giá trị của `product`
+    // console.log("Product data:", product); // Kiểm tra giá trị của `product`
   
     if (isEdit && product) {
       setTieude(product.tieude || "");

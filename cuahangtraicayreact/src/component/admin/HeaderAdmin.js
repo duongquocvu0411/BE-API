@@ -29,7 +29,7 @@ const HeaderAdmin = () => {
           tieu_de: response.data.data[0].tieu_de,
           favicon: `${baseURL}${response.data.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
         });
-        console.log(thongTinWebsite.favicon)
+        // console.log(thongTinWebsite.favicon)
       }
     } catch (err) {
       console.error("Lỗi khi gọi API thông tin website:", err);
@@ -44,74 +44,66 @@ const HeaderAdmin = () => {
     setShowModal(true);
   };
 
-  // Confirm logout
-  // const handleXacNhanDangXuatTaiKhoan = async () => {
-  //   try {
-  //     const token = cookies.adminToken; // Lấy token từ cookie
-  
-  //     if (!token) {
-  //       toast.error("Không tìm thấy token đăng nhập. Vui lòng đăng nhập lại.", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //       });
-  //       navigate('/admin/Login');
-  //       return;
-  //     }
-  
-  //     console.log("Đang gửi yêu cầu logout với token:", token); // Debug token
-  
-  //     // Gọi API logout
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_BASEURL}/api/Admin/logout`,
-  //       {}, // Payload rỗng
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`, // Đính kèm token trong header
-  //         },
-  //       }
-  //     );
-  
-  //     if (response.status === 200 && response.data.status === "success") {
-  //       console.log("Logout thành công:", response.data.message); // Log thông báo thành công
-  
-  //       // Xóa token và các thông tin khác khỏi cookies
-  //       removeCookie('adminToken', { path: '/' });
-  //       removeCookie('loginTime', { path: '/' });
-  //       removeCookie('isAdminLoggedIn', { path: '/' });
-  
-  //       // Hiển thị thông báo thành công
-  //       toast.success("Đăng xuất thành công!", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //       });
-  
-  //       // Đóng modal và chuyển hướng đến trang đăng nhập
-  //       setShowModal(false);
-  //       navigate('/admin/Login');
-  //     } else {
-  //       throw new Error(response.data.message || "Đăng xuất thất bại.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Lỗi khi đăng xuất:", error);
-  
-  //     // Hiển thị thông báo lỗi nếu API thất bại
-  //     toast.error("Đăng xuất thất bại. Vui lòng thử lại.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //     });
-  //   }
-  // };
+ 
 
-  const handleXacNhanDangXuatTaiKhoan = () => {
-    // Clear localStorage and sessionStorage
-    removeCookie('adminToken', { path: '/' });
-    // removeCookie('loginhoten', { path: '/' });
-    removeCookie('loginTime', { path: '/' });
-    removeCookie('isAdminLoggedIn', { path: '/' });
-
-    // Close modal and navigate to login page
-    setShowModal(false);
-    navigate('/admin/Login');
+  const handleXacNhanDangXuatTaiKhoan = async () => {
+    try {
+      // Lấy token từ cookie hoặc localStorage
+      const token = cookies.adminToken; // Lấy token từ cookie
+  
+      if (!token) {
+        toast.error("Không tìm thấy token. Vui lòng đăng nhập lại.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        return;
+      }
+  
+      // Gửi yêu cầu đến API /logout
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/admin/logout`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      // Xử lý thành công
+      if (response.data.status === "success") {
+        toast.success(response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        console.log(response.data.message)
+  
+        // Xóa token trong cookies hoặc localStorage
+        localStorage.removeItem("adminToken");
+        removeCookie("adminToken", { path: "/" });
+        removeCookie("loginTime", { path: "/" });
+        removeCookie("isAdminLoggedIn", { path: "/" });
+  
+        // Điều hướng về trang đăng nhập
+        navigate("/admin/Login");
+      } else {
+        toast.error(response.data.message || "Đăng xuất thất bại.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      }
+    } catch (error) {
+      console.error("Lỗi khi đăng xuất:", error);
+      toast.error(
+        error.response?.data?.message || "Đã xảy ra lỗi khi đăng xuất.",
+        {
+          position: "top-right",
+          autoClose: 3000,
+        }
+      );
+    } finally {
+      setShowModal(false); // Đóng modal sau khi xử lý
+    }
   };
   
   // Close modal

@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\bannerts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\bannerts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\bannerimages .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\bannerimages .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\bannerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\bannerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\dto\\bannersdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\dto\\bannersdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +35,66 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Program.cs",
-              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Program.cs",
-              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Program.cs",
-              "RelativeToolTip": "CuahangtraicayAPI\\Program.cs",
-              "ViewState": "AgIAAIgAAAAAAAAAAAAQwJkAAAAJAAAAAAAAAA==",
+              "Title": "Bannerts.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Bannerts.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Bannerts.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Bannerts.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Bannerts.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-16T04:32:46.394Z",
+              "WhenOpened": "2025-01-17T04:36:38Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "KhachHangController.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
-              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
-              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
-              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
-              "ViewState": "AgIAAJ0AAAAAAAAAAAAqwK4AAAAJAAAAAAAAAA==",
+              "Title": "BannerImages .cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\BannerImages .cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\BannerImages .cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\BannerImages .cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\BannerImages .cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-16T01:38:04.328Z",
+              "WhenOpened": "2025-01-17T04:36:37.458Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BannersDTO.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\DTO\\BannersDTO.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\DTO\\BannersDTO.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\DTO\\BannersDTO.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\DTO\\BannersDTO.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAYwBEAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-17T04:19:57.429Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BannersController.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\BannersController.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\BannersController.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\BannersController.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\BannersController.cs",
+              "ViewState": "AgIAAIcAAAAAAAAAAAAowJsAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-17T04:03:59.721Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAywDwAAABeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-17T03:58:40.786Z",
               "EditorCaption": ""
             }
           ]

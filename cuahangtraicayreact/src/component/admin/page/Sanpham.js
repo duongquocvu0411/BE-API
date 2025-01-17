@@ -170,7 +170,7 @@ const SanPham = () => {
   const moModalChiTiet = async (sanphams_id) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/chitiets/${sanphams_id}`);
-      console.log(response.data.data);  // Xem dữ liệu có đầy đủ thông tin không
+      // console.log(response.data.data);  // Xem dữ liệu có đầy đủ thông tin không
       setNoiDungChiTiet(response.data.data); // Lưu dữ liệu chi tiết sản phẩm
       setHienThiModalChiTiet(true); // Hiển thị modal chi tiết
     } catch (error) {

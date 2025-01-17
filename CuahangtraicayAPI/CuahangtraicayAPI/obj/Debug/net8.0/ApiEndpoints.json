@@ -49,6 +49,16 @@
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.AdminController",
+    "Method": "Logout",
+    "RelativePath": "api/Admin/logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AdminController",
     "Method": "VerifyOtp",
     "RelativePath": "api/Admin/verify-otp",
     "HttpMethod": "POST",
@@ -1021,6 +1031,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.ghn.GhnSyncController",
+    "Method": "SyncStatuses",
+    "RelativePath": "api/GhnSync/sync-statuses",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
