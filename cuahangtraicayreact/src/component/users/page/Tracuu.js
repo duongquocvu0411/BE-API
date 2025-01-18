@@ -117,6 +117,8 @@ const Tracuu = () => {
         return { text: 'Thanh toán thất bại', class: 'bg-secondary text-white' }; // Màu xám cho thanh toán thất bại
       case 'Chờ xử lý':
         return { text: 'Chờ xử lý', class: 'bg-info text-white' }; // Màu xanh da trời cho chờ xử lý
+        case 'Chờ lấy hàng':
+        return { text: 'Chờ lấy hàng', class: 'bg-info text-white' }; // Màu xanh da trời cho chờ xử lấy hàng
       case 'Chờ xử lý hủy đơn':
         return { text: 'Chờ xử lý hủy đơn', class: 'bg-warning text-white' }; // Màu vàng cho chờ xử lý hủy đơn
 
@@ -346,9 +348,9 @@ const Tracuu = () => {
             </div>
           </div>
         )}
-        <div className="container my-5 py-5" data-aos="fade-up">
+        {/* <div className="container my-5 py-5" data-aos="fade-up">
           <h3 className="mb-4 text-center">Tra cứu mã đơn </h3>
-          {/* Form tra cứu mã đơn GHN */}
+  
           <form onSubmit={handleLookupGhnOrder} className="mb-5">
             <div className="input-group input-group-lg shadow-sm">
               <input
@@ -365,10 +367,9 @@ const Tracuu = () => {
             </div>
           </form>
 
-          {/* Hiển thị lỗi nếu có */}
           {errorGhn && <div className="alert alert-danger text-center">{errorGhn}</div>}
 
-          {/* Hiển thị dữ liệu từ GHN */}
+        
           {ghnData && (
             <div className="card shadow-lg border-0 mb-5">
               <div className="card-header bg-success text-white d-flex justify-content-between align-items-center rounded-top">
@@ -390,7 +391,7 @@ const Tracuu = () => {
                   <strong>Tổng giá trị (COD):</strong> {ghnData.cod_amount.toLocaleString("vi-VN")} VND
                 </p>
 
-                {/* Chi tiết sản phẩm */}
+            
                 <h6 className="mt-4 text-success">
                   <i className="fas fa-box"></i> Chi tiết sản phẩm:
                 </h6>
@@ -417,7 +418,7 @@ const Tracuu = () => {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
 
       {/* Modal xác nhận hủy đơn hàng */}

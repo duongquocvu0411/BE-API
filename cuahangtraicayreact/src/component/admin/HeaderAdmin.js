@@ -51,59 +51,68 @@ const HeaderAdmin = () => {
       // Lấy token từ cookie hoặc localStorage
       const token = cookies.adminToken; // Lấy token từ cookie
   
-      if (!token) {
-        toast.error("Không tìm thấy token. Vui lòng đăng nhập lại.", {
-          position: "top-right",
-          autoClose: 3000,
-        });
-        return;
-      }
-  
+      // if (!token) {
+      //   toast.error("Không tìm thấy token. Vui lòng đăng nhập lại.", {
+      //     position: "top-right",
+      //     autoClose: 3000,
+      //   });
+      //   return;
+      // }
+      localStorage.removeItem("adminToken");
+      removeCookie("adminToken", { path: "/" });
+      removeCookie("loginTime", { path: "/" });
+      removeCookie("isAdminLoggedIn", { path: "/" });
+
       // Gửi yêu cầu đến API /logout
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASEURL}/api/admin/logout`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-  
+      // const response = await axios.post(
+      //   `${process.env.REACT_APP_BASEURL}/api/admin/logout`,
+      //   {},
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // ); 
+     setShowModal(false); // Đóng modal sau khi xử lý
+      navigate("/admin/Login");
       // Xử lý thành công
-      if (response.data.status === "success") {
-        toast.success(response.data.message, {
-          position: "top-right",
-          autoClose: 3000,
-        });
-        console.log(response.data.message)
+    //   if (response.data.status === "success") {
+    //     toast.success(response.data.message, {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //     });
+    //     console.log(response.data.message)
   
-        // Xóa token trong cookies hoặc localStorage
-        localStorage.removeItem("adminToken");
-        removeCookie("adminToken", { path: "/" });
-        removeCookie("loginTime", { path: "/" });
-        removeCookie("isAdminLoggedIn", { path: "/" });
-  
-        // Điều hướng về trang đăng nhập
-        navigate("/admin/Login");
-      } else {
-        toast.error(response.data.message || "Đăng xuất thất bại.", {
-          position: "top-right",
-          autoClose: 3000,
-        });
+    //     // Xóa token trong cookies hoặc localStorage
+
+    //     // Điều hướng về trang đăng nhập
+    //     navigate("/admin/Login");
+    //   } else {
+    //     toast.error(response.data.message || "Đăng xuất thất bại.", {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.error("Lỗi khi đăng xuất:", error);
+    //   toast.error(
+    //     error.response?.data?.message || "Đã xảy ra lỗi khi đăng xuất.",
+    //     {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //     }
+    //   );
+    // } 
+    // finally {
+    //   setShowModal(false); // Đóng modal sau khi xử lý
+    // }
+    
+    }catch (error) {
+        console.error("Lỗi khi đăng xuất:", error);
+        toast.error(
+        
+        );
       }
-    } catch (error) {
-      console.error("Lỗi khi đăng xuất:", error);
-      toast.error(
-        error.response?.data?.message || "Đã xảy ra lỗi khi đăng xuất.",
-        {
-          position: "top-right",
-          autoClose: 3000,
-        }
-      );
-    } finally {
-      setShowModal(false); // Đóng modal sau khi xử lý
-    }
   };
   
   // Close modal

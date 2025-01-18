@@ -1011,3 +1011,4 @@ C:\Users\DELL\OneDrive\Desktop\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\De
 C:\Users\DELL\OneDrive\Desktop\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\CuahangtraicayAPI.pdb
 C:\Users\DELL\OneDrive\Desktop\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\CuahangtraicayAPI.genruntimeconfig.cache
 C:\Users\DELL\OneDrive\Desktop\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\ref\CuahangtraicayAPI.dll
+C:\Users\DELL\OneDrive\Desktop\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

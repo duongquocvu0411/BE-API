@@ -25,5 +25,10 @@ namespace CuahangtraicayAPI.DTO
 
             //public string UpdatedBy { get; set; }
         }
+        public class AdminResponseDTO
+        {
+            public string Noidung { get; set; }
+        }
+
     }
 }

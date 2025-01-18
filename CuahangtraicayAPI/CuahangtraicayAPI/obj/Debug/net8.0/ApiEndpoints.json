@@ -2038,6 +2038,42 @@
     ]
   },
   {
+    "ContainingType": "CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController",
+    "Method": "GetallPhanhoitudon",
+    "RelativePath": "api/PhanHoiDanhGia/danhgiatudong",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController",
+    "Method": "SaveAdminResponse",
+    "RelativePath": "api/PhanHoiDanhGia/Phanhoi-tudong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.PhanhoiDTO\u002BAdminResponseDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController",
+    "Method": "DisAutoPhanhoi",
+    "RelativePath": "api/PhanHoiDanhGia/tat-phanhoi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CuahangtraicayAPI.Controllers.SanphamController",
     "Method": "GetSanphams",
     "RelativePath": "api/Sanpham",

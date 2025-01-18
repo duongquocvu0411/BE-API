@@ -235,10 +235,10 @@ const Khachhangs = () => {
     exception: { text: 'Đơn hàng ngoại lệ', bgColor: 'badge bg-dark text-white border' },
     damage: { text: 'Hàng bị hư hỏng', bgColor: 'badge bg-danger text-white border' },
     lost: { text: 'Hàng bị mất', bgColor: 'badge bg-danger text-white border' },
-    waiting: { text: 'Chờ xử lý', bgColor: 'badge bg-primary text-white border' }, 
-    
+    waiting: { text: 'Chờ xử lý', bgColor: 'badge bg-primary text-white border' },
+
   };
-  
+
 
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
@@ -357,7 +357,48 @@ const Khachhangs = () => {
         textColor: ''
       };
     }
-  
+    const hoadonthanhtoanthanhcong = hoaDons.find(h => h.status === 'Đã Thanh toán');
+    if (hoadonthanhtoanthanhcong) {
+      return {
+        text: 'Đã Thanh toán',
+        bgColor: 'badge bg-info text-dark border border-info shadow',
+        textColor: ''
+      };
+    }
+
+    const thanhtoanthatbai = hoaDons.find(h => h.status === 'Thanh toán thất bại');
+    if (thanhtoanthatbai) {
+      return {
+        text: 'Thanh toán thất bại',
+        bgColor: 'badge bg-info text-dark border border-info shadow',
+        textColor: ''
+      };
+    }
+
+    const cholayhang = hoaDons.find(h => h.status === "Chờ lấy hàng");
+    if (cholayhang) {
+      return {
+        text: 'Chờ lấy hàng',
+        bgColor: 'badge bg-primary text-white border border-primary shadow',
+        textColor: ''
+      }
+    }
+    const xacnhanhuydon = hoaDons.find(h => h.status === "Chờ xử lý hủy đơn");
+    if (xacnhanhuydon) {
+      return {
+        text: 'Chờ xử lý hủy đơn',
+        bgColor: 'badge bg-primary text-white border border-primary shadow',
+        textColor: ''
+      }
+    }
+    const huydon = hoaDons.find(h => h.status === "Hủy đơn");
+    if (huydon) {
+      return {
+        text: 'Hủy đơn',
+        bgColor: 'badge bg-primary text-white border border-primary shadow',
+        textColor: ''
+      }
+    }
     // Kiểm tra trạng thái từ GHN
     const ghnOrder = hoaDons.find(h => ghnStatusMapping[h.status]);
     if (ghnOrder) {
@@ -368,7 +409,7 @@ const Khachhangs = () => {
         textColor: mapping.textColor || ''
       };
     }
-  
+
     // Mặc định nếu không có trạng thái phù hợp
     return {
       text: 'Trạng thái không xác định',
@@ -376,7 +417,7 @@ const Khachhangs = () => {
       textColor: ''
     };
   };
-  
+
 
   const handleHienThiModalXoa = (khachHang) => {
     setKhachHangXoa(khachHang); // Lưu thông tin khách hàng cần xóa
@@ -616,9 +657,9 @@ const Khachhangs = () => {
                           </tr>
                         ) : cacPhanTuHienTai.length > 0 ? (
                           cacPhanTuHienTai.map((item, index) => {
-                            const trangThaiDonHang = layTrangThaiDonHang(item.hoaDons); // Lấy trạng thái từ danh sách hoaDonsfChưa có đơn hàng
+                            const trangThaiDonHang = layTrangThaiDonHang(item.hoaDons); // Lấy trạng thái từ danh sách hoaDons
                             return (
-                              <tr key={nanoid()}>
+                              <tr key={item.id}>
                                 <td>{chiSoPhanTuDau + index + 1}</td>
                                 <td>{item.created_at ? new Date(item.created_at).toLocaleDateString("vi-VN") : 'Không có thông tin'}</td>
                                 <td>{item.ho} {item.ten}</td>
@@ -627,19 +668,21 @@ const Khachhangs = () => {
                                 <td>{item.diaChiCuThe}</td>
                                 <td>{item.xaphuong}, {item.tinhthanhquanhuyen}, {item.thanhPho}</td>
                                 <td>{item.ghiChu}</td>
-                                <td> {item.hoaDons.map((hoaDon, idx) => (
-                                  <div key={nanoid()}>{hoaDon.thanhtoan}</div>))}</td>
+                                <td>
+                                  {item.hoaDons.map((hoaDon) => (
+                                    <div key={hoaDon.id}>{hoaDon.thanhtoan}</div> // Đảm bảo key ổn định
+                                  ))}
+                                </td>
                                 <td className={`${trangThaiDonHang.bgColor} ${trangThaiDonHang.textColor}`}>
                                   {trangThaiDonHang.text}
                                 </td>
                                 <td>
-                                  {item.hoaDons.map((hoaDon, idx) => (
-                                    <div key={nanoid()}>{hoaDon.updatedBy}</div>
+                                  {item.hoaDons.map((hoaDon) => (
+                                    <div key={`updatedBy-${hoaDon.id}`}>{hoaDon.updatedBy}</div>
                                   ))}
                                 </td>
                                 <td>
                                   <div className="d-flex align-items-center">
-                                    {/* Icon xem chi tiết */}
                                     <button
                                       className="btn btn-info btn-sm me-2"
                                       title="Xem chi tiết"
@@ -648,9 +691,9 @@ const Khachhangs = () => {
                                       <i className="bi bi-eye"></i>
                                     </button>
                                     {item.hoaDons.map((hoaDon) =>
-                                      hoaDon.ghn === "Chưa lên đơn" ? (
+                                      (hoaDon.ghn === "Chưa lên đơn" && hoaDon.status !== "Hủy đơn" && hoaDon.status !== "Chờ xử lý hủy đơn" && hoaDon.status !== "Thanh toán thất bại") ? (
                                         <button
-                                          key={hoaDon.id}
+                                          key={`lenDon-${hoaDon.id}`}
                                           className="btn btn-primary btn-sm me-2"
                                           title="Xác nhận lên đơn hàng"
                                           onClick={() => handleLenDonHang(item.id)}
@@ -658,13 +701,16 @@ const Khachhangs = () => {
                                           <i className="fas fa-truck"></i> Lên đơn
                                         </button>
                                       ) : (
-                                        <span className="badge bg-success">Đã lên đơn</span>
+                                        hoaDon.ghn !== "Chưa lên đơn" && (
+                                          <span key={`daLenDon-${hoaDon.id}`} className="badge bg-success">Đã lên đơn</span>
+                                        )
                                       )
                                     )}
+
                                     {item.hoaDons.map((hoaDon) =>
                                       hoaDon.status === "Chờ xử lý hủy đơn" ? (
                                         <button
-                                          key={hoaDon.id}
+                                          key={`huyDon-${hoaDon.id}`}
                                           className="btn btn-outline-warning btn-sm me-2"
                                           title="Xác nhận hủy đơn hàng"
                                           onClick={() => handleXacNhanHuyDon(hoaDon.order_code)}
@@ -673,7 +719,6 @@ const Khachhangs = () => {
                                         </button>
                                       ) : null
                                     )}
-                                    {/* Icon xóa */}
                                     {kiemTraTrangThaiHoaDon(item.hoaDons) && (
                                       <button
                                         className="btn btn-outline-danger btn-sm"
@@ -694,6 +739,7 @@ const Khachhangs = () => {
                           </tr>
                         )}
                       </tbody>
+
                     </table>
 
                   )}
@@ -726,7 +772,7 @@ const Khachhangs = () => {
           handleClose={() => setHienThiModal(false)}
           chiTietKhachHang={chiTietKhachHang}
           capNhatTrangThai={capNhatTrangThai}
-          xoaKhachHang={xoaKhachHang}
+        
           layTrangThaiDonHang={layTrangThaiDonHang}
           isLoading={isLoading}
         />

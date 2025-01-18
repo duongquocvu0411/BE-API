@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<Danhmucsanpham> Danhmucsanpham { get; set; }
     public DbSet<Diachichitiet> Diachichitiets { get; set; }
     public DbSet<Admin> Admins { get; set; }
+    public DbSet<AdminResponse> AdminResponses { get; set; }
     public DbSet<Lienhe> Lienhes { get; set; }
     public DbSet<Sanpham> Sanpham { get; set; }
     public DbSet<ChiTiet> ChiTiets { get; set; }

@@ -42,7 +42,9 @@ const SanPham = () => {
   const [hienThiModal, setHienThiModal] = useState(false);
   const [chinhSua, setChinhSua] = useState(false);
   const [sanPhamHienTai, setSanPhamHienTai] = useState(null);
-
+  const [showModalDanhGiaTuDong, setShowModalDanhGiaTuDong] = useState(false);
+  const [noiDungDanhGia, setNoiDungDanhGia] = useState("");
+  const [trangthaidanhgia, setTrangthaidanhgia] = useState(false);
   // Tính toán vị trí sản phẩm để phân trang
   const viTriSanPhamCuoi = trangHienTai * sanPhamMoiTrang;
   const viTriSanPhamDau = viTriSanPhamCuoi - sanPhamMoiTrang;
@@ -61,6 +63,7 @@ const SanPham = () => {
   useEffect(() => {
     layDanhSachSanPham();
     layDanhMuc();
+    laytrangthaidanhgia();
   }, [danhMucDuocChon]);
 
   const layDanhSachSanPham = async () => {
@@ -208,6 +211,80 @@ const SanPham = () => {
     }
   };
 
+  const laytrangthaidanhgia = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/phanhoidanhgia/danhgiatudong`);
+      setTrangthaidanhgia(response.data.trangthai);
+    }
+    catch (error) {
+      toast.error("không thế lấy trạng thái đánh giá tự động", {
+        position: 'top-right',
+        autoClose: 300
+      });
+    }
+  }
+
+  const batDanhGiaTuDong = async () => {
+    if (!noiDungDanhGia.trim()) {
+      toast.error("vui lòng nhập nội dung đánh giá!", {
+        position: 'top-right',
+        autoClose: 3000
+      });
+      return;
+    }
+    try {
+      const token = cookies.adminToken; // lấy token từ cooki
+      await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/Phanhoidanhgia/phanhoi-tudong`,
+        { noidung: noiDungDanhGia }, {
+        headers: {
+          Authorization: `Bearer ${token}`, // thêm token vào header
+        },
+      }
+      );
+      toast.success("đánh giá tự động đã được bật", {
+        position: 'top-right',
+        autoClose: 3000
+      });
+      setShowModalDanhGiaTuDong(false); // đóng modal
+      setNoiDungDanhGia(""); // làm mới nội dung
+      laytrangthaidanhgia();
+    }
+    catch (error) {
+      toast.error("có lỗi từ hệ thống", {
+        position: 'top-right',
+        autoClose: 3000
+      });
+    }
+  }
+
+
+  const tatDanhGiaTuDong = async () => {
+    try {
+      const token = cookies.adminToken; // Lấy token từ cookie
+      await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/PhanHoiDanhGia/tat-phanhoi`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Thêm token vào header
+          },
+        }
+      );
+
+      toast.success("Đánh giá tự động đã được tắt!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      laytrangthaidanhgia();
+    } catch (error) {
+      console.error("Lỗi khi tắt đánh giá tự động:", error);
+      toast.error("Không thể tắt đánh giá tự động. Vui lòng thử lại!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  };
   return (
     <div id="wrapper">
       {/* Sidebar */}
@@ -276,6 +353,25 @@ const SanPham = () => {
                 <Button variant="primary" onClick={moModalThemSanPham} className="btn-sm">
                   <i className="fas fa-plus-circle"></i> Thêm sản phẩm
                 </Button>
+                <div>
+                  {trangthaidanhgia ? (
+                    <Button
+                      variant="danger"
+                      onClick={tatDanhGiaTuDong} // Gọi hàm tắt đánh giá tự động
+                      className="btn-sm"
+                    >
+                      <i className="fas fa-stop-circle"></i> Tắt đánh giá tự động
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="success"
+                      onClick={() => setShowModalDanhGiaTuDong(true)} // Hiển thị modal nhập nội dung
+                      className="btn-sm"
+                    >
+                      <i className="fas fa-magic"></i> Đánh giá tự động
+                    </Button>
+                  )}
+                </div>
               </div>
 
               <div className="card-body">
@@ -322,7 +418,7 @@ const SanPham = () => {
                                 {sanPham.tieude}
                               </td>
                               <td className="text-end">
-                              {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                                {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
                               </td>
                               <td>
                                 {sanPham.soluong}
@@ -482,7 +578,38 @@ const SanPham = () => {
             </Button>
           </Modal.Footer>
         </Modal>
-
+        {/* modlal của đánh giá */}
+        <Modal
+          show={showModalDanhGiaTuDong}
+          onHide={() => setShowModalDanhGiaTuDong(false)}
+          centered
+          backdrop="static"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Bật đánh giá tự động</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="form-group">
+              <label htmlFor="noiDungDanhGia">Nội dung đánh giá</label>
+              <textarea
+                id="noiDungDanhGia"
+                className="form-control"
+                rows="3"
+                placeholder="Nhập nội dung đánh giá tự động..."
+                value={noiDungDanhGia}
+                onChange={(e) => setNoiDungDanhGia(e.target.value)}
+              ></textarea>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModalDanhGiaTuDong(false)}>
+              Hủy
+            </Button>
+            <Button variant="primary" onClick={batDanhGiaTuDong}>
+              Bật đánh giá tự động
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
 

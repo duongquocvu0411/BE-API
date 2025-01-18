@@ -132,5 +132,65 @@ namespace CuahangtraicayAPI.Controllers
 
             return Ok(new BaseResponseDTO<PhanHoiDanhGia> {Code=200, Message = "Phản hồi đã được xóa thành công" });
         }
+        /// <summary>
+        /// Phản hồi đánh giá tự động
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns>Phản hồi đánh giá tự động</returns>
+        [HttpPost("Phanhoi-tudong")]
+        [Authorize]
+        public async Task<IActionResult> SaveAdminResponse([FromBody] PhanhoiDTO.AdminResponseDTO dto)
+        {
+            var hientai = await _context.AdminResponses.FirstOrDefaultAsync();
+            if (hientai == null)
+            {
+                var newResponse = new AdminResponse
+                {
+                    Noidung = dto.Noidung,
+                    Trangthai = true,
+                    Updated_at = DateTime.UtcNow,
+                };
+                _context.AdminResponses.Add(newResponse);
+            }
+            else
+            {
+                hientai.Noidung = dto.Noidung;
+                hientai.Trangthai = true;
+                hientai.Updated_at = DateTime.UtcNow;
+            }
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "phản hồi từ sytem thành công" });
+        }
+
+
+        [HttpPost("tat-phanhoi")]
+        [Authorize]
+        public async Task<IActionResult> DisAutoPhanhoi()
+        {
+            // Lấy nội dung phản hồi từ bảng AdminResponses
+            var adminResponse = await _context.AdminResponses.FirstOrDefaultAsync();
+            // Kiểm tra trạng thái hiện tại
+
+            if (adminResponse.Trangthai == false)
+            {
+                return BadRequest(new { message = "Hệ thống chưa được bật" });
+            }
+
+           
+
+           adminResponse.Trangthai = false;
+            adminResponse.Updated_at = DateTime.Now;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Dịch vụ phản hồi tự động đã được tắt" });
+        }
+
+        [HttpGet("danhgiatudong")]
+        public async Task<IActionResult> GetallPhanhoitudon()
+        {
+            var danhgia = await _context.AdminResponses.FirstOrDefaultAsync();
+            return Ok(danhgia);
+        }
+
     }
 }

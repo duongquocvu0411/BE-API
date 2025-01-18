@@ -12,6 +12,7 @@ using CuahangtraicayAPI.Model.ghn;
 using System.IdentityModel.Tokens.Jwt;
 
 
+
 namespace CuahangtraicayAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -73,15 +74,26 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<BaseResponseDTO<Object>>> GetKhachHang(int id)
         {
             var khachHang = await _context.KhachHangs
+             
                 .Include(kh => kh.HoaDons)
                     .ThenInclude(hd => hd.HoaDonChiTiets)
                     .ThenInclude(sp => sp.SanPham)
+                 
                 .FirstOrDefaultAsync(kh => kh.Id == id);
-
+            
             if (khachHang == null)
             {
                 return NotFound(new BaseResponseDTO<KhachHang> { Code=404, Message = "Không tìm thấy khách hàng với ID này." });
             }
+
+            // lấy danh sách bảng ghn theo mã order_code
+            var or = khachHang.HoaDons.Select(hd => hd.order_code).ToList();
+
+            // truy vấn 
+            var ghn = await _context.GhnOrders
+               .Where(g => or.Contains(g.Client_order_code))
+               .ToListAsync();
+
             // Xử lý dữ liệu trả về ngắn gọn
             var response = new
             {
@@ -101,9 +113,10 @@ namespace CuahangtraicayAPI.Controllers
                     ngaytao = hd.Created_at,
                     total_price = hd.total_price,
                     order_code = hd.order_code,
+                    ghn = ghn.FirstOrDefault(r => r.Client_order_code == hd.order_code),
                     thanhtoan = hd.Thanhtoan,
                     status = hd.status,
-                    ghn = hd.Ghn,
+                    
                     hoaDonChiTiets = hd.HoaDonChiTiets.Select(hdct => new
                     {
                         tieude = hdct.SanPham?.Tieude,

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 
-const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTrangThai, xoaKhachHang, layTrangThaiDonHang, isLoading }) => {
-  const [showModalXoa, setShowModalXoa] = useState(false); // Quản lý trạng thái hiển thị modal xóa
+const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTrangThai, layTrangThaiDonHang, isLoading }) => {
+ 
 
   const inHoaDon = () => {
     const noiDungIn = document.getElementById('printContent').innerHTML;
@@ -13,20 +13,9 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
     document.body.innerHTML = noiDungGoc;
     window.location.reload();
   };
-  const handleHienThiModalXoa = () => {
-    setShowModalXoa(true); // Hiển thị modal xóa
-  };
+ 
 
-  const handleDongModalXoa = () => {
-    setShowModalXoa(false); // Đóng modal xóa
-  };
 
-  const handleXacNhanXoa = async () => {
-    if (chiTietKhachHang) {
-      await xoaKhachHang(chiTietKhachHang.id, `${chiTietKhachHang.ho} ${chiTietKhachHang.ten}`);
-      setShowModalXoa(false); // Đóng modal sau khi xóa
-    }
-  };
 
   return (
     <>
@@ -65,7 +54,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                   </h5>
                 </div>
                 <div className="card-body">
-                  {chiTietKhachHang.hoaDons && chiTietKhachHang.hoaDons.length > 0 ? (
+                  {chiTietKhachHang.hoaDons  && chiTietKhachHang.hoaDons.length > 0 ? (
                     chiTietKhachHang.hoaDons.map((bill, index) => (
                       <div key={index} className="border-bottom pb-3 mb-3">
                         <p>
@@ -75,12 +64,15 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                           <i className="bi bi-cash"></i> <strong>Tổng tiền:</strong> {parseFloat(bill.total_price).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })} VND
                         </p>
                         <p>
-                          <i class="bi bi-credit-card"></i> <strong>Thanh toán:</strong> {bill.thanhtoan}
+                          <i className="bi bi-credit-card"></i> <strong>Thanh toán:</strong> {bill.thanhtoan}
                         </p>
                         <p>
                           <i className="bi bi-circle-fill"></i> <strong>Trạng thái:</strong> <span className={`badge ${layTrangThaiDonHang([bill]).bgColor}`}>{bill.status}</span>
                         </p>
                         <p><i className="bi bi-hash"></i> <strong>Mã đơn hàng:</strong> {bill.order_code}</p>
+                        <p><i className="bi bi-hash"></i> <strong>Mã GHN đơn hàng:</strong>{""}
+                          {bill.ghn && bill.ghn.ghn_order_id ? bill.ghn.ghn_order_id : "không có thông tn"}
+                        </p>
                         <h6 className="mt-4 text-primary">
                           <i className="bi bi-cart-check"></i> Chi tiết sản phẩm:
                         </h6>
@@ -129,16 +121,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
 
                         {/* Hành động */}
                         <div className="d-flex align-items-center">
-                          {bill.status === "Hủy đơn" || bill.status === 'Thanh toán thất bại' && (
-                            <button
-                              className="btn btn-outline-danger btn-sm"
-                              onClick={handleHienThiModalXoa}
-                              disabled={!chiTietKhachHang || !chiTietKhachHang.hoaDons?.some(hd => hd.status === "Hủy đơn" || hd.status === "Thanh toán thất bại")}
-                            >
-                              <i className="bi bi-trash-fill"></i> Xóa Khách Hàng
-                            </button>
-
-                          )}
+                          
 
                           {bill.status !== "Hủy đơn" &&
                             bill.status !== "Đã giao thành công" &&
@@ -163,23 +146,13 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                                   </option>
 
                                   {/* Các trạng thái khác */}
-                                  {/* {bill.thanhtoan !== "VnPay" &&
-                                    bill.thanhtoan !== "Momo" &&
-                                    bill.status !== "Chờ xử lý" && (
-                                      <option value="Chờ xử lý">Chờ xử lý</option>
-                                    )}
-                                  {bill.status !== "Đang giao" && <option value="Đang giao">Đang giao</option>}
-                                  {bill.status !== "Đã giao thành công" && (
-                                    <option value="Đã giao thành công">Đã giao thành công</option>
-                                  )}
-                                  {bill.thanhtoan !== "VnPay" &&
-                                    bill.thanhtoan !== "Momo" &&
-                                    bill.status !== "Hủy đơn" && (
+                              
+                                  {bill.thanhtoan === "cod" &&
+                                   
+                                    bill.status === "Chờ xử lý" && (
                                       <option value="Hủy đơn">Hủy đơn</option>
                                     )}
-                                  {bill.status !== "Giao không thành công" && (
-                                    <option value="Giao không thành công">Giao không thành công</option>
-                                  )} */}
+                                 
                                 </Form.Control>
 
                                 {/* Hiển thị spinner khi đang loading */}
@@ -213,38 +186,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
         </Modal.Footer>
       </Modal>
 
-      <Modal
-        show={showModalXoa}
-        onHide={handleDongModalXoa}
-        centered
-        backdrop="static" // Không cho phép đóng khi click ra ngoài
-      >
-        <Modal.Header closeButton className="bg-danger text-white">
-          <Modal.Title>
-            <i className="bi bi-exclamation-triangle-fill me-2"></i> Xác nhận xóa khách hàng
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="text-center">
-            <i className="bi bi-person-x-fill fa-4x text-danger mb-3"></i>
-            <h5>Bạn có chắc chắn muốn xóa khách hàng này?</h5>
-            <p className="text-muted">
-              <strong>Họ tên:</strong> {chiTietKhachHang?.ho} {chiTietKhachHang?.ten} <br />
-              <strong>Email:</strong> {chiTietKhachHang?.emailDiaChi} <br />
-              <strong>Số điện thoại:</strong> {chiTietKhachHang?.sdt}
-            </p>
-            <p className="text-muted">Hành động này không thể hoàn tác.</p>
-          </div>
-        </Modal.Body>
-        <Modal.Footer className="justify-content-center">
-          <Button variant="secondary" onClick={handleDongModalXoa}>
-            <i className="bi bi-x-circle"></i> Hủy
-          </Button>
-          <Button variant="danger" onClick={handleXacNhanXoa}>
-            <i className="bi bi-check-circle"></i> Xác nhận
-          </Button>
-        </Modal.Footer>
-      </Modal>
+    
 
     </>
   );

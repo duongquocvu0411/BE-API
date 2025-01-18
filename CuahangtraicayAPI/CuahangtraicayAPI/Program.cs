@@ -12,6 +12,9 @@ using CuahangtraicayAPI.token;
 using CuahangtraicayAPI.Model.ghn;
 using CuahangtraicayAPI.Services.gn;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace CuahangtraicayAPI
 {
@@ -20,7 +23,6 @@ namespace CuahangtraicayAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-        
 
             // Thêm AppDbContext với SQL Server
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -50,6 +52,10 @@ namespace CuahangtraicayAPI
             builder.Services.AddHostedService<SaleUpdateService>();
             //đăng ký giao hàng nhanh
             //builder.Services.AddHttpClient<GhnService>();
+
+            // đăng ký phản hồi tự động
+
+            builder.Services.AddHostedService<AutoPhanHoiService>();
 
             var API = "allApi";
             builder.Services.AddCors(ots =>
@@ -121,7 +127,8 @@ namespace CuahangtraicayAPI
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                        
                     };
 
                     // Tùy chỉnh thông báo lỗi khi không có quyền truy cập

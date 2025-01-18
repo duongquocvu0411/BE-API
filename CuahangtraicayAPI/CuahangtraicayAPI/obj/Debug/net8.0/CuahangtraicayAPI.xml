@@ -523,6 +523,13 @@
             Xóa phản hồi theo ID
             </summary>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.SaveAdminResponse(CuahangtraicayAPI.DTO.PhanhoiDTO.AdminResponseDTO)">
+            <summary>
+            Phản hồi đánh giá tự động
+            </summary>
+            <param name="dto"></param>
+            <returns>Phản hồi đánh giá tự động</returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.SanphamController.GetSanphams">
             <summary>
             Lấy danh sách sản phẩm
@@ -714,6 +721,18 @@
             </summary>
             <param name="id">ID của Website cần xóa.</param>
             <returns>Trạng thái xóa.</returns>
+        </member>
+        <member name="T:CuahangtraicayAPI.Migrations.DBBackup">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.DBBackup.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.DBBackup.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.DBBackup.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
         </member>
     </members>
 </doc>
