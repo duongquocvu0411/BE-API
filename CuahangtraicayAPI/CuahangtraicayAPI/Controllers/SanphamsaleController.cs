@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {

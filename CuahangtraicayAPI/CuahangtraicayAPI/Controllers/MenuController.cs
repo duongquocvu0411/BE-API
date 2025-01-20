@@ -5,6 +5,7 @@ using CuahangtraicayAPI.Model;
 using static CuahangtraicayAPI.DTO.MenuDTO;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.DTO;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -69,14 +70,10 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/Menu
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<BaseResponseDTO< Menu>>> CreateMenu(MenuCreateDTO menuDTO)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
-
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             var exists = await _context.Menus.AnyAsync(mn => mn.Thutuhien == menuDTO.Thutuhien);
             if (exists)
             {
@@ -122,7 +119,7 @@ namespace CuahangtraicayAPI.Controllers
         /// 
         // PUT: api/Menu/{id}
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Menu>>> UpdateMenu(int id, MenuUpdateDTO menuDTO)
         {
             if (id <= 0)
@@ -153,11 +150,7 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
 
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
-
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Menu>
@@ -213,7 +206,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/Menu/{id}
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Menu>>> DeleteMenu(int id)
         {
             var menu = await _context.Menus.FindAsync(id);

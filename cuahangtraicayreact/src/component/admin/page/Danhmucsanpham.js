@@ -60,7 +60,7 @@ const Danhmucsanpham = () => {
 
       toast.error('có lỗi khi lấy danh sách ', {
         position: 'top-right',
-        autoClose: 3000
+        autoClose: 3000 
       });
     }
   };
@@ -103,25 +103,14 @@ const Danhmucsanpham = () => {
       // Lấy lại danh sách danh mục và reset trang hiện tại
       layDanhSachDanhMuc();
       setTrangHienTai(1);
-    } catch (error) {
-      // Kiểm tra lỗi từ phản hồi API
-      if (error.response) {
-        const { status, data } = error.response;
-
-        if (status === 400 && data.message === 'Không thể xóa vì danh mục này đang chứa sản phẩm') {
-          toast.error( {
-            position: 'top-right',
-            autoClose: 3000,
-          });
-        } else {
-          toast.error(`Có lỗi xảy ra khi xóa danh mục: ${data.message || 'Lỗi không xác định'}`, {
-            position: 'top-right',
-            autoClose: 3000,
-          });
+    } 
+    catch (error) {
+          if (error.response.status === 403) {
+              toast.error("Bạn không có quyền xóa danh mục.");
+          } else {
+              toast.error(error.response?.data?.message || "Đã xảy ra lỗi.");
+          }
         }
-      }
-
-    }
   };
 
 

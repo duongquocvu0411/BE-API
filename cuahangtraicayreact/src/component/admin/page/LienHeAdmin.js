@@ -59,9 +59,23 @@ const LienHeAdmin = () => {
       toast.success('Đã xóa liên hệ thành công.', { position: 'top-right', autoClose: 3000 });
       layDanhSachLienHe();
     } catch (error) {
-      console.error('Lỗi khi xóa liên hệ:', error);
-      toast.error('Có lỗi khi xóa liên hệ. Vui lòng thử lại.', { position: 'top-right', autoClose: 3000 });
+      if (error.response?.status === 403) {
+        toast.error("Bạn không có quyền xóa liên hệ.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      } else {
+        toast.error(
+          `Có lỗi khi xóa liên hệ: ${error.response?.data?.message || error.message || "Lỗi không xác định."}`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+          }
+        );
+      }
+      console.error("Lỗi khi xóa liên hệ:", error.response?.data || error.message || error);
     }
+
   };
 
   const hienThiChiTiet = (ghichu) => {
@@ -152,7 +166,7 @@ const LienHeAdmin = () => {
                               <>
                                 {item.ghichu.substring(0, 10)}...
                                 <Button variant="link" onClick={() => hienThiChiTiet(item.ghichu)} className="text-decoration-none">
-                                <i className="bi bi-info-circle"></i>
+                                  <i className="bi bi-info-circle"></i>
                                 </Button>
                               </>
                             ) : (
@@ -163,9 +177,9 @@ const LienHeAdmin = () => {
                           <td>
                             {/* Nút xóa với icon rõ ràng */}
                             <button
-                              
+
                               onClick={() => handleHienThiModalXoa(item)}
-                               className="btn btn-outline-danger btn-sm"
+                              className="btn btn-outline-danger btn-sm"
                             >
                               <i className="bi bi-trash3-fill"></i>
                             </button>
@@ -177,21 +191,21 @@ const LienHeAdmin = () => {
                 )}
               </div>
               <div className="card-footer clearfix">
-                  {/* Phân trang */}
-                  <ul className="pagination pagination-sm m-0 float-right">
-                    <li className={`page-item ${trangHienTai === 1 ? 'disabled' : ''}`}>
-                      <button className="page-link" onClick={() => thayDoiTrang(trangHienTai > 1 ? trangHienTai - 1 : 1)}>«</button>
+                {/* Phân trang */}
+                <ul className="pagination pagination-sm m-0 float-right">
+                  <li className={`page-item ${trangHienTai === 1 ? 'disabled' : ''}`}>
+                    <button className="page-link" onClick={() => thayDoiTrang(trangHienTai > 1 ? trangHienTai - 1 : 1)}>«</button>
+                  </li>
+                  {[...Array(tongSoTrang)].map((_, i) => (
+                    <li key={i + 1} className={`page-item ${trangHienTai === i + 1 ? 'active' : ''}`}>
+                      <button className="page-link" onClick={() => thayDoiTrang(i + 1)}>{i + 1}</button>
                     </li>
-                    {[...Array(tongSoTrang)].map((_, i) => (
-                      <li key={i + 1} className={`page-item ${trangHienTai === i + 1 ? 'active' : ''}`}>
-                        <button className="page-link" onClick={() => thayDoiTrang(i + 1)}>{i + 1}</button>
-                      </li>
-                    ))}
-                    <li className={`page-item ${trangHienTai === tongSoTrang ? 'disabled' : ''}`}>
-                      <button className="page-link" onClick={() => thayDoiTrang(trangHienTai < tongSoTrang ? trangHienTai + 1 : tongSoTrang)}>»</button>
-                    </li>
-                  </ul>
-                </div>
+                  ))}
+                  <li className={`page-item ${trangHienTai === tongSoTrang ? 'disabled' : ''}`}>
+                    <button className="page-link" onClick={() => thayDoiTrang(trangHienTai < tongSoTrang ? trangHienTai + 1 : tongSoTrang)}>»</button>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

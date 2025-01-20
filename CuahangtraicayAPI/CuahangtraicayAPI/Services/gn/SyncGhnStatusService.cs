@@ -1,4 +1,5 @@
 ﻿using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.Model.DB;
 using CuahangtraicayAPI.Model.ghn;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -83,50 +84,69 @@ namespace CuahangtraicayAPI.Services.gn
                 ghnOrder.Status = ghnOrderDetail.Data.Status;
                 _dbContext.GhnOrders.Update(ghnOrder);
 
+                // Tìm hóa đơn tương ứng trong bảng hoadons
+                var hoadon = await _dbContext.HoaDons
+                    .Include(h => h.HoaDonChiTiets) // Bao gồm chi tiết hóa đơn
+                    .FirstOrDefaultAsync(h => h.order_code == ghnOrder.Client_order_code);
 
-                //// Cập nhật trạng thái trong bảng hoadons
-                //var hoadon = await _dbContext.HoaDons.FirstOrDefaultAsync(h => h.order_code == ghnOrder.Client_order_code);
-                //if (hoadon != null)
-                //{
-                //    hoadon.status = ghnOrderDetail.Data.Status;
-                //    _dbContext.HoaDons.Update(hoadon);
-                //}
-                var hoadon = await _dbContext.HoaDons.FirstOrDefaultAsync(h => h.order_code == ghnOrder.Client_order_code);
                 if (hoadon != null)
                 {
                     var trangthaitruoc = hoadon.status;
                     hoadon.status = ghnOrderDetail.Data.Status;
+
+                    // Nếu trạng thái là "delivered" và thanh toán là COD, và trạng thái trước đó KHÔNG PHẢI "delivered", trừ số lượng sản phẩm
+                    if (hoadon.Thanhtoan == "cod" && ghnOrderDetail.Data.Status == "delivered" && trangthaitruoc != "delivered")
+                    {
+                        foreach (var chiTiet in hoadon.HoaDonChiTiets)
+                        {
+                            var sanpham = await _dbContext.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
+
+                            if (sanpham != null)
+                            {
+                                // Trừ số lượng sản phẩm
+                                sanpham.Soluong -= chiTiet.quantity;
+
+                                if (sanpham.Soluong <= 0)
+                                {
+                                    sanpham.Soluong = 0;
+                                    sanpham.Trangthai = "Hết hàng";
+                                }
+
+                                _dbContext.Sanpham.Update(sanpham);
+                            }
+                        }
+
+                        Console.WriteLine($"Đã trừ số lượng sản phẩm cho hóa đơn {hoadon.Id}.");
+                    }
+
                     _dbContext.HoaDons.Update(hoadon);
-                    // lấy trạng thái 
-                    var trangthaidonhang = _statusDescriptions.ContainsKey(ghnOrderDetail.Data.Status)
-                        ? _statusDescriptions[ghnOrderDetail.Data.Status]
-                        : ghnOrderDetail.Data.Status;
-                    if(trangthaitruoc != ghnOrderDetail.Data.Status)
+
+                    // Gửi email thông báo nếu trạng thái thay đổi
+                    if (trangthaitruoc != ghnOrderDetail.Data.Status)
                     {
                         var kh = await _dbContext.KhachHangs.FirstOrDefaultAsync(k => k.Id == hoadon.khachhang_id);
-                        if(kh != null && !string.IsNullOrWhiteSpace(kh.EmailDiaChi))
+                        if (kh != null && !string.IsNullOrWhiteSpace(kh.EmailDiaChi))
                         {
-                            var emailBody = $@"
-                               <p> Kính gữi: {kh.Ho} {kh.Ten}</p>
-                                <p>Đơn hàng: <b>{ghnOrder.Client_order_code}</b> của bạn đã được cập nhật trạng thá: <b>{trangthaidonhang}</b> </p>
-                                <p>Trân trọng</p>
-                                <p>Cửa hàng trái cây</p>
+                            var trangthaidonhang = _statusDescriptions.ContainsKey(ghnOrderDetail.Data.Status)
+                                ? _statusDescriptions[ghnOrderDetail.Data.Status]
+                                : ghnOrderDetail.Data.Status;
 
-                                    ";
-                            // gửi mail
-                            // Gửi email trong nền
-                           await  Task.Run(async () =>
+                            var emailBody = $@"
+                        <p>Kính gửi: {kh.Ho} {kh.Ten}</p>
+                        <p>Đơn hàng: <b>{ghnOrder.Client_order_code}</b> của bạn đã được cập nhật trạng thái: <b>{trangthaidonhang}</b></p>
+                        <p>Trân trọng,</p>
+                        <p>Cửa hàng trái cây</p>";
+
+                            // Gửi email thông báo
+                            try
                             {
-                                try
-                                {
-                                    await _emailHelper.GuiEmailAsync(kh.EmailDiaChi, "Cập nhật trạng thái đơn hàng", emailBody);
-                                    Console.WriteLine($"Đã gửi email thành công đến {kh.EmailDiaChi}");
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine($"Lỗi khi gửi email đến {kh.EmailDiaChi}: {ex.Message}");
-                                }
-                            });
+                                await _emailHelper.GuiEmailAsync(kh.EmailDiaChi, "Cập nhật trạng thái đơn hàng", emailBody);
+                                Console.WriteLine($"Đã gửi email thành công đến {kh.EmailDiaChi}");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Lỗi khi gửi email đến {kh.EmailDiaChi}: {ex.Message}");
+                            }
                         }
                     }
                 }
@@ -135,6 +155,7 @@ namespace CuahangtraicayAPI.Services.gn
             // Lưu tất cả thay đổi vào cơ sở dữ liệu
             await _dbContext.SaveChangesAsync();
         }
+
 
         // lớp ánh xạ để hiển thị trạng thái đơn hàng từ ghn
         private readonly Dictionary<string, string> _statusDescriptions = new()

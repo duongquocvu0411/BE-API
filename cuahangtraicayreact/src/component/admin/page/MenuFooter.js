@@ -73,7 +73,7 @@ const MenuFooter = () => {
   const xoaMenuFooter = async (id, tieude) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
     const token = cookies.adminToken; // Lấy token từ cookie
-     
+
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/MenuFooter/${id}`,
         {
@@ -88,12 +88,23 @@ const MenuFooter = () => {
       layDanhSachMenuFooters();
       setTrangHienTai(1);
     } catch (error) {
-      console.error('Lỗi khi xóa MenuFooter:', error);
-      toast.error('Không thể xóa MenuFooter!', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
+      if (error.response?.status === 403) {
+        toast.error("Bạn không có quyền xóa MenuFooter.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      } else {
+        toast.error(
+          `Không thể xóa MenuFooter: ${error.response?.data?.message || error.message || "Đã xảy ra lỗi không xác định."}`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+          }
+        );
+      }
+      console.error("Lỗi khi xóa MenuFooter:", error.response?.data || error.message || error);
     }
+
   };
 
   const handleHienThiModalXoa = (MenuFooter) => {

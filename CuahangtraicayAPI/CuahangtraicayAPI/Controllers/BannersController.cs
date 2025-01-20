@@ -7,6 +7,7 @@ using static CuahangtraicayAPI.DTO.BannersDTO;
 using System.Reflection;
 using CuahangtraicayAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -23,7 +24,7 @@ namespace CuahangtraicayAPI.Controllers
             _environment = environment;
         }
 
-        // Hàm lưu hình ảnh vào thư mục wwwroot/banners
+     
         // Hàm lưu hình ảnh vào thư mục wwwroot/banners
         private async Task<string> SaveImageFileAsync(IFormFile imageFile)
         {
@@ -120,14 +121,12 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/Banners
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO< Bannerts>>> PostBanner([FromForm] BannerPostDTO dto)
         {
 
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+           
+             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -174,7 +173,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>  cập nhật {id}  Banners</returns>
         // PUT: api/Banners/{id}
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<Bannerts>>> PutBanner(int id, [FromForm] BannerPutDTO dto)
         {
             var banner = await _context.Banners.Include(b => b.BannerImages).FirstOrDefaultAsync(b => b.Id == id);
@@ -186,10 +185,7 @@ namespace CuahangtraicayAPI.Controllers
                     Message = "Banners không tồn tại trong hệ thống"
                 });
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value ;
 
             if (hotenToken == null)
             {
@@ -255,7 +251,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>  Xóa {id} Banners</returns>
         // DELETE: api/Banners/{id}
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Bannerts>>> DeleteBanner(int id)
         {
             var banner = await _context.Banners.Include(b => b.BannerImages).FirstOrDefaultAsync(b => b.Id == id);
@@ -328,8 +324,8 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         ///    /// <returns> Cập nhật trạng thái "Đang sử dụng" cho banner, các banner khác sẽ có trạng thái "Không sử dụng". </returns>
         [HttpPost("setTrangthai/{id}")]
-        [Authorize]
-        public async Task<IActionResult> SetTrangthai(int id, [FromBody] SetBannerDTO dto)
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<IActionResult> SetTrangthai(  int id )
         {
             // Kiểm tra tính hợp lệ của DTO
             if (!ModelState.IsValid)
@@ -346,10 +342,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound(new { message = "Không tìm thấy banner với id này." });
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -363,8 +356,9 @@ namespace CuahangtraicayAPI.Controllers
                 if (banner.Id == id)
                 {
                     banner.Trangthai = "đang sử dụng"; // Cập nhật trạng thái cho banner được chọn
-                    banner.UpdatedBy = hotenToken; // Cập nhật người thực hiện
-                }
+                   
+                } 
+                banner.UpdatedBy = hotenToken; // Cập nhật người thực hiện
             }
 
             // Lưu thay đổi

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using CuahangtraicayAPI.Model;
 using System.Globalization;
 using Azure;
+using CuahangtraicayAPI.Model.DB;
 
 
 namespace CuahangtraicayAPI.Controllers

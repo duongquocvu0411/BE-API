@@ -9,6 +9,7 @@ using static CuahangtraicayAPI.DTO.TenFooterDTO;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.DTO;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -82,13 +83,10 @@ namespace CuahangtraicayAPI.Controllers
         /// 
         // POST: api/TenFooters
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<BaseResponseDTO<TenFooters>>> PostTenFooter([FromForm] TenFooterPostDto dto)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Danhmucsanpham>
@@ -155,7 +153,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // PUT: api/TenFooters/5
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<TenFooters>> PutTenFooter(int id, [FromForm] TenFooterPuttDto dto)
         {
             var editTenFooter = await _context.TenFooters
@@ -170,10 +168,7 @@ namespace CuahangtraicayAPI.Controllers
                     Message ="Tên footer không tồn tại trong hệ thóng"
                 });
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Danhmucsanpham>
@@ -257,7 +252,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/TenFooters/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<TenFooters>> DeleteTenFooter(int id)
         {
             var tenFooter = await _context.TenFooters

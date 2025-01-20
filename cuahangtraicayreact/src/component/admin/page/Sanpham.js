@@ -12,6 +12,7 @@ import ModalDanhGia from '../modla/ModalDanhGia';
 import Countdown from 'react-countdown';
 import ModalChiTietSanPham from '../modla/ModalChiTietSanPham';
 import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const SanPham = () => {
   // State lưu trữ danh mục sản phẩma
@@ -147,24 +148,17 @@ const SanPham = () => {
         position: 'top-right',
         autoClose: 3000,
       });
-
+     
       layDanhSachSanPham(); // Cập nhật danh sách sản phẩm sau khi xóa
     } catch (error) {
       console.log('Lỗi khi xóa sản phẩm:', error);
       // Kiểm tra lỗi từ backend
-      if (error.response && error.response.data && error.response.data.message) {
+      if (error.response.status === 403) {
         // Nếu lỗi từ backend có thông báo cụ thể
-        toast.error(error.response.data.message, {
-          position: 'top-right',
-          autoClose: 3000,
-        });
-      } else {
-        // Thông báo lỗi mặc định nếu không lấy được từ backend
-        toast.error(`Sản phẩm ${SanphamXoa.tieude} chưa xóa được, vui lòng thử lại!`, {
-          position: 'top-right',
-          autoClose: 3000,
-        });
-      }
+        toast.error("Bạn không có quyền xóa sản phẩm.");
+      }  else {
+        toast.error(error.response?.data?.message || "Đã xảy ra lỗi.");
+    }
     }
   };
 
@@ -251,10 +245,11 @@ const SanPham = () => {
       laytrangthaidanhgia();
     }
     catch (error) {
-      toast.error("có lỗi từ hệ thống", {
-        position: 'top-right',
-        autoClose: 3000
-      });
+      if (error.response.status === 403) {
+          toast.error("Bạn không có quyền Đánh giá tự động.");
+      } else {
+          toast.error(error.response?.data?.message || "Đã xảy ra lỗi.");
+      }
     }
   }
 
@@ -277,14 +272,28 @@ const SanPham = () => {
         autoClose: 3000,
       });
       laytrangthaidanhgia();
-    } catch (error) {
-      console.error("Lỗi khi tắt đánh giá tự động:", error);
-      toast.error("Không thể tắt đánh giá tự động. Vui lòng thử lại!", {
-        position: "top-right",
-        autoClose: 3000,
-      });
+    }  catch (error) {
+      if (error.response.status === 403) {
+          toast.error("Bạn không có quyền Đánh giá tự động.");
+      } else {
+          toast.error(error.response?.data?.message || "Đã xảy ra lỗi.");
+      }
     }
   };
+
+let role = [];
+if(cookies.adminToken){
+  try {
+    const giaimatoken = jwtDecode(cookies.adminToken);
+    role = giaimatoken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+  } catch (error) {
+    console.log("có lỗi khi giải mã token:",error);
+  }
+}
+
+
+const isNhanvien = role.includes('Employee') && role.includes('User') && !role.includes('Admin');
+
   return (
     <div id="wrapper">
       {/* Sidebar */}
@@ -353,6 +362,7 @@ const SanPham = () => {
                 <Button variant="primary" onClick={moModalThemSanPham} className="btn-sm">
                   <i className="fas fa-plus-circle"></i> Thêm sản phẩm
                 </Button>
+                {!isNhanvien &&(
                 <div>
                   {trangthaidanhgia ? (
                     <Button
@@ -372,6 +382,7 @@ const SanPham = () => {
                     </Button>
                   )}
                 </div>
+                )}
               </div>
 
               <div className="card-body">

@@ -10,6 +10,7 @@ using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Services;
 using CuahangtraicayAPI.Model.ghn;
 using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.Model.DB;
 
 
 
@@ -37,7 +38,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/KhachHang
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO< IEnumerable<KhachHang>>>> GetKhachHangs()
         {
             var khachHangs = await _context.KhachHangs
@@ -70,7 +71,7 @@ namespace CuahangtraicayAPI.Controllers
 
 
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<Object>>> GetKhachHang(int id)
         {
             var khachHang = await _context.KhachHangs
@@ -183,11 +184,12 @@ namespace CuahangtraicayAPI.Controllers
         /// <param name="idShop"></param>
         /// <returns>Tạo đơn giao hàng nhanh</returns>
 
-        [HttpPost("{id}/create-order")]
-        public async Task<IActionResult> CreateOrder(int id, string idShop)
+        [HttpPost("{id_khachhang}/create-order")]
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<IActionResult> CreateOrder(int id_khachhang)
         {
             // Lấy thông tin khách hàng
-            var khachHang = GetKhachHangById(id);
+            var khachHang = GetKhachHangById(id_khachhang);
             if (khachHang == null)
                 return NotFound(new { message = "Khách hàng không tồn tại." });
 
@@ -216,10 +218,10 @@ namespace CuahangtraicayAPI.Controllers
 
             // Tiếp tục xử lý lên đơn nếu mã không tồn tại
             int codAmount = (hoaDon.Thanhtoan == "Momo" || hoaDon.Thanhtoan == "VnPay")  ? 0 : (int)hoaDon.total_price;
-
+            var shopid = _ghnService.GetShopid();
             var request = new GhnOrderRequest
             {
-                ShopId = idShop,
+                ShopId = shopid,
                 ToName = $"{khachHang.Ho} {khachHang.Ten}",
                 ToPhone = khachHang.Sdt,
                 ToAddress = khachHang.DiaChiCuThe,
@@ -244,10 +246,7 @@ namespace CuahangtraicayAPI.Controllers
 
             // Lấy mã đơn hàng GHN từ phản hồi
             var ghnOrderId = ghnResponse.Data.OrderCode;
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler(); // dùng để trích xuất thông tin mã hóa token
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             // Lưu thông tin đơn hàng GHN vào cơ sở dữ liệu
             var ghnOrder = new GhnOrder
             {

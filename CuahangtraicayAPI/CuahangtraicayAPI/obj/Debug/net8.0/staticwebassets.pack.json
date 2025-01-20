@@ -1,8 +1,16 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\011ac534-d5f3-4850-a1f5-f5a4ed3cdab1.jpg",
+      "PackagePath": "staticwebassets\\banners\\011ac534-d5f3-4850-a1f5-f5a4ed3cdab1.jpg"
+    },
+    {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\24c0490b-ec4d-41bc-bfd8-5961d0756ad4.jpg",
       "PackagePath": "staticwebassets\\banners\\24c0490b-ec4d-41bc-bfd8-5961d0756ad4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\46a8733a-80d0-4ec6-8e77-c1875ad158d8.jpg",
+      "PackagePath": "staticwebassets\\banners\\46a8733a-80d0-4ec6-8e77-c1875ad158d8.jpg"
     },
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\52034344-c885-4934-acd1-215a2c18ee0f.jpg",
@@ -11,6 +19,14 @@
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\6a17c216-f442-4142-a242-6c31f9947e49.jpg",
       "PackagePath": "staticwebassets\\banners\\6a17c216-f442-4142-a242-6c31f9947e49.jpg"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\877e1d1c-9ffc-4b7c-bd83-2f4cb384445f.png",
+      "PackagePath": "staticwebassets\\banners\\877e1d1c-9ffc-4b7c-bd83-2f4cb384445f.png"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\d7375e3c-a5d0-4f81-970e-a3407de54c23.jpg",
+      "PackagePath": "staticwebassets\\banners\\d7375e3c-a5d0-4f81-970e-a3407de54c23.jpg"
     },
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\banners\\ddfdb405-c4ee-4df1-9ee4-584ce2a7e8e7.jpg",
@@ -309,6 +325,10 @@
       "PackagePath": "staticwebassets\\hinhanhphu\\dcd8bae2-1aeb-41dd-b691-6b6eeac524a2.jpg"
     },
     {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\dd5544e4-9e03-447b-b2d8-14dc65186874.jpg",
+      "PackagePath": "staticwebassets\\hinhanhphu\\dd5544e4-9e03-447b-b2d8-14dc65186874.jpg"
+    },
+    {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\hinhanhphu\\de2503c7-58e4-452a-a12c-b8e6d627efe4.jpg",
       "PackagePath": "staticwebassets\\hinhanhphu\\de2503c7-58e4-452a-a12c-b8e6d627efe4.jpg"
     },
@@ -573,6 +593,10 @@
       "PackagePath": "staticwebassets\\sanpham\\9a4b5f7f-7f1e-4615-8e41-272aae352ed9.jpg"
     },
     {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\9aead702-397f-43f0-957d-8aa417dc7824.jpg",
+      "PackagePath": "staticwebassets\\sanpham\\9aead702-397f-43f0-957d-8aa417dc7824.jpg"
+    },
+    {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\ad64e5d6-8bf8-42b2-9421-d5491209ad21.jpg",
       "PackagePath": "staticwebassets\\sanpham\\ad64e5d6-8bf8-42b2-9421-d5491209ad21.jpg"
     },
@@ -651,6 +675,10 @@
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\fe5c7bfa-5646-41ff-8610-75b24fb21627.jpg",
       "PackagePath": "staticwebassets\\sanpham\\fe5c7bfa-5646-41ff-8610-75b24fb21627.jpg"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\74428bc0-880d-40b9-8832-343c87aff776.jpg",
+      "PackagePath": "staticwebassets\\tenwebsite\\74428bc0-880d-40b9-8832-343c87aff776.jpg"
     },
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\a0e42fae-75b4-40d8-ae2a-20c3d116d085.png",

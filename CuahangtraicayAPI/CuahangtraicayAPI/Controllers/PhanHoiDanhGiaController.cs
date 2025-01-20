@@ -6,6 +6,7 @@ using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -63,7 +64,7 @@ namespace CuahangtraicayAPI.Controllers
         /// Tạo mới phản hồi cho đánh giá
         /// </summary>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<PhanHoiDanhGia>> CreatePhanHoi([FromBody] PhanhoiDTO.PhanhoiPOSTDTO dto)
         {
             // Kiểm tra đánh giá tồn tại không
@@ -71,10 +72,7 @@ namespace CuahangtraicayAPI.Controllers
             if (danhgia == null)
                 return BadRequest(new { message = "Đánh giá không tồn tại" });
 
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             // Thêm phản hồi mới
             var newPhanHoi = new PhanHoiDanhGia
@@ -96,17 +94,14 @@ namespace CuahangtraicayAPI.Controllers
         /// Cập nhật phản hồi
         /// </summary>
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> UpdatePhanHoi(int id, PhanhoiDTO.PhanhoiPUTDTO dto)
         {
             var editPhanHoi = await _context.PhanHoiDanhGias.FindAsync(id);
             if (editPhanHoi == null)
                 return NotFound(new { message = "Phản hồi không tồn tại" });
 
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             editPhanHoi.noi_dung = dto.noi_dung;
             editPhanHoi.UpdatedBy = hotenToken;
@@ -120,7 +115,7 @@ namespace CuahangtraicayAPI.Controllers
         /// Xóa phản hồi theo ID
         /// </summary>
         [HttpDelete("{id}")]
-        [Authorize]
+       [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<PhanHoiDanhGia>>> DeletePhanHoi(int id)
         {
             var phanhoi = await _context.PhanHoiDanhGias.FindAsync(id);
@@ -138,7 +133,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <param name="dto"></param>
         /// <returns>Phản hồi đánh giá tự động</returns>
         [HttpPost("Phanhoi-tudong")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SaveAdminResponse([FromBody] PhanhoiDTO.AdminResponseDTO dto)
         {
             var hientai = await _context.AdminResponses.FirstOrDefaultAsync();
@@ -161,10 +156,13 @@ namespace CuahangtraicayAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { message = "phản hồi từ sytem thành công" });
         }
-
+        /// <summary>
+        /// tắt phản hồi đánh giá tự động
+        /// </summary>
+        /// <returns>tắt phản hồi đánh giá tự động</returns>
 
         [HttpPost("tat-phanhoi")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DisAutoPhanhoi()
         {
             // Lấy nội dung phản hồi từ bảng AdminResponses

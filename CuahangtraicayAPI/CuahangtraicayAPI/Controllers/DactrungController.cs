@@ -6,6 +6,7 @@ using static CuahangtraicayAPI.DTO.DactrungDTO;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.DTO;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -74,13 +75,10 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/Dactrung
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO< Dactrung>>> PostDactrung([FromForm] DactrungCreateDTO dto)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -88,6 +86,15 @@ namespace CuahangtraicayAPI.Controllers
                 {
                     Code = 404,
                     Message = "Không thể xác định người dùng từ token"
+                });
+            }
+            var exists = await _context.Dactrungs.AnyAsync(mn => mn.Thutuhienthi == dto.Thutuhienthi);
+            if (exists)
+            {
+                return BadRequest(new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Số thứ tự đã tồn tại trong hệ thống"
                 });
             }
 
@@ -127,7 +134,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // PUT: api/Dactrung/5
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Dactrung>>> PutDactrung(int id, [FromForm] DactrungUpdateDTO dto)
         {
             var dactrung = await _context.Dactrungs.FindAsync(id);
@@ -139,10 +146,16 @@ namespace CuahangtraicayAPI.Controllers
                     Message = "Đặc trưng không tồn tại trong hệ thông"
                 }); // Trả về 404 nếu không tìm thấy bản ghi
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var exists = await _context.Dactrungs.AnyAsync(mn => mn.Thutuhienthi == dto.Thutuhienthi);
+            if (exists)
+            {
+                return BadRequest(new BaseResponseDTO<Menu>
+                {
+                    Code = 404,
+                    Message = "Số thứ tự đã tồn tại trong hệ thống"
+                });
+            }
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -224,7 +237,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/Dactrung/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Dactrung>>> DeleteDactrung(int id)
         {
             var dactrung = await _context.Dactrungs.FindAsync(id);

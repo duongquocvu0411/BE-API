@@ -19,7 +19,7 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
       setNoidung(MenuFooter.noi_dung || ''); // Đảm bảo giá trị không bị null
       setThutuhienthi(MenuFooter.thutuhienthi || '');
     } else {
-      setNoidung(''); 
+      setNoidung('');
       setTieude('');
       setThutuhienthi('');
 
@@ -62,9 +62,23 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
       handleClose();
       ResetForm();
     } catch (error) {
-      console.error('Lỗi khi lưu banner:', error);
-      toast.error('Không thể lưu banner!', { position: 'top-right', autoClose: 3000 });
+      if (error.response?.status === 403) {
+        toast.error("Bạn không có quyền lưu banner.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      } else {
+        toast.error(
+          `Không thể lưu banner: ${error.response?.data?.message || error.message || "Đã xảy ra lỗi không xác định."}`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+          }
+        );
+      }
+      console.error("Lỗi khi lưu banner:", error.response?.data || error.message || error);
     }
+
 
   };
   // const handleChangeNoiDung = (event, editor) => {
@@ -74,7 +88,7 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
   //   }
   // };
 
-  const handleChangeNoiDung = (e, editor) =>{
+  const handleChangeNoiDung = (e, editor) => {
     const data = editor.getData();
     setNoidung(data);
   }
@@ -91,7 +105,7 @@ const ModalMenuFooter = ({ show, handleClose, isEdit, MenuFooter, fetchMenuFoote
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} centered   backdrop="static" >
+      <Modal show={show} onHide={handleClose} centered backdrop="static" >
         <Modal.Header closeButton className="bg-primary text-white shadow-sm">
           <Modal.Title className="fs-5 fw-bold">
             {isEdit ? (

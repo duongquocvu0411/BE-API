@@ -1,0 +1,54 @@
+const ProtectedRoute = ({ children, rolesAllowed = [] }) => {
+  const [cookies] = useCookies(['adminToken']);
+  const location = useLocation();
+  const [hasAccess, setHasAccess] = useState(false);
+
+  useEffect(() => {
+    const token = cookies.adminToken;
+
+    if (!token) {
+      setHasAccess(false);
+      return;
+    }
+
+    try {
+      const decodedToken = jwtDecode(token);
+      const userRoles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+
+      // Kiểm tra nếu userRoles chứa bất kỳ vai trò nào trong rolesAllowed
+      const isAuthorized = rolesAllowed.some((role) => userRoles.includes(role));
+      setHasAccess(isAuthorized);
+    } catch (error) {
+      console.error('Lỗi khi giải mã token:', error);
+      setHasAccess(false);
+    }
+  }, [cookies, rolesAllowed]);
+
+  if (!hasAccess) {
+    // Chuyển hướng nếu không có quyền
+    return <Navigate to="/unauthorized" state={{ from: location }} />;
+  }
+
+  return children;
+};
+
+
+
+
+
+
+
+
+
+app.js
+
+
+
+<Route
+  path="/admin/tenwebsite"
+  element={
+    <ProtectedRoute rolesAllowed={['Admin']}>
+      <TenWebsite />
+    </ProtectedRoute>
+  }
+/>

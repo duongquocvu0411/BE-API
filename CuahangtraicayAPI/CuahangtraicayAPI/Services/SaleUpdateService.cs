@@ -57,7 +57,7 @@ namespace CuahangtraicayAPI.Services
                 }
 
                 // Chờ 5 phút trước khi kiểm tra lại
-                await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
 
             _logger.LogInformation("SaleUpdateService is stopping.");

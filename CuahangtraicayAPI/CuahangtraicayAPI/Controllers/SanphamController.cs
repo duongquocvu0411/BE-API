@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model;
 using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -108,7 +109,40 @@ namespace CuahangtraicayAPI.Controllers
                 Message = "Success"
             });
         }
-      
+
+
+        [HttpGet("{id}/sanphamlienquan")]
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<Sanpham>>>> GetRelatedSanphams(int id)
+        {
+            // Lấy sản phẩm hiện tại
+            var spht = await _context.Sanpham
+                .Include(s => s.Danhmucsanpham)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (spht == null)
+            {
+                return NotFound(new { message = "Sản phẩm không tồn tại" });
+            }
+
+            // Lấy danh sách sản phẩm liên quan
+            var relatedProducts = await _context.Sanpham
+                .Include(s => s.SanphamSales)
+                .Where(s =>
+                    s.Id != id && // Loại trừ sản phẩm hiện tại
+                    s.Xoa == false && // Chỉ lấy sản phẩm không bị xóa
+                    s.danhmucsanpham_id == spht.danhmucsanpham_id) // Cùng danh mục sản phẩm
+                .OrderByDescending(s => s.SanphamSales.Any(sale => sale.trangthai == "Đang áp dụng")) // Ưu tiên sản phẩm có giảm giá
+                .ThenBy(r => Guid.NewGuid()) // Random danh sách
+                .Take(6) // Lấy tối đa 6 sản phẩm
+                .ToListAsync();
+
+            return Ok(new BaseResponseDTO<IEnumerable<Sanpham>>
+            {
+                Data = relatedProducts,
+                Message = "Success"
+            });
+        }
+
 
         /// <summary>
         /// Thêm mới sản phẩm
@@ -117,7 +151,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/Sanpham
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles ="Admin,Employee")]
         public async Task<ActionResult<Sanpham>> PostSanpham([FromForm] SanphamDTO.SanphamCreateRequest request)
         {
             // Kiểm tra giá gốc hợp lệ
@@ -130,10 +164,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return BadRequest(new { message = "Số lượng sản phẩm phải lớn hơn hoặc bằng 1." });
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -257,7 +288,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns> Chỉnh sửa sản phẩm theo {id}  </returns>
         // PUT: api/Sanpham/{id} api put sản phẩm
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<Sanpham>>> PutSanpham(int id, [FromForm] SanphamDTO.SanphamUpdateRequest request)
         {
             // Tìm sản phẩm trong cơ sở dữ liệu
@@ -279,10 +310,7 @@ namespace CuahangtraicayAPI.Controllers
             //{
             //    return BadRequest(new { message = "Số lượng sản phẩm phải lớn hơn hoặc bằng 1." });
             //}
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -443,7 +471,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/Sanpham/{id}
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Sanpham>>> DeleteSanpham(int id, [FromQuery] string UpdatedBy)
         {
             var sanpham = await _context.Sanpham
@@ -454,11 +482,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound(new BaseResponseDTO<Sanpham>{ Code= 404, Message = "Sản phẩm không tồn tại" });
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
-
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             // Kiểm tra sản phẩm có liên quan đến đơn hàng chưa hoàn thành không
             var hoaDonChiTiets = await _context.HoaDonChiTiets
@@ -605,7 +629,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/Sanpham/TongSanPham
         [HttpGet("TongSanPham")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<object>>> GetTongSanPham()
         {
             // Tính tổng số sản phẩm
@@ -706,7 +730,7 @@ namespace CuahangtraicayAPI.Controllers
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.ChiTiet)
                 .Include(s => s.SanphamSales)
-                .Where(s => s.SanphamSales.Any(sale => sale.trangthai == "Đang áp dụng"))// Include thông tin sale
+               .Where(s => s.Xoa ==false && s.SanphamSales.Any(sale => sale.trangthai == "Đang áp dụng"))// Include thông tin sale
                 .ToListAsync();
 
           

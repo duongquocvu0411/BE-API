@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.Model.DB;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace CuahangtraicayAPI.Controllers
@@ -94,6 +96,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/DanhGiaKhachHang/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteDanhGiaKhachHang(int id)
         {
             var danhgia = await _context.DanhGiaKhachHang.FindAsync(id);

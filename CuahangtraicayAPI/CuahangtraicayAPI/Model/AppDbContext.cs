@@ -5,17 +5,19 @@ using CuahangtraicayAPI.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using CuahangtraicayAPI.Modles;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<IdentityUser>
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-    }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     // Định nghĩa các DbSet cho các bảng trong cơ sở dữ liệu
     public DbSet<Danhmucsanpham> Danhmucsanpham { get; set; }
     public DbSet<Diachichitiet> Diachichitiets { get; set; }
     public DbSet<Admin> Admins { get; set; }
+    public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<AdminResponse> AdminResponses { get; set; }
     public DbSet<Lienhe> Lienhes { get; set; }
     public DbSet<Sanpham> Sanpham { get; set; }

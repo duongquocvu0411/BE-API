@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using CuahangtraicayAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.Model.DB;
 namespace CuahangtraicayAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -65,13 +66,10 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Website vừa được tạo.</returns>
 
         [HttpPost]
-        [Authorize]
+       [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<TenwebSite>>> Create([FromForm] CreateTenWebSiteDto createDto)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             var newTenWebSite = new TenwebSite
             {
@@ -116,7 +114,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <param name="updateDto">Dữ liệu cần cập nhật.</param>
         /// <returns>Trạng thái cập nhật.</returns>
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<TenwebSite>>> Update(int id, [FromForm] UpdateTenWebSiteDto updateDto)
         {
             var edit = await _context.TenwebSites.FindAsync(id);
@@ -141,10 +139,7 @@ namespace CuahangtraicayAPI.Controllers
             if (!string.IsNullOrEmpty(updateDto.Sodienthoai))
                 edit.Sdt = updateDto.Sodienthoai;
 
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             edit.UpdatedBy = hotenToken;
             edit.Updated_at = DateTime.Now;
@@ -187,7 +182,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái xóa.</returns>
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<TenwebSite>>> Delete(int id)
         {
             var tenWebSite = await _context.TenwebSites.FindAsync(id);

@@ -83,12 +83,12 @@ const GioithieuAdmin = () => {
       });
       layDanhSachGioithieu();
       setTrangHienTai(1);
-    } catch (error) {
-      console.log('Có lỗi khi xóa giới thiệu', error);
-      toast.error('Có lỗi khi xóa giới thiệu', {
-        position: 'top-right',
-        autoClose: 3000
-      });
+    }  catch (error) {
+      if (error.response.status === 403) {
+          toast.error("Bạn không có quyền xóa bài giới thiệu.");
+      } else {
+          toast.error(error.response?.data?.message || "Đã xảy ra lỗi.");
+      }
     }
   };
 

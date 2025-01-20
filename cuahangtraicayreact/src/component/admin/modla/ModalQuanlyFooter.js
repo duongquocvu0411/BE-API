@@ -23,13 +23,13 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
     const handleSubmit = async () => {
         try {
             // Kiểm tra trạng thái lưu đăng nhập
-           
+
             const token = cookies.adminToken; // Lấy token từ cookie
             const footerData = {
                 noiDungFooter: name,
                 trangthai: Trangthai, // Đảm bảo Trangthai có giá trị hợp lệ (0 hoặc 1)
             };
- 
+
             if (isEdit) {
 
                 // Gọi API PUT để cập nhật Footer
@@ -80,17 +80,30 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
                 handleClose(); // Đóng modal
             }
         } catch (error) {
-            console.error(isEdit ? "Có lỗi khi sửa Footer!" : "Có lỗi xảy ra khi thêm mới Footer.", error);
-
-            // Hiển thị thông báo lỗi
-            toast.error(
-                isEdit ? "Có lỗi xảy ra khi cập nhật Footer. Vui lòng thử lại." : `Có lỗi xảy ra khi thêm mới Footer ${name}`,
-                {
-                    position: 'top-right',
-                    autoClose: 3000,
-                }
-            );
+            if (error.response?.status === 403) {
+                toast.error(
+                    isEdit
+                        ? "Bạn không có quyền cập nhật Footer."
+                        : "Bạn không có quyền thêm mới Footer.",
+                    {
+                        position: "top-right",
+                        autoClose: 3000,
+                    }
+                );
+            } else {
+                toast.error(
+                    isEdit
+                        ? `Có lỗi xảy ra khi cập nhật Footer: ${error.response?.data?.message || error.message || "Lỗi không xác định."}`
+                        : `Có lỗi xảy ra khi thêm mới Footer ${name}: ${error.response?.data?.message || error.message || "Lỗi không xác định."}`,
+                    {
+                        position: "top-right",
+                        autoClose: 3000,
+                    }
+                );
+            }
+            console.error(isEdit ? "Có lỗi khi sửa Footer!" : "Có lỗi xảy ra khi thêm mới Footer.", error.response?.data || error.message || error);
         }
+
     };
 
 
@@ -105,7 +118,7 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
     };
 
     return (
-        <Modal show={show} onHide={handleClose} centered    backdrop="static">
+        <Modal show={show} onHide={handleClose} centered backdrop="static">
             <Modal.Header closeButton className="bg-primary text-white">
                 <Modal.Title>
                     {isEdit ? (
@@ -150,7 +163,7 @@ const ModlalQuanlyFooter = ({ show, handleClose, isEdit, Footer, fetchFooters })
                             required
                         >
                             {/* Chỉ hiển thị "chọn trạng thái" nếu trạng thái chưa được chọn */}
-                            
+
                             <option value={0}>Ẩn</option>
                             <option value={1}>Hiển thị</option>
                         </Form.Select>

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.DTO;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -132,13 +133,10 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Mục menu footer vừa được tạo.</returns>
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO< MenuFooter>>> PostMenuFooter(MenuFooterCreateDto menuFooterCreateDto)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -178,7 +176,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Không trả về nội dung nếu cập nhật thành công, hoặc lỗi nếu không tìm thấy mục menu footer.</returns>
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<MenuFooter>> PutMenuFooter(int id, MenuFooterUpdateDto menuFooterUpdateDto)
         {
          
@@ -200,10 +198,7 @@ namespace CuahangtraicayAPI.Controllers
                 });
                
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             menuFooter.Tieu_de = menuFooterUpdateDto.Tieu_de;
             menuFooter.Noi_dung = menuFooterUpdateDto.Noi_dung;
@@ -228,7 +223,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái thành công hoặc lỗi nếu không tìm thấy mục menu footer.</returns>
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<MenuFooter>> DeleteMenuFooter(int id)
         {
             var menuFooter = await _context.MenuFooters.FindAsync(id);

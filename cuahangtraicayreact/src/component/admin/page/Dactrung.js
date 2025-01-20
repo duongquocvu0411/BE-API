@@ -93,9 +93,23 @@ const Dactrung = () => {
         });
         layDanhSachDactrung(); // Làm mới danh sách
       } catch (error) {
-        console.error('Có lỗi khi xóa đặc trưng:', error);
-        toast.error('Có lỗi khi xóa đặc trưng!', { position: 'top-right', autoClose: 3000 });
-      }
+        if (error.response?.status === 403) {
+            toast.error("Bạn không có quyền xóa đặc trưng.", {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        }  else {
+            toast.error(
+                `Có lỗi khi xóa đặc trưng: ${error.response?.data?.message || error.message || "Lỗi không xác định."}`,
+                {
+                    position: "top-right",
+                    autoClose: 3000,
+                }
+            );
+        }
+       
+    }
+    
     }
     setShowModalXoa(false);
   };

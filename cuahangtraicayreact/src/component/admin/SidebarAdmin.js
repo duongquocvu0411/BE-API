@@ -1,9 +1,28 @@
 
 import React from 'react';
+import { useCookies } from 'react-cookie';
 import { Link, useLocation } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const SiderbarAdmin = () => {
   const vitriRoute = useLocation();
+  const [cookies] = useCookies(['adminToken']);
+
+  //giải mã token để lấy role
+  let role = [];
+  if(cookies.adminToken){
+    try{
+      const giaimatoken = jwtDecode(cookies.adminToken);
+      role = giaimatoken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+    }
+    catch(error){
+      console.log("có lỗi khi giải mã token:",error);
+    }
+  }
+
+  // kiểm tra vai trò role Employee
+
+  const isNhanvien = role.includes('Employee') && role.includes('User') && !role.includes('Admin');
 
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-4 collapse d-md-block" id="sidebar">
@@ -26,8 +45,8 @@ const SiderbarAdmin = () => {
             <span>Dashboard</span>
           </Link>
         </li>
-
-        {/* Quản lý cửa hàng */}
+      {!isNhanvien && (
+  
         <li className="nav-item">
           <a
             className="nav-link collapsed"
@@ -79,6 +98,7 @@ const SiderbarAdmin = () => {
             </div>
           </div>
         </li>
+        )}
 
         {/* Divider */}
         <hr className="sidebar-divider" />
@@ -106,7 +126,14 @@ const SiderbarAdmin = () => {
             <span>Quản lý Giới thiệu</span>
           </Link>
         </li>
-
+        {!isNhanvien && (
+        <li className={`nav-item ${vitriRoute.pathname === '/admin/accounts' ? 'active' : ''}`}>
+          <Link className="nav-link" to="/admin/accounts">
+            <i className="fas fa-boxes"></i> {/* Icon sản phẩm */}
+            <span>Quản lý Acoounts</span>
+          </Link>
+        </li>
+        )}
         {/* Quản lý Địa chỉ 
         <li className={`nav-item ${vitriRoute.pathname === '/admin/diachichitiet' ? 'active' : ''}`}>
           <Link className="nav-link" to="/admin/diachichitiet">

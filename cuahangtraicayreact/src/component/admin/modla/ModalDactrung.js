@@ -97,12 +97,24 @@ const ModalDactrung = ({ show, handleClose, isEdit, dactrung, fetchDactrungs }) 
       handleClose(); // Đóng modal
       resetForm();
     } catch (error) {
-      console.error("Có lỗi xảy ra:", error);
-      toast.error("Có lỗi xảy ra khi xử lý đặc trưng!", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-    }
+      if (error.response?.status === 403) {
+          toast.error("Bạn không có quyền thực hiện thao tác này.", {
+              position: "top-right",
+              autoClose: 3000,
+          });
+      } 
+       else {
+          toast.error(
+              `Có lỗi xảy ra: ${error.response?.data?.message || error.message || "Lỗi không xác định."}`,
+              {
+                  position: "top-right",
+                  autoClose: 3000,
+              }
+          );
+      }
+      console.error("Có lỗi xảy ra:", error.response?.data || error.message || error);
+  }
+  
   };
 
   // Reset form khi đóng modal

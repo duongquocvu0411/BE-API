@@ -8,6 +8,7 @@ using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -106,13 +107,10 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Mục giới thiệu vừa được tạo.</returns>
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<Gioithieu>>> CreateGioithieu([FromForm] GioithieuCreateDTO dto)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -188,7 +186,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái cập nhật.</returns>
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<Gioithieu>>> UpdateGioithieu(int id, [FromForm] GioithieuUpdateDTO gioithieuUpdateDTO)
         {
             var gioithieu = await _context.Gioithieu.Include(g => g.GioithieuImgs).FirstOrDefaultAsync(g => g.Id == id);
@@ -196,10 +194,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound();
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -266,7 +261,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái xóa.</returns>
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Gioithieu>>> DeleteGioithieu(int id)
         {
             var gioithieu = await _context.Gioithieu.FindAsync(id);

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Footerusers from "../Footerusers";
 import HeaderUsers from "../HeaderUsers";
 import { CartContext } from "./CartContext";
@@ -8,9 +8,11 @@ import { toast, ToastContainer } from "react-toastify";
 import { Lightbox } from "react-modal-image"; // Sử dụng thư viện Lightbox để phóng to ảnh
 import Countdown from "react-countdown";
 import Aos from "aos";
+import axios from "axios";
+import Marquee from "react-fast-marquee";
 
 const CuahangChitiet = () => {
-  const { id,name } = useParams(); // Lấy ID sản phẩm từ URL
+  const { id, name } = useParams(); // Lấy ID sản phẩm từ URL
   const [sanPham, setSanPham] = useState(null); // Thông tin sản phẩm
   const [chiTiet, setChiTiet] = useState({}); // Chi tiết sản phẩm
   const [tab, setTab] = useState("chiTiet"); // Quản lý tab hiển thị (chi tiết hoặc bài viết)
@@ -23,41 +25,22 @@ const CuahangChitiet = () => {
   const [hinhanhPhu, setHinhanhPhu] = useState([]); // Danh sách hình ảnh phụ của sản phẩm
   const [largeImage, setLargeImage] = useState(null); // Hình ảnh lớn để hiển thị khi click vào
   const [dangtai, setDangtai] = useState(false);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   useEffect(() => {
-
+    axios.get(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}/sanphamlienquan`)
+      .then((response) => {
+        setRelatedProducts(response.data.data);
+      })
     layThongTinSanPham();
     Aos.init({
       duration: 1000,
       easing: 'ease-in-out'
     });
+
   }, [id]);
 
-  
-  // const layThongTinSanPham = async () => {
-  //   try {
-  //     setDangtai(true);
-  //     const response = await fetch(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}`);
-  //     if (!response.ok) {
-  //       throw new Error("Không thể tải thông tin sản phẩm");
-  //     }
-  //     const data = await response.data.json();
-  //     if (!data) {
-  //       throw new Error("Dữ liệu sản phẩm không hợp lệ");
-  //     }
-  //     setSanPham(data); // Lưu dữ liệu sản phẩm
-  //     setChiTiet(data.data.chiTiet || {}); // Lưu chi tiết sản phẩm
-  //     setHinhanhPhu(data.images || []); // Lưu danh sách hình ảnh phụ
-  //   } catch (error) {
-  //     console.error("Lỗi khi lấy thông tin sản phẩm:", error);
-  //     setSanPham(null); // Đảm bảo không để undefined
-  //   } finally {
-  //     setDangtai(false);
-  //   }
-  // };
-
-
   // Hàm mở modal để viết đánh giá
-  
+
   const layThongTinSanPham = async () => {
     try {
       setDangtai(true); // Bắt đầu trạng thái tải
@@ -67,11 +50,11 @@ const CuahangChitiet = () => {
       }
       const result = await response.json(); // Lấy dữ liệu JSON
       console.log("Dữ liệu sản phẩm từ API:", result);
-  
+
       if (!result || !result.data) {
         throw new Error("Dữ liệu sản phẩm không hợp lệ");
       }
-  
+
       // Cập nhật state với dữ liệu từ API
       setSanPham(result.data); // Lưu toàn bộ sản phẩm
       setChiTiet(result.data.chiTiet || {}); // Lưu chi tiết sản phẩm
@@ -83,7 +66,7 @@ const CuahangChitiet = () => {
       setDangtai(false); // Kết thúc trạng thái tải
     }
   };
-  
+
   const moModalVietDanhGia = (soSao) => {
     setSoSao(soSao); // Lưu số sao mà khách hàng chọn
     setShowModal(true); // Hiển thị modal
@@ -176,7 +159,7 @@ const CuahangChitiet = () => {
   return (
     <>
       <div>
-        <HeaderUsers  tieudeSanPham={sanPham?.tieude}/>
+        <HeaderUsers tieudeSanPham={sanPham?.tieude} />
 
         {/* Hiển thị thông tin sản phẩm */}
         <div className="container-fluid page-header py-5">
@@ -252,21 +235,21 @@ const CuahangChitiet = () => {
                     {isSaleActive ? (
                       <div>
                         <p className="text-muted mb-2" style={{ textDecoration: "line-through" }}>
-                        {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
-                        ({sanPham.don_vi_tinh})
+                          {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
+                          ({sanPham.don_vi_tinh})
 
 
                         </p>
                         <p className="text-danger fw-bold mb-2">
                           Giá khuyến mãi: {parseFloat(sale.giasale).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
-                          {/* {parseFloat(sale.giasale).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "}/ vnđ */} ({sanPham.don_vi_tinh}) 
+                          {/* {parseFloat(sale.giasale).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "}/ vnđ */} ({sanPham.don_vi_tinh})
                         </p>
                         <p className="text-warning">
                           <Countdown date={new Date(sale.thoigianketthuc)} renderer={countdownRenderer} />
                         </p>
                       </div>
                     ) : (
-                      <h5 className="fw-bold mb-3">{parseFloat(sanPham.giatien).toLocaleString("vi-VN", {style: 'decimal', minimumFractionDigits: 0})}{" "} vnđ / {sanPham.don_vi_tinh}</h5>
+                      <h5 className="fw-bold mb-3">{parseFloat(sanPham.giatien).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })}{" "} vnđ / {sanPham.don_vi_tinh}</h5>
                     )}
 
                     {/* Kiểm tra trạng thái Hết hàng */}
@@ -562,7 +545,56 @@ const CuahangChitiet = () => {
                 )}
               </div>
             )}
-
+            <div className="related-products mt-5"  data-aos="fade-up">
+              <h2 className="text-success text-center mb-4">Sản phẩm liên quan</h2>
+              <Marquee
+                gradient={false} // Không làm mờ rìa
+                speed={50} // Tốc độ cuộn
+                direction="left" // Hướng cuộn (left hoặc right)
+                pauseOnHover // Dừng khi hover
+              >
+                {relatedProducts.map((sanPham) => (
+                  <div
+                    key={sanPham.id}
+                    style={{
+                      display: "inline-block",
+                      margin: "0 15px",
+                      width: "200px",
+                    }}
+                  >
+                    <div className="card shadow-sm">
+                     <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`}> <img
+                        src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
+                        className="card-img-top"
+                        alt={sanPham.tieude}
+                        style={{
+                          height: "150px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      </Link>
+                      <div className="card-body text-center">
+                        <h5 className="card-title text-truncate">{sanPham.tieude}</h5>
+                        <p className="card-text">
+                          {parseFloat(sanPham.giatien).toLocaleString("vi-VN")}  vnđ / {sanPham.don_vi_tinh}
+                        </p>
+                        {sanPham.trangthai === "Hết hàng" ? (
+                            <span className="badge bg-danger py-2 px-3">Hết hàng</span>
+                          ) : (
+                            <button
+                            onClick={() => addToCart(sanPham)}
+                            className="btn border border-secondary rounded-pill px-3 text-primary"
+                          >
+                            <i className="fa fa-shopping-bag me-2 text-primary" /> Thêm vào giỏ hàng
+                          </button>
+                          )}
+                       
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </Marquee>
+            </div>
             {/* Modal viết đánh giá */}
             <Modal
               show={showModal}

@@ -33,8 +33,8 @@ namespace CuahangtraicayAPI.DTO
         }
         public class SetBannerDTO
         {
-            [Required]
-            public string Updated_By { get; set; } // Người thực hiện cập nhật
+            //[Required]
+            //public string Updated_By { get; set; } // Người thực hiện cập nhật
         }
     }
 }

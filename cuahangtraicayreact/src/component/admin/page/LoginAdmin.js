@@ -49,7 +49,7 @@ const Login = () => {
     setDangXuLy(true);
 
     try {
-      const phanHoi = await axios.post(`${process.env.REACT_APP_BASEURL}/api/admin/login`, {
+      const phanHoi = await axios.post(`${process.env.REACT_APP_BASEURL}/api/Authenticate/login`, {
         username: tenDangNhap,
         password: matKhau,
       });
@@ -91,14 +91,75 @@ const Login = () => {
   };
 
 
+  // const xuLyXacThucOTP = async (e) => {
+  //   e.preventDefault();
+  //   setDangXacThuc(true);
+  
+  //   try {
+  //     const phanHoi = await axios.post(
+  //       `${process.env.REACT_APP_BASEURL}/api/Authenticate/verify-otp`,
+  //       JSON.stringify(maXacThuc), //giúp chuyển đối tượng  (có thể chứa các giá trị như số, chuỗi, mảng, hoặc các đối tượng con) thành chuỗi JSON.
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //       }
+  //     );
+  
+  //     if (phanHoi.data.status === 'success') {
+  //       // Lấy thông tin từ token
+  //       const decodedToken = jwtDecode(phanHoi.data.token);
+  //       const hotenFromToken = decodedToken.hoten;
+  
+  //       // Lấy thời gian hiện tại và định dạng ngày giờ
+  //       const now = new Date();
+  //       const formattedLoginTime = now.toLocaleString('vi-VN', {
+  //         year: 'numeric',
+  //         month: '2-digit',
+  //         day: '2-digit',
+  //         hour: '2-digit',
+  //         minute: '2-digit',
+  //         second: '2-digit',
+  //       });
+  
+  //       // Thời gian sống của cookie (7 ngày hoặc 1 phút)
+  //       const maxAge = luuDangNhap ? 7 * 24 * 60 * 60 : 3 * 60 * 60; // 7 ngày hoặc 3 giờ 
+  //       setCookie('adminToken', phanHoi.data.token, { path: '/', secure: true, sameSite: 'Strict', maxAge });
+  //       // setCookie('loginhoten', hotenFromToken, { path: '/', secure: true, sameSite: 'Strict', maxAge });
+  //       setCookie('loginTime', formattedLoginTime, { path: '/', secure: true, sameSite: 'Strict', maxAge });
+  //       setCookie('isAdminLoggedIn', true, { path: '/', secure: true, sameSite: 'Strict', maxAge });
+  
+  //       toast.success(`Đăng nhập thành công! Chào mừng ${hotenFromToken}`, {
+  //         position: 'top-center',
+  //         autoClose: 3000,
+  //       });
+  
+  //       dieuHuong('/admin/trangchu');
+  //     } else {
+  //       toast.warning('Mã xác thực không đúng. Vui lòng kiểm tra lại.', {
+  //         position: 'top-center',
+  //         autoClose: 3000,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Lỗi xác thực OTP:', error);
+  //     toast.error('Xác thực OTP thất bại. Vui lòng thử lại.', {
+  //       position: 'top-center',
+  //       autoClose: 3000,
+  //     });
+  //   } finally {
+  //     setDangXacThuc(false);
+  //   }
+  // };
+  
   const xuLyXacThucOTP = async (e) => {
     e.preventDefault();
     setDangXacThuc(true);
   
     try {
       const phanHoi = await axios.post(
-        `${process.env.REACT_APP_BASEURL}/api/admin/verify-otp`,
-        JSON.stringify(maXacThuc), //giúp chuyển đối tượng  (có thể chứa các giá trị như số, chuỗi, mảng, hoặc các đối tượng con) thành chuỗi JSON.
+        `${process.env.REACT_APP_BASEURL}/api/Authenticate/verify-otp`,
+        JSON.stringify(maXacThuc),
         {
           headers: {
             'Content-Type': 'application/json',
@@ -109,7 +170,7 @@ const Login = () => {
       if (phanHoi.data.status === 'success') {
         // Lấy thông tin từ token
         const decodedToken = jwtDecode(phanHoi.data.token);
-        const hotenFromToken = decodedToken.hoten;
+        const roles = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || [];
   
         // Lấy thời gian hiện tại và định dạng ngày giờ
         const now = new Date();
@@ -122,19 +183,22 @@ const Login = () => {
           second: '2-digit',
         });
   
-        // Thời gian sống của cookie (7 ngày hoặc 1 phút)
-        const maxAge = luuDangNhap ? 7 * 24 * 60 * 60 : 3 * 60 * 60; // 7 ngày hoặc 3 giờ 
+        // Thời gian sống của cookie (7 ngày hoặc 3 giờ)
+        const maxAge = luuDangNhap ? 7 * 24 * 60 * 60 : 3 * 60 * 60;
         setCookie('adminToken', phanHoi.data.token, { path: '/', secure: true, sameSite: 'Strict', maxAge });
-        // setCookie('loginhoten', hotenFromToken, { path: '/', secure: true, sameSite: 'Strict', maxAge });
         setCookie('loginTime', formattedLoginTime, { path: '/', secure: true, sameSite: 'Strict', maxAge });
         setCookie('isAdminLoggedIn', true, { path: '/', secure: true, sameSite: 'Strict', maxAge });
   
-        toast.success(`Đăng nhập thành công! Chào mừng ${hotenFromToken}`, {
-          position: 'top-center',
-          autoClose: 3000,
-        });
-  
-        dieuHuong('/admin/trangchu');
+        // Kiểm tra roles và điều hướng
+        if (roles.includes('Admin') || roles.includes('Employee')) {
+          dieuHuong('/admin/trangchu');
+        } else {
+          dieuHuong('/'); // Hoặc bất kỳ đường dẫn nào khác
+          toast.warning('Bạn không có quyền truy cập.', {
+            position: 'top-center',
+            autoClose: 3000,
+          });
+        }
       } else {
         toast.warning('Mã xác thực không đúng. Vui lòng kiểm tra lại.', {
           position: 'top-center',
@@ -151,7 +215,6 @@ const Login = () => {
       setDangXacThuc(false);
     }
   };
-  
 
   return (
     <div className="container d-flex vh-100">

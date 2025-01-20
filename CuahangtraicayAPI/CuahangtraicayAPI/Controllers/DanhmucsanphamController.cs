@@ -6,6 +6,7 @@ using static CuahangtraicayAPI.DTO.DanhmucsanphamDTO;
 using Azure.Core;
 using CuahangtraicayAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -74,7 +75,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/Danhmucsanpham
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles ="Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<Danhmucsanpham>>> PostDanhmucsanpham([FromBody] PostDanhmucDTO dto)
         {
             // Kiểm tra xem tên danh mục đã tồn tại chưa
@@ -90,10 +91,7 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
             // Lấy thông tin "hoten" từ token
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -129,14 +127,11 @@ namespace CuahangtraicayAPI.Controllers
 
         // PUT: api/Danhmucsanpham/{id}
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<Danhmucsanpham>>> PutDanhmucsanpham(int id, [FromBody] PutDanhmucDTO dto)
         {
             // Lấy thông tin "hoten" từ token
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             if (hotenToken == null)
             {
@@ -196,7 +191,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/Danhmucsanpham/{id}
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles ="Admin")]
        public async Task<ActionResult<BaseResponseDTO<Danhmucsanpham>>> DeleteDanhmucsanpham(int id)
         {
             // Tìm danh mục sản phẩm theo ID

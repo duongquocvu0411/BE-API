@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
 using Microsoft.EntityFrameworkCore;
+using CuahangtraicayAPI.Model.DB;
 
 public class AutoPhanHoiService : BackgroundService
 {

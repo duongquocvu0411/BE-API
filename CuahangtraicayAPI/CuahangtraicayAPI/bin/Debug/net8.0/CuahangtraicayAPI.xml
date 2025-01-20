@@ -70,7 +70,7 @@
             </summary>
             <returns> Trả về kết quả xóa hình ảnh </returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.BannersController.SetTrangthai(System.Int32,CuahangtraicayAPI.DTO.BannersDTO.SetBannerDTO)">
+        <member name="M:CuahangtraicayAPI.Controllers.BannersController.SetTrangthai(System.Int32)">
             <summary>
             Cập nhật trạng thái "Đang sử dụng" cho banner, các banner khác sẽ có trạng thái "Không sử dụng".
             </summary>
@@ -379,7 +379,7 @@
             </summary>
             <returns> Thêm mới khách hàng</returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.KhachHangController.CreateOrder(System.Int32,System.String)">
+        <member name="M:CuahangtraicayAPI.Controllers.KhachHangController.CreateOrder(System.Int32)">
             <summary>
             Tạo đơn giao hàng nhanh
             </summary>
@@ -732,6 +732,54 @@
             <inheritdoc />
         </member>
         <member name="M:CuahangtraicayAPI.Migrations.DBBackup.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:CuahangtraicayAPI.Migrations.tableJWTNEW">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.tableJWTNEW.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.tableJWTNEW.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.tableJWTNEW.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:CuahangtraicayAPI.Migrations.DBJWTTRAICAY">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.DBJWTTRAICAY.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.DBJWTTRAICAY.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.DBJWTTRAICAY.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:CuahangtraicayAPI.Migrations.DB">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.DB.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.DB.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.DB.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:CuahangtraicayAPI.Migrations.ApplicationDB.dbapplication">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.ApplicationDB.dbapplication.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.ApplicationDB.dbapplication.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.ApplicationDB.dbapplication.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

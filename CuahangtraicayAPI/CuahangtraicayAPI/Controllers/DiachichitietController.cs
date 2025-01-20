@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using CuahangtraicayAPI.Model;
 using Microsoft.AspNetCore.Authorization;
 using CuahangtraicayAPI.DTO;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {

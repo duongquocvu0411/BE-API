@@ -20,7 +20,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
 
   useEffect(() => {
     // fetchCurrentDiaChi();
-    fetchTencuahang();
+    // fetchTencuahang();
     fetchMenuData();
     layThongTinWebsiteHoatDong();
   }, []);
@@ -70,23 +70,23 @@ const HeaderUsers = ({ tieudeSanPham }) => {
   //   }
   // };
 
-  const fetchTencuahang = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Tencuahang/getHien`);
-      if (response.data && response.data.name) {
-        setTencuahang(response.data.name);
-      } else {
-        console.log("Không có tên cửa hàng");
-        setTencuahang("Tên cửa hàng mặc định");
-      }
-    } catch (err) {
-      console.error('Lỗi khi lấy tên cửa hàng:', err);
-      toast.error("Lỗi khi lấy tên cửa hàng", {
-        position: 'top-right',
-        autoClose: 3000
-      });
-    }
-  };
+  // const fetchTencuahang = async () => {
+  //   try {
+  //     const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Tencuahang/getHien`);
+  //     if (response.data && response.data.name) {
+  //       setTencuahang(response.data.name);
+  //     } else {
+  //       console.log("Không có tên cửa hàng");
+  //       setTencuahang("Tên cửa hàng mặc định");
+  //     }
+  //   } catch (err) {
+  //     console.error('Lỗi khi lấy tên cửa hàng:', err);
+  //     toast.error("Lỗi khi lấy tên cửa hàng", {
+  //       position: 'top-right',
+  //       autoClose: 3000
+  //     });
+  //   }
+  // };
 
   const fetchMenuData = async () => {
     try {

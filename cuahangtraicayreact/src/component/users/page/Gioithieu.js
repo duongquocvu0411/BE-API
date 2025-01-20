@@ -5,7 +5,8 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
 import Aos from "aos";
-import { useNavigate } from "react-router-dom";
+import Marquee from "react-fast-marquee";
+
 const Gioithieu = () => {
 
 
@@ -59,73 +60,56 @@ const Gioithieu = () => {
 
       {/* Phần giới thiệu */}
       <div className="container-fluid py-5 bg-light">
-        <div className="container py-5" data-aos="fade-up">
-         
+        <div className="container py-5">
           {gioithieu.map((gioithieuItem, index) => (
             <div
               key={gioithieuItem.id}
-              className={`row align-items-center mb-5 ${index % 2 === 0 ? "" : "flex-row-reverse"}`}
-              data-aos="fade-up"
-              data-aos-delay={`${index * 100}`}
+              className={`row align-items-center mb-5 ${
+                index % 2 === 0 ? "" : "flex-row-reverse"
+              }`}
             >
-              {/* Hình ảnh carousel */}
-              {gioithieuItem.gioithieuImgs && gioithieuItem.gioithieuImgs.length > 0 && (
-                <div className="col-lg-6 mb-4">
-                  <div
-                    id={`carouselExample${gioithieuItem.id}`}
-                    className="carousel slide shadow-lg rounded overflow-hidden"
-                    data-bs-ride="carousel"
-                  >
-                    <div className="carousel-inner">
-                      {gioithieuItem.gioithieuImgs.map((image, imgIndex) => (
+              {/* Hình ảnh cuộn ngang */}
+              {gioithieuItem.gioithieuImgs &&
+                gioithieuItem.gioithieuImgs.length > 0 && (
+                  <div className="col-lg-6 mb-4">
+                    <Marquee
+                      gradient={false} // Không làm mờ cạnh
+                      speed={50} // Tốc độ cuộn
+                      direction="left" // Cuộn từ phải sang trái
+                      // pauseOnHover // Dừng khi hover
+                      className="shadow-lg rounded"
+                    >
+                      {gioithieuItem.gioithieuImgs.map((image) => (
                         <div
-                          className={`carousel-item ${imgIndex === 0 ? "active" : ""}`}
                           key={image.id}
+                          style={{
+                            display: "inline-block",
+                            margin: "0 15px",
+                            width: "300px",
+                          }}
                         >
                           <img
                             src={`${process.env.REACT_APP_BASEURL}${image.urL_image}`}
-                            className="d-block w-100 rounded"
-                            alt={gioithieuItem.tieu_de || "Hình ảnh giới thiệu"}
+                            alt="Hình ảnh giới thiệu"
                             style={{
-                              height: "350px",
+                              height: "200px",
+                              width: "300px",
                               objectFit: "cover",
-                              boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.2)",
+                              borderRadius: "10px",
+                              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                             }}
                           />
                         </div>
                       ))}
-                    </div>
-                    <button
-                      className="carousel-control-prev"
-                      type="button"
-                      data-bs-target={`#carouselExample${gioithieuItem.id}`}
-                      data-bs-slide="prev"
-                    >
-                      <span
-                        className="carousel-control-prev-icon bg-primary p-3 rounded-circle"
-                        aria-hidden="true"
-                      ></span>
-                      <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button
-                      className="carousel-control-next"
-                      type="button"
-                      data-bs-target={`#carouselExample${gioithieuItem.id}`}
-                      data-bs-slide="next"
-                    >
-                      <span
-                        className="carousel-control-next-icon bg-primary p-3 rounded-circle"
-                        aria-hidden="true"
-                      ></span>
-                      <span className="visually-hidden">Next</span>
-                    </button>
+                    </Marquee>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Nội dung */}
               <div className="col-lg-6">
-                <h2 className="text-primary fw-bold mb-3">{gioithieuItem.tieu_de}</h2>
+                <h2 className="text-primary fw-bold mb-3">
+                  {gioithieuItem.tieu_de}
+                </h2>
                 <p className="lead text-muted mb-4">{gioithieuItem.phu_de}</p>
                 <p
                   className="text-muted"
@@ -148,7 +132,6 @@ const Gioithieu = () => {
           ))}
         </div>
       </div>
-
 
       <ToastContainer />
       <Footerusers />

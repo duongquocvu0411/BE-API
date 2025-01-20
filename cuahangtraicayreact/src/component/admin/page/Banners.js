@@ -98,12 +98,13 @@ const Banners = () => {
   const suDungBanners = async (id) => {
     // Kiểm tra xem người dùng có chọn "Lưu thông tin đăng nhập" hay không
     const token = cookies.adminToken; // Lấy token từ cookie
-      const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
+      
     try {
       // Gọi API với token trong headers
       await axios.post(
         `${process.env.REACT_APP_BASEURL}/api/Banners/setTrangthai/${id}`,
-        {Updated_By:loggedInUser}, // Body rỗng vì không có dữ liệu gửi đi
+        {},
+     
         {
           headers: {
             Authorization: `Bearer ${token}`, // Thêm token vào header

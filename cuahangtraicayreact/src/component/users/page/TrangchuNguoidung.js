@@ -20,7 +20,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
         {days} ngày {hours} giờ {minutes} phút {seconds} giây
       </span>
     );
-  }
+  }  
 };
 const TrangchuNguoidung = () => {
   const [danhMuc, setDanhMuc] = useState([]); // Khởi tạo state lưu trữ danh mục

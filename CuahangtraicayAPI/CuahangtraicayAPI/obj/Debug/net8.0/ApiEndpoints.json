@@ -90,6 +90,160 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "DeleteEmployee",
+    "RelativePath": "api/Authenticate/delete-employee/{userId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "GetAllEmployees",
+    "RelativePath": "api/Authenticate/get-all-employees",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "Login",
+    "RelativePath": "api/Authenticate/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CuahangtraicayAPI.Modles.LoginModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "Register",
+    "RelativePath": "api/Authenticate/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CuahangtraicayAPI.Modles.RegisterModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "RegisterAdmin",
+    "RelativePath": "api/Authenticate/register-admin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CuahangtraicayAPI.Modles.RegisterModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "RegisterEmployee",
+    "RelativePath": "api/Authenticate/register-employee",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CuahangtraicayAPI.Modles.RegisterModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "VerifyOtp",
+    "RelativePath": "api/Authenticate/verify-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "otp",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "VerifyRegisterEmployeeOtp",
+    "RelativePath": "api/Authenticate/verify-register-employee-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "otp",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "VerifyRegisterOtp",
+    "RelativePath": "api/Authenticate/verify-register-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "otp",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "Method": "VerifyRegisterAdminOtp",
+    "RelativePath": "api/Authenticate/xacthuc-otp-admin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "otp",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CuahangtraicayAPI.Controllers.BannersController",
     "Method": "GetBanners",
     "RelativePath": "api/Banners",
@@ -295,11 +449,6 @@
       {
         "Name": "id",
         "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "dto",
-        "Type": "CuahangtraicayAPI.DTO.BannersDTO\u002BSetBannerDTO",
         "IsRequired": true
       }
     ],
@@ -1501,6 +1650,22 @@
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.KhachHangController",
+    "Method": "CreateOrder",
+    "RelativePath": "api/KhachHang/{id_khachhang}/create-order",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id_khachhang",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.KhachHangController",
     "Method": "GetKhachHang",
     "RelativePath": "api/KhachHang/{id}",
     "HttpMethod": "GET",
@@ -1537,27 +1702,6 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CuahangtraicayAPI.Controllers.KhachHangController",
-    "Method": "CreateOrder",
-    "RelativePath": "api/KhachHang/{id}/create-order",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "idShop",
-        "Type": "System.String",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -2333,6 +2477,32 @@
     "ReturnTypes": [
       {
         "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.SanphamController",
+    "Method": "GetRelatedSanphams",
+    "RelativePath": "api/Sanpham/{id}/sanphamlienquan",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Sanpham, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

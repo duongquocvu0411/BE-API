@@ -19,6 +19,7 @@ import {
   Legend,
 } from 'chart.js';
 import { useCookies } from 'react-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 ChartJS.register(
   CategoryScale,
@@ -42,8 +43,7 @@ const TrangChuAdmin = () => {
   const [cookies] = useCookies(['adminToken', 'loginhoten'])
 const layDoanhThuThang = async () => {
   const token = cookies.adminToken; // Lấy token từ cookie
-   
-  
+
   try {
     const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/HoaDon/DoanhThuTheoTungThang`, {
       headers: {
@@ -142,6 +142,19 @@ const layDoanhThuThang = async () => {
     laySanPhamBanChay();
     layTongSanPhamTonKho();
   }, []);
+  
+  // khai báo quyền truy cập
+   let roles = [];
+   if(cookies.adminToken){
+    try {
+      const giaimatoken = jwtDecode(cookies.adminToken);
+      roles = giaimatoken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+    } catch (error) {
+      console.log('lỗi khi giãi mã token',error);
+    }
+   }
+   // kiểm tra vai trò
+   const isNhanvien = roles.includes('Employee') && roles.includes('User') && !roles.includes('Admin');
 
   const dataLine = {
     labels: dsDoanhThuThang.map((muc) => `${muc.month}/${muc.year}`),
@@ -228,6 +241,7 @@ const layDoanhThuThang = async () => {
         <div className="container-fluid mt-3">
           <Row>
             {/* Doanh thu tháng */}
+            {!isNhanvien &&(
             <Col md={6}>
               <Card className="shadow-sm mb-4 hover-card">
                 <Card.Body>
@@ -245,6 +259,7 @@ const layDoanhThuThang = async () => {
                 </Card.Body>
               </Card>
             </Col>
+            )}
 
             {/* Top sản phẩm bán chạy */}
             <Col md={6}>

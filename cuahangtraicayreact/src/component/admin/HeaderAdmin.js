@@ -15,7 +15,8 @@ const HeaderAdmin = () => {
   // Get admin name from storage
   const token = cookies.adminToken; // Lấy token từ cookie
   const decodedToken = jwtDecode(token); // Giải mã token
-  const hoten = decodedToken.hoten; // Lấy hoten từ token
+  const fullName = decodedToken["FullName"];
+    const roles = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
  
   useEffect(() => {
     layThongTinWebsiteHoatDong();
@@ -48,72 +49,60 @@ const HeaderAdmin = () => {
 
   const handleXacNhanDangXuatTaiKhoan = async () => {
     try {
-      // Lấy token từ cookie hoặc localStorage
-      const token = cookies.adminToken; // Lấy token từ cookie
-  
-      // if (!token) {
-      //   toast.error("Không tìm thấy token. Vui lòng đăng nhập lại.", {
-      //     position: "top-right",
-      //     autoClose: 3000,
-      //   });
-      //   return;
-      // }
-      localStorage.removeItem("adminToken");
-      removeCookie("adminToken", { path: "/" });
-      removeCookie("loginTime", { path: "/" });
-      removeCookie("isAdminLoggedIn", { path: "/" });
+        // Kiểm tra token trước khi sử dụng
+        const token = cookies.adminToken; // Lấy token từ cookie
+        if (!token || typeof token !== "string") {
+            toast.error("Không tìm thấy token hợp lệ. Vui lòng đăng nhập lại.", {
+                position: "top-right",
+                autoClose: 3000,
+            });
+            return;
+        }
 
-      // Gửi yêu cầu đến API /logout
-      // const response = await axios.post(
-      //   `${process.env.REACT_APP_BASEURL}/api/admin/logout`,
-      //   {},
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // ); 
-     setShowModal(false); // Đóng modal sau khi xử lý
-      navigate("/admin/Login");
-      // Xử lý thành công
-    //   if (response.data.status === "success") {
-    //     toast.success(response.data.message, {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //     });
-    //     console.log(response.data.message)
-  
-    //     // Xóa token trong cookies hoặc localStorage
+        // Gửi yêu cầu đến API /logout
+        const response = await axios.post(
+            `${process.env.REACT_APP_BASEURL}/api/admin/logout`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Đính kèm token vào header
+                },
+            }
+        );
 
-    //     // Điều hướng về trang đăng nhập
-    //     navigate("/admin/Login");
-    //   } else {
-    //     toast.error(response.data.message || "Đăng xuất thất bại.", {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.error("Lỗi khi đăng xuất:", error);
-    //   toast.error(
-    //     error.response?.data?.message || "Đã xảy ra lỗi khi đăng xuất.",
-    //     {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //     }
-    //   );
-    // } 
-    // finally {
-    //   setShowModal(false); // Đóng modal sau khi xử lý
-    // }
-    
-    }catch (error) {
+        if (response.data.status === "success") {
+            // Xóa cookie sau khi đăng xuất thành công
+            removeCookie("adminToken", { path: "/" });
+            removeCookie("loginTime", { path: "/" });
+            removeCookie("isAdminLoggedIn", { path: "/" });
+
+            toast.success(response.data.message, {
+                position: "top-right",
+                autoClose: 3000,
+            });
+
+            // Điều hướng về trang đăng nhập
+            navigate("/admin/Login");
+        } else {
+            toast.error(response.data.message || "Đăng xuất thất bại.", {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        }
+    } catch (error) {
         console.error("Lỗi khi đăng xuất:", error);
         toast.error(
-        
+            error.response?.data?.message || "Đã xảy ra lỗi khi đăng xuất.",
+            {
+                position: "top-right",
+                autoClose: 3000,
+            }
         );
-      }
-  };
+    } finally {
+        setShowModal(false); // Đóng modal sau khi xử lý
+    }
+};
+
   
   // Close modal
   const handleDongModal = () => {
@@ -158,7 +147,7 @@ const HeaderAdmin = () => {
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <span className="mr-2 d-none d-lg-inline text-gray-600 small">{hoten }</span>
+              <span className="mr-2 d-none d-lg-inline text-gray-600 small">{fullName }</span>
               <img
                 className="img-profile rounded-circle"
                 src={`${process.env.PUBLIC_URL}/lte/img/undraw_profile.svg`}

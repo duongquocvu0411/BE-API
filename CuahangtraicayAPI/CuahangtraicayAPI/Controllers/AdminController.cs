@@ -12,6 +12,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Net.Mail;
 using System.Net;
 using static CuahangtraicayAPI.DTO.LoginDTO;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {

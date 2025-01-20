@@ -32,11 +32,12 @@ import TenwebSitersAdmin from "./component/admin/page/TenwebSitersAdmin";
 import PaymentResult from "./component/users/PaymentResult ";
 import PaymentInfo from "./component/users/page/PaymentInfo";
 import ThanhToanThanhCong from "./component/users/ThanhToanThanhCong";
+import Account from "./component/admin/page/Account";
 
 // import MenuFooter from "./component/admin/page/MenuFooter";
 
 function App() {
-  return (
+  return ( 
 
     <div >
 
@@ -62,6 +63,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Tencuahang />
+                </ProtectedRoute>
+              }
+            />
+             <Route
+              path="/admin/accounts"
+              element={
+                <ProtectedRoute>
+                  <Account />
                 </ProtectedRoute>
               }
             />

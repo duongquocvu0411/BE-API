@@ -28,13 +28,12 @@ const ModalMenu = ({ show, handleClose, isEdit, menu, fetchMenuList }) => {
     const menuData = { name, thutuhien, url };
 
     const token = cookies.adminToken; // Lấy token từ cookie
-    const decodedToken = jwtDecode(token); // Giải mã token
-    const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
+   
 
    try {
       if (isEdit && menu && menu.id) {
         // PUT request
-        menuData.Updated_By = loggedInUser;
+       
         await axios.put(`${process.env.REACT_APP_BASEURL}/api/menu/${menu.id}` ,menuData,
           {
             headers: {
@@ -44,8 +43,7 @@ const ModalMenu = ({ show, handleClose, isEdit, menu, fetchMenuList }) => {
         toast.success('Cập nhật menu thành công', { position: 'top-right', autoClose: 3000 });
       } else {
         // POST request
-        menuData.Created_By = loggedInUser;
-        menuData.Updated_By = loggedInUser;
+    
         await axios.post(`${process.env.REACT_APP_BASEURL}/api/menu` ,menuData,
           {
             headers: {
@@ -58,9 +56,31 @@ const ModalMenu = ({ show, handleClose, isEdit, menu, fetchMenuList }) => {
       resetForm();
       handleClose();
     } catch (error) {
-      console.error('Lỗi khi xử lý PUT:', error.response?.data || error.message);
-      toast.error(`Có lỗi khi xử lý: ${error.response?.data?.message || error.message}`, { position: 'top-right', autoClose: 3000 });
-    }
+      if (error.response?.status === 403) {
+          toast.error("Bạn không có quyền thực hiện thao tác này.", {
+              position: 'top-right',
+              autoClose: 3000,
+          });
+      } else if (error.response?.status === 400) {
+          toast.error(
+              `Yêu cầu không hợp lệ: ${error.response?.data?.message || "Vui lòng kiểm tra lại dữ liệu."}`,
+              {
+                  position: 'top-right',
+                  autoClose: 3000,
+              }
+          );
+      } else {
+          toast.error(
+              `Có lỗi khi xử lý: ${error.response?.data?.message || error.message}`,
+              {
+                  position: 'top-right',
+                  autoClose: 3000,
+              }
+          );
+      }
+      console.error("Lỗi khi xử lý PUT:", error.response?.data || error.message);
+  }
+  
   };
   
   const resetForm = () => {

@@ -1,4 +1,5 @@
 ﻿using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.Model.DB;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -69,14 +70,11 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Footer vừa được tạo.</returns>
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Footer>> CreateFooter([FromBody] DTO.FooterDto.FooterCreateDto dto)
         {
 
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             var footer = new Footer
             {
                 NoiDungFooter = dto.NoiDungFooter,
@@ -98,7 +96,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái cập nhật.</returns>
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateFooter(int id, [FromBody] DTO.FooterDto.FooterUpdateDto footerDto)
         {
             var footer = await _context.Footers.FindAsync(id);
@@ -106,10 +104,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound();
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             footer.NoiDungFooter = footerDto.NoiDungFooter;
             //footer.UpdatedBy = footerDto.UpdatedBy;
@@ -134,7 +129,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Trạng thái xóa.</returns>
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteFooter(int id)
         {
             var footer = await _context.Footers.FindAsync(id);
@@ -157,7 +152,7 @@ namespace CuahangtraicayAPI.Controllers
         ///// <returns>Trạng thái cập nhật.</returns>
 
         [HttpPost("setFooter/{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> setFooter(int id, [FromBody] DTO.FooterDto.SetFooterDTO dto)
         {
             // Kiểm tra tính hợp lệ của DTO
@@ -175,10 +170,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound(new { message = "Không tìm thấy Footer với id này." });
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             // Cập nhật trạng thái cho tất cả các Footer
             foreach (var footer in allFooters)
             {

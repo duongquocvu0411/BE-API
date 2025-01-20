@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using CuahangtraicayAPI.Model;
 using static CuahangtraicayAPI.DTO.TencuahangDTO;
 using System.IdentityModel.Tokens.Jwt;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -58,10 +59,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             var cuahang = new Tencuahang
             {
@@ -94,10 +92,7 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Không tìm thấy cửa hàng với id này" });
             }
 
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             // Chỉ cập nhật các thuộc tính nếu chúng có giá trị
             if (!string.IsNullOrEmpty(dto.Name))
@@ -174,10 +169,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound(new { message = "Không tìm thấy cửa hàng với id này." });
             }
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(" ").Last();
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            var hotenToken = jwtToken.Claims.FirstOrDefault(c => c.Type == "hoten")?.Value;
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
             // Cập nhật trạng thái cho tất cả các cửa hàng
             foreach (var store in allStores)

@@ -125,13 +125,25 @@ const ModalAddGioiThieu = ({ show, onHide, chinhSua, gioithieu, layDanhSachGioit
       layDanhSachGioithieu(); // Làm mới danh sách giới thiệu
       resetForm();
       onHide(); // Đóng modal
-    } catch (error) {
-      console.error(chinhSua ? 'Có lỗi khi cập nhật giới thiệu!' : 'Có lỗi xảy ra khi thêm mới giới thiệu.', error);
-      toast.error(chinhSua ? 'Có lỗi xảy ra khi cập nhật giới thiệu. Vui lòng thử lại.' : 'Có lỗi xảy ra khi thêm mới giới thiệu.', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-    }
+    } 
+    
+    catch (error) {
+      if (error.response?.status === 403) {
+          toast.error(chinhSua ? "Bạn không có quyền cập nhật giới thiệu." : "Bạn không có quyền thêm mới giới thiệu.", {
+              position: 'top-right',
+              autoClose: 3000,
+          });
+      } else {
+          toast.error(
+              error.response?.data?.message || (chinhSua ? "Có lỗi xảy ra khi cập nhật giới thiệu. Vui lòng thử lại." : "Có lỗi xảy ra khi thêm mới giới thiệu."),
+              {
+                  position: 'top-right',
+                  autoClose: 3000,
+              }
+          );
+      }
+  }
+  
   };
 
   const resetForm = () => {

@@ -87,12 +87,23 @@ const TenFooterAdmin = () => {
       layDanhSachTenFooters();
       setTrangHienTai(1);
     } catch (error) {
-      console.error('Lỗi khi xóa footer:', error);
-      toast.error('Không thể xóa footer!', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-    }
+      if (error.response?.status === 403) {
+          toast.error("Bạn không có quyền xóa footer.", {
+              position: "top-right",
+              autoClose: 3000,
+          });
+      }  else {
+          toast.error(
+              `Không thể xóa footer: ${error.response?.data?.message || error.message || "Lỗi không xác định."}`,
+              {
+                  position: "top-right",
+                  autoClose: 3000,
+              }
+          );
+      }
+      console.error("Lỗi khi xóa footer:", error.response?.data || error.message || error);
+  }
+  
   };
 
   const handleHienThiModalXoa = (tenFooter) => {

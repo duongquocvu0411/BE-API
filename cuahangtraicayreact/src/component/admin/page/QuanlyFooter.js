@@ -54,13 +54,23 @@ const QuanlyFooter = () => {
       setDangtai(false);
     }
     catch (error) {
-      console.log('có lỗi khi lấy danh sách Footer', error);
-
-      toast.error('có lỗi khi lấy danh sách ', {
-        position: 'top-right',
-        autoClose: 3000
-      });
-    }
+      if (error.response?.status === 403) {
+          toast.error("Bạn không có quyền truy cập danh sách Footer.", {
+              position: "top-right",
+              autoClose: 3000,
+          });
+      }  else {
+          toast.error(
+              `Có lỗi khi lấy danh sách Footer: ${error.response?.data?.message || error.message || "Lỗi không xác định."}`,
+              {
+                  position: "top-right",
+                  autoClose: 3000,
+              }
+          );
+      }
+      console.error("Có lỗi khi lấy danh sách Footer:", error.response?.data || error.message || error);
+  }
+  
   };
 
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using CuahangtraicayAPI.Model;
 using Microsoft.AspNetCore.Authorization;
 using CuahangtraicayAPI.DTO;
+using CuahangtraicayAPI.Model.DB;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -66,7 +67,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/LienHe/{id}
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Lienhe>>> DeleteLienHe(int id)
         {
             var lienHe = await _context.Lienhes.FindAsync(id);

@@ -14,6 +14,7 @@ using CuahangtraicayAPI.Services.gn;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
+using CuahangtraicayAPI.Model.DB;
 
 
 namespace CuahangtraicayAPI
@@ -23,11 +24,23 @@ namespace CuahangtraicayAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            ConfigurationManager configuration = builder.Configuration;
+
+            // Add services to the container.
+
+            // For Entity Framework
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            // For Identity
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
 
             // Thêm AppDbContext với SQL Server
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-            );
+            //builder.Services.AddDbContext<AppDbContext>(options =>
+            //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+            //);
             builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
             // Đọc cấu hình từ appsettings.json
             builder.Services.Configure<MoMoConfig>(builder.Configuration.GetSection("MoMoConfig"));
@@ -56,6 +69,7 @@ namespace CuahangtraicayAPI
             // đăng ký phản hồi tự động
 
             builder.Services.AddHostedService<AutoPhanHoiService>();
+
 
             var API = "allApi";
             builder.Services.AddCors(ots =>
@@ -92,60 +106,119 @@ namespace CuahangtraicayAPI
                 c.IncludeXmlComments(xmlPath);
 
                 // Cấu hình để Swagger có thể sử dụng JWT token ổ khóa 
+                //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                //{
+                //    In = ParameterLocation.Header,
+                //    Description = "Vui lòng nhập token JWT với định dạng Bearer {token}",
+                //    Name = "Authorization",
+                //    //Type = SecuritySchemeType.ApiKey, // phải thêm bearer và mã token 
+                //    Type = SecuritySchemeType.Http, // không cần phải thêm bearer
+                //    Scheme = "Bearer"
+                //});
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    In = ParameterLocation.Header,
-                    Description = "Vui lòng nhập token JWT với định dạng Bearer {token}",
                     Name = "Authorization",
-                    //Type = SecuritySchemeType.ApiKey, // phải thêm bearer và mã token 
-                    Type = SecuritySchemeType.Http, // không cần phải thêm bearer
-                    Scheme = "Bearer"
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your token in the text input below.\n\nExample: 'Bearer abcdef12345'"
                 });
 
+                //            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                //{
+                //    {
+                //                    // cấu hình jwt sau mổi controller 
+                //        new OpenApiSecurityScheme
+                //        {
+                //            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                //        },
+                //        Array.Empty<string>()
+                //    }
+                //});
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-                        // cấu hình jwt sau mổi controller 
-            new OpenApiSecurityScheme
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+
+            }); 
+            
+            
+            builder.Services.AddAuthentication(options =>
             {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-            },
-            Array.Empty<string>()
-        }
-    });
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidAudience = configuration["JWT:ValidAudience"],
+                    ValidIssuer = configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse(); // T?t thông báo l?i m?c ??nh
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+                        var result = System.Text.Json.JsonSerializer.Serialize(new { status = "error", message = "B?n không có quy?n v?i hành ?ông này" });
+
+                        return context.Response.WriteAsync(result);
+                    }
+                };
             });
 
             // Cấu hình xác thực JWT
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                        ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-                        
-                    };
+            //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidateAudience = true,
+            //            ValidateLifetime = true,
+            //            ValidateIssuerSigningKey = true,
+            //            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            //            ValidAudience = builder.Configuration["Jwt:Audience"],
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
 
-                    // Tùy chỉnh thông báo lỗi khi không có quyền truy cập
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnChallenge = context =>
-                        {
-                            context.HandleResponse(); // Tắt thông báo lỗi mặc định
-                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                            context.Response.ContentType = "application/json";
-                            var result = System.Text.Json.JsonSerializer.Serialize(new { status = "error", message = "Bạn không có quyền với hành động này" });
+            //        };
 
-                            return context.Response.WriteAsync(result);
-                        }
-                    };
-                });
+            //        // Tùy chỉnh thông báo lỗi khi không có quyền truy cập
+            //        options.Events = new JwtBearerEvents
+            //        {
+            //            OnChallenge = context =>
+            //            {
+            //                context.HandleResponse(); // Tắt thông báo lỗi mặc định
+            //                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            //                context.Response.ContentType = "application/json";
+            //                var result = System.Text.Json.JsonSerializer.Serialize(new { status = "error", message = "Bạn không có quyền với hành động này" });
 
+            //                return context.Response.WriteAsync(result);
+            //            }
+            //        };
+            //    });
+
+            builder.Services.AddControllers();
             var app = builder.Build();
 
             // Kiểm tra môi trường và kích hoạt Swagger UI

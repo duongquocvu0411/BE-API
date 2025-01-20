@@ -57,9 +57,9 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
   const handleRemoveExistingImage = async (imageId) => {
     const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
     const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-  
-   
-  
+
+
+
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/TenFooter/DeleteImage/${imageId}`, {
         headers: {
@@ -86,11 +86,11 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
       });
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('tieude', tieude);
     formData.append('phude', phude);
-  
+
     // Xử lý hình ảnh hiện có (thay đổi link hoặc cập nhật hình ảnh)
     hienCo.forEach((img) => {
       if (img.newFile) {
@@ -102,7 +102,7 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
         formData.append('existingLinks', JSON.stringify({ id: img.id, link: img.link }));
       }
     });
-  
+
     // Thêm hình ảnh mới
     hinhanhs.forEach((file, i) => {
       if (file) {
@@ -110,10 +110,10 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
         formData.append('links', links[i]);
       }
     });
-  
+
     try {
       if (isEdit) {
-        formData.append('Updated_By',loggedInUser);
+        formData.append('Updated_By', loggedInUser);
         await axios.put(`${process.env.REACT_APP_BASEURL}/api/TenFooter/${tenFooter.id}`, formData, {
           headers: {
             Authorization: `Bearer ${token}`, // Thêm token vào header
@@ -121,8 +121,8 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
         });
         toast.success('Cập nhật TenFooter thành công!');
       } else {
-        formData.append("Updated_By" , loggedInUser);
-        formData.append("Created_By" ,loggedInUser);
+        formData.append("Updated_By", loggedInUser);
+        formData.append("Created_By", loggedInUser);
         await axios.post(`${process.env.REACT_APP_BASEURL}/api/TenFooter`, formData, {
           headers: {
             Authorization: `Bearer ${token}`, // Thêm token vào header
@@ -134,175 +134,189 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
       handleClose();
       ResetForm();
     } catch (error) {
-      console.error('Lỗi khi lưu TenFooter:', error);
-      toast.error('Không thể lưu TenFooter!');
+      if (error.response?.status === 403) {
+        toast.error("Bạn không có quyền lưu TenFooter.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      } else {
+        toast.error(
+          `Không thể lưu TenFooter: ${error.response?.data?.message || error.message || "Đã xảy ra lỗi không xác định."}`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+          }
+        );
+      }
+      console.error("Lỗi khi lưu TenFooter:", error.response?.data || error.message || error);
     }
-  };
-  
-const ResetForm = () => {
-  setTieude("");
-  setPhude("");
-  setLinks([]);
-  setHienCo([]); 
-  setHinhanhs([]);
 
-}
+  };
+
+  const ResetForm = () => {
+    setTieude("");
+    setPhude("");
+    setLinks([]);
+    setHienCo([]);
+    setHinhanhs([]);
+
+  }
 
 
   return (
-<Modal show={show} onHide={handleClose} centered   backdrop="static">
-  <Modal.Header closeButton className="bg-primary text-white shadow-sm">
-    <Modal.Title className="fs-5 fw-bold">
-      {isEdit ? (
-        <>
-          <i className="bi bi-pencil-square me-2"></i> Chỉnh sửa TenFooter
-        </>
-      ) : (
-        <>
-          <i className="bi bi-plus-circle me-2"></i> Thêm TenFooter mới
-        </>
-      )}
-    </Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <Form>
-      {/* Tiêu đề */}
-      <Form.Group controlId="tieude" className="mb-4">
-        <Form.Label className="fw-bold">
-          <i className="bi bi-card-heading me-2"></i> Tiêu đề
-        </Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Nhập tiêu đề"
-          value={tieude}
-          onChange={(e) => setTieude(e.target.value)}
-          className="shadow-sm border-0 rounded"
-          style={{ backgroundColor: "#f8f9fa", fontSize: "1rem" }}
-        />
-      </Form.Group>
-
-      {/* Phụ đề */}
-      <Form.Group controlId="phude" className="mb-4">
-        <Form.Label className="fw-bold">
-          <i className="bi bi-file-earmark-text me-2"></i> Phụ đề
-        </Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Nhập phụ đề"
-          value={phude}
-          onChange={(e) => setPhude(e.target.value)}
-          className="shadow-sm border-0 rounded"
-          style={{ backgroundColor: "#f8f9fa", fontSize: "1rem" }}
-        />
-      </Form.Group>
-
-      {/* Hình ảnh hiện có */}
-      <Form.Group controlId="hienCo" className="mb-4">
-        <Form.Label className="fw-bold">
-          <i className="bi bi-image me-2"></i> Hình ảnh hiện có
-        </Form.Label>
-        {hienCo.map((img, index) => (
-          <div key={img.id} className="d-flex align-items-center mb-3">
-            <img
-              src={`${process.env.REACT_APP_BASEURL}${img.imagePath}`}
-              alt="Footer"
-              className="rounded shadow-sm border"
-              style={{
-                width: "100px",
-                height: "50px",
-                objectFit: "cover",
-                marginRight: "10px",
-              }}
-            />
+    <Modal show={show} onHide={handleClose} centered backdrop="static">
+      <Modal.Header closeButton className="bg-primary text-white shadow-sm">
+        <Modal.Title className="fs-5 fw-bold">
+          {isEdit ? (
+            <>
+              <i className="bi bi-pencil-square me-2"></i> Chỉnh sửa TenFooter
+            </>
+          ) : (
+            <>
+              <i className="bi bi-plus-circle me-2"></i> Thêm TenFooter mới
+            </>
+          )}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          {/* Tiêu đề */}
+          <Form.Group controlId="tieude" className="mb-4">
+            <Form.Label className="fw-bold">
+              <i className="bi bi-card-heading me-2"></i> Tiêu đề
+            </Form.Label>
             <Form.Control
               type="text"
-              placeholder="Link mới"
-              value={img.link}
-              onChange={(e) => {
-                const updatedHienCo = [...hienCo];
-                updatedHienCo[index].link = e.target.value;
-                setHienCo(updatedHienCo);
-              }}
-              className="me-2 shadow-sm rounded"
+              placeholder="Nhập tiêu đề"
+              value={tieude}
+              onChange={(e) => setTieude(e.target.value)}
+              className="shadow-sm border-0 rounded"
+              style={{ backgroundColor: "#f8f9fa", fontSize: "1rem" }}
             />
+          </Form.Group>
+
+          {/* Phụ đề */}
+          <Form.Group controlId="phude" className="mb-4">
+            <Form.Label className="fw-bold">
+              <i className="bi bi-file-earmark-text me-2"></i> Phụ đề
+            </Form.Label>
             <Form.Control
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const updatedHienCo = [...hienCo];
-                updatedHienCo[index].newFile = e.target.files[0];
-                setHienCo(updatedHienCo);
-              }}
-              className="me-2 shadow-sm rounded"
+              type="text"
+              placeholder="Nhập phụ đề"
+              value={phude}
+              onChange={(e) => setPhude(e.target.value)}
+              className="shadow-sm border-0 rounded"
+              style={{ backgroundColor: "#f8f9fa", fontSize: "1rem" }}
             />
+          </Form.Group>
+
+          {/* Hình ảnh hiện có */}
+          <Form.Group controlId="hienCo" className="mb-4">
+            <Form.Label className="fw-bold">
+              <i className="bi bi-image me-2"></i> Hình ảnh hiện có
+            </Form.Label>
+            {hienCo.map((img, index) => (
+              <div key={img.id} className="d-flex align-items-center mb-3">
+                <img
+                  src={`${process.env.REACT_APP_BASEURL}${img.imagePath}`}
+                  alt="Footer"
+                  className="rounded shadow-sm border"
+                  style={{
+                    width: "100px",
+                    height: "50px",
+                    objectFit: "cover",
+                    marginRight: "10px",
+                  }}
+                />
+                <Form.Control
+                  type="text"
+                  placeholder="Link mới"
+                  value={img.link}
+                  onChange={(e) => {
+                    const updatedHienCo = [...hienCo];
+                    updatedHienCo[index].link = e.target.value;
+                    setHienCo(updatedHienCo);
+                  }}
+                  className="me-2 shadow-sm rounded"
+                />
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const updatedHienCo = [...hienCo];
+                    updatedHienCo[index].newFile = e.target.files[0];
+                    setHienCo(updatedHienCo);
+                  }}
+                  className="me-2 shadow-sm rounded"
+                />
+                <Button
+                  variant="outline-danger"
+                  onClick={() => handleRemoveExistingImage(img.id)}
+                  className="shadow-sm"
+                >
+                  <i className="bi bi-trash me-1"></i> Xóa
+                </Button>
+              </div>
+            ))}
+          </Form.Group>
+
+          {/* Thêm hình ảnh mới */}
+          <Form.Group controlId="hinhanhs" className="mb-4">
+            <Form.Label className="fw-bold">
+              <i className="bi bi-plus-circle me-2"></i> Thêm hình ảnh mới
+            </Form.Label>
+            {hinhanhs.map((file, index) => (
+              <div key={index} className="d-flex align-items-center mb-3">
+                <Form.Control
+                  type="file"
+                  onChange={(e) => handleFileChange(index, e.target.files[0])}
+                  accept="image/*"
+                  className="shadow-sm rounded"
+                />
+                <Form.Control
+                  type="text"
+                  placeholder="Link hình ảnh"
+                  value={links[index]}
+                  onChange={(e) => handleLinkChange(index, e.target.value)}
+                  className="ms-2 shadow-sm rounded"
+                />
+              </div>
+            ))}
             <Button
-              variant="outline-danger"
-              onClick={() => handleRemoveExistingImage(img.id)}
-              className="shadow-sm"
-            >
-              <i className="bi bi-trash me-1"></i> Xóa
-            </Button>
-          </div>
-        ))}
-      </Form.Group>
-
-      {/* Thêm hình ảnh mới */}
-      <Form.Group controlId="hinhanhs" className="mb-4">
-        <Form.Label className="fw-bold">
-          <i className="bi bi-plus-circle me-2"></i> Thêm hình ảnh mới
-        </Form.Label>
-        {hinhanhs.map((file, index) => (
-          <div key={index} className="d-flex align-items-center mb-3">
-            <Form.Control
-              type="file"
-              onChange={(e) => handleFileChange(index, e.target.files[0])}
-              accept="image/*"
+              variant="outline-secondary"
+              onClick={handleAddFileInput}
               className="shadow-sm rounded"
-            />
-            <Form.Control
-              type="text"
-              placeholder="Link hình ảnh"
-              value={links[index]}
-              onChange={(e) => handleLinkChange(index, e.target.value)}
-              className="ms-2 shadow-sm rounded"
-            />
-          </div>
-        ))}
+            >
+              <i className="bi bi-plus-circle me-1"></i> Thêm ảnh
+            </Button>
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer className="bg-light border-0 shadow-sm">
         <Button
           variant="outline-secondary"
-          onClick={handleAddFileInput}
-          className="shadow-sm rounded"
+          onClick={handleClose}
+          className="px-4 py-2 shadow-sm rounded"
         >
-          <i className="bi bi-plus-circle me-1"></i> Thêm ảnh
+          <i className="bi bi-x-circle me-2"></i> Đóng
         </Button>
-      </Form.Group>
-    </Form>
-  </Modal.Body>
-  <Modal.Footer className="bg-light border-0 shadow-sm">
-    <Button
-      variant="outline-secondary"
-      onClick={handleClose}
-      className="px-4 py-2 shadow-sm rounded"
-    >
-      <i className="bi bi-x-circle me-2"></i> Đóng
-    </Button>
-    <Button
-      variant="success"
-      onClick={handleSave}
-      className="px-4 py-2 shadow-sm text-white rounded"
-    >
-      {isEdit ? (
-          <>
-            <i className="bi bi-pencil-square me-2"></i> Cập nhật
-          </>
-        ) : (
-          <>
-            <i className="bi bi-plus-circle me-2"></i> Thêm mới
-          </>
-        )}
-    </Button>
-  </Modal.Footer>
-</Modal>
+        <Button
+          variant="success"
+          onClick={handleSave}
+          className="px-4 py-2 shadow-sm text-white rounded"
+        >
+          {isEdit ? (
+            <>
+              <i className="bi bi-pencil-square me-2"></i> Cập nhật
+            </>
+          ) : (
+            <>
+              <i className="bi bi-plus-circle me-2"></i> Thêm mới
+            </>
+          )}
+        </Button>
+      </Modal.Footer>
+    </Modal>
 
   );
 };

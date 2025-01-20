@@ -49,8 +49,8 @@ const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
 
     try {
       const token = cookies.adminToken; // Lấy token từ cookie
-      const decodedToken = jwtDecode(token); // Giải mã token
-      const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
+      
+    
 
       const response = await axios({
         method: isEdit ? "put" : "post",
@@ -83,13 +83,22 @@ const ModalDanhGia = ({ show, handleClose, sanphamId }) => {
   };
 
   const xoaDanhGia = async (id) => {
+    const token =  cookies.adminToken
     try {
-      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/danhgiakhachhang/${id}`);
+      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/danhgiakhachhang/${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      });
       toast.success("Đánh giá đã được xóa thành công!!");
       setDanhGias(danhGias.filter((danhGia) => danhGia.id !== id));
     } catch (error) {
-      toast.error("Có lỗi khi xóa đánh giá!!!");
-    }
+              if (error.response.status === 403) {
+                  toast.error("Bạn không có quyền xóa đánh giá.");
+              } else {
+                  toast.error(error.response?.data?.message || "Đã xảy ra lỗi.");
+              }
+            }
   };
 
   return (

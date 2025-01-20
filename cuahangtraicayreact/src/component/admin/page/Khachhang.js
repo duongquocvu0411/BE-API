@@ -242,7 +242,7 @@ const Khachhangs = () => {
 
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
-    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công');
+    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công' ||  hoadon.status === "cancel");
   };
 
   // const layTrangThaiDonHang = (hoaDons) => {
@@ -440,7 +440,7 @@ const Khachhangs = () => {
 
   const handleLenDonHang = async (idKhachHang) => {
     const token = cookies.adminToken; // Lấy token từ cookie
-    const idShop = "195758"; // Giá trị idShop mặc định
+    // const idShop = "195758"; // Giá trị idShop mặc định
 
     try {
       // Gửi yêu cầu POST tới API lên đơn hàng
@@ -448,9 +448,9 @@ const Khachhangs = () => {
         `${process.env.REACT_APP_BASEURL}/api/KhachHang/${idKhachHang}/create-order`,
         {},
         {
-          params: {
-            idShop, // Gửi idShop mặc định qua query param
-          },
+          // params: {
+          //   idShop, // Gửi idShop mặc định qua query param
+          // },
           headers: {
             Authorization: `Bearer ${token}`, // Đính kèm token vào header
           },
@@ -670,7 +670,7 @@ const Khachhangs = () => {
                                 <td>{item.ghiChu}</td>
                                 <td>
                                   {item.hoaDons.map((hoaDon) => (
-                                    <div key={hoaDon.id}>{hoaDon.thanhtoan}</div> // Đảm bảo key ổn định
+                                    <div key={hoaDon.id}>{hoaDon.thanhtoan}</div> 
                                   ))}
                                 </td>
                                 <td className={`${trangThaiDonHang.bgColor} ${trangThaiDonHang.textColor}`}>
@@ -691,7 +691,7 @@ const Khachhangs = () => {
                                       <i className="bi bi-eye"></i>
                                     </button>
                                     {item.hoaDons.map((hoaDon) =>
-                                      (hoaDon.ghn === "Chưa lên đơn" && hoaDon.status !== "Hủy đơn" && hoaDon.status !== "Chờ xử lý hủy đơn" && hoaDon.status !== "Thanh toán thất bại") ? (
+                                      (hoaDon.ghn === "Chưa lên đơn" && hoaDon.status !== "Hủy đơn" && hoaDon.status !== "Chờ xử lý hủy đơn" && hoaDon.status !== "Thanh toán thất bại" ) ? (
                                         <button
                                           key={`lenDon-${hoaDon.id}`}
                                           className="btn btn-primary btn-sm me-2"

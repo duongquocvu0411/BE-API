@@ -113,9 +113,23 @@ const ModalTenwebSitersAdmin = ({ show, handleClose, isEdit, Website, fetchTenwe
       resetForm();
       handleClose();
     } catch (error) {
+      if (error.response?.status === 403) {
+          toast.error("Bạn không có quyền lưu Website.", {
+              position: "top-right",
+              autoClose: 3000,
+          });
+      } else {
+          toast.error(
+              error.response?.data?.message || "Lỗi khi lưu Website. Vui lòng thử lại.",
+              {
+                  position: "top-right",
+                  autoClose: 3000,
+              }
+          );
+      }
       console.error("Lỗi khi lưu Website:", error);
-      toast.error("Không thể lưu Website!", { position: "top-right", autoClose: 3000 });
-    } finally {
+  }
+   finally {
       setDangTai(false);
     }
   };

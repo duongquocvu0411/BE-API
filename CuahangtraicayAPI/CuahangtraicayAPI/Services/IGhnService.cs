@@ -1,4 +1,5 @@
 ﻿using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.Model.DB;
 using CuahangtraicayAPI.Model.ghn;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
@@ -9,6 +10,7 @@ namespace CuahangtraicayAPI.Services
     public interface IGhnService
     {
         Task<GhnOrderResponse> CreateOrderAsync(GhnOrderRequest orderRequest);
+        string GetShopid();
     }
     public class GhnService : IGhnService
     {
@@ -21,6 +23,10 @@ namespace CuahangtraicayAPI.Services
             _httpClient = httpClient;
             _settings = settings.Value;
             _dbContext = dbContext;
+        }
+        public string GetShopid()
+        {
+            return _settings.ShopId;
         }
 
         public async Task<GhnOrderResponse> CreateOrderAsync(GhnOrderRequest orderRequest)
