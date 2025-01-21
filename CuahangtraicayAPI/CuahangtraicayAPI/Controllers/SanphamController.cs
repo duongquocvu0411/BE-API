@@ -334,6 +334,16 @@ namespace CuahangtraicayAPI.Controllers
             // Kiểm tra và cập nhật số lượng
             if (request.So_luong.HasValue)
             {
+                // Nếu số lượng tạm giữ lớn hơn số lượng mới muốn cập nhật, trả về lỗi
+                if (sanpham.Soluongtamgiu > request.So_luong.Value)
+                {
+                    return BadRequest(new BaseResponseDTO<Sanpham>
+                    {
+                        Code = 400,
+                        Message = $"Số lượng tạm giữ ({sanpham.Soluongtamgiu}) lớn hơn số lượng bạn muốn cập nhật ({request.So_luong.Value})."
+                    });
+                }
+
                 // Cập nhật số lượng
                 sanpham.Soluong = request.So_luong.Value;
 

@@ -14,7 +14,7 @@ namespace CuahangtraicayAPI.Model
 
         public int Id { get; set; }
 
-
+        public int Soluongtamgiu { get; set; }
         public string Tieude { get; set; }  // Tên sản phẩm, có thể nullable nếu cơ sở dữ liệu cho phép NULL
 
 

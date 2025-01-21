@@ -401,6 +401,7 @@ const isNhanvien = role.includes('Employee') && role.includes('User') && !role.i
                           <th>Tên</th>
                           <th>Giá</th>
                           <th>Số lượng </th>
+                          <th>Tạm giữ</th>
                           <th>Đơn vị</th>
                           <th>Chi tiết</th>
                           <th>Đánh giá</th>
@@ -433,6 +434,9 @@ const isNhanvien = role.includes('Employee') && role.includes('User') && !role.i
                               </td>
                               <td>
                                 {sanPham.soluong}
+                              </td>
+                              <td>
+                                {sanPham.soluongtamgiu}
                               </td>
                               <td>{sanPham.don_vi_tinh}</td>
                               <td className="text-center">

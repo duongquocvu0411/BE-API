@@ -530,6 +530,12 @@
             <param name="dto"></param>
             <returns>Phản hồi đánh giá tự động</returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.PhanHoiDanhGiaController.DisAutoPhanhoi">
+            <summary>
+            tắt phản hồi đánh giá tự động
+            </summary>
+            <returns>tắt phản hồi đánh giá tự động</returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.SanphamController.GetSanphams">
             <summary>
             Lấy danh sách sản phẩm
@@ -768,6 +774,18 @@
             <inheritdoc />
         </member>
         <member name="M:CuahangtraicayAPI.Migrations.DB.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:CuahangtraicayAPI.Migrations.asdSanpham">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.asdSanpham.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.asdSanpham.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CuahangtraicayAPI.Migrations.asdSanpham.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:CuahangtraicayAPI.Migrations.ApplicationDB.dbapplication">

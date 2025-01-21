@@ -242,7 +242,7 @@ const Khachhangs = () => {
 
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
-    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công' ||  hoadon.status === "cancel");
+    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công' ||  hoadon.status === "cancel" || hoadon.status === "returned");
   };
 
   // const layTrangThaiDonHang = (hoaDons) => {
@@ -653,7 +653,7 @@ const Khachhangs = () => {
                       <tbody>
                         {danhSachKhachHang.length === 0 ? (
                           <tr>
-                            <td colSpan="11" className="text-center">Hiện tại chưa có khách hàng</td>
+                            <td colSpan="12" className="text-center">Hiện tại chưa có khách hàng</td>
                           </tr>
                         ) : cacPhanTuHienTai.length > 0 ? (
                           cacPhanTuHienTai.map((item, index) => {

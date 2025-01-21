@@ -32,89 +32,50 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('giohang', JSON.stringify(giohang));
   }, [giohang]);
 
-
-  // const addToCart = (sanPham) => {
-  //   setGiohang((giohanghientai) => {
-  //     // Kiểm tra nếu sản phẩm có khuyến mãi và trạng thái khuyến mãi đang "active"
-  //     const sale = Array.isArray(sanPham.sanphamSales)
-  //       ? sanPham.sanphamSales.find((item) => item.trangthai === 'Đang áp dụng')
-  //       : null;
-
-  //     const giaSanPham = sale ? sale.giasale : sanPham.giatien; // Lấy giá sale nếu có, ngược lại lấy giá gốc
-
-  //     const sanPhamTonTai = giohanghientai.find((item) => item.id === sanPham.id);
-  //     let newCart;
-
-  //     if (sanPhamTonTai) {
-  //       // Cập nhật số lượng nếu sản phẩm đã tồn tại
-  //       newCart = giohanghientai.map((item) =>
-  //         item.id === sanPham.id
-  //           ? { ...item, soLuong: item.soLuong + 1 }
-  //           : item
-  //       );
-  //     } else {
-  //       // Thêm sản phẩm mới nếu chưa có trong giỏ hàng
-  //       newCart = [
-  //         ...giohanghientai,
-  //         {
-  //           ...sanPham,
-  //           soLuong: 1,
-  //           gia: giaSanPham, // Thêm giá khuyến mãi hoặc giá gốc
-  //         },
-  //       ];
-  //     }
-
-  //     return newCart;
-  //   });
-
-  //   // Thông báo sau khi giỏ hàng đã được cập nhật
-  //   toast.success(`${sanPham.tieude} đã được thêm vào giỏ hàng!`, {
-  //     position: "top-right",
-  //     autoClose: 3000,
-  //   });
-  // };
-
-
+  const laySoLuongKhaDung  = (sanPham) => {
+    return sanPham.soluong - sanPham.soluongtamgiu;
+  };
+  
   const addToCart = (sanPham) => {
-    let success = false; // Biến kiểm soát thông báo thành công
-
+    let success = false;
+  
     setGiohang((giohanghientai) => {
       const sale = Array.isArray(sanPham.sanphamSales)
-        ? sanPham.sanphamSales.find((item) => item.trangthai === 'Đang áp dụng')
+        ? sanPham.sanphamSales.find((item) => item.trangthai === "Đang áp dụng")
         : null;
-
+  
       const giaSanPham = sale ? sale.giasale : sanPham.giatien;
-
+  
       const sanPhamTonTai = giohanghientai.find((item) => item.id === sanPham.id);
-
+  
+      const availableQuantity = laySoLuongKhaDung (sanPham);
+  
       if (sanPhamTonTai) {
-        // Nếu sản phẩm đã tồn tại, kiểm tra kho trước khi tăng số lượng
-        if (sanPhamTonTai.soLuong + 1 > sanPham.soluong) {
+        if (sanPhamTonTai.soLuong + 1 > availableQuantity) {
           toast.error(
-            `Số lượng sản phẩm "${sanPham.tieude}" không đủ trong kho.`,
-            { position: 'top-right', autoClose: 3000 }
+            `Sản phẩm "${sanPham.tieude}" không đủ trong kho. Chỉ còn ${availableQuantity} sản phẩm khả dụng.`,
+            { position: "top-right", autoClose: 3000 }
           );
-          return giohanghientai; // Không cập nhật giỏ hàng nếu vượt quá kho
+          return giohanghientai;
         }
-        success = true; // Đánh dấu thêm thành công
+        success = true;
         return giohanghientai.map((item) =>
           item.id === sanPham.id
             ? { ...item, soLuong: item.soLuong + 1 }
             : item
         );
       } else {
-        // Nếu là sản phẩm mới, kiểm tra số lượng tồn kho
-        if (1 > sanPham.soluong) {
+        if (1 > availableQuantity) {
           toast.error(
-            `Sản phẩm "${sanPham.tieude}" không đủ số lượng trong kho.`,
-            { position: 'top-right', autoClose: 3000 }
+            `Sản phẩm "${sanPham.tieude}" không đủ trong kho. Chỉ còn ${availableQuantity} sản phẩm khả dụng.`,
+            { position: "top-right", autoClose: 3000 }
           );
-          return giohanghientai; // Không thêm sản phẩm mới
+          return giohanghientai;
         }
-        success = true; // Đánh dấu thêm thành công
+        success = true;
         return [
           ...giohanghientai,
-          { 
+          {
             ...sanPham,
             soLuong: 1,
             gia: giaSanPham,
@@ -122,15 +83,15 @@ export const CartProvider = ({ children }) => {
         ];
       }
     });
-
-    // Hiển thị thông báo thành công nếu thêm được sản phẩm
+  
     if (success) {
       toast.success(`${sanPham.tieude} đã được thêm vào giỏ hàng!`, {
-        position: 'top-right',
+        position: "top-right",
         autoClose: 3000,
       });
     }
   };
+  
 
 
   const XoaGioHang = (sanPhamId) => {
@@ -151,45 +112,35 @@ export const CartProvider = ({ children }) => {
   };
 
 
-
-  // const TangSoLuong = (sanPhamId) => {
-  //   setGiohang((giohanghientai) =>
-  //     giohanghientai.map((item) =>
-  //       item.id === sanPhamId ? { ...item, soLuong: item.soLuong + 1 } : item
-  //     )
-  //   );
-  // };
-
   const TangSoLuong = (sanPhamId) => {
-    let success = false; // Biến kiểm soát thông báo thành công
-
+    let success = false;
+  
     setGiohang((giohanghientai) =>
       giohanghientai.map((item) => {
         if (item.id === sanPhamId) {
-          // Kiểm tra nếu số lượng vượt quá kho
-          if (item.soLuong + 1 > item.soluong) {
+          const availableQuantity = laySoLuongKhaDung (item);
+          if (item.soLuong + 1 > availableQuantity) {
             toast.error(
-              `Số lượng sản phẩm "${item.tieude}" không đủ trong kho.`,
-              { position: 'top-right', autoClose: 3000 }
+              `Sản phẩm "${item.tieude}" không đủ trong kho. Chỉ còn ${availableQuantity} sản phẩm khả dụng.`,
+              { position: "top-right", autoClose: 3000 }
             );
-            return item; // Giữ nguyên nếu vượt quá kho
+            return item;
           }
-          success = true; // Đánh dấu thành công tăng số lượng
+          success = true;
           return { ...item, soLuong: item.soLuong + 1 };
         }
         return item;
       })
     );
-
-    // Hiển thị thông báo thành công nếu tăng số lượng thành công
+  
     if (success) {
       toast.success(`Tăng số lượng sản phẩm thành công!`, {
-        position: 'top-right',
+        position: "top-right",
         autoClose: 3000,
       });
     }
   };
-
+  
 
   const GiamSoLuong = (sanPhamId) => {
     setGiohang((giohanghientai) =>
@@ -201,47 +152,38 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  // Hàm cập nhật số lượng trực tiếp từ ô nhập
-  // const CapnhatSoLuong = (sanPhamId, soLuongMoi) => {
-  //   setGiohang((giohanghientai) =>
-  //     giohanghientai.map((item) =>
-  //       item.id === sanPhamId ? { ...item, soLuong: parseInt(soLuongMoi) } : item
-  //     )
-  //   );
-  // };
-
   // Hàm xoagiohangthanhtoanthanhcong để xóa sạch giỏ hàng
 
 
   const CapnhatSoLuong = (sanPhamId, soLuongMoi) => {
-    let success = false; // Biến kiểm soát thông báo thành công
-
+    let success = false;
+  
     setGiohang((giohanghientai) =>
       giohanghientai.map((item) => {
         if (item.id === sanPhamId) {
-          // Kiểm tra nếu số lượng mới vượt quá số lượng trong kho
-          if (soLuongMoi > item.soluong) {
+          const availableQuantity = laySoLuongKhaDung (item);
+          if (soLuongMoi > availableQuantity) {
             toast.error(
-              `Số lượng sản phẩm "${item.tieude}" không đủ trong kho.`,
-              { position: 'top-right', autoClose: 3000 }
+              `Sản phẩm "${item.tieude}" không đủ trong kho. Chỉ còn ${availableQuantity} sản phẩm khả dụng.`,
+              { position: "top-right", autoClose: 3000 }
             );
-            return item; // Giữ nguyên nếu vượt quá kho
+            return item;
           }
-          success = true; // Đánh dấu thành công cập nhật số lượng
+          success = true;
           return { ...item, soLuong: parseInt(soLuongMoi) };
         }
         return item;
       })
     );
-
-    // Hiển thị thông báo thành công nếu cập nhật số lượng thành công
+  
     if (success) {
       toast.success(`Cập nhật số lượng sản phẩm thành công!`, {
-        position: 'top-right',
+        position: "top-right",
         autoClose: 3000,
       });
     }
   };
+  
 
 
 

@@ -481,6 +481,14 @@
       "PackagePath": "staticwebassets\\menuFooter\\638727080537949222_footer_payment_img.webp"
     },
     {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638729626883293521_banner-fruits.jpg",
+      "PackagePath": "staticwebassets\\menuFooter\\638729626883293521_banner-fruits.jpg"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638729627210259053_footer_payment_img.webp",
+      "PackagePath": "staticwebassets\\menuFooter\\638729627210259053_footer_payment_img.webp"
+    },
+    {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg",
       "PackagePath": "staticwebassets\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg"
     },
@@ -671,6 +679,10 @@
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\f7ebfb2d-68e9-4b79-b7bb-c8a5255d1515.jpg",
       "PackagePath": "staticwebassets\\sanpham\\f7ebfb2d-68e9-4b79-b7bb-c8a5255d1515.jpg"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\fa43cd7a-4e8d-4c30-94de-5861bbe70803.jpg",
+      "PackagePath": "staticwebassets\\sanpham\\fa43cd7a-4e8d-4c30-94de-5861bbe70803.jpg"
     },
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\fe5c7bfa-5646-41ff-8610-75b24fb21627.jpg",

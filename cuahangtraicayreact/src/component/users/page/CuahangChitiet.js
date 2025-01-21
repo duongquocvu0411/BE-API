@@ -155,7 +155,9 @@ const CuahangChitiet = () => {
 
   const sale = sanPham.sanphamSales?.find((sale) => sale.trangthai === "Đang áp dụng");
   const isSaleActive = sale !== undefined;
-
+  const laySoLuongKhaDung = (sanPham) => {
+    return sanPham.soluong - sanPham.soluongtamgiu;
+  };
   return (
     <>
       <div>
@@ -238,8 +240,12 @@ const CuahangChitiet = () => {
                           {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
                           ({sanPham.don_vi_tinh})
 
-
                         </p>
+                        <p className="mb-3 ">Số lượng: {laySoLuongKhaDung(sanPham) <= 0 ? (
+                          <span>Hết hàng</span>
+                        ) : (
+                          <span>Số lượng: {laySoLuongKhaDung(sanPham)}</span>
+                        )}</p>
                         <p className="text-danger fw-bold mb-2">
                           Giá khuyến mãi: {parseFloat(sale.giasale).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
                           {/* {parseFloat(sale.giasale).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "}/ vnđ */} ({sanPham.don_vi_tinh})
@@ -258,12 +264,24 @@ const CuahangChitiet = () => {
                         {sanPham.trangthai === "Hết hàng" ? "Sản phẩm hiện đang hết hàng" : ""}
                       </p>
                     ) : (
-                      <button
-                        onClick={() => addToCart(sanPham)}
-                        className="btn border border-secondary rounded-pill px-3 text-primary"
-                      >
-                        <i className="fa fa-shopping-bag me-2 text-primary" /> Thêm vào giỏ hàng
-                      </button>
+                      <>
+                        {laySoLuongKhaDung(sanPham) > 0 ? (
+                          <button
+                            onClick={() => addToCart(sanPham)}
+                            className="btn border border-secondary rounded-pill px-3 text-primary"
+                          >
+                            <i className="fa fa-shopping-bag me-2 text-primary" /> Thêm vào giỏ hàng
+                          </button>
+                        ) : (
+                          <span className="badge bg-danger py-2 px-3">Hết hàng</span>
+                        )}
+                      </>
+                      // <button
+                      //   onClick={() => addToCart(sanPham)}
+                      //   className="btn border border-secondary rounded-pill px-3 text-primary"
+                      // >
+                      //   <i className="fa fa-shopping-bag me-2 text-primary" /> Thêm vào giỏ hàng
+                      // </button>
                     )}
                   </div>
                 </div>
@@ -545,7 +563,7 @@ const CuahangChitiet = () => {
                 )}
               </div>
             )}
-            <div className="related-products mt-5"  data-aos="fade-up">
+            <div className="related-products mt-5" data-aos="fade-up">
               <h2 className="text-success text-center mb-4">Sản phẩm liên quan</h2>
               <Marquee
                 gradient={false} // Không làm mờ rìa
@@ -563,7 +581,7 @@ const CuahangChitiet = () => {
                     }}
                   >
                     <div className="card shadow-sm">
-                     <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`}> <img
+                      <Link to={`/sanpham/${sanPham.tieude}/${sanPham.id}`}> <img
                         src={`${process.env.REACT_APP_BASEURL}/${sanPham.hinhanh}`}
                         className="card-img-top"
                         alt={sanPham.tieude}
@@ -579,16 +597,29 @@ const CuahangChitiet = () => {
                           {parseFloat(sanPham.giatien).toLocaleString("vi-VN")}  vnđ / {sanPham.don_vi_tinh}
                         </p>
                         {sanPham.trangthai === "Hết hàng" ? (
-                            <span className="badge bg-danger py-2 px-3">Hết hàng</span>
-                          ) : (
-                            <button
-                            onClick={() => addToCart(sanPham)}
-                            className="btn border border-secondary rounded-pill px-3 text-primary"
-                          >
-                            <i className="fa fa-shopping-bag me-2 text-primary" /> Thêm vào giỏ hàng
-                          </button>
-                          )}
-                       
+                          <span className="badge bg-danger py-2 px-3">Hết hàng</span>
+                        ) : (
+                          <>
+                            {
+                              laySoLuongKhaDung(sanPham) > 0 ? (
+                                <button
+                                  onClick={() => addToCart(sanPham)}
+                                  className="btn border border-secondary rounded-pill px-3 text-primary">
+                                  <i className="fa fa-shopping-bag me-2 text-primary" /> Thêm vào giỏ hàng
+                                </button>
+                              ) : (
+                                <span className="badge bg-danger py-2 px-3">Hết hàng</span>
+                              )
+                            }
+                          </>
+                          // <button
+                          //   onClick={() => addToCart(sanPham)}
+                          //   className="btn border border-secondary rounded-pill px-3 text-primary"
+                          // >
+                          //   <i className="fa fa-shopping-bag me-2 text-primary" /> Thêm vào giỏ hàng
+                          // </button>
+                        )}
+
                       </div>
                     </div>
                   </div>

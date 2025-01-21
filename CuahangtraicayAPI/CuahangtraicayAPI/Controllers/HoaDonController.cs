@@ -69,6 +69,11 @@ namespace CuahangtraicayAPI.Controllers
                 {
                     return BadRequest(new { message = $"Sản phẩm với ID {sanphamId} không tồn tại." });
                 }
+                var availableQuantity = sanpham.Soluong - sanpham.Soluongtamgiu;
+                if (availableQuantity < quantity)
+                {
+                    return BadRequest(new { message = $"Sản phẩm '{sanpham.Tieude}' chỉ còn {availableQuantity} trong kho." });
+                }
 
                 var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
                 var gia = activeSale != null ? activeSale.giasale : sanpham.Giatien;
@@ -79,6 +84,8 @@ namespace CuahangtraicayAPI.Controllers
                 }
 
                 totalPrice += gia * quantity;
+                // Tăng số lượng tạm giữ
+                sanpham.Soluongtamgiu += quantity;
             }
 
             // Tạo hóa đơn
@@ -413,6 +420,27 @@ namespace CuahangtraicayAPI.Controllers
             {
                 // Trường hợp đơn hàng chưa thanh toán
                 hoaDon.status = "Hủy đơn";
+
+                // cập nhật lại số lượng tạm giữ cho từng sản phẩm của hóa đơn
+                var chitiet = await _context.HoaDonChiTiets
+                    .Where(ct =>ct.bill_id == hoaDon.Id)
+                    .ToListAsync();
+                foreach(var hoadonct in chitiet)
+                {
+                    var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == hoadonct.sanpham_ids);
+                    
+                    if(sanpham != null)
+                    {
+                        sanpham.Soluongtamgiu -= hoadonct.quantity;
+
+                        // đảm bảo không bị âm
+                        if(sanpham.Soluongtamgiu < 0)
+                        {
+                            sanpham.Soluongtamgiu = 0;
+                        }
+                        _context.Sanpham.Update(sanpham);
+                    }
+                }
             }
             else
             {
@@ -656,6 +684,7 @@ namespace CuahangtraicayAPI.Controllers
                         if (sanpham != null)
                         {
                             sanpham.Soluong -= chiTiet.quantity;
+                            sanpham.Soluongtamgiu -= chiTiet.quantity;
 
                             if (sanpham.Soluong <= 0)
                             {
@@ -664,6 +693,24 @@ namespace CuahangtraicayAPI.Controllers
                             }
 
                             _context.Sanpham.Update(sanpham);
+                        }
+                    }
+                }
+                else if( dto.Status =="Hủy đơn")
+                {
+                    // trả lại số lượng tạm giữ 
+                    foreach(var chitiet in bill.HoaDonChiTiets)
+                    {
+                        var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chitiet.sanpham_ids);
+                        
+                        if(sanpham != null)
+                        {
+                            sanpham.Soluongtamgiu -= chitiet.quantity;
+                            if(sanpham.Soluongtamgiu <0)
+                            {
+                                sanpham.Soluongtamgiu = 0; // đảm bảo không bị âm
+                            }
+                            _context.Sanpham.Update(sanpham) ;
                         }
                     }
                 }
