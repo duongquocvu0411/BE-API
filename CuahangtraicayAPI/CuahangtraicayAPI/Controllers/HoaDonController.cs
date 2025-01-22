@@ -84,8 +84,12 @@ namespace CuahangtraicayAPI.Controllers
                 }
 
                 totalPrice += gia * quantity;
-                // Tăng số lượng tạm giữ
-                sanpham.Soluongtamgiu += quantity;
+                // Tăng số lượng tạm giữ cod
+                if(hoaDonDto.PaymentMethod.ToLower() == "cod")
+                {
+                    sanpham.Soluongtamgiu += quantity;
+                }
+             
             }
 
             // Tạo hóa đơn
@@ -541,17 +545,21 @@ namespace CuahangtraicayAPI.Controllers
             giaodich.UpdatedBy = hotenToken;
             _context.PaymentTransactions.Update(giaodich);
 
-            // Hoàn lại số lượng sản phẩm
+            // Hoàn lại số lượng sản phẩm && số lượng tạm giữ
             var chiTietHoaDon = await _context.HoaDonChiTiets.Where(ct => ct.bill_id == hoaDon.Id).ToListAsync();
             foreach (var chiTiet in chiTietHoaDon)
             {
                 var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
                 if (sanpham != null)
                 {
+                    //hoàn lại số lượng sản phẩm && số lượng tạm giữ
+
                     sanpham.Soluong += chiTiet.quantity; // Hoàn lại số lượng
-                    if (sanpham.Soluong > 0 && sanpham.Trangthai == "Hết hàng")
+                  
+                    if (sanpham.Soluong > 0 && sanpham.Trangthai == "Hết hàng" )
                     {
                         sanpham.Trangthai = "Còn hàng"; // Cập nhật trạng thái nếu cần
+                       
                     }
 
                     _context.Sanpham.Update(sanpham);
@@ -816,7 +824,7 @@ namespace CuahangtraicayAPI.Controllers
 
             // Tính tổng doanh thu của các hóa đơn có ngày tạo là hôm nay
             var doanhThuHomNay = await _context.HoaDons
-                .Where(hd => hd.Created_at >= today && hd.Created_at < tomorrow)
+                .Where(hd => hd.Created_at >= today && hd.Created_at < tomorrow && hd.status == "delivered")
                 .SumAsync(hd => hd.total_price);
 
             // Chuẩn bị dữ liệu trả về

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "w2s9NX3Wng1tZWdLb7Ck3SBcOkSXO7AEZ0QD5Gnc2SM=",
+  "Hash": "GnXd/i1rqlX89TFo8mSMkXc6wR9F1T99D7vgmpBVwIo=",
   "Source": "CuahangtraicayAPI",
   "BasePath": "_content/CuahangtraicayAPI",
   "Mode": "Default",
@@ -2333,6 +2333,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\menuFooter\\638729627210259053_footer_payment_img.webp"
+    },
+    {
+      "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\menuFooter\\638731405236358257_footer_payment_img.webp",
+      "SourceId": "CuahangtraicayAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\",
+      "BasePath": "_content/CuahangtraicayAPI",
+      "RelativePath": "menuFooter/638731405236358257_footer_payment_img.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\menuFooter\\638731405236358257_footer_payment_img.webp"
     },
     {
       "Identity": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg",

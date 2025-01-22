@@ -10,7 +10,7 @@ using CuahangtraicayAPI.Model.DB;
 public class AutoPhanHoiService : BackgroundService
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly TimeSpan _checkInterval = TimeSpan.FromSeconds(30);
+    private readonly TimeSpan _checkInterval = TimeSpan.FromMinutes(5);
 
     public AutoPhanHoiService(IServiceProvider serviceProvider)
     {

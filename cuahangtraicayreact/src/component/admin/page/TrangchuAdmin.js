@@ -305,7 +305,7 @@ const layDoanhThuThang = async () => {
                     <i className="bi bi-currency-exchange me-2"></i> Doanh thu hôm nay
                   </Card.Title>
                   <Card.Text>{`Hôm nay đạt ${doanhThuHomNay.toLocaleString('vi-VN',{style:'decimal', minimumFractionDigits: 0})} VND.`}</Card.Text>
-                  <Link to="/admin/hoadon" className="btn btn-light">
+                  <Link to="/admin/khachhang" className="btn btn-light">
                     Chi tiết
                   </Link>
                 </Card.Body>

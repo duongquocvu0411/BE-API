@@ -42,7 +42,7 @@ namespace CuahangtraicayAPI.Controllers
         // GET: api/Sanpham
 
         [HttpGet]
-        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Sanpham>>>> GetSanphams()
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<Sanpham>>>> GetSanphams()
         {
 
             var sanphams = await _context.Sanpham
@@ -66,8 +66,8 @@ namespace CuahangtraicayAPI.Controllers
 
             return Ok(new BaseResponseDTO<IEnumerable<Sanpham>>
             {
-                Data =sanphams,
-                Message= "Success"
+                Data = sanphams,
+                Message = "Success"
             });
         }
 
@@ -151,11 +151,11 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/Sanpham
         [HttpPost]
-        [Authorize(Roles ="Admin,Employee")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<Sanpham>> PostSanpham([FromForm] SanphamDTO.SanphamCreateRequest request)
         {
             // Kiểm tra giá gốc hợp lệ
-          
+
             if (request.Giatien < 1000)
             {
                 return BadRequest(new { message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
@@ -299,12 +299,12 @@ namespace CuahangtraicayAPI.Controllers
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (sanpham == null)
-                return NotFound(new BaseResponseDTO<Sanpham> {Code =404, Message = "Sản phẩm không tồn tại" });
+                return NotFound(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Sản phẩm không tồn tại" });
 
             // Kiểm tra giá gốc hợp lệ
             if (request.Giatien < 1000)
             {
-                return BadRequest(new BaseResponseDTO<Sanpham> { Code=404,Message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
+                return BadRequest(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
             }
             //if (request.So_luong <= 0)
             //{
@@ -428,7 +428,7 @@ namespace CuahangtraicayAPI.Controllers
             {
                 if (request.Sale.Giasale <= 0)
                 {
-                    return BadRequest(new BaseResponseDTO<Sanpham> { Code=404,Message = "Giá sale phải là số dương lớn hơn 0." });
+                    return BadRequest(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Giá sale phải là số dương lớn hơn 0." });
                 }
 
                 if (request.Sale.Giasale >= sanpham.Giatien)
@@ -443,7 +443,7 @@ namespace CuahangtraicayAPI.Controllers
 
                 if (request.Sale.Thoigianketthuc <= request.Sale.Thoigianbatdau)
                 {
-                    return BadRequest(new BaseResponseDTO<Sanpham> { Code = 404, Message= "Thời gian kết thúc phải lớn hơn thời gian bắt đầu." });
+                    return BadRequest(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu." });
                 }
 
                 // Xử lý thông tin khuyến mãi
@@ -469,7 +469,7 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(new BaseResponseDTO<Sanpham>
             {
                 Message = "Sản phẩm đã được cập nhật thành công.",
-                Data =sanpham,
+                Data = sanpham,
             });
         }
 
@@ -490,7 +490,7 @@ namespace CuahangtraicayAPI.Controllers
 
             if (sanpham == null)
             {
-                return NotFound(new BaseResponseDTO<Sanpham>{ Code= 404, Message = "Sản phẩm không tồn tại" });
+                return NotFound(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Sản phẩm không tồn tại" });
             }
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
@@ -522,7 +522,7 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(new BaseResponseDTO<Sanpham>
             {
                 Data = sanpham,
-                Message="Success"
+                Message = "Success"
             });
         }
 
@@ -566,7 +566,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // lấy sản phẩm theo danhmuc sản phẩm
         [HttpGet("danhmuc/{danhmucId}")]
-        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Sanpham>>>> GetSanphamsByDanhMuc(int danhmucId)
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<Sanpham>>>> GetSanphamsByDanhMuc(int danhmucId)
         {
             var sanphams = await _context.Sanpham
                 .Where(s => s.danhmucsanpham_id == danhmucId && s.Xoa == false)
@@ -608,22 +608,22 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         /// <returns>Danh sách sản phẩm theo danh mục nhưng không có sale "Đang áp dụng"</returns>
         [HttpGet("danhmuc-khongsale/{danhmucId}")]
-        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Sanpham>>>> GetSanphamsByDanhMucWithoutActiveSale(int danhmucId)
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<Sanpham>>>> GetSanphamsByDanhMucWithoutActiveSale(int danhmucId)
         {
             var sanphams = await _context.Sanpham
                 .Where(s => s.danhmucsanpham_id == danhmucId && s.Xoa == false && s.SanphamSales.All(sale => sale.trangthai == "Không áp dụng"))
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.SanphamSales)
-           
+
                 .Include(s => s.ChiTiet)
                 .ToListAsync();
 
             if (!sanphams.Any())
             {
-                return NotFound(new  BaseResponseDTO<Sanpham>{ Code=404,Message = "Không có sản phẩm nào thuộc danh mục này." });
+                return NotFound(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Không có sản phẩm nào thuộc danh mục này." });
             }
 
-            return Ok(new BaseResponseDTO<IEnumerable< Sanpham>>
+            return Ok(new BaseResponseDTO<IEnumerable<Sanpham>>
             {
                 Data = sanphams,
                 Message = "Success"
@@ -708,23 +708,23 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         /// <returns>Danh sách sản phẩm và sale không áp dụng hoặc không có sale</returns>
         [HttpGet("spkhongsale")]
-        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Sanpham>>>> GetSanphamkhongsal()
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<Sanpham>>>> GetSanphamkhongsal()
         {
             // Lấy danh sách sản phẩm và thông tin sale
             var sanphams = await _context.Sanpham
-               .Where(s =>  s.Xoa == false && s.SanphamSales.All(sale => sale.trangthai == "Không áp dụng"))
+               .Where(s => s.Xoa == false && s.SanphamSales.All(sale => sale.trangthai == "Không áp dụng"))
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.ChiTiet)
                 .Include(s => s.SanphamSales) // Include thông tin sale
                 .OrderBy(s => s.Danhmucsanpham.ID)
                 .ToListAsync();
 
-         
+
             // Trả về kết quả
-            return Ok(new BaseResponseDTO<IEnumerable <Sanpham>>
+            return Ok(new BaseResponseDTO<IEnumerable<Sanpham>>
             {
-                Data =sanphams,
-                Message= "Success"
+                Data = sanphams,
+                Message = "Success"
             });
         }
 
@@ -740,10 +740,10 @@ namespace CuahangtraicayAPI.Controllers
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.ChiTiet)
                 .Include(s => s.SanphamSales)
-               .Where(s => s.Xoa ==false && s.SanphamSales.Any(sale => sale.trangthai == "Đang áp dụng"))// Include thông tin sale
+               .Where(s => s.Xoa == false && s.SanphamSales.Any(sale => sale.trangthai == "Đang áp dụng"))// Include thông tin sale
                 .ToListAsync();
 
-          
+
             // Trả về kết quả
             return Ok(new BaseResponseDTO<IEnumerable<Sanpham>>
             {

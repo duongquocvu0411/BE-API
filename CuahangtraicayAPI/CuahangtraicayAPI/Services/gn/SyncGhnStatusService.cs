@@ -30,7 +30,7 @@ namespace CuahangtraicayAPI.Services.gn
                 }
 
                 // Lặp lại sau mỗi 10 phút
-                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(15), stoppingToken);
             }
         }
     }
@@ -124,35 +124,51 @@ namespace CuahangtraicayAPI.Services.gn
                         }
 
                     // Nếu trạng thái là "returned" và trước đó trạng thái không phải "returned"
-                    else if (hoadon.Thanhtoan == "cod" && ghnOrderDetail.Data.Status == "returned" && trangthaitruoc != "returned")
+           
+                    else if ((hoadon.Thanhtoan == "cod" || hoadon.Thanhtoan == "VnPay" || hoadon.Thanhtoan == "Momo") 
+                             && ghnOrderDetail.Data.Status == "returned" && trangthaitruoc != "returned")
+                    {
+                        foreach (var chiTiet in hoadon.HoaDonChiTiets)
                         {
-                            foreach (var chiTiet in hoadon.HoaDonChiTiets)
-                            {
-                                var sanpham = await _dbContext.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
+                            var sanpham = await _dbContext.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
 
-                                if (sanpham != null)
+                            if (sanpham != null)
+                            {
+                                if (hoadon.Thanhtoan == "cod")
                                 {
-                                    // Giảm số lượng tạm giữ nhưng không ảnh hưởng đến số lượng thực tế
+                                    // Đơn COD: Giảm số lượng tạm giữ
                                     sanpham.Soluongtamgiu -= chiTiet.quantity;
 
+                                    // Đảm bảo không âm
                                     if (sanpham.Soluongtamgiu < 0)
                                     {
-                                        sanpham.Soluongtamgiu = 0; // Đảm bảo không âm
+                                        sanpham.Soluongtamgiu = 0;
                                     }
-
-                                    _dbContext.Sanpham.Update(sanpham);
                                 }
-                            }
+                                else if (hoadon.Thanhtoan == "VnPay" || hoadon.Thanhtoan == "Momo")
+                                {
+                                    // Đơn VnPay hoặc MoMo: Hoàn lại số lượng thực
+                                    sanpham.Soluong += chiTiet.quantity;
 
-                            Console.WriteLine($"Đã giải phóng số lượng tạm giữ cho hóa đơn {hoadon.Id}.");
+                                    // Cập nhật trạng thái sản phẩm nếu cần
+                                    if (sanpham.Soluong > 0 && sanpham.Trangthai == "Hết hàng")
+                                    {
+                                        sanpham.Trangthai = "Còn hàng";
+                                    }
+                                }
+
+                                // Cập nhật sản phẩm
+                                _dbContext.Sanpham.Update(sanpham);
+                            }
+                        }
+
+                            Console.WriteLine($"Đã xử lý trạng thái 'returned' cho hóa đơn {hoadon.Id}.");
                         }
 
                         // Cập nhật trạng thái hóa đơn
                         _dbContext.HoaDons.Update(hoadon);
-                      
 
                         Console.WriteLine($"Trạng thái đơn hàng {hoadon.Id} đã được cập nhật thành {ghnOrderDetail.Data.Status}.");
-                    
 
 
                     // Gửi email thông báo nếu trạng thái thay đổi
