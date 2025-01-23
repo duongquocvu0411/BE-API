@@ -53,11 +53,12 @@ namespace CuahangtraicayAPI.Controllers
         /// Tạo hóa đơn mới
         /// </summary>
         [HttpPost]
+        [Authorize(Roles ="User")]
         public async Task<ActionResult<BaseResponseDTO<HoaDon>>> CreateHoaDon(HoadonDTO.HoaDonDto hoaDonDto)
         {
             var orderCode = GenerateOrderCode(); // Tạo mã đơn hàng
             var totalPrice = 0m;
-
+           
             // Tính tổng giá trị đơn hàng
             foreach (var (sanphamId, quantity) in hoaDonDto.SanphamIds.Zip(hoaDonDto.Quantities))
             {
@@ -101,7 +102,8 @@ namespace CuahangtraicayAPI.Controllers
                 Thanhtoan = hoaDonDto.PaymentMethod,
                 status = hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.Thanhtoan == "Momo" ? "Chờ thanh toán" : "Chờ xử lý", // Xử lý đúng trạng thái
                 Ghn = "Chưa lên đơn",
-                UpdatedBy = "Chưa có tác động"
+                UpdatedBy = "Chưa có tác động",
+
             };
 
             _context.HoaDons.Add(bill);

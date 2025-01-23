@@ -17,5 +17,8 @@ namespace CuahangtraicayAPI.Modles
 
         [Required(ErrorMessage = "hoten is required")]
         public string hoten { get; set; }
+   
+        public string Sodienthoai { get; set; }
+
     }
 }

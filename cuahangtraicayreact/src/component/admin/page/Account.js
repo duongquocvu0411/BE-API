@@ -55,7 +55,7 @@ const Account = () => {
     const token = cookies.adminToken;
     try {
       await axios.delete(
-        `${process.env.REACT_APP_BASEURL}/api/Authenticate/delete-employee/${accountToDelete.id}`,{
+        `${process.env.REACT_APP_BASEURL}/api/Authenticate/delete-employee-User/${accountToDelete.id}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }

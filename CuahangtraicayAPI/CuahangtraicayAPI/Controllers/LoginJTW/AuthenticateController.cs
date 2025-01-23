@@ -11,6 +11,7 @@ using Microsoft.Extensions.Caching.Memory;
 using CuahangtraicayAPI.Modles;
 using CuahangtraicayAPI.Model.DB;
 using Microsoft.AspNetCore.Authorization;
+using CuahangtraicayAPI.Model.jwt;
 
 namespace WebsiteQuanan.Controllers
 {
@@ -50,7 +51,16 @@ namespace WebsiteQuanan.Controllers
                 {
                     return BadRequest(new { status = "error", message = "Email của tài khoản chưa được cấu hình." });
                 }
-
+                // Kiểm tra trạng thái tài khoản trong UserProfile
+                var userProfile = _context.UserProfiles.FirstOrDefault(a => a.UserId == user.Id);
+                if (userProfile != null && userProfile.TrangThaiTK == 0) // 0: Bị khóa
+                {
+                    return Unauthorized(new
+                    {
+                        status = "error",
+                        message = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên."
+                    });
+                }
                 var otpCode = new Random().Next(100000, 999999).ToString();
 
                 // Lưu OTP và username vào MemoryCache với thời hạn 5 phút
@@ -110,25 +120,47 @@ namespace WebsiteQuanan.Controllers
                     _cache.Remove("current-username");
 
                     // Tìm thông tin người dùng
-
                     var user = await _userManager.FindByNameAsync(username);
-                    var userProfile = _context.UserProfiles.FirstOrDefault(u => u.UserId == user.Id);
-                    var hoten = userProfile?.Hoten ?? "Unknown";
-                    var email = user.Email ?? "Unknown";
 
-
+                    // Lấy vai trò của tài khoản
                     var userRoles = await _userManager.GetRolesAsync(user);
+                    string hoten = "Unknown";
+                    string sodienthoai = "Unknown";
 
-                   
+                    // Kiểm tra loại tài khoản và truy vấn bảng phù hợp
+                    if (userRoles.Contains("Admin"))
+                    {
+                        // Tài khoản Admin
+                        var adminProfile = _context.AdminProfiles.FirstOrDefault(a => a.UserId == user.Id);
+                        hoten = adminProfile?.Hoten ?? "Unknown";
+                        sodienthoai = adminProfile?.Sodienthoai ?? "Unknown";
+                    }
+                    else if (userRoles.Contains("Employee"))
+                    {
+                        // Tài khoản Employee
+                        var employeeProfile = _context.EmployeeProfiles.FirstOrDefault(e => e.UserId == user.Id);
+                        hoten = employeeProfile?.Hoten ?? "Unknown";
+                        sodienthoai = employeeProfile?.Sodienthoai ?? "Unknown";
+                    }
+                    else
+                    {
+                        // Tài khoản User thông thường
+                        var userProfile = _context.UserProfiles.FirstOrDefault(u => u.UserId == user.Id);
+                        hoten = userProfile?.Hoten ?? "Unknown";
+                        sodienthoai = userProfile?.Sodienthoai ?? "Unknown";
+                    }
 
                     // Tạo danh sách claim cho token
                     var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("FullName", hoten) ,// Thêm thông tin FullName
-                new Claim(ClaimTypes.Email, email) // Thêm thông tin Email
+                new Claim("FullName", hoten), // Thêm thông tin FullName
+                new Claim(ClaimTypes.Email, user.Email ?? "Unknown"), // Thêm thông tin Email
+                new Claim("Sodienthoai", sodienthoai) // Thêm số điện thoại
             };
+
                     foreach (var userRole in userRoles)
                     {
                         authClaims.Add(new Claim(ClaimTypes.Role, userRole));
@@ -149,8 +181,9 @@ namespace WebsiteQuanan.Controllers
             return Unauthorized(new { status = "error", message = "Mã OTP không hợp lệ hoặc đã hết hạn." });
         }
 
-      
-       
+
+
+
 
         [HttpPost]
         [Route("register")]
@@ -229,7 +262,12 @@ namespace WebsiteQuanan.Controllers
                 _context.UserProfiles.Add(new UserProfile
                 {
                     UserId = user.Id,
-                    Hoten = registerModel.hoten
+                    Hoten = registerModel.hoten,
+                    Chucvu = "USER",
+                    Sodienthoai= registerModel.Sodienthoai,
+                    Created_at = DateTime.Now,
+                    Updated_at = DateTime.Now,
+
                 });
                 await _context.SaveChangesAsync();
 
@@ -318,10 +356,14 @@ namespace WebsiteQuanan.Controllers
                 await _userManager.AddToRoleAsync(user, UserRoles.Employee);
 
                 // Lưu thông tin vào bảng UserProfile
-                _context.UserProfiles.Add(new UserProfile
+                _context.AdminProfiles.Add(new AdminProfile
                 {
                     UserId = user.Id,
-                    Hoten = registerModel.hoten
+                    Hoten = registerModel.hoten,
+                    Chucvu = "Admin",
+                    Sodienthoai = registerModel.Sodienthoai,
+                    Created_at = DateTime.Now,
+                    Updated_at = DateTime.Now,
                 });
                 await _context.SaveChangesAsync();
 
@@ -408,10 +450,14 @@ namespace WebsiteQuanan.Controllers
                 await _userManager.AddToRoleAsync(user, UserRoles.User);
 
                 // Lưu thông tin vào bảng UserProfile
-                _context.UserProfiles.Add(new UserProfile
+                _context.EmployeeProfiles.Add(new EmployeeProfile
                 {
                     UserId = user.Id,
-                    Hoten = registerModel.hoten
+                    Hoten = registerModel.hoten,
+                    Chucvu="Employee",
+                    Sodienthoai=registerModel.Sodienthoai,
+                    Created_at=DateTime.Now,
+                    Updated_at=DateTime.Now,
                 });
                 await _context.SaveChangesAsync();
 
@@ -460,7 +506,7 @@ namespace WebsiteQuanan.Controllers
                     if (userRoles.Contains(UserRoles.Employee) && !userRoles.Contains(UserRoles.Admin))
                     {
                         // Lấy thông tin từ bảng UserProfile nếu có
-                        var userProfile = _context.UserProfiles.FirstOrDefault(u => u.UserId == user.Id);
+                        var userProfile = _context.EmployeeProfiles.FirstOrDefault(u => u.UserId == user.Id);
 
                         employees.Add(new
                         {
@@ -491,7 +537,7 @@ namespace WebsiteQuanan.Controllers
 
         }
         [HttpDelete]
-        [Route("delete-employee/{userId}")]
+        [Route("delete-employee-User/{userId}")]
         [Authorize(Roles ="Admin")]    
         public async Task<IActionResult> DeleteEmployee(string userId)
         {
@@ -556,7 +602,98 @@ namespace WebsiteQuanan.Controllers
                 });
             }
         }
+        [HttpGet]
+        [Route("get-all-user")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllUser()
+        {
+            try
+            {
+                // Lấy danh sách tất cả người dùng
+                var users = _userManager.Users.ToList();
 
+                var employees = new List<object>();
+
+                foreach (var user in users)
+                {
+                    // Lấy tất cả vai trò của người dùng
+                    var userRoles = await _userManager.GetRolesAsync(user);
+
+                    // Chỉ lấy người dùng có vai trò "Employee" và không có vai trò "Admin"
+                    if (userRoles.Contains(UserRoles.User) && !userRoles.Contains(UserRoles.Employee))
+                    {
+                        // Lấy thông tin từ bảng UserProfile nếu có
+                        var userProfile = _context.UserProfiles.FirstOrDefault(u => u.UserId == user.Id);
+
+                        employees.Add(new
+                        {
+                            Id = user.Id,
+                            Username = user.UserName,
+                            Email = user.Email,
+                            FullName = userProfile?.Hoten ?? "N/A",
+                            trangthaitk = userProfile?.TrangThaiTK
+                        });
+                    }
+                }
+
+                return Ok(new
+                {
+                    status = "success",
+                    message = "Danh sách User",
+                    data = employees
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    status = "error",
+                    message = "Đã xảy ra lỗi khi lấy danh sách nhân viên.",
+                    error = ex.Message
+                });
+            }
+
+
+        }
+        [HttpPost]
+        [Route("admin/lock-account")]
+        public IActionResult LockAccount(string userId)
+        {
+            var user = _context.UserProfiles.FirstOrDefault(a => a.UserId == userId);
+            if (user != null)
+            {
+                user.TrangThaiTK = 0; // Khóa tài khoản
+                _context.SaveChanges();
+                return Ok(new { message = "Tài khoản đã bị khóa thành công!" });
+            }
+            return NotFound("Không tìm thấy tài khoản.");
+        }
+
+        [HttpPost]
+        [Route("admin/unlock-account")]
+        public IActionResult UnlockAccount(string userId)
+        {
+            // Tìm tài khoản trong cơ sở dữ liệu
+            var user = _context.UserProfiles.FirstOrDefault(a => a.UserId == userId);
+
+            // Kiểm tra nếu tài khoản không tồn tại
+            if (user == null)
+            {
+                return NotFound("Không tìm thấy tài khoản.");
+            }
+
+            // Kiểm tra nếu tài khoản đã hoạt động
+            if (user.TrangThaiTK == 1)
+            {
+                return BadRequest(new { message = "Tài khoản đã hoạt động, không cần mở khóa." });
+            }
+
+            // Mở khóa tài khoản
+            user.TrangThaiTK = 1; // Đặt trạng thái tài khoản là hoạt động
+            _context.SaveChanges();
+
+            return Ok(new { message = "Tài khoản đã được mở khóa thành công!" });
+        }
 
 
 
@@ -609,6 +746,7 @@ namespace WebsiteQuanan.Controllers
             }
 
         }
+
     }
 }
 

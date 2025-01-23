@@ -133,6 +133,16 @@ const SiderbarAdmin = () => {
             <span>Quản lý Acoounts</span>
           </Link>
         </li>
+        
+        )}
+          {!isNhanvien && (
+        <li className={`nav-item ${vitriRoute.pathname === '/admin/quanlyuser' ? 'active' : ''}`}>
+          <Link className="nav-link" to="/admin/quanlyuser">
+            <i className="fas fa-boxes"></i> {/* Icon sản phẩm */}
+            <span>Quản lý Users</span>
+          </Link>
+        </li>
+        
         )}
         {/* Quản lý Địa chỉ 
         <li className={`nav-item ${vitriRoute.pathname === '/admin/diachichitiet' ? 'active' : ''}`}>

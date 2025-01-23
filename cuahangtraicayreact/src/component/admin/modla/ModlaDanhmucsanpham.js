@@ -17,7 +17,7 @@ const ModlaAdddanhsachsanpham = ({ show, handleClose, isEdit, danhmuc, fetchdanh
 
     }
   }, [isEdit, danhmuc]);
-  const handleSubmit = async () => {
+  const handleSubmit = async () => { 
     const fom ={
       name
     }

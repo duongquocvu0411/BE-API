@@ -11,6 +11,7 @@ using CuahangtraicayAPI.Services;
 using CuahangtraicayAPI.Model.ghn;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 
 
@@ -52,6 +53,75 @@ namespace CuahangtraicayAPI.Controllers
             {
                 Data = khachHangs,
                 Message =" Success"
+            });
+        }
+
+        [HttpGet]
+        [Route("user-orders/{userId}")]
+        public IActionResult GetUserOrders(string userId)
+        {
+            // Tìm danh sách khách hàng theo UserId
+            var customers = _context.KhachHangs
+                .Where(kh => kh.UserNameLogin == userId)
+                .Select(kh => new
+                {
+                    kh.Id,
+                    kh.Ten,
+                    kh.Ho,
+                    kh.DiaChiCuThe,
+                    kh.ThanhPho,
+                    kh.tinhthanhquanhuyen,
+                    kh.xaphuong,
+                    kh.Sdt,
+                    kh.EmailDiaChi,
+                    kh.GhiChu,
+                    kh.UserNameLogin,
+                    Orders = _context.HoaDons
+                        .Where(hd => hd.khachhang_id == kh.Id)
+                        .Select(hd => new
+                        {
+                            hd.Id,
+                            hd.order_code,
+                            hd.total_price,
+                            hd.status,
+                            hd.Thanhtoan,
+                            hd.Ghn
+                        })
+                        .ToList()
+                })
+                .ToList();
+
+            if (customers.Count == 0)
+            {
+                return Ok(new
+                {
+                    status = "success",
+                    message = "Tài khoản không có khách hàng hoặc đơn hàng.",
+                    data = new
+                    {
+                        userId,
+                        totalOrders = 0,
+                        totalSpent = 0,
+                        customers = new List<object>()
+                    }
+                });
+            }
+
+            // Tính tổng số đơn hàng và tổng số tiền đã chi tiêu
+            var totalOrders = customers.Sum(c => c.Orders.Count);
+            var totalSpent = customers.Sum(c => c.Orders.Sum(o => o.total_price));
+
+            return Ok(new
+            {
+                status = "success",
+                message = "Thông tin khách hàng và đơn hàng của tài khoản.",
+                data = new
+                {
+                    userId,
+                    totalOrders, // Tổng số đơn hàng
+                    totalSpent,  // Tổng số tiền đã chi tiêu
+                    customers    // Danh sách khách hàng
+                }
             });
         }
 
@@ -143,13 +213,39 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns> Thêm mới khách hàng</returns>
 
         // POST: api/KhachHang
+        [Authorize(Roles = "User")]
         [HttpPost]
-        public async Task<ActionResult<BaseResponseDTO< KhachHang>>> PostKhachHang(DTO.KhachHangCreateDto kh)
-        { // Kiểm tra tính hợp lệ của dữ liệu
+        public async Task<ActionResult<BaseResponseDTO<KhachHang>>> PostKhachHang(DTO.KhachHangCreateDto kh)
+        {
+            // Kiểm tra tính hợp lệ của dữ liệu
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState); // Trả về lỗi nếu không hợp lệ
             }
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var emailFromToken = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+            // Kiểm tra trạng thái tài khoản
+            var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userProfile == null)
+            {
+                return Unauthorized(new BaseResponseDTO<KhachHang>
+                {
+                    Data = null,
+                    Message = "Tài khoản không tồn tại."
+                });
+            }
+
+            if (userProfile.TrangThaiTK == 0) // 0: Bị khóa
+            {
+                return Unauthorized(new BaseResponseDTO<KhachHang>
+                {
+                    Data = null,
+                    Message = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên."
+                });
+            }
+
             // Chuyển đổi từ DTO sang Model
             var khachHang = new KhachHang
             {
@@ -160,8 +256,9 @@ namespace CuahangtraicayAPI.Controllers
                 ThanhPho = kh.ThanhPho,
                 xaphuong = kh.xaphuong,
                 Sdt = kh.Sdt,
-                EmailDiaChi = kh.EmailDiaChi,
-                GhiChu = kh.GhiChu
+                EmailDiaChi = emailFromToken,
+                GhiChu = kh.GhiChu,
+                UserNameLogin = userId,
             };
 
             // Thêm khách hàng vào cơ sở dữ liệu
@@ -175,6 +272,7 @@ namespace CuahangtraicayAPI.Controllers
                 Message = "Success"
             });
         }
+
 
 
         /// <summary>

@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import Aos from "aos";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const Thanhtoan = () => {
   const [thanhpho, setThanhpho] = useState("");
@@ -28,6 +29,7 @@ const Thanhtoan = () => {
   const [dangtaiQH, setdangtaiTQH] = useState(false);
   const [dangtaiXP, setdangtaiXP] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod"); // Mặc định là COD
+  const [cookies] = useCookies(['adminToken', 'loginhoten','userToken'])
   const navigate = useNavigate();
   useEffect(() => {
     fetchCities();
@@ -162,13 +164,43 @@ const Thanhtoan = () => {
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
 
+    if (!cookies.userToken) {
+      toast.error(
+        <span>
+          Bạn chưa đăng nhập! Vui lòng{" "}
+          <span
+            style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+            onClick={() => navigate("/loginuser")}
+          >
+            nhấn vào đây
+          </span>{" "}
+          để đăng nhập.
+        </span>,
+        {
+          position: "top-right",
+          autoClose: 5000,
+        }
+      );
+      return;
+    }
+    
     if (giohang.length === 0) {
       toast.error("Giỏ hàng của bạn đang trống. Không thể thanh toán!", { position: "top-right", autoClose: 5000 });
       return;
     }
 
     setIsLoading(true);
+    const token = cookies.userToken;
+   
 
+    // Giải mã JWT token để lấy email
+    const decodedToken = JSON.parse(atob(token.split(".")[1]));
+    const emailFromToken = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
+    const userIdFromToken = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+    if (!emailFromToken) {
+      toast.error("Không thể xác định email từ token!", { position: "top-right", autoClose: 5000 });
+      return;
+    }
     const khachhangData = {
       ten: firstName,
       ho: lastName,
@@ -177,14 +209,19 @@ const Thanhtoan = () => {
       tinhthanhquanhuyen: tinhthanh,
       xaphuong: xaphuong,
       sdt: sdt,
-      emailDiaChi: email, // Đổi "Emaildiachi" thành "emailDiaChi"
-      ghiChu: ghichu,     // Đổi "ghichu" thành "ghiChu"
+      emailDiaChi: emailFromToken, // Sử dụng email từ token
+      ghiChu: ghichu, 
+      UserNameLogin: userIdFromToken
     };
-
+    const headers = {
+      Authorization: `Bearer ${cookies.userToken}`,
+      "Content-Type": "application/json",
+    };
+    
     console.log("Khách hàng data gửi đi:", khachhangData);
     try {
       // Gửi thông tin khách hàng
-      const khachhangResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/khachhang`, khachhangData);
+      const khachhangResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/khachhang`, khachhangData,{headers});
       const khachhangId = khachhangResponse.data.data.id;
 
       // Gửi thông tin hóa đơn
@@ -198,7 +235,7 @@ const Thanhtoan = () => {
         updated_By: "Chưa có tác động",
       };
 
-      const billResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/HoaDon`, billData);
+      const billResponse = await axios.post(`${process.env.REACT_APP_BASEURL}/api/HoaDon`, billData,{headers});
 
       const newOrderCode = billResponse.data.orderCode;
       setOrderCode(newOrderCode);
@@ -451,7 +488,7 @@ const Thanhtoan = () => {
                       </div>
 
                       {/* Email */}
-                      <div className="col-12">
+                      {/* <div className="col-12">
                         <label className="form-label">
                           <i className="bi bi-envelope-fill"></i> Email<sup>*</sup>
                         </label>
@@ -463,7 +500,7 @@ const Thanhtoan = () => {
                           placeholder="Nhập email"
                           required
                         />
-                      </div>
+                      </div> */}
 
                       {/* Ghi chú */}
                       <div className="col-12">

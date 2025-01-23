@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using CuahangtraicayAPI.Modles;
+using CuahangtraicayAPI.Model.jwt;
 
 public class AppDbContext : IdentityDbContext<IdentityUser>
 {
@@ -18,6 +19,8 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Diachichitiet> Diachichitiets { get; set; }
     public DbSet<Admin> Admins { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
+    public DbSet<AdminProfile> AdminProfiles { get; set; }
+    public DbSet<EmployeeProfile> EmployeeProfiles { get; set; }
     public DbSet<AdminResponse> AdminResponses { get; set; }
     public DbSet<Lienhe> Lienhes { get; set; }
     public DbSet<Sanpham> Sanpham { get; set; }

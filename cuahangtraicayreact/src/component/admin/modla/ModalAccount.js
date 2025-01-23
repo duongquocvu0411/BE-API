@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, InputGroup } from "react-bootstrap";
-import { FaUser, FaEnvelope, FaLock, FaCheckCircle } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaLock, FaCheckCircle, FaPhone } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -9,6 +9,8 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
     username: account?.username || "",
     email: account?.email || "",
     password: "",
+
+    sodienthoai: "",
     confirmPassword: "",
     fullName: account?.fullName || "",
     otp: "",
@@ -70,6 +72,7 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
         email: formData.email,
         password: formData.password,
         hoten: formData.fullName,
+        sodienthoai:formData.sodienthoai
       });
       toast.success("OTP đã được gửi tới email!");
       setIsOtpSent(true); // Đặt trạng thái OTP đã gửi
@@ -244,6 +247,31 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleChange}
+                    className="rounded-3"
+                  />
+                </InputGroup>
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-semibold text-dark">
+                  <FaPhone className="me-2 text-muted" />
+                  Số điện thoại
+                </Form.Label>
+                <InputGroup>
+                  <InputGroup.Text className="bg-light text-muted">
+                    <FaPhone />
+                  </InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    placeholder="Nhập họ tên"
+                    name="sodienthoai"
+                    value={formData.sodienthoai}
+                    onChange={(e) => {
+                      let value = e.target.value.replace(/[^0-9]/g, ""); // Chỉ cho phép nhập số
+                      if (value.length > 11) {
+                        value = value.slice(0, 11); // Giới hạn tối đa 11 ký tự
+                      }
+                      handleChange({ target: { name: "sodienthoai", value } }); // Gọi hàm handleChange với giá trị đã xử lý
+                    }}
                     className="rounded-3"
                   />
                 </InputGroup>

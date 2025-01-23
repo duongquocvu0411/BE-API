@@ -1,29 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { CartContext } from './page/CartContext';
-import axios from 'axios';
-import ScrollToTop from 'react-scroll-to-top';
+import { CartContext } from "./page/CartContext";
+import axios from "axios";
+import ScrollToTop from "react-scroll-to-top";
 import { toast } from "react-toastify";
-import ChatBot from "react-chatbotify";
-
+import { useCookies } from "react-cookie";
 import { HelmetProvider, Helmet } from "react-helmet-async";
+import {jwtDecode} from "jwt-decode";
 
 const HeaderUsers = ({ tieudeSanPham }) => {
   const vitriRoute = useLocation();
-  const [diachichitiet, setDiachichitiet] = useState({ diachi: ' ', email: '' });
-  const [tencuahang, setTencuahang] = useState('');
   const [menuData, setMenuData] = useState([]);
   const { giohang } = useContext(CartContext);
-  const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "", favicon: "", email: "", diachi: "", sdt: "" });
+  const [thongTinWebsite, setThongTinWebsite] = useState({
+    tieu_de: "",
+    favicon: "",
+    email: "",
+    diachi: "",
+    sdt: "",
+  });
+  const [cookies, setCookie, removeCookie] = useCookies(["userToken", "userName"]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [fullName, setFullName] = useState("");
 
   const tongSoLuong = giohang.reduce((tong, sanPham) => tong + sanPham.soLuong, 0);
 
   useEffect(() => {
-    // fetchCurrentDiaChi();
-    // fetchTencuahang();
     fetchMenuData();
     layThongTinWebsiteHoatDong();
-  }, []);
+    kiemTraTrangThaiDangNhap();
+  }, [cookies.userToken]);
 
   const layThongTinWebsiteHoatDong = async () => {
     try {
@@ -35,15 +41,13 @@ const HeaderUsers = ({ tieudeSanPham }) => {
           email: response.data.data[0].email,
           diachi: response.data.data[0].diachi,
           sdt: response.data.data[0].sdt,
-          favicon: `${baseURL}${response.data.data[0].favicon}?v=${Date.now()}`, // Nối baseURL và thêm query string để tránh cache
+          favicon: `${baseURL}${response.data.data[0].favicon}?v=${Date.now()}`,
         });
-      
       } else {
         toast.info("Không có website đang hoạt động", {
           position: "top-right",
           autoClose: 3000,
         });
-        console.log("Không có website đang hoạt động");
       }
     } catch (err) {
       console.error("Lỗi khi gọi API thông tin website:", err);
@@ -52,41 +56,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
         autoClose: 3000,
       });
     }
-  }; 
-
-  // const fetchCurrentDiaChi = async () => {
-  //   try {
-  //     const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/DiaChiChiTiet/getDiaChiHien`);
-  //     if (response.data) {
-  //       setDiachichitiet({
-  //         diachi: response.data.diachi,
-  //         email: response.data.email,
-  //       });
-  //     } else {
-  //       console.log('Không có địa chỉ đang sử dụng');
-  //     }
-  //   } catch (err) {
-  //     console.error('Lỗi khi lấy thông tin địa chỉ:', err);
-  //   }
-  // };
-
-  // const fetchTencuahang = async () => {
-  //   try {
-  //     const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Tencuahang/getHien`);
-  //     if (response.data && response.data.name) {
-  //       setTencuahang(response.data.name);
-  //     } else {
-  //       console.log("Không có tên cửa hàng");
-  //       setTencuahang("Tên cửa hàng mặc định");
-  //     }
-  //   } catch (err) {
-  //     console.error('Lỗi khi lấy tên cửa hàng:', err);
-  //     toast.error("Lỗi khi lấy tên cửa hàng", {
-  //       position: 'top-right',
-  //       autoClose: 3000
-  //     });
-  //   }
-  // };
+  };
 
   const fetchMenuData = async () => {
     try {
@@ -97,18 +67,56 @@ const HeaderUsers = ({ tieudeSanPham }) => {
         console.log("Không có dữ liệu menu");
       }
     } catch (err) {
-      console.error('Lỗi khi lấy menu:', err);
+      console.error("Lỗi khi lấy menu:", err);
       toast.error("Lỗi khi lấy menu", {
-        position: 'top-right',
-        autoClose: 3000
+        position: "top-right",
+        autoClose: 3000,
       });
     }
   };
-  // Xác định tiêu đề và favicon
+
+  const kiemTraTrangThaiDangNhap = () => {
+    const token = cookies.userToken;
+
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        const currentTime = Math.floor(Date.now() / 1000); // Thời gian hiện tại tính bằng giây
+        if (decodedToken.exp > currentTime) {
+          setFullName(decodedToken.FullName || "User");
+          setIsLoggedIn(true);
+        } else {
+          // Token hết hạn
+          removeCookie("userToken", { path: "/" });
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error("Lỗi giải mã token:", error);
+        removeCookie("userToken", { path: "/" });
+        setIsLoggedIn(false);
+      }
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  const handleLogout = () => {
+    removeCookie("userToken", { path: "/" });
+    removeCookie("loginTime", { path: "/" });
+    removeCookie("isUserLoggedIn", { path: "/" });
+  
+    toast.success("Đăng xuất thành công!", {
+      position: "top-right",
+      autoClose: 3000,
+    });
+    setIsLoggedIn(false);
+  };
+
   const isDetailPage = vitriRoute.pathname.includes("/sanpham/");
   const pageTitle = isDetailPage && tieudeSanPham
     ? `${tieudeSanPham} - ${thongTinWebsite.tieu_de || "Tên website mặc định"}`
     : thongTinWebsite.tieu_de || "Tên website mặc định";
+
   return (
     <>
       <HelmetProvider>
@@ -183,6 +191,27 @@ const HeaderUsers = ({ tieudeSanPham }) => {
                   )}
                 </Link>
               </div>
+              {isLoggedIn ? (
+                <div className="d-flex m-3 me-0">
+                  <span className="me-3">Xin chào, {fullName}</span>
+                  <button className="btn btn-outline-danger me-2" onClick={handleLogout}>
+                    Đăng xuất
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="d-flex m-3 me-0">
+                    <Link to="/register" className="btn btn-primary">
+                      Đăng ký
+                    </Link>
+                  </div>
+                  <div className="d-flex m-3 me-0">
+                    <Link to="/loginuser" className="btn btn-outline-primary me-2">
+                      Đăng nhập
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </nav>
         </div>
@@ -192,11 +221,11 @@ const HeaderUsers = ({ tieudeSanPham }) => {
         smooth
         className="scroll-to-top"
         component={
-          <i className="bi bi-arrow-up-circle-fill text-primary" style={{ fontSize: '3rem' }}></i>
+          <i className="bi bi-arrow-up-circle-fill text-primary" style={{ fontSize: "3rem" }}></i>
         }
       />
     </>
   );
-}; 
+};
 
 export default HeaderUsers;

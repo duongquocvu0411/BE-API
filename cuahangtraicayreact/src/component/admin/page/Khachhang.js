@@ -245,101 +245,7 @@ const Khachhangs = () => {
     return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công' ||  hoadon.status === "cancel" || hoadon.status === "returned");
   };
 
-  // const layTrangThaiDonHang = (hoaDons) => {
-  //   if (!hoaDons || hoaDons.length === 0) {
-  //     return {
-  //       text: 'Chưa có đơn hàng',
-  //       bgColor: 'badge bg-light text-muted border',
-  //       textColor: ''
-  //     };
-  //   }
-  //   const hoadonChoThanhToan = hoaDons.find(h => h.status === 'Đã Thanh toán');
-  //   if (hoadonChoThanhToan) {
-  //     return {
-  //       text: 'Đã Thanh toán',
-  //       bgColor: 'badge bg-info text-dark border border-info',
-  //     };
-  //   }
-  //   // Trạng thái "Đang giao"
-  //   const hoadonDangGiao = hoaDons.find(h => h.status === 'Đang giao');
-  //   if (hoadonDangGiao) {
-  //     return {
-  //       text: 'Đang giao',
-  //       bgColor: 'badge bg-warning text-dark border border-warning',
-  //       textColor: ''
-  //     };
-  //   }
 
-  //   // Trạng thái "Đã giao thành công"
-  //   const hoadonGiaoThanhCong = hoaDons.find(h => h.status === 'Đã giao thành công');
-  //   if (hoadonGiaoThanhCong) {
-  //     return {
-  //       text: 'Thành công',
-  //       bgColor: 'badge bg-success text-white border border-success shadow',
-  //       textColor: ''
-  //     };
-  //   }
-  //   // Trạng thái "Hủy đơn"
-  //   const hoadonHuy = hoaDons.find(h => h.status === 'Hủy đơn');
-  //   if (hoadonHuy) {
-  //     return {
-  //       text: 'Hủy đơn',
-  //       bgColor: 'badge bg-danger text-white border border-danger shadow',
-  //       textColor: ''
-  //     };
-  //   }
-  //   const hoadonchoxulyhuydon = hoaDons.find(h => h.status === 'Chờ xử lý hủy đơn');
-  //   if (hoadonchoxulyhuydon) {
-  //     return {
-  //       text: 'Chờ xử lý hủy đơn',
-  //       bgColor: 'badge bg-warning text-dark border border-warning',
-  //     };
-  //   }
-  //   // Trạng thái "Giao không thành công"
-  //   const hoadonKhongGiaoThanhCong = hoaDons.find(h => h.status === 'Giao không thành công');
-  //   if (hoadonKhongGiaoThanhCong) {
-  //     return {
-  //       text: 'Không thành công',
-  //       bgColor: 'badge bg-dark text-light border border-secondary',
-  //       textColor: ''
-  //     };
-  //   }
-
-  //   // Trạng thái "Chờ xử lý" (bổ sung logic kiểm tra)
-  //   const hoadonChoXuLy = hoaDons.find(h => h.status === 'Chờ xử lý');
-  //   if (hoadonChoXuLy) {
-  //     return {
-  //       text: 'Chờ xử lý',
-  //       bgColor: 'badge bg-primary text-white border border-primary shadow',
-  //       textColor: ''
-  //     };
-  //   }
-  //   const hoadonChothanhtoan = hoaDons.find(h => h.status === 'Chờ thanh toán');
-  //   if (hoadonChothanhtoan) {
-  //     return {
-  //       text: 'Chờ thanh toán',
-  //       bgColor: 'badge bg-warning text-dark border border-warning shadow-lg', // Màu vàng nổi bật
-  //       textColor: ''
-  //     };
-  //   }
-
-  //   const hoadonThanhtoanthatbai = hoaDons.find(h => h.status === 'Thanh toán thất bại');
-  //   if (hoadonThanhtoanthatbai) {
-  //     return {
-  //       text: 'Thanh toán thất bại',
-  //       bgColor: 'badge bg-danger text-dark border border-warning shadow-lg', // Màu vàng nổi bật
-  //       textColor: ''
-  //     };
-  //   }
-
-
-  //   // Mặc định nếu không có trạng thái phù hợp
-  //   return {
-  //     text: 'Chưa có đơn hàng',
-  //     bgColor: 'badge bg-light text-muted border',
-  //     textColor: ''
-  //   };
-  // };
 
   const layTrangThaiDonHang = (hoaDons) => {
     if (!hoaDons || hoaDons.length === 0) {
@@ -441,7 +347,10 @@ const Khachhangs = () => {
   const handleLenDonHang = async (idKhachHang) => {
     const token = cookies.adminToken; // Lấy token từ cookie
     // const idShop = "195758"; // Giá trị idShop mặc định
-
+    
+    // Giải mã token để lấy thông tin `updatedBy`
+    const decodedToken = JSON.parse(atob(token.split(".")[1]));
+    const updatedBy = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || "Unknown";
     try {
       // Gửi yêu cầu POST tới API lên đơn hàng
       const response = await axios.post(
@@ -474,7 +383,7 @@ const Khachhangs = () => {
               ...khachHang,
               hoaDons: khachHang.hoaDons.map((hoaDon) =>
                 hoaDon.ghn === "Chưa lên đơn"
-                  ? { ...hoaDon, ghn: "Đã lên đơn", ghn_order_id: ghnOrderId }
+                  ? { ...hoaDon, ghn: "Đã lên đơn", ghn_order_id: ghnOrderId, updatedBy }
                   : hoaDon
               ),
             };
@@ -491,7 +400,7 @@ const Khachhangs = () => {
               ...khachHang,
               hoaDons: khachHang.hoaDons.map((hoaDon) =>
                 hoaDon.ghn === "Chưa lên đơn"
-                  ? { ...hoaDon, ghn: "Đã lên đơn", ghn_order_id: ghnOrderId }
+                  ? { ...hoaDon, ghn: "Đã lên đơn", ghn_order_id: ghnOrderId, updatedBy }
                   : hoaDon
               ),
             };
@@ -637,6 +546,7 @@ const Khachhangs = () => {
                       <thead className="table-dark">
                         <tr>
                           <th scope="col">STT</th>
+                          <th scope='col'>UserId </th>
                           <th scope="col">Ngày tạo</th>
                           <th scope="col">Họ Tên</th>
                           <th scope="col">Email</th>
@@ -653,7 +563,7 @@ const Khachhangs = () => {
                       <tbody>
                         {danhSachKhachHang.length === 0 ? (
                           <tr>
-                            <td colSpan="12" className="text-center">Hiện tại chưa có khách hàng</td>
+                            <td colSpan="13" className="text-center">Hiện tại chưa có khách hàng</td>
                           </tr>
                         ) : cacPhanTuHienTai.length > 0 ? (
                           cacPhanTuHienTai.map((item, index) => {
@@ -661,6 +571,7 @@ const Khachhangs = () => {
                             return (
                               <tr key={item.id}>
                                 <td>{chiSoPhanTuDau + index + 1}</td>
+                                <td>{item.userNameLogin}</td>
                                 <td>{item.created_at ? new Date(item.created_at).toLocaleDateString("vi-VN") : 'Không có thông tin'}</td>
                                 <td>{item.ho} {item.ten}</td>
                                 <td>{item.emailDiaChi}</td>

@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\loginjtw\\authenticatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\loginjtw\\authenticatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "HoaDonController.cs",
               "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
               "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
-              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs*",
-              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs*",
-              "ViewState": "AgIAACsDAAAAAAAAAAAgwDoDAABqAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
+              "ViewState": "AgIAAEIBAAAAAAAAAAAkwDQAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-22T05:54:15.55Z",
+              "WhenOpened": "2025-01-22T11:10:06.467Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "KhachHangController.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
+              "ViewState": "AgIAAAYBAAAAAAAAAAAgwNcAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-22T11:02:47.307Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthenticateController.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\LoginJTW\\AuthenticateController.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\LoginJTW\\AuthenticateController.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\LoginJTW\\AuthenticateController.cs*",
+              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\LoginJTW\\AuthenticateController.cs*",
+              "ViewState": "AgIAAI0AAAAAAAAAAAAgwLYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-22T11:02:22.257Z",
               "EditorCaption": ""
             }
           ]

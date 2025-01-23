@@ -33,6 +33,9 @@ import PaymentResult from "./component/users/PaymentResult ";
 import PaymentInfo from "./component/users/page/PaymentInfo";
 import ThanhToanThanhCong from "./component/users/ThanhToanThanhCong";
 import Account from "./component/admin/page/Account";
+import LoginUser from "./component/users/page/LognUser";
+import Dangky from "./component/users/page/Dangky";
+import QuanlyUser from "./component/admin/page/QuanlyUser";
 
 // import MenuFooter from "./component/admin/page/MenuFooter";
 
@@ -178,6 +181,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
+             <Route
+              path="/admin/quanlyuser"
+              element={
+                <ProtectedRoute>
+                  <QuanlyUser />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/admin/Tenwebsiters"
               element={
@@ -203,6 +214,8 @@ function App() {
             <Route path="*" element={<Trangloi />} />
             <Route path="/payment-result" element={<PaymentResult />} />
             <Route path="/payment-info" element={<PaymentInfo  />} />
+            <Route path="/loginuser" element={<LoginUser />} />
+            <Route path="/register" element={<Dangky />} />
           </Routes>
         </Router>
       </CartProvider>
