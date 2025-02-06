@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import Footer from "../Footer";
 import HeaderAdmin from "../HeaderAdmin";
 import SiderbarAdmin from "../SidebarAdmin";
-import { Button, Spinner } from "react-bootstrap";
+import { Button, Spinner, Modal } from "react-bootstrap"; // Import Modal từ react-bootstrap
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { useCookies } from "react-cookie";
-import { FaLock, FaUnlock, FaInfoCircle } from "react-icons/fa";
+import { FaLock, FaUnlock, FaInfoCircle, FaTrash } from "react-icons/fa"; // Thêm FaTrash
 import ModalUserChitiet from "../modla/ModalUserChitiet";
-
 
 const QuanlyUser = () => {
   const [userList, setUserList] = useState([]);
@@ -21,6 +20,10 @@ const QuanlyUser = () => {
   const [userOrders, setUserOrders] = useState(null);
   const usersPerPage = 4;
   const [cookies] = useCookies(["adminToken"]);
+
+  // Thêm state cho modal xác nhận xóa
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [userToDeleteId, setUserToDeleteId] = useState(null);
 
   // Fetch user data
   useEffect(() => {
@@ -119,6 +122,42 @@ const QuanlyUser = () => {
     setUserOrders(null);
     setSelectedUser(null);
   };
+
+  // Bắt đầu chức năng xóa tài khoản
+  const handleDeleteConfirmation = (userId) => {
+    setUserToDeleteId(userId);
+    setShowDeleteConfirmation(true);
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirmation(false);
+    setUserToDeleteId(null);
+  };
+
+  const handleDeleteAccount = async () => {
+    setShowDeleteConfirmation(false);
+    setLoading(true);
+    const token = cookies.adminToken;
+    try {
+      await axios.delete(
+        `${process.env.REACT_APP_BASEURL}/api/Authenticate/delete-employee-User/${userToDeleteId}`, // Sửa URL
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success("Tài khoản đã được xóa thành công!");
+      fetchUsers();
+    } catch (error) {
+      console.error("Lỗi khi xóa tài khoản:", error);
+      toast.error("Không thể xóa tài khoản, vui lòng thử lại!");
+    } finally {
+      setLoading(false);
+      setUserToDeleteId(null);
+    }
+  };
+  // Kết thúc chức năng xóa tài khoản
 
   // Search users
   const filteredUsers = userList.filter(
@@ -229,6 +268,14 @@ const QuanlyUser = () => {
                                 <FaUnlock /> Mở khóa
                               </Button>
                             )}
+                            <Button  // Nút xóa
+                              variant="danger"
+                              size="sm"
+                              className="ms-2"
+                              onClick={() => handleDeleteConfirmation(user.id)}
+                            >
+                              <FaTrash /> Xóa
+                            </Button>
                           </td>
                         </tr>
                       ))}
@@ -247,6 +294,31 @@ const QuanlyUser = () => {
         handleClose={handleCloseModal}
         userOrders={userOrders}
       />
+
+     {/* Modal xác nhận xóa */}
+ <Modal
+  show={showDeleteConfirmation}
+  onHide={handleCancelDelete}
+  centered
+  size="md"
+  aria-labelledby="delete-confirmation-modal-title" // Thêm aria-labelledby
+ >
+  <Modal.Header closeButton className="bg-danger text-white border-0"> {/* Header màu đỏ đậm */}
+  <Modal.Title id="delete-confirmation-modal-title" className="fw-bold">Xác nhận xóa</Modal.Title>
+  </Modal.Header>
+  <Modal.Body className="py-3 text-center"> {/* Padding dọc lớn hơn */}
+  <p className="mb-0 fs-5">Bạn có chắc chắn muốn xóa tài khoản này?</p> {/* Font size lớn hơn */}
+  <p className="text-muted small">Hành động này không thể hoàn tác.</p> {/* Text nhỏ hơn và màu nhạt */}
+  </Modal.Body>
+  <Modal.Footer className="justify-content-center bg-light border-top-0"> {/* Footer màu sáng */}
+  <Button variant="secondary" onClick={handleCancelDelete} className="me-2 px-3"> {/* Nút Hủy */}
+  Hủy
+  </Button>
+  <Button variant="danger" onClick={handleDeleteAccount} className="px-3"> {/* Nút Xóa */}
+  Xóa
+  </Button>
+  </Modal.Footer>
+ </Modal>
 
       <ToastContainer />
     </div>

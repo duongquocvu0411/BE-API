@@ -10,13 +10,13 @@ const SiderbarAdmin = () => {
 
   //giải mã token để lấy role
   let role = [];
-  if(cookies.adminToken){
-    try{
+  if (cookies.adminToken) {
+    try {
       const giaimatoken = jwtDecode(cookies.adminToken);
       role = giaimatoken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
     }
-    catch(error){
-      console.log("có lỗi khi giải mã token:",error);
+    catch (error) {
+      console.log("có lỗi khi giải mã token:", error);
     }
   }
 
@@ -45,59 +45,59 @@ const SiderbarAdmin = () => {
             <span>Dashboard</span>
           </Link>
         </li>
-      {!isNhanvien && (
-  
-        <li className="nav-item">
-          <a
-            className="nav-link collapsed"
-            href="#"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseStoreManagement"
-            aria-expanded="false"
-            aria-controls="collapseStoreManagement"
-          >
-            <i className="fas fa-store"></i> {/* Icon cửa hàng */}
-            <span>Quản lý cửa hàng</span>
-          </a>
-          <div id="collapseStoreManagement" className="collapse" data-bs-parent="#sidebar">
-            <div className="bg-white py-2 collapse-inner rounded">
-              <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Tenwebsiters' ? 'active' : ''}`} to="/admin/Tenwebsiters">
-                <i className="fas fa-desktop"></i> {/* Icon website */}
-                Tên Website
-              </Link>
-              <Link className={`collapse-item ${vitriRoute.pathname === '/admin/menu' ? 'active' : ''}`} to="/admin/menu">
-                <i className="fas fa-list"></i> {/* Icon menu */}
-                Menu điều hướng
-              </Link>
-              {/* <Link className={`collapse-item ${vitriRoute.pathname === '/admin/tencuahang' ? 'active' : ''}`} to="/admin/tencuahang">
+        {!isNhanvien && (
+
+          <li className="nav-item">
+            <a
+              className="nav-link collapsed"
+              href="#"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseStoreManagement"
+              aria-expanded="false"
+              aria-controls="collapseStoreManagement"
+            >
+              <i className="fas fa-store"></i> {/* Icon cửa hàng */}
+              <span>Quản lý cửa hàng</span>
+            </a>
+            <div id="collapseStoreManagement" className="collapse" data-bs-parent="#sidebar">
+              <div className="bg-white py-2 collapse-inner rounded">
+                <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Tenwebsiters' ? 'active' : ''}`} to="/admin/Tenwebsiters">
+                  <i className="fas fa-desktop"></i> {/* Icon website */}
+                  Tên Website
+                </Link>
+                <Link className={`collapse-item ${vitriRoute.pathname === '/admin/menu' ? 'active' : ''}`} to="/admin/menu">
+                  <i className="fas fa-list"></i> {/* Icon menu */}
+                  Menu điều hướng
+                </Link>
+                {/* <Link className={`collapse-item ${vitriRoute.pathname === '/admin/tencuahang' ? 'active' : ''}`} to="/admin/tencuahang">
                 <i className="fas fa-sign"></i> 
                 Tên cửa hàng
               </Link> */}
 
-              <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Banners' ? 'active' : ''}`} to="/admin/Banners">
-                <i className="fas fa-images"></i> {/* Icon banners */}
-                Banners
-              </Link>
-              <Link className={`collapse-item ${vitriRoute.pathname === '/admin/dactrung' ? 'active' : ''}`} to="/admin/dactrung">
-                <i className="fas fa-cogs"></i> {/* Icon đặc trưng */}
-                Đặc trưng
-              </Link>
+                <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Banners' ? 'active' : ''}`} to="/admin/Banners">
+                  <i className="fas fa-images"></i> {/* Icon banners */}
+                  Banners
+                </Link>
+                <Link className={`collapse-item ${vitriRoute.pathname === '/admin/dactrung' ? 'active' : ''}`} to="/admin/dactrung">
+                  <i className="fas fa-cogs"></i> {/* Icon đặc trưng */}
+                  Đặc trưng
+                </Link>
 
-              <Link className={`collapse-item ${vitriRoute.pathname === '/admin/tenfooter' ? 'active' : ''}`} to="/admin/tenfooter">
-                <i className="fas fa-columns"></i> {/* Icon footer */}
-                Tên Footer
-              </Link>
-              <Link className={`collapse-item ${vitriRoute.pathname === '/admin/menuFooter' ? 'active' : ''}`} to="/admin/menuFooter">
-                <i className="fas fa-list-alt"></i> {/* Icon menu footer */}
-                Menu Footer
-              </Link>
-              <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Footer' ? 'active' : ''}`} to="/admin/Footer">
-                <i className="fas fa-border-all"></i> 
-                Footer
-              </Link>
+                <Link className={`collapse-item ${vitriRoute.pathname === '/admin/tenfooter' ? 'active' : ''}`} to="/admin/tenfooter">
+                  <i className="fas fa-columns"></i> {/* Icon footer */}
+                  Tên Footer
+                </Link>
+                <Link className={`collapse-item ${vitriRoute.pathname === '/admin/menuFooter' ? 'active' : ''}`} to="/admin/menuFooter">
+                  <i className="fas fa-list-alt"></i> {/* Icon menu footer */}
+                  Menu Footer
+                </Link>
+                <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Footer' ? 'active' : ''}`} to="/admin/Footer">
+                  <i className="fas fa-border-all"></i>
+                  Footer
+                </Link>
+              </div>
             </div>
-          </div>
-        </li>
+          </li>
         )}
 
         {/* Divider */}
@@ -126,24 +126,42 @@ const SiderbarAdmin = () => {
             <span>Quản lý Giới thiệu</span>
           </Link>
         </li>
+
+        <li className={`nav-item ${vitriRoute.pathname === '/admin/voucher' ? 'active' : ''}`}>
+          <Link className="nav-link" to="/admin/voucher">
+            <i className="fas fa-info-circle"></i> {/* Icon giới thiệu */}
+            <span>Quản lý Voucher</span>
+          </Link>
+        </li>
         {!isNhanvien && (
-        <li className={`nav-item ${vitriRoute.pathname === '/admin/accounts' ? 'active' : ''}`}>
-          <Link className="nav-link" to="/admin/accounts">
-            <i className="fas fa-boxes"></i> {/* Icon sản phẩm */}
-            <span>Quản lý Acoounts</span>
-          </Link>
-        </li>
-        
+
+          <li className="nav-item">
+            <a
+              className="nav-link collapsed"
+              href="#"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseS"
+              aria-expanded="false"
+              aria-controls="collapseS"
+            >
+              <i className="fas fa-store"></i> {/* Icon cửa hàng */}
+              <span>Quản lý Account</span>
+            </a>
+            <div id="collapseS" className="collapse" data-bs-parent="#sidebar">
+              <div className="bg-white py-2 collapse-inner rounded">
+                <Link className={`collapse-item ${vitriRoute.pathname === '/admin/accounts' ? 'active' : ''}`} to="/admin/accounts">
+                  <i className="fas fa-boxes"></i>
+                  Quản lý  nhân viên
+                </Link>
+                <Link className={`collapse-item ${vitriRoute.pathname === '/admin/quanlyuser' ? 'active' : ''}`} to="/admin/quanlyuser">
+                  <i className="fas fa-boxes"></i>
+                  Quản lý  users
+                </Link>
+              </div>
+            </div>
+          </li>
         )}
-          {!isNhanvien && (
-        <li className={`nav-item ${vitriRoute.pathname === '/admin/quanlyuser' ? 'active' : ''}`}>
-          <Link className="nav-link" to="/admin/quanlyuser">
-            <i className="fas fa-boxes"></i> {/* Icon sản phẩm */}
-            <span>Quản lý Users</span>
-          </Link>
-        </li>
-        
-        )}
+
         {/* Quản lý Địa chỉ 
         <li className={`nav-item ${vitriRoute.pathname === '/admin/diachichitiet' ? 'active' : ''}`}>
           <Link className="nav-link" to="/admin/diachichitiet">

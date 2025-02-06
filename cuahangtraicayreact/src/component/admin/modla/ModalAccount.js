@@ -3,25 +3,27 @@ import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 import { FaUser, FaEnvelope, FaLock, FaCheckCircle, FaPhone } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useCookies } from "react-cookie";
 
 const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
   const [formData, setFormData] = useState({
     username: account?.username || "",
     email: account?.email || "",
     password: "",
-
     sodienthoai: "",
     confirmPassword: "",
     fullName: account?.fullName || "",
     otp: "",
   });
 
+  const [cookies] = useCookies(['adminToken', 'loginhoten']);  // Sử dụng hook useCookies
+
   const [errors, setErrors] = useState({
     passwordError: "",
     confirmPasswordError: "",
   });
 
-  const [isOtpSent, setIsOtpSent] = useState(false); // Kiểm soát giao diện gửi OTP
+  const [isOtpSent, setIsOtpSent] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +36,6 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
     }
   };
 
-  // Kiểm tra mật khẩu
   const validatePassword = (password) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (!regex.test(password)) {
@@ -47,7 +48,6 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
     }
   };
 
-  // Kiểm tra nhập lại mật khẩu
   const validateConfirmPassword = (confirmPassword, password) => {
     if (confirmPassword !== password) {
       setErrors((prev) => ({
@@ -60,30 +60,30 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
   };
 
   const handleSendOtp = async () => {
-    // Nếu có lỗi trong nhập liệu, không cho gửi OTP
     if (errors.passwordError || errors.confirmPasswordError) {
       toast.error("Vui lòng kiểm tra các lỗi nhập liệu trước khi tiếp tục.");
       return;
     }
 
     try {
+      const token = cookies.adminToken; // Lấy token từ cookie
+      console.log("Sending OTP with token:", token); // Log token để kiểm tra
+
       await axios.post(`${process.env.REACT_APP_BASEURL}/api/Authenticate/register-employee`, {
         username: formData.username,
         email: formData.email,
         password: formData.password,
         hoten: formData.fullName,
-        sodienthoai:formData.sodienthoai
-      });
-      toast.success("OTP đã được gửi tới email!");
-      setIsOtpSent(true); // Đặt trạng thái OTP đã gửi
-    } catch (error) {
-      console.log("Dữ liệu gửi lên server:", {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        hoten: formData.fullName,
+        sodienthoai: formData.sodienthoai
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}` // Thêm header Authorization
+        }
       });
 
+      toast.success("OTP đã được gửi tới email!");
+      setIsOtpSent(true);
+    } catch (error) {
       console.error("Lỗi khi gửi OTP:", error);
       toast.error("Không thể gửi OTP, vui lòng thử lại.");
     }
@@ -91,16 +91,20 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
 
   const handleVerifyOtp = async () => {
     try {
-      // Gửi OTP dưới dạng chuỗi đơn giản (không phải đối tượng JSON)
+      const token = cookies.adminToken; // Lấy token từ cookie
+       console.log("Verifying OTP with token:", token); // Log token để kiểm tra
+
       await axios.post(
         `${process.env.REACT_APP_BASEURL}/api/Authenticate/verify-register-employee-otp`,
-        JSON.stringify(formData.otp), // Chuyển OTP thành chuỗi JSON
+        JSON.stringify(formData.otp),
         {
           headers: {
+            Authorization: `Bearer ${token}`, // Thêm header Authorization
             "Content-Type": "application/json",
           },
         }
       );
+
       toast.success("Tài khoản đã được tạo thành công!");
       fetchAccounts();
       onHide();
@@ -118,7 +122,6 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
       backdrop="static"
       className="rounded-4 shadow-lg"
     >
-      {/* Header */}
       <Modal.Header
         closeButton
         className="bg-success text-white border-bottom-0 rounded-top-4"
@@ -266,11 +269,11 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
                     name="sodienthoai"
                     value={formData.sodienthoai}
                     onChange={(e) => {
-                      let value = e.target.value.replace(/[^0-9]/g, ""); // Chỉ cho phép nhập số
+                      let value = e.target.value.replace(/[^0-9]/g, "");
                       if (value.length > 11) {
-                        value = value.slice(0, 11); // Giới hạn tối đa 11 ký tự
+                        value = value.slice(0, 11);
                       }
-                      handleChange({ target: { name: "sodienthoai", value } }); // Gọi hàm handleChange với giá trị đã xử lý
+                      handleChange({ target: { name: "sodienthoai", value } });
                     }}
                     className="rounded-3"
                   />
@@ -300,7 +303,6 @@ const ModalAccount = ({ show, onHide, editMode, account, fetchAccounts }) => {
           )}
         </Form>
       </Modal.Body>
-      {/* Footer */}
       <Modal.Footer className="border-top-0">
         <Button
           variant="outline-secondary"

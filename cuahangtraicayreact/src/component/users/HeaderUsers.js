@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { CartContext } from "./page/CartContext";
 import axios from "axios";
@@ -6,7 +6,9 @@ import ScrollToTop from "react-scroll-to-top";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import { HelmetProvider, Helmet } from "react-helmet-async";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+import { Modal, Button } from "react-bootstrap"; // Import Modal và Button
+import './HeaderUsers.css';  // Import file CSS
 
 const HeaderUsers = ({ tieudeSanPham }) => {
   const vitriRoute = useLocation();
@@ -22,6 +24,12 @@ const HeaderUsers = ({ tieudeSanPham }) => {
   const [cookies, setCookie, removeCookie] = useCookies(["userToken", "userName"]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [fullName, setFullName] = useState("");
+  const [anhDaiDien, setAnhDaiDien] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Thêm state cho modal xác nhận đăng xuất
+  const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
   const tongSoLuong = giohang.reduce((tong, sanPham) => tong + sanPham.soLuong, 0);
 
@@ -29,6 +37,17 @@ const HeaderUsers = ({ tieudeSanPham }) => {
     fetchMenuData();
     layThongTinWebsiteHoatDong();
     kiemTraTrangThaiDangNhap();
+
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [cookies.userToken]);
 
   const layThongTinWebsiteHoatDong = async () => {
@@ -81,12 +100,14 @@ const HeaderUsers = ({ tieudeSanPham }) => {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        const currentTime = Math.floor(Date.now() / 1000); // Thời gian hiện tại tính bằng giây
+        const currentTime = Math.floor(Date.now() / 1000);
         if (decodedToken.exp > currentTime) {
-          setFullName(decodedToken.FullName || "User");
+          const fullNameFromToken = decodedToken.FullName || "User";
+          setFullName(fullNameFromToken);
           setIsLoggedIn(true);
+          const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullNameFromToken)}&background=random&size=40&bold=true&rounded=true`;
+          setAnhDaiDien(avatarUrl);
         } else {
-          // Token hết hạn
           removeCookie("userToken", { path: "/" });
           setIsLoggedIn(false);
         }
@@ -100,11 +121,22 @@ const HeaderUsers = ({ tieudeSanPham }) => {
     }
   };
 
+  const handleShowLogoutConfirmation = () => {
+    setShowLogoutConfirmation(true);
+  };
+
+  const handleCancelLogout = () => {
+    setShowLogoutConfirmation(false);
+  };
+
+
   const handleLogout = () => {
+    setShowLogoutConfirmation(false); // Ẩn modal
+
     removeCookie("userToken", { path: "/" });
     removeCookie("loginTime", { path: "/" });
     removeCookie("isUserLoggedIn", { path: "/" });
-  
+
     toast.success("Đăng xuất thành công!", {
       position: "top-right",
       autoClose: 3000,
@@ -192,12 +224,40 @@ const HeaderUsers = ({ tieudeSanPham }) => {
                 </Link>
               </div>
               {isLoggedIn ? (
-                <div className="d-flex m-3 me-0">
-                  <span className="me-3">Xin chào, {fullName}</span>
-                  <button className="btn btn-outline-danger me-2" onClick={handleLogout}>
-                    Đăng xuất
-                  </button>
-                </div>
+                <li className={`nav-item dropdown no-arrow ${showDropdown ? 'show' : ''}`}
+                  ref={dropdownRef}
+                  onMouseEnter={() => setShowDropdown(true)}
+                  onMouseLeave={() => setShowDropdown(false)}
+                  style={{ listStyleType: 'none' }}>
+                  <a className="nav-link"
+                    href="#"
+                    id="userDropdown"
+                    role="button"
+                    aria-haspopup="true"
+                    aria-expanded={showDropdown}
+                    style={{ padding: "0px" }}>
+                    <img
+                      src={anhDaiDien}
+                      alt="Ảnh đại diện"
+                      className="rounded-circle me-2"
+                      style={{ width: "40px", height: "40px", objectFit: "cover", cursor: "pointer" }}
+                    />
+
+                  </a>
+                  {/* Dropdown - User Information */}
+                  <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                    <Link className="dropdown-item" to="/lichsugiaodich">
+                      <i className="fas fa-clipboard-list fa-sm fa-fw mr-2 text-gray-400" />
+                      Lịch sử giao dịch
+                    </Link>
+                    <div className="dropdown-divider" />
+                    <button className="dropdown-item" onClick={handleShowLogoutConfirmation}> {/* Hiển thị modal */}
+                      <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" />
+                      Đăng xuất
+                    </button>
+                  </div>
+                </li>
+
               ) : (
                 <>
                   <div className="d-flex m-3 me-0">
@@ -224,6 +284,23 @@ const HeaderUsers = ({ tieudeSanPham }) => {
           <i className="bi bi-arrow-up-circle-fill text-primary" style={{ fontSize: "3rem" }}></i>
         }
       />
+   {/* Modal xác nhận đăng xuất */}
+      <Modal show={showLogoutConfirmation} onHide={handleCancelLogout} centered>
+        <Modal.Header closeButton className="bg-light">
+          <Modal.Title className="text-warning fw-bold">Xác nhận đăng xuất</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          Bạn có chắc chắn muốn đăng xuất khỏi tài khoản này?
+        </Modal.Body>
+        <Modal.Footer className="justify-content-center bg-light border-top-0">
+          <Button variant="secondary" onClick={handleCancelLogout} className="me-2">
+            Hủy
+          </Button>
+          <Button variant="warning" onClick={handleLogout}>
+            Đăng xuất
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

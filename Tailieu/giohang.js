@@ -6,16 +6,15 @@ import { CartContext } from "./CartContext";
 import { toast, ToastContainer } from "react-toastify";
 import Aos from "aos";
 import { Modal, Button } from "react-bootstrap";
-
 const Giohang = () => {
   const { giohang, XoaGioHang, TangSoLuong, GiamSoLuong, CapnhatSoLuong, Xoatoanbogiohang } = useContext(CartContext);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const handleModalClose = () => setShowModal(false);
+  const handleModalClose = () => setShowModal(false); // Đóng modal
   const handleModalShow = () => {
     if (giohang.length === 0) {
       toast.warning("Giỏ hàng của bạn đang trống!", {
-        position: "top-right",
+        position: "top-right", 
         autoClose: 3000,
       });
     } else {
@@ -25,15 +24,15 @@ const Giohang = () => {
 
   // Tính tổng giá trị của giỏ hàng và định dạng theo kiểu tiền tệ Việt Nam
   const tongTienGioHang = giohang.reduce(
-    (tong, item) => tong + parseFloat(item.gia) * item.soLuong,
+    (tong, item) => tong + parseFloat(item.gia) * item.soLuong, // Sử dụng `gia` thay vì `giatien`
     0
   );
   useEffect(() => {
     // Khởi tạo AOS sau khi component được render
     Aos.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-
+      duration: 1000, // Thời gian hiệu ứng
+      easing: 'ease-in-out', // Hiệu ứng easing
+     
     });
   }, []);
 
@@ -57,17 +56,6 @@ const Giohang = () => {
     });
   };
 
-  const handleCapnhatSoLuong = (sanPhamId, newValue) => {
-    // Kiểm tra giá trị mới
-    let parsedValue = parseInt(newValue, 10);
-    if (isNaN(parsedValue) || parsedValue < 1) {
-      // Nếu giá trị không hợp lệ, đặt về 1
-      parsedValue = 1;
-    }
-
-    CapnhatSoLuong(sanPhamId, parsedValue); // Gọi hàm cập nhật với giá trị đã kiểm tra
-  };
-
   return (
     <>
       <div>
@@ -79,7 +67,7 @@ const Giohang = () => {
               <span className="animated-letter">G</span>
               <span className="animated-letter">i</span>
               <span className="animated-letter">ỏ</span>
-               
+              &nbsp;
               <span className="animated-letter">H</span>
               <span className="animated-letter">à</span>
               <span className="animated-letter">n</span>
@@ -118,8 +106,9 @@ const Giohang = () => {
                         </td>
                         <td>{sanPham.tieude}</td>
                         <td>
-                          {parseFloat(sanPham.gia).toLocaleString("vi-VN", { style: "decimal", minimumFractionDigits: 0 })}
-                          VNĐ
+                          {parseFloat(sanPham.gia).toLocaleString("vi-VN", { style:"decimal",minimumFractionDigits: 0})} 
+                         VNĐ
+
                           / {sanPham.don_vi_tinh}
                         </td>
                         <td>
@@ -135,7 +124,7 @@ const Giohang = () => {
                               className="form-control text-center"
                               value={sanPham.soLuong || 1}
                               min="1"
-                              onChange={(e) => handleCapnhatSoLuong(sanPham.id, e.target.value)} // Sử dụng handleCapnhatSoLuong
+                              onChange={(e) => CapnhatSoLuong(sanPham.id, e.target.value)}
                               style={{ maxWidth: "60px" }}
                             />
                             <button
@@ -147,7 +136,7 @@ const Giohang = () => {
                           </div>
                         </td>
                         <td>
-                          {(parseFloat(sanPham.gia) * (sanPham.soLuong > 0 ? sanPham.soLuong : 1)).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ {/* Hiển thị 1 nếu số lượng <= 0 */}
+                        {(parseFloat(sanPham.gia) * sanPham.soLuong).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
                         </td>
                         <td>
                           <button
@@ -180,7 +169,7 @@ const Giohang = () => {
                     <div className="d-flex justify-content-between border-bottom pb-2">
                       <span className="fw-bold">Tổng:</span>
                       <span>
-
+                     
                         {tongTienGioHang.toLocaleString("vi-VN", { minimumFractionDigits: 0 })} vnđ
                       </span>
                     </div>

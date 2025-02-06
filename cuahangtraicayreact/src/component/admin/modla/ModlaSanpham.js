@@ -10,7 +10,7 @@ import { jwtDecode } from "jwt-decode";
 const ModlaSanpham = ({
   show,
   handleClose,
-  isEdit,
+  isEdit, 
   product,
   fetchSanpham,
 }) => {

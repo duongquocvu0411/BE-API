@@ -68,8 +68,8 @@ const Thanhtoan = () => {
   };
   const fetchVouchers = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Voucher/Active`);
-      setVoucherList(response.data.data); // Lưu danh sách voucher vào state
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Voucher`);
+      setVoucherList(response.data); // Lưu danh sách voucher vào state
     } catch (error) {
       console.error("Không thể tải danh sách voucher!", error);
       toast.error("Không thể tải danh sách voucher!", { position: "top-right", autoClose: 5000 });
@@ -79,12 +79,6 @@ const Thanhtoan = () => {
   const handleSelectVoucher = (e) => {
     const selectedCode = e.target.value;
     setSelectedVoucher(selectedCode);
-
-    // Nếu không chọn voucher, sẽ set lại discountAmount về 0 và không áp dụng giảm giá.
-    if (!selectedCode) {
-      setDiscountAmount(0); // Hủy giảm giá khi không chọn voucher
-      return;
-    }
 
     // Tìm voucher trong danh sách
     const selectedVoucherObj = voucherList.find(v => v.code === selectedCode);
@@ -101,7 +95,6 @@ const Thanhtoan = () => {
       }
     }
   };
-
 
 
 
@@ -202,9 +195,6 @@ const Thanhtoan = () => {
     return tong + giaHienTai * item.soLuong;
   }, 0).toFixed(3); // Giữ 3 chữ số thập phân
 
-  // Sửa lại phần tính tổng khi có giảm giá
-  const tongTienThanhToan = (tongTienGioHang - discountAmount).toFixed(3);
-
 
   // hàm thanh toán
   const handlePlaceOrder = async (e) => {
@@ -246,29 +236,6 @@ const Thanhtoan = () => {
     if (!emailFromToken) {
       toast.error("Không thể xác định email từ token!", { position: "top-right", autoClose: 5000 });
       return;
-    }
-    // Kiểm tra tính hợp lệ của voucher
-    if (selectedVoucher) {
-      const selectedVoucherObj = voucherList.find(v => v.code === selectedVoucher);
-
-      if (!selectedVoucherObj) {
-        toast.error("Mã voucher không hợp lệ!", { position: "top-right", autoClose: 5000 });
-        return;
-      }
-
-      if (tongTienGioHang < selectedVoucherObj.giatridonhang) {
-        toast.error(`Voucher chỉ áp dụng cho đơn hàng từ ${selectedVoucherObj.giatridonhang.toLocaleString("vi-VN")} VND trở lên`, { position: "top-right", autoClose: 5000 });
-        setSelectedVoucher(""); // Hủy chọn voucher nếu không đủ điều kiện
-        setDiscountAmount(0);
-        return;
-      }
-
-      if (new Date() > new Date(selectedVoucherObj.ngayhethan)) {
-        toast.error("Voucher đã hết hạn!", { position: "top-right", autoClose: 5000 });
-        setSelectedVoucher(""); // Hủy chọn voucher nếu đã hết hạn
-        setDiscountAmount(0);
-        return;
-      }
     }
     const khachhangData = {
       ten: firstName,
@@ -368,18 +335,14 @@ const Thanhtoan = () => {
   };
 
   const ResetForm = () => {
+
     setFirstName("");
     setLastName("");
     setAddress("");
     setThanhpho("");
-    setTinhthanh("");
-    setXaphuong("");
     setSdt("");
     setEmail("");
     setGhichu("");
-    setSelectedVoucher("");
-    setDiscountAmount(0);
-    setPaymentMethod("cod"); // Reset về COD
   }
 
 
@@ -647,7 +610,7 @@ const Thanhtoan = () => {
                         <tr>
                           <td colSpan="4" className="text-end fw-bold">Tổng cộng:</td>
                           <td className="text-nowrap text-success fw-bold">
-                            {(tongTienGioHang - discountAmount).toLocaleString("vi-VN")} VND
+                          {(tongTienGioHang - discountAmount).toLocaleString("vi-VN")} VND
                           </td>
                         </tr>
                       </tbody>
@@ -659,12 +622,15 @@ const Thanhtoan = () => {
                         <h5 className="card-title fw-bold mb-4 text-success">
                           <i className="bi bi-tag-fill"></i> Mã giảm giá
                         </h5>
-                        <select className="form-select border-success" value={selectedVoucher} onChange={handleSelectVoucher}>
+                        <select
+                          className="form-select border-success"
+                          value={selectedVoucher}
+                          onChange={handleSelectVoucher}
+                        >
                           <option value="">Chọn mã giảm giá</option>
                           {voucherList.map((voucher) => (
                             <option key={voucher.id} value={voucher.code}>
-                              {voucher.code} - Giảm {voucher.sotiengiamgia.toLocaleString("vi-VN")} VND
-                              (Đơn tối thiểu {voucher.giatridonhang.toLocaleString("vi-VN")} VND)
+                              {voucher.code} - Giảm {voucher.sotiengiamgia.toLocaleString("vi-VN")} VND (Đơn tối thiểu {voucher.giatridonhang.toLocaleString("vi-VN")} VND)
                             </option>
                           ))}
                         </select>

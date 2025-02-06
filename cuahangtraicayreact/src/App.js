@@ -36,190 +36,216 @@ import Account from "./component/admin/page/Account";
 import LoginUser from "./component/users/page/LognUser";
 import Dangky from "./component/users/page/Dangky";
 import QuanlyUser from "./component/admin/page/QuanlyUser";
+import Voucher from "./component/admin/page/Voucher";
+import { useEffect, useState } from "react";
+import LoadingScreen from "./component/users/page/Loadingwebsite";
+import LichSuGiaoDich from "./component/users/page/Lichsugiaodich";
 
 // import MenuFooter from "./component/admin/page/MenuFooter";
 
 function App() {
+  const [loading,setLoading]= useState(true);
+
+  useEffect(() => {
+    const time = setTimeout(() =>{
+      setLoading(false);
+    },3000);
+  },[]);
   return ( 
 
-    <div >
-
+    < >
+    {loading ? (
+      <LoadingScreen/>
+    ) : (
       <CartProvider>
 
-        <Router>
-          <Routes>
+      <Router>
+        <Routes>
 
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<ProtectedRoute congkhai={true}><LoginAdmin /></ProtectedRoute>} />
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<ProtectedRoute congkhai={true}><LoginAdmin /></ProtectedRoute>} />
 
 
-            {/* <Route
-              path="/admin/diachichitiet"
-              element={
-                <ProtectedRoute>
-                  <DiaChiChiTiet />
-                </ProtectedRoute>
-              }
-            /> */}
-            <Route
-              path="/admin/tencuahang"
-              element={
-                <ProtectedRoute>
-                  <Tencuahang />
-                </ProtectedRoute>
-              }
-            />
-             <Route
-              path="/admin/accounts"
-              element={
-                <ProtectedRoute>
-                  <Account />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/tenfooter"
-              element={
-                <ProtectedRoute>
-                  <TenFooterAdmin />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/gioithieuAdmin"
-              element={
-                <ProtectedRoute>
-                  <GioithieuAdmin />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/sanpham"
-              element={
-                <ProtectedRoute>
-                  <Sanpham />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/ProfileAdmin"
-              element={
-                <ProtectedRoute>
-                  <ProfileAdmin />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/danhmucsanpham"
-              element={
-                <ProtectedRoute>
-                  <Danhmucsanpham />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/dactrung"
-              element={
-                <ProtectedRoute>
-                  <Dactrung />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/menuFooter"
-              element={
-                <ProtectedRoute>
-                  <MenuFooter />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/Banners"
-              element={
-                <ProtectedRoute>
-                  <Banners />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/lienhe"
-              element={
-                <ProtectedRoute>
-                  <LienHeAdmin />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/khachhang"
-              element={
-                <ProtectedRoute>
-                  <Khachhangs />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/menu"
-              element={
-                <ProtectedRoute>
-                  <Menu />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/Trangchu"
-              element={
-                <ProtectedRoute>
-                  <TrangChuAdmin />
-                </ProtectedRoute>
-              }
-            />
-                <Route
-              path="/admin/Footer"
-              element={
-                <ProtectedRoute>
-                  <QuanlyFooter />
-                </ProtectedRoute>
-              }
-            />
-             <Route
-              path="/admin/quanlyuser"
-              element={
-                <ProtectedRoute>
-                  <QuanlyUser />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/Tenwebsiters"
-              element={
-                <ProtectedRoute>
-                  <TenwebSitersAdmin />
-                </ProtectedRoute>
-              }
-            />
+          {/* <Route
+            path="/admin/diachichitiet"
+            element={
+              <ProtectedRoute>
+                <DiaChiChiTiet />
+              </ProtectedRoute>
+            }
+          /> */}
+          <Route
+            path="/admin/tencuahang"
+            element={
+              <ProtectedRoute>
+                <Tencuahang />
+              </ProtectedRoute>
+            }
+          />
+           <Route
+            path="/admin/accounts"
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/tenfooter"
+            element={
+              <ProtectedRoute>
+                <TenFooterAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/gioithieuAdmin"
+            element={
+              <ProtectedRoute>
+                <GioithieuAdmin />
+              </ProtectedRoute>
+            }
+          />
+           <Route
+            path="/admin/voucher"
+            element={
+              <ProtectedRoute>
+                <Voucher />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/sanpham"
+            element={
+              <ProtectedRoute>
+                <Sanpham />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/ProfileAdmin"
+            element={
+              <ProtectedRoute>
+                <ProfileAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/danhmucsanpham"
+            element={
+              <ProtectedRoute>
+                <Danhmucsanpham />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/dactrung"
+            element={
+              <ProtectedRoute>
+                <Dactrung />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/menuFooter"
+            element={
+              <ProtectedRoute>
+                <MenuFooter />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/Banners"
+            element={
+              <ProtectedRoute>
+                <Banners />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/lienhe"
+            element={
+              <ProtectedRoute>
+                <LienHeAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/khachhang"
+            element={
+              <ProtectedRoute>
+                <Khachhangs />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/menu"
+            element={
+              <ProtectedRoute>
+                <Menu />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/Trangchu"
+            element={
+              <ProtectedRoute>
+                <TrangChuAdmin />
+              </ProtectedRoute>
+            }
+          />
+              <Route
+            path="/admin/Footer"
+            element={
+              <ProtectedRoute>
+                <QuanlyFooter />
+              </ProtectedRoute>
+            }
+          />
+           <Route
+            path="/admin/quanlyuser"
+            element={
+              <ProtectedRoute>
+                <QuanlyUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/Tenwebsiters"
+            element={
+              <ProtectedRoute>
+                <TenwebSitersAdmin />
+              </ProtectedRoute>
+            }
+          />
 
-            {/* Router người dùng */}
-            <Route path="/" element={<TrangchuNguoidung />} />
-            <Route path="/cuahang" element={<Cuahang />} />
-            <Route path="/thanhtoan" element={<Thanhtoan />} />
-            <Route path="/sanpham/:name/:id" element={<CuahangChitiet />} />
-            <Route path="/giohang" element={<Giohang />} />
-            <Route path="/gioithieu" element={<Gioithieu />} />
-            <Route path="/thanhtoanthanhcong" element={<ThanhToanThanhCong />} />
+          {/* Router người dùng */}
+          <Route path="/" element={<TrangchuNguoidung />} />
+          <Route path="/cuahang" element={<Cuahang />} />
+          <Route path="/thanhtoan" element={<Thanhtoan />} />
+          <Route path="/sanpham/:name/:id" element={<CuahangChitiet />} />
+          <Route path="/giohang" element={<Giohang />} />
+          <Route path="/gioithieu" element={<Gioithieu />} />
+          <Route path="/thanhtoanthanhcong" element={<ThanhToanThanhCong />} />
 
-            <Route path="/lienhe" element={<LienHe />} />
-            <Route path="/tracuu" element={<Tracuu />} />
+          <Route path="/lienhe" element={<LienHe />} />
+          <Route path="/tracuu" element={<Tracuu />} />
 
-            {/* chuyển người dùng đến trang ErrorPage nếu dùng đường truyền router sai */}
-            <Route path="*" element={<Trangloi />} />
-            <Route path="/payment-result" element={<PaymentResult />} />
-            <Route path="/payment-info" element={<PaymentInfo  />} />
-            <Route path="/loginuser" element={<LoginUser />} />
-            <Route path="/register" element={<Dangky />} />
-          </Routes>
-        </Router>
-      </CartProvider>
-    </div>
+          {/* chuyển người dùng đến trang ErrorPage nếu dùng đường truyền router sai */}
+          <Route path="*" element={<Trangloi />} />
+          <Route path="/payment-result" element={<PaymentResult />} />
+          <Route path="/payment-info" element={<PaymentInfo  />} />
+          <Route path="/loginuser" element={<LoginUser />} />
+          <Route path="/register" element={<Dangky />} />
+          <Route path="/lichsugiaodich" element={<LichSuGiaoDich />} />
+        </Routes>
+      </Router>
+    </CartProvider>
+    )
+  }
+
+     
+    </>
   );
 }
 

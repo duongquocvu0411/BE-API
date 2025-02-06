@@ -13,7 +13,7 @@ using CuahangtraicayAPI.Model.DB;
 using Microsoft.AspNetCore.Authorization;
 using CuahangtraicayAPI.Model.jwt;
 
-namespace WebsiteQuanan.Controllers
+namespace CuahangtraicayAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

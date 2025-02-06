@@ -90,7 +90,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "LockAccount",
     "RelativePath": "api/Authenticate/admin/lock-account",
     "HttpMethod": "POST",
@@ -106,7 +106,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "UnlockAccount",
     "RelativePath": "api/Authenticate/admin/unlock-account",
     "HttpMethod": "POST",
@@ -122,7 +122,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "DeleteEmployee",
     "RelativePath": "api/Authenticate/delete-employee-User/{userId}",
     "HttpMethod": "DELETE",
@@ -138,7 +138,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "GetAllEmployees",
     "RelativePath": "api/Authenticate/get-all-employees",
     "HttpMethod": "GET",
@@ -148,7 +148,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "GetAllUser",
     "RelativePath": "api/Authenticate/get-all-user",
     "HttpMethod": "GET",
@@ -158,7 +158,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "Login",
     "RelativePath": "api/Authenticate/login",
     "HttpMethod": "POST",
@@ -174,7 +174,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "Register",
     "RelativePath": "api/Authenticate/register",
     "HttpMethod": "POST",
@@ -190,7 +190,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "RegisterAdmin",
     "RelativePath": "api/Authenticate/register-admin",
     "HttpMethod": "POST",
@@ -206,7 +206,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "RegisterEmployee",
     "RelativePath": "api/Authenticate/register-employee",
     "HttpMethod": "POST",
@@ -222,7 +222,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "VerifyOtp",
     "RelativePath": "api/Authenticate/verify-otp",
     "HttpMethod": "POST",
@@ -238,7 +238,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "VerifyRegisterEmployeeOtp",
     "RelativePath": "api/Authenticate/verify-register-employee-otp",
     "HttpMethod": "POST",
@@ -254,7 +254,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "VerifyRegisterOtp",
     "RelativePath": "api/Authenticate/verify-register-otp",
     "HttpMethod": "POST",
@@ -270,7 +270,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebsiteQuanan.Controllers.AuthenticateController",
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "VerifyRegisterAdminOtp",
     "RelativePath": "api/Authenticate/xacthuc-otp-admin",
     "HttpMethod": "POST",

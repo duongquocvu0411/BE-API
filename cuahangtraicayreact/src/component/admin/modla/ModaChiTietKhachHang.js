@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 
 const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTrangThai, layTrangThaiDonHang, isLoading }) => {
- 
+
 
   const inHoaDon = () => {
     const noiDungIn = document.getElementById('printContent').innerHTML;
@@ -13,7 +13,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
     document.body.innerHTML = noiDungGoc;
     window.location.reload();
   };
- 
+
 
 
 
@@ -54,7 +54,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                   </h5>
                 </div>
                 <div className="card-body">
-                  {chiTietKhachHang.hoaDons  && chiTietKhachHang.hoaDons.length > 0 ? (
+                  {chiTietKhachHang.hoaDons && chiTietKhachHang.hoaDons.length > 0 ? (
                     chiTietKhachHang.hoaDons.map((bill, index) => (
                       <div key={index} className="border-bottom pb-3 mb-3">
                         <p>
@@ -63,6 +63,13 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                         <p>
                           <i className="bi bi-cash"></i> <strong>Tổng tiền:</strong> {parseFloat(bill.total_price).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })} VND
                         </p>
+                        <p>
+                          <i className="bi bi-tag"></i> <strong>Voucher</strong>: {bill.ma_voucher}
+                        </p>
+                        <p>
+                          <i className="bi bi-percent"></i> <strong>Giảm giá</strong>: {bill.vouchergiamgia.toLocaleString("vi-VN")} VND
+                        </p>
+
                         <p>
                           <i className="bi bi-credit-card"></i> <strong>Thanh toán:</strong> {bill.thanhtoan}
                         </p>
@@ -121,7 +128,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
 
                         {/* Hành động */}
                         <div className="d-flex align-items-center">
-                          
+
 
                           {bill.status !== "Hủy đơn" &&
                             bill.status !== "Đã giao thành công" &&
@@ -146,13 +153,13 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                                   </option>
 
                                   {/* Các trạng thái khác */}
-                              
+
                                   {bill.thanhtoan === "cod" &&
-                                   
+
                                     bill.status === "Chờ xử lý" && (
                                       <option value="Hủy đơn">Hủy đơn</option>
                                     )}
-                                 
+
                                 </Form.Control>
 
                                 {/* Hiển thị spinner khi đang loading */}
@@ -186,7 +193,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
         </Modal.Footer>
       </Modal>
 
-    
+
 
     </>
   );
