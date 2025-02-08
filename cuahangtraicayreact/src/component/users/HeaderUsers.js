@@ -223,6 +223,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
                   )}
                 </Link>
               </div>
+
               {isLoggedIn ? (
                 <li className={`nav-item dropdown no-arrow ${showDropdown ? 'show' : ''}`}
                   ref={dropdownRef}
@@ -284,7 +285,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
           <i className="bi bi-arrow-up-circle-fill text-primary" style={{ fontSize: "3rem" }}></i>
         }
       />
-   {/* Modal xác nhận đăng xuất */}
+      {/* Modal xác nhận đăng xuất */}
       <Modal show={showLogoutConfirmation} onHide={handleCancelLogout} centered>
         <Modal.Header closeButton className="bg-light">
           <Modal.Title className="text-warning fw-bold">Xác nhận đăng xuất</Modal.Title>

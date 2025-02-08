@@ -409,3 +409,13 @@ Banners */
 .ck.ck-editor__editable_inline {
   min-height: 200px; /* Đảm bảo không gian hiển thị cho CKEditor */
 }
+.card-hover:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.order-card:hover {
+  background-color: #f8f9fa;
+  transition: background-color 0.3s ease;
+}

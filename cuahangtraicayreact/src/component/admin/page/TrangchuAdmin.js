@@ -140,7 +140,7 @@ const layDoanhThuThang = async () => {
     laySoLuongKhachHangMoi();
     layDoanhThuHomNay();
     laySanPhamBanChay();
-    layTongSanPhamTonKho();
+    layTongSanPhamTonKho();    
   }, []);
   
   // khai báo quyền truy cập

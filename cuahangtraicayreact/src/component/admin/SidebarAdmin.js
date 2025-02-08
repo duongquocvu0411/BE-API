@@ -161,6 +161,15 @@ const SiderbarAdmin = () => {
             </div>
           </li>
         )}
+        {!isNhanvien && (
+          <li className={`nav-item ${vitriRoute.pathname === '/admin/Emailnhanthongbao' ? 'active' : ''}`}>
+            <Link className="nav-link" to="/admin/Emailnhanthongbao">
+              <i className="fa-solid fa-envelope"></i> {/* Icon thư */}
+              <span>Quản lý Email nhận thông báo Users</span>
+            </Link>
+          </li>
+        )}
+
 
         {/* Quản lý Địa chỉ 
         <li className={`nav-item ${vitriRoute.pathname === '/admin/diachichitiet' ? 'active' : ''}`}>

@@ -40,6 +40,7 @@ import Voucher from "./component/admin/page/Voucher";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./component/users/page/Loadingwebsite";
 import LichSuGiaoDich from "./component/users/page/Lichsugiaodich";
+import EmailDangkyTB from "./component/admin/page/EmailDangkyTB";
 
 // import MenuFooter from "./component/admin/page/MenuFooter";
 
@@ -215,6 +216,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <TenwebSitersAdmin />
+              </ProtectedRoute>
+            }
+          />
+            <Route
+            path="/admin/Emailnhanthongbao"
+            element={
+              <ProtectedRoute>
+                <EmailDangkyTB />
               </ProtectedRoute>
             }
           />

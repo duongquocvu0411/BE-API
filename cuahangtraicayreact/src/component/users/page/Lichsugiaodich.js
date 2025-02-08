@@ -164,7 +164,11 @@ const LichSuGiaoDich = () => {
 
   return (
     <>
+
       <HeaderUsers />
+      <br/>
+      <br/>
+    
       <div className="container py-5" style={{ marginTop: '80px' }}>
         <h2 className="text-center mb-4 text-primary fw-bold">
           <FaClipboardList className="me-2" /> Lịch Sử Giao Dịch
@@ -302,18 +306,7 @@ const LichSuGiaoDich = () => {
       </div>
       <Footerusers />
 
-      <style jsx>{`
-        .card-hover:hover {
-          transform: translateY(-5px);
-          transition: transform 0.3s ease;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .order-card:hover {
-          background-color: #f8f9fa;
-          transition: background-color 0.3s ease;
-        }
-      `}</style>
+      
     </>
   );
 };
