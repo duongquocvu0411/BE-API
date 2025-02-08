@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaUser, FaClipboardList, FaMoneyBillAlt, FaBoxOpen, FaShippingFast, FaCalendarAlt, FaMapMarkerAlt, FaPhone, FaSearch, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaUser, FaClipboardList, FaMoneyBillAlt, FaBoxOpen, FaShippingFast, FaCalendarAlt, FaMapMarkerAlt, FaPhone, FaSearch, FaEye, FaEyeSlash, FaRegCreditCard } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 import Footerusers from "../Footerusers";
@@ -71,12 +71,12 @@ const LichSuGiaoDich = () => {
 
       const userIdFromToken = tokenDaGiaiMa["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
       const response = await fetch(
-        `${process.env.REACT_APP_BASEURL}/api/KhachHang/user-orders/${userIdFromToken}`,{
-          headers:{
-            Authorization:`Bearer  ${token}`
-          }
+        `${process.env.REACT_APP_BASEURL}/api/KhachHang/user-orders/${userIdFromToken}`, {
+        headers: {
+          Authorization: `Bearer  ${token}`
         }
-      ); 
+      }
+      );
 
       if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu từ API.");
 
@@ -103,13 +103,13 @@ const LichSuGiaoDich = () => {
 
     const ketQuaTimKiem = timKiem
       ? danhSachGiaoDich.filter((khachHang) =>
-          khachHang.ho.toLowerCase().includes(timKiem) ||
-          khachHang.ten.toLowerCase().includes(timKiem) ||
-          khachHang.thanhPho.toLowerCase().includes(timKiem) ||
-          khachHang.diaChiCuThe.toLowerCase().includes(timKiem) ||
-          khachHang.sdt.includes(timKiem) ||
-          khachHang.orders.some(order => order.order_code.toLowerCase().includes(timKiem))
-        )
+        khachHang.ho.toLowerCase().includes(timKiem) ||
+        khachHang.ten.toLowerCase().includes(timKiem) ||
+        khachHang.thanhPho.toLowerCase().includes(timKiem) ||
+        khachHang.diaChiCuThe.toLowerCase().includes(timKiem) ||
+        khachHang.sdt.includes(timKiem) ||
+        khachHang.orders.some(order => order.order_code.toLowerCase().includes(timKiem))
+      )
       : danhSachGiaoDich;
 
     setDanhSachGiaoDichHienThi(ketQuaTimKiem);
@@ -166,9 +166,9 @@ const LichSuGiaoDich = () => {
     <>
 
       <HeaderUsers />
-      <br/>
-      <br/>
-    
+      <br />
+      <br />
+
       <div className="container py-5" style={{ marginTop: '80px' }}>
         <h2 className="text-center mb-4 text-primary fw-bold">
           <FaClipboardList className="me-2" /> Lịch Sử Giao Dịch
@@ -270,6 +270,9 @@ const LichSuGiaoDich = () => {
                           </p>
                           <p className="card-text"><FaMoneyBillAlt className="me-1" /> Tổng tiền: {parseFloat(donHang.total_price).toLocaleString("vi-VN")} VND</p>
                           <p className="card-text"><FaShippingFast className="me-1" /> Phương thức: {donHang.thanhtoan}</p>
+                          <p className="card-text text-muted">
+                            <FaRegCreditCard className="me-1" /> Mã giao dịch: {donHang.transactionId || "không có mã giao dịch"}
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -306,7 +309,7 @@ const LichSuGiaoDich = () => {
       </div>
       <Footerusers />
 
-      
+
     </>
   );
 };

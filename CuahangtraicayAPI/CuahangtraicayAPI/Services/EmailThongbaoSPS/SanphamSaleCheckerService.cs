@@ -38,7 +38,7 @@ public class SanphamSaleCheckerService : BackgroundService
                 _logger.LogError($"Error in SanphamSaleCheckerService: {ex.Message}");
             }
 
-            await Task.Delay(TimeSpan.FromMinutes(30), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
 
         _logger.LogInformation("SanphamSaleCheckerService is stopping.");

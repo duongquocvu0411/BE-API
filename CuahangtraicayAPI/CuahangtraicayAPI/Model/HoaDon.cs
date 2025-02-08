@@ -24,6 +24,7 @@ namespace CuahangtraicayAPI.Model
         public string ma_voucher { get; set; }
         public decimal voucher_giamgia { get; set; }
 
+       
         // Định nghĩa quan hệ với Khách Hàng
         public KhachHang KhachHang { get; set; }
 
@@ -32,5 +33,7 @@ namespace CuahangtraicayAPI.Model
         // Định nghĩa quan hệ một-nhiều với HoaDonChiTiet
         [JsonIgnore]
         public ICollection<HoaDonChiTiet>? HoaDonChiTiets { get; set; }
+
+
     }
 }

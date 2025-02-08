@@ -16,5 +16,6 @@ namespace CuahangtraicayAPI.Model
         //public DateTime? Updated_at { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
+
     }
 }

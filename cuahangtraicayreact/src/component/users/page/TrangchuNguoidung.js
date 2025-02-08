@@ -721,6 +721,11 @@ const TrangchuNguoidung = () => {
                         Đăng ký
                       </button>
                     </div>
+                    {thongbao && (
+                          <div className={`mt-3 text-center ${thongbao.startsWith('🎉') ? 'text-success' : 'text-danger'}`}>
+                            {thongbao}
+                          </div>
+                        )}
                   </form>
                 </div>
               </div>

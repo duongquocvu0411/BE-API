@@ -44,6 +44,7 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<BaseResponseDTO<IEnumerable<KhachHang>>>> GetKhachHangs()
         {
             var khachHangs = await _context.KhachHangs
+                .Where(kh => kh.Xoa == false)
                 .Include(kh => kh.HoaDons)
 
                 .ToListAsync();
@@ -81,13 +82,6 @@ namespace CuahangtraicayAPI.Controllers
                 return Unauthorized(new { status = "error", message = "Không có quyền xem thông tin của người dùng khác." });
             }
 
-            // Kiểm tra xem userId có tồn tại trong bảng KhachHangs hay không
-            //var userExists = await _context.KhachHangs.AnyAsync(kh => kh.UserNameLogin == userId);
-            //if (!userExists)
-            //{
-            //    return NotFound(new { status = "error", message = $"Không tìm thấy người dùng với userId: {userId}." });
-            //}
-
             // Xây dựng query dựa trên vai trò và UserId
             IQueryable<KhachHang> khachHangQuery = _context.KhachHangs;
             if (!isAdmin)
@@ -121,7 +115,12 @@ namespace CuahangtraicayAPI.Controllers
                             hd.status,
                             hd.Thanhtoan,
                             hd.Ghn,
-                            hd.Created_at
+                            hd.Created_at,
+                            // Thêm mã giao dịch từ bảng PaymentTransactions
+                            TransactionId = _context.PaymentTransactions
+                                .Where(pt => pt.OrderId == hd.order_code) // Giả sử OrderId trong PaymentTransactions khớp với order_code trong HoaDons
+                                .Select(pt => pt.TransactionId)
+                                .FirstOrDefault() // Lấy mã giao dịch đầu tiên nếu có
                         })
                         .ToList()
                 })
@@ -146,8 +145,8 @@ namespace CuahangtraicayAPI.Controllers
             // Tính tổng số đơn hàng và tổng số tiền đã chi tiêu
             var totalOrders = customers.Sum(c => c.Orders.Count);
             var totalSpent = customers.Sum(c => c.Orders
-                                                  .Where(hd => hd.status == "delivered")
-                                                  .Sum(o => o.total_price));
+                                                   .Where(hd => hd.status == "delivered")
+                                                   .Sum(o => o.total_price));
 
             return Ok(new
             {
@@ -291,6 +290,8 @@ namespace CuahangtraicayAPI.Controllers
                 EmailDiaChi = emailFromToken,
                 GhiChu = kh.GhiChu,
                 UserNameLogin = userId,
+                CreatedBy = "Khách hàng",
+                UpdatedBy = "Chưa tác động"
             };
 
             // Thêm khách hàng vào cơ sở dữ liệu
@@ -421,24 +422,28 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/KhachHang/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles ="Admin,Employee")]
         public async Task<IActionResult> DeleteKhachHang(int id)
         {
-
-            var KhachHang = await _context.KhachHangs.FindAsync(id);
-
-            if (KhachHang == null)
+            // Tìm khách hàng theo ID
+            var khachHang = await _context.KhachHangs.FindAsync(id);
+            // Lấy thông tin "hoten" từ token
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+            // Kiểm tra nếu không tìm thấy khách hàng
+            if (khachHang == null)
             {
-                return NotFound(new { mewssage = " không tìm thấy khách hàng với id này" });
+                return NotFound(new { message = "Không tìm thấy khách hàng với ID này" });
             }
 
-            _context.KhachHangs.Remove(KhachHang);
+            // Cập nhật cột 'xoa' thành true
+            khachHang.Xoa = true;
+            khachHang.UpdatedBy = hotenToken;
             // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
-            return Ok(new { mesaage = " Xóa khách hàng thành công" });
-
+            return Ok(new { message = "Khách hàng đã được đánh dấu là đã xoá" });
         }
+
 
         /// <summary>
         /// Lấy tổng số khách hàng mới trong tháng hiện tại
