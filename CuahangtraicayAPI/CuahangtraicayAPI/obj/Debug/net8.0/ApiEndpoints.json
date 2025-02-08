@@ -1075,6 +1075,104 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CuahangtraicayAPI.Controllers.EmaildangkyController",
+    "Method": "GetEmailDangkyTBS",
+    "RelativePath": "api/Emaildangky",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.EmaildangkyTB, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.EmaildangkyController",
+    "Method": "PostEmaildangkyTB",
+    "RelativePath": "api/Emaildangky",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.EmaildangkytbDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.EmaildangkyTB, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.EmaildangkyController",
+    "Method": "GetIDemaildangk",
+    "RelativePath": "api/Emaildangky/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.EmaildangkyTB, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.EmaildangkyController",
+    "Method": "DeletEmaildangky",
+    "RelativePath": "api/Emaildangky/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.EmaildangkyTB, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "CuahangtraicayAPI.Controllers.FooterController",
     "Method": "GetFooter",
     "RelativePath": "api/Footer",
@@ -1782,7 +1880,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.Model.KhachHang",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.LienHeController",
@@ -3240,6 +3348,155 @@
     "ReturnTypes": [
       {
         "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.TenwebSite, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.VoucherController",
+    "Method": "GetVouchers",
+    "RelativePath": "api/Voucher",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Voucher, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.VoucherController",
+    "Method": "CreateVoucher",
+    "RelativePath": "api/Voucher",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "voucherDto",
+        "Type": "CuahangtraicayAPI.DTO.VoucherDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Voucher, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.VoucherController",
+    "Method": "GetVoucher",
+    "RelativePath": "api/Voucher/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Voucher, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.VoucherController",
+    "Method": "UpdateVoucher",
+    "RelativePath": "api/Voucher/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "voucherDto",
+        "Type": "CuahangtraicayAPI.DTO.VoucherDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Voucher, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.VoucherController",
+    "Method": "DeleteVoucher",
+    "RelativePath": "api/Voucher/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.Voucher, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.VoucherController",
+    "Method": "GetActiveVouchers",
+    "RelativePath": "api/Voucher/Active",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Collections.Generic.IEnumerable\u00601[[CuahangtraicayAPI.Model.Voucher, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

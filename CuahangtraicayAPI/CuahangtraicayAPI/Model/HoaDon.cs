@@ -17,11 +17,12 @@ namespace CuahangtraicayAPI.Model
         public decimal total_price { get; set; }
 
         public string order_code { get; set; }
-     
 
         public string UpdatedBy { get; set; }
         public string status { get; set; }
         public string Ghn { get; set; }
+        public string ma_voucher { get; set; }
+        public decimal voucher_giamgia { get; set; }
 
         // Định nghĩa quan hệ với Khách Hàng
         public KhachHang KhachHang { get; set; }

@@ -8,20 +8,20 @@ namespace CuahangtraicayAPI.Model
     public class Sanphamsale : BaseModel
     {
         [Key]
-       
+
         public int Id { get; set; }
 
-      
+
         public int sanpham_id { get; set; }
 
         public string trangthai { get; set; } = "Đang áp dụng";
 
-       
+
         public decimal giasale { get; set; }
 
         public DateTime? thoigianbatdau { get; set; }
 
-   
+        public bool DaThongBao { get; set; } = false;
         public DateTime? thoigianketthuc { get; set; }
 
         [ForeignKey("sanpham_id")]

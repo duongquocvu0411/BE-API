@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using CuahangtraicayAPI.Model;
+using CuahangtraicayAPI.Model.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace CuahangtraicayAPI.Services
 {
@@ -32,22 +34,19 @@ namespace CuahangtraicayAPI.Services
                     {
                         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-                        // Lấy danh sách sản phẩm sale đạt thời gian kết thúc
-                        var hethan = context.SanphamSales
-                            .Where(sale => sale.trangthai == "Đang áp dụng" && sale.thoigianketthuc <= DateTime.Now)
-                            .ToList();
+                        // Lấy danh sách sản phẩm sale đã hết hạn
+                        var hethan = await context.SanphamSales
+                            .Where(sale => sale.thoigianketthuc <= DateTime.Now)
+                            .ToListAsync(stoppingToken);
 
                         if (hethan.Any())
                         {
-                            foreach (var sale in hethan)
-                            {
-                                sale.trangthai = "Không áp dụng";
-                                _logger.LogInformation($"Cập nhật trạng thái cho sản phẩm sale ID: {sale.Id}");
-                            }
+                            context.SanphamSales.RemoveRange(hethan);
+                            _logger.LogInformation($"Đã xóa {hethan.Count} Sanphamsale đã hết hạn");
 
                             // Lưu thay đổi vào cơ sở dữ liệu
                             await context.SaveChangesAsync(stoppingToken);
-                            _logger.LogInformation($"Đã cập nhật trạng thái cho {hethan.Count} sản phẩm sale.");
+                            _logger.LogInformation($"Đã lưu thay đổi vào cơ sở dữ liệu");
                         }
                     }
                 }
@@ -56,8 +55,8 @@ namespace CuahangtraicayAPI.Services
                     _logger.LogError($"Lỗi khi cập nhật trạng thái sản phẩm sale: {ex.Message}");
                 }
 
-                // Chờ 5 phút trước khi kiểm tra lại
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                // Chờ 1 phút trước khi kiểm tra lại
+                await Task.Delay(TimeSpan.FromMinutes(50), stoppingToken);
             }
 
             _logger.LogInformation("SaleUpdateService is stopping.");

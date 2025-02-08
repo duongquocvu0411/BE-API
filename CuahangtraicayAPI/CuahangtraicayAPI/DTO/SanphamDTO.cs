@@ -15,7 +15,7 @@ namespace CuahangtraicayAPI.DTO
             public decimal Giatien { get; set; } // Make this nullable
 
             [Required]
-            public int so_luong {  get; set; }
+            public int so_luong { get; set; }
 
             //[Required]
             //public string Trangthai { get; set; }

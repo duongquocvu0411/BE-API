@@ -37,15 +37,16 @@ namespace CuahangtraicayAPI.Controllers
         /// Lấy danh sách hóa đơn
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<BaseResponseDTO< IEnumerable<HoaDon>>>> GetHoaDons()
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<HoaDon>>>> GetHoaDons()
         {
             var hoadons = await _context.HoaDons.ToListAsync();
-          
 
-            return Ok(new BaseResponseDTO<IEnumerable< HoaDon>>
+
+            return Ok(new BaseResponseDTO<IEnumerable<HoaDon>>
             {
-                Data =hoadons,
-                Message= "Success"
+                Data = hoadons,
+                Message = "Success"
             });
         }
 
@@ -53,12 +54,12 @@ namespace CuahangtraicayAPI.Controllers
         /// Tạo hóa đơn mới
         /// </summary>
         [HttpPost]
-        [Authorize(Roles ="User")]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<BaseResponseDTO<HoaDon>>> CreateHoaDon(HoadonDTO.HoaDonDto hoaDonDto)
         {
             var orderCode = GenerateOrderCode(); // Tạo mã đơn hàng
             var totalPrice = 0m;
-           
+
             // Tính tổng giá trị đơn hàng
             foreach (var (sanphamId, quantity) in hoaDonDto.SanphamIds.Zip(hoaDonDto.Quantities))
             {
@@ -86,12 +87,59 @@ namespace CuahangtraicayAPI.Controllers
 
                 totalPrice += gia * quantity;
                 // Tăng số lượng tạm giữ cod
-                if(hoaDonDto.PaymentMethod.ToLower() == "cod")
+                if (hoaDonDto.PaymentMethod.ToLower() == "cod")
                 {
                     sanpham.Soluongtamgiu += quantity;
                 }
-             
+
             }
+
+            //kiem3 tra voucher nếu có 
+            decimal voucherDiscount = 0m;
+            string appliedVoucherCode = null;
+            if (!string.IsNullOrEmpty(hoaDonDto.VoucherCode))
+            {
+                var voucher = await _context.Vouchers
+                    .FirstOrDefaultAsync(v => v.Code == hoaDonDto.VoucherCode
+                                            && v.TrangthaiVoucher
+                                            && DateTime.Now >= v.Ngaybatdau
+                                            && DateTime.Now <= v.Ngayhethan);
+
+                if (voucher != null)
+                {
+                    // Kiểm tra nếu số lần sử dụng đã đạt giới hạn
+                    if (voucher.Toidasudung != null && voucher.Solandasudung >= voucher.Toidasudung)
+                    {
+                        // Cập nhật trạng thái voucher thành "Không hoạt động"
+                        voucher.TrangthaiVoucher = false;
+                        _context.Vouchers.Update(voucher);
+                        await _context.SaveChangesAsync();
+
+                        return BadRequest(new { message = "Voucher này đã đạt giới hạn sử dụng và không còn hiệu lực." });
+                    }
+
+                    // Kiểm tra nếu đơn hàng đạt giá trị tối thiểu để sử dụng voucher
+                    if (totalPrice >= voucher.Giatridonhang)
+                    {
+                        voucherDiscount = voucher.Sotiengiamgia;
+                        appliedVoucherCode = voucher.Code;
+                        voucher.Solandasudung++; // Cập nhật số lần sử dụng
+                        _context.Vouchers.Update(voucher);
+                    }
+                    else
+                    {
+                        return BadRequest(new { message = $"Đơn hàng phải có giá trị tối thiểu {voucher.Giatridonhang} để áp dụng mã giảm giá." });
+                    }
+                }
+                else
+                {
+                    return BadRequest(new { message = "Mã giảm giá không hợp lệ hoặc đã hết hạn." });
+                }
+            }
+
+
+            // Áp dụng giảm giá
+            totalPrice -= voucherDiscount;
 
             // Tạo hóa đơn
             var bill = new HoaDon
@@ -103,6 +151,8 @@ namespace CuahangtraicayAPI.Controllers
                 status = hoaDonDto.PaymentMethod == "VnPay" || hoaDonDto.Thanhtoan == "Momo" ? "Chờ thanh toán" : "Chờ xử lý", // Xử lý đúng trạng thái
                 Ghn = "Chưa lên đơn",
                 UpdatedBy = "Chưa có tác động",
+                ma_voucher = string.IsNullOrEmpty(appliedVoucherCode) ? "" : appliedVoucherCode,  // Lưu mã voucher vào hóa đơn
+                voucher_giamgia = voucherDiscount // Lưu số tiền giảm giá vào hóa đơn
 
             };
 
@@ -117,7 +167,7 @@ namespace CuahangtraicayAPI.Controllers
                 if (sanpham != null)
 
                 {
-                     var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
+                    var activeSale = sanpham.SanphamSales.FirstOrDefault(sale => sale.trangthai == "Đang áp dụng");
                     var gia = activeSale != null ? activeSale.giasale : sanpham.Giatien;
                     var chiTiet = new HoaDonChiTiet
                     {
@@ -136,9 +186,9 @@ namespace CuahangtraicayAPI.Controllers
             // Gửi email nếu thanh toán COD
             if (hoaDonDto.PaymentMethod == "cod")
             {
-                await Task.Run(()=> GuiEmailHoaDon(bill, totalPrice, orderCode));
+                await Task.Run(() => GuiEmailHoaDon(bill, totalPrice, orderCode));
             }
-          
+
 
             // Xử lý thanh toán
             if (hoaDonDto.PaymentMethod == "VnPay")
@@ -368,8 +418,8 @@ namespace CuahangtraicayAPI.Controllers
                 PhuongThucThanhToan = hoaDon.Thanhtoan,
                 ChiTietHoaDon = hoaDon.HoaDonChiTiets.Select(ct => new
                 {
-                  
-                  
+
+
                     TenSanPham = ct.SanPham.Tieude, // Lấy tên sản phẩm
                     DonViTinh = ct.SanPham.don_vi_tinh, // Lấy đơn vị tính
                     Gia = ct.price,
@@ -379,7 +429,7 @@ namespace CuahangtraicayAPI.Controllers
 
             return Ok(new BaseResponseDTO<Object>
             {
-                Data= response,
+                Data = response,
                 Message = "Success"
             });
         }
@@ -429,18 +479,18 @@ namespace CuahangtraicayAPI.Controllers
 
                 // cập nhật lại số lượng tạm giữ cho từng sản phẩm của hóa đơn
                 var chitiet = await _context.HoaDonChiTiets
-                    .Where(ct =>ct.bill_id == hoaDon.Id)
+                    .Where(ct => ct.bill_id == hoaDon.Id)
                     .ToListAsync();
-                foreach(var hoadonct in chitiet)
+                foreach (var hoadonct in chitiet)
                 {
                     var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == hoadonct.sanpham_ids);
-                    
-                    if(sanpham != null)
+
+                    if (sanpham != null)
                     {
                         sanpham.Soluongtamgiu -= hoadonct.quantity;
 
                         // đảm bảo không bị âm
-                        if(sanpham.Soluongtamgiu < 0)
+                        if (sanpham.Soluongtamgiu < 0)
                         {
                             sanpham.Soluongtamgiu = 0;
                         }
@@ -475,7 +525,7 @@ namespace CuahangtraicayAPI.Controllers
             });
         }
 
-     
+
         /// <summary>
         /// Xác nhận hủy đơn hàng 
         /// </summary>
@@ -557,11 +607,11 @@ namespace CuahangtraicayAPI.Controllers
                     //hoàn lại số lượng sản phẩm && số lượng tạm giữ
 
                     sanpham.Soluong += chiTiet.quantity; // Hoàn lại số lượng
-                  
-                    if (sanpham.Soluong > 0 && sanpham.Trangthai == "Hết hàng" )
+
+                    if (sanpham.Soluong > 0 && sanpham.Trangthai == "Hết hàng")
                     {
                         sanpham.Trangthai = "Còn hàng"; // Cập nhật trạng thái nếu cần
-                       
+
                     }
 
                     _context.Sanpham.Update(sanpham);
@@ -706,21 +756,21 @@ namespace CuahangtraicayAPI.Controllers
                         }
                     }
                 }
-                else if( dto.Status =="Hủy đơn")
+                else if (dto.Status == "Hủy đơn")
                 {
                     // trả lại số lượng tạm giữ 
-                    foreach(var chitiet in bill.HoaDonChiTiets)
+                    foreach (var chitiet in bill.HoaDonChiTiets)
                     {
                         var sanpham = await _context.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chitiet.sanpham_ids);
-                        
-                        if(sanpham != null)
+
+                        if (sanpham != null)
                         {
                             sanpham.Soluongtamgiu -= chitiet.quantity;
-                            if(sanpham.Soluongtamgiu <0)
+                            if (sanpham.Soluongtamgiu < 0)
                             {
                                 sanpham.Soluongtamgiu = 0; // đảm bảo không bị âm
                             }
-                            _context.Sanpham.Update(sanpham) ;
+                            _context.Sanpham.Update(sanpham);
                         }
                     }
                 }
@@ -804,8 +854,11 @@ namespace CuahangtraicayAPI.Controllers
                 Console.WriteLine("Không có email khách hàng để gửi thông báo.");
             }
 
-            return Ok(new BaseResponseDTO<HoaDon> { Data = bill,
-            Message ="Success"});
+            return Ok(new BaseResponseDTO<HoaDon>
+            {
+                Data = bill,
+                Message = "Success"
+            });
         }
 
 

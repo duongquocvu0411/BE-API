@@ -14,9 +14,10 @@ namespace CuahangtraicayAPI.DTO
             [Required]
             public List<int> Quantities { get; set; }
             public string Thanhtoan { get; set; }
-          
+
             //public string Updated_By { get; set; }
             public string PaymentMethod { get; set; } // Thêm thuộc tính này
+            public string VoucherCode { get; set; } // Thêm mã voucher vào DTO
         }
         public class UpdateStatusDto
         {

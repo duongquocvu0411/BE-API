@@ -23,13 +23,14 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly IGhnService _ghnService;
         private readonly AppDbContext _context;
-
-        public KhachHangController(AppDbContext context, IGhnService ghnService)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public KhachHangController(AppDbContext context, IGhnService ghnService, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _ghnService = ghnService;
+            _httpContextAccessor = httpContextAccessor;
         }
-    
+
 
 
         /// <summary>
@@ -40,28 +41,62 @@ namespace CuahangtraicayAPI.Controllers
         // GET: api/KhachHang
         [HttpGet]
         [Authorize(Roles = "Admin,Employee")]
-        public async Task<ActionResult<BaseResponseDTO< IEnumerable<KhachHang>>>> GetKhachHangs()
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<KhachHang>>>> GetKhachHangs()
         {
             var khachHangs = await _context.KhachHangs
                 .Include(kh => kh.HoaDons)
 
                 .ToListAsync();
 
-           
 
-            return Ok(new BaseResponseDTO<IEnumerable <KhachHang>>
+
+            return Ok(new BaseResponseDTO<IEnumerable<KhachHang>>
             {
                 Data = khachHangs,
-                Message =" Success"
+                Message = " Success"
             });
         }
 
+
+        /// <summary>
+        /// Xem lịch sử giao dịch Admin toàn quyền
+        /// </summary>
+        /// <param name="userId">Xem lịch sử giao dịch Admin toàn quyền</param>
+        /// <returns>Xem lịch sử giao dịch Admin toàn quyền</returns>
+
         [HttpGet]
         [Route("user-orders/{userId}")]
-        public IActionResult GetUserOrders(string userId)
+        [Authorize] // Yêu cầu xác thực
+        public async Task<ActionResult<KhachHang>> GetUserOrders(string userId)
         {
+            // Kiểm tra xem người dùng hiện tại có vai trò Admin hay không
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+
+            // Lấy UserId của người dùng hiện tại (nếu không phải Admin)
+            var currentUserId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Nếu không phải Admin và UserId trong route không khớp với UserId hiện tại, từ chối
+            if (!isAdmin && userId != currentUserId)
+            {
+                return Unauthorized(new { status = "error", message = "Không có quyền xem thông tin của người dùng khác." });
+            }
+
+            // Kiểm tra xem userId có tồn tại trong bảng KhachHangs hay không
+            //var userExists = await _context.KhachHangs.AnyAsync(kh => kh.UserNameLogin == userId);
+            //if (!userExists)
+            //{
+            //    return NotFound(new { status = "error", message = $"Không tìm thấy người dùng với userId: {userId}." });
+            //}
+
+            // Xây dựng query dựa trên vai trò và UserId
+            IQueryable<KhachHang> khachHangQuery = _context.KhachHangs;
+            if (!isAdmin)
+            {
+                khachHangQuery = khachHangQuery.Where(kh => kh.UserNameLogin == userId); // Lọc cho user hiện tại
+            }
+
             // Tìm danh sách khách hàng theo UserId
-            var customers = _context.KhachHangs
+            var customers = await _context.KhachHangs
                 .Where(kh => kh.UserNameLogin == userId)
                 .Select(kh => new
                 {
@@ -85,11 +120,12 @@ namespace CuahangtraicayAPI.Controllers
                             hd.total_price,
                             hd.status,
                             hd.Thanhtoan,
-                            hd.Ghn
+                            hd.Ghn,
+                            hd.Created_at
                         })
                         .ToList()
                 })
-                .ToList();
+                .ToListAsync();  // Sử dụng ToListAsync để tránh blocking
 
             if (customers.Count == 0)
             {
@@ -109,7 +145,9 @@ namespace CuahangtraicayAPI.Controllers
 
             // Tính tổng số đơn hàng và tổng số tiền đã chi tiêu
             var totalOrders = customers.Sum(c => c.Orders.Count);
-            var totalSpent = customers.Sum(c => c.Orders.Sum(o => o.total_price));
+            var totalSpent = customers.Sum(c => c.Orders
+                                                  .Where(hd => hd.status == "delivered")
+                                                  .Sum(o => o.total_price));
 
             return Ok(new
             {
@@ -126,35 +164,26 @@ namespace CuahangtraicayAPI.Controllers
         }
 
 
-
-
         /// <summary>
         /// Xem khách hàng theo id có hóa đơn, hóa đơn chi tiết
         /// </summary>
         /// <returns> xem khách hàng theo id có hóa đơn , hóa đơn chi tiết </returns>
-
-        // GET: api/KhachHang/5
-        /// <summary>
-        /// Xem khách hàng theo id có hóa đơn, hóa đơn chi tiết
-        /// </summary>
-        /// <returns> xem khách hàng theo id có hóa đơn , hóa đơn chi tiết </returns>
-
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<Object>>> GetKhachHang(int id)
         {
             var khachHang = await _context.KhachHangs
-             
+
                 .Include(kh => kh.HoaDons)
                     .ThenInclude(hd => hd.HoaDonChiTiets)
                     .ThenInclude(sp => sp.SanPham)
-                 
+
                 .FirstOrDefaultAsync(kh => kh.Id == id);
-            
+
             if (khachHang == null)
             {
-                return NotFound(new BaseResponseDTO<KhachHang> { Code=404, Message = "Không tìm thấy khách hàng với ID này." });
+                return NotFound(new BaseResponseDTO<KhachHang> { Code = 404, Message = "Không tìm thấy khách hàng với ID này." });
             }
 
             // lấy danh sách bảng ghn theo mã order_code
@@ -168,7 +197,7 @@ namespace CuahangtraicayAPI.Controllers
             // Xử lý dữ liệu trả về ngắn gọn
             var response = new
             {
-                
+
                 ten = khachHang.Ten,
                 ho = khachHang.Ho,
                 diaChiCuThe = khachHang.DiaChiCuThe,
@@ -180,30 +209,32 @@ namespace CuahangtraicayAPI.Controllers
                 ghichu = khachHang.GhiChu,
                 hoaDons = khachHang.HoaDons.Select(hd => new
                 {
-                    id=hd.Id,
+                    id = hd.Id,
                     ngaytao = hd.Created_at,
                     total_price = hd.total_price,
                     order_code = hd.order_code,
                     ghn = ghn.FirstOrDefault(r => r.Client_order_code == hd.order_code),
                     thanhtoan = hd.Thanhtoan,
+                    ma_voucher = hd.ma_voucher,
+                    vouchergiamgia = hd.voucher_giamgia,
                     status = hd.status,
-                    
+
                     hoaDonChiTiets = hd.HoaDonChiTiets.Select(hdct => new
                     {
                         tieude = hdct.SanPham?.Tieude,
                         don_vi_tinh = hdct.SanPham?.don_vi_tinh,
                         price = hdct.price,
                         quantity = hdct.quantity,
-                        id=hdct.Id,
-                        bill_id =hdct.bill_id
+                        id = hdct.Id,
+                        bill_id = hdct.bill_id
                     })
                 })
             };
 
             return Ok(new BaseResponseDTO<Object>
             {
-                Data =response,
-                Message =" Success"
+                Data = response,
+                Message = " Success"
             });
         }
 
@@ -228,7 +259,8 @@ namespace CuahangtraicayAPI.Controllers
 
             // Kiểm tra trạng thái tài khoản
             var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(u => u.UserId == userId);
-            if (userProfile == null)
+            var admin = await _context.AdminProfiles.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userProfile == null && admin == null)
             {
                 return Unauthorized(new BaseResponseDTO<KhachHang>
                 {
@@ -237,7 +269,7 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
 
-            if (userProfile.TrangThaiTK == 0) // 0: Bị khóa
+            if (userProfile != null && userProfile.TrangThaiTK == 0) // 0: Bị khóa
             {
                 return Unauthorized(new BaseResponseDTO<KhachHang>
                 {
@@ -281,7 +313,6 @@ namespace CuahangtraicayAPI.Controllers
         /// <param name="id"></param>
         /// <param name="idShop"></param>
         /// <returns>Tạo đơn giao hàng nhanh</returns>
-
         [HttpPost("{id_khachhang}/create-order")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> CreateOrder(int id_khachhang)
@@ -315,7 +346,7 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             // Tiếp tục xử lý lên đơn nếu mã không tồn tại
-            int codAmount = (hoaDon.Thanhtoan == "Momo" || hoaDon.Thanhtoan == "VnPay")  ? 0 : (int)hoaDon.total_price;
+            int codAmount = (hoaDon.Thanhtoan == "Momo" || hoaDon.Thanhtoan == "VnPay") ? 0 : (int)hoaDon.total_price;
             var shopid = _ghnService.GetShopid();
             var request = new GhnOrderRequest
             {
@@ -449,56 +480,6 @@ namespace CuahangtraicayAPI.Controllers
         {
             return _context.KhachHangs.Any(e => e.Id == id);
         }
-
-
-        // hàm lấy tên sản phẩm và đon vị tính 
-        //private async Task<(string SanphamNames, string SanphamDonViTinh, bool IsDeleted)> GetSanPhamDetails(string sanPhamIds)
-        //{
-        //    if (string.IsNullOrWhiteSpace(sanPhamIds))
-        //    {
-        //        return (null, null, false); // Nếu chuỗi rỗng hoặc chỉ có khoảng trắng, trả về null
-        //    }
-
-        //    // Tách chuỗi sanPhamIds thành danh sách các ID
-        //    var ids = sanPhamIds.Trim('[', ']').Split(',')
-        //        .Select(id =>
-        //        {
-        //            int result;
-        //            return int.TryParse(id, out result) ? result : (int?)null;
-        //        })
-        //        .Where(id => id.HasValue)  // Lọc bỏ các giá trị null
-        //        .Select(id => id.Value)
-        //        .ToList();
-
-        //    if (!ids.Any())
-        //    {
-        //        return (null, null, false); // Nếu không có ID hợp lệ, trả về null
-        //    }
-
-        //    // Lấy thông tin sản phẩm từ cơ sở dữ liệu, bao gồm các sản phẩm đã xóa và chưa xóa
-        //    var sanphams = await _context.Sanpham
-        //        .Where(sp => ids.Contains(sp.Id)) // Lấy tất cả sản phẩm theo ID
-        //        .Select(sp => new
-        //        {
-        //            sp.Tieude,  // Tên sản phẩm
-        //            sp.don_vi_tinh, // Đơn vị tính
-        //            sp.Xoa // Kiểm tra xem sản phẩm có bị xóa không
-        //        })
-        //        .ToListAsync();
-
-        //    if (!sanphams.Any())
-        //    {
-        //        return (null, null, false); // Nếu không có sản phẩm hợp lệ, trả về null
-        //    }
-
-        //    // Kiểm tra xem sản phẩm có bị xóa không và trả về tên/đơn vị tính phù hợp
-        //    string sanphamNames = string.Join(", ", sanphams.Select(sp => sp.Xoa ? $"{sp.Tieude} (Đã xóa)" : sp.Tieude));
-        //    string donViTinh = string.Join(", ", sanphams.Select(sp => sp.Xoa ? $"{sp.don_vi_tinh} (Đã xóa)" : sp.don_vi_tinh));
-
-        //    // Trả về thông tin tên sản phẩm, đơn vị tính và trạng thái bị xóa
-        //    return (sanphamNames, donViTinh, sanphams.Any(sp => sp.Xoa));
-        //}
-
 
     }
 }

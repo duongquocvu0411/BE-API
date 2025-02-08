@@ -219,6 +219,34 @@
             </summary>
             <returns> lấy danh sách địa chỉ chi tiết đang có status : "đang sử dụng"</returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.EmaildangkyController.GetEmailDangkyTBS">
+            <summary>
+            Xem danh sách Email đăng ký nhận thông báo
+            </summary>
+            <returns>Xem danh sách Email đăng ký nhận thông báo</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.EmaildangkyController.GetIDemaildangk(System.Int32)">
+            <summary>
+            Xem Email nhận thông báo theo {id}
+            </summary>
+            <param name="id">Xem Email nhận thông báo theo {id}</param>
+            <returns>Xem Email nhận thông báo theo {id}</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.EmaildangkyController.PostEmaildangkyTB(CuahangtraicayAPI.DTO.EmaildangkytbDTO)">
+            <summary>
+            Thêm mới 1 Email nhận thông báo của users thêm
+            </summary>
+            <param name="dto">Thêm mới 1 Email nhận thông báo của users thêm</param>
+            <returns>Thêm mới 1 Email nhận thông báo của users thêm</returns>
+            
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.EmaildangkyController.DeletEmaildangky(System.Int32)">
+            <summary>
+            Xóa 1 Email nhận thông báo của khách hàng
+            </summary>
+            <param name="id">Xóa 1 Email nhận thông báo của khách hàng</param>
+            <returns>Xóa 1 Email nhận thông báo của khách hàng</returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.FooterController.GetFooter">
             <summary>
             Lấy danh sách tất cả các Footer.
@@ -366,6 +394,13 @@
             Lấy danh sách của Khách hàng và hóa đơn
             </summary>
             <returns> Lấy danh sách của Khách hàng và hóa đơn</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.KhachHangController.GetUserOrders(System.String)">
+            <summary>
+            Xem lịch sử giao dịch Admin toàn quyền
+            </summary>
+            <param name="userId">Xem lịch sử giao dịch Admin toàn quyền</param>
+            <returns>Xem lịch sử giao dịch Admin toàn quyền</returns>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.KhachHangController.GetKhachHang(System.Int32)">
             <summary>
@@ -727,6 +762,41 @@
             </summary>
             <param name="id">ID của Website cần xóa.</param>
             <returns>Trạng thái xóa.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.VoucherController.GetVouchers">
+            <summary>
+            Xem danh sách Vouchers
+            </summary>
+            <returns>Xem danh sách Vouchers</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.VoucherController.GetVoucher(System.Int32)">
+            <summary>
+            Xem chi tiết vouchers
+            </summary>
+            <param name="id">Xem chi tiết vouchers</param>
+            <returns>Xem chi tiết vouchers</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.VoucherController.CreateVoucher(CuahangtraicayAPI.DTO.VoucherDTO)">
+            <summary>
+            Tạo mới vouchers
+            </summary>
+            <param name="voucherDto">Tạo mới vouchers</param>
+            <returns>Tạo mới vouchers</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.VoucherController.UpdateVoucher(System.Int32,CuahangtraicayAPI.DTO.VoucherDTO)">
+            <summary>
+            Chỉnh sửa Vouchers theo ID
+            </summary>
+            <param name="id"> Chỉnh sửa Vouchers theo ID</param>
+            <param name="voucherDto"> Chỉnh sửa Vouchers theo ID</param>
+            <returns> Chỉnh sửa Vouchers theo ID</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.VoucherController.DeleteVoucher(System.Int32)">
+            <summary>
+            Xóa Vouchers
+            </summary>
+            <param name="id">Xóa Vouchers</param>
+            <returns>Xóa Vouchers</returns>
         </member>
         <member name="T:CuahangtraicayAPI.Migrations.DBBackup">
             <inheritdoc />

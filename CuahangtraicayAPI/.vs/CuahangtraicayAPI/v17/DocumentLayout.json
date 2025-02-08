@@ -3,12 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\dto\\sanphamdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\dto\\sanphamdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\sanphamsale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\sanphamsale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\services\\emailthongbaosps\\sanphamsalecheckerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\services\\emailthongbaosps\\sanphamsalecheckerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\services\\saleupdateservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\services\\saleupdateservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\dto\\hoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\dto\\hoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,25 +51,116 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "SanphamDTO.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\DTO\\SanphamDTO.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\DTO\\SanphamDTO.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\DTO\\SanphamDTO.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\DTO\\SanphamDTO.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAA2wCgAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T06:51:59.886Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Sanphamsale.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Sanphamsale.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\Sanphamsale.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\Sanphamsale.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\Sanphamsale.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T06:51:30.091Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SanphamSaleCheckerService.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Services\\EmailThongbaoSPS\\SanphamSaleCheckerService.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Services\\EmailThongbaoSPS\\SanphamSaleCheckerService.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Services\\EmailThongbaoSPS\\SanphamSaleCheckerService.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Services\\EmailThongbaoSPS\\SanphamSaleCheckerService.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAkwC0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T06:51:00.191Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Program.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Program.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Program.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Program.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAiwEQAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T06:50:18.411Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SaleUpdateService.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Services\\SaleUpdateService.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Services\\SaleUpdateService.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Services\\SaleUpdateService.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Services\\SaleUpdateService.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAiwEAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T06:50:09.163Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "HoadonDTO.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\DTO\\HoadonDTO.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\DTO\\HoadonDTO.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\DTO\\HoadonDTO.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\DTO\\HoadonDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T06:48:47.995Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Model\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBEAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T06:48:18.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "HoaDon.cs",
               "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HoaDon.cs",
               "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\HoaDon.cs",
               "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\HoaDon.cs",
               "RelativeToolTip": "CuahangtraicayAPI\\Model\\HoaDon.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAQwCQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-05T02:18:15.293Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "HoaDonController.cs",
               "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
               "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
               "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
               "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
-              "ViewState": "AgIAAEIBAAAAAAAAAAAkwFEBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAE8AAAAAAAAAAAASwF8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-22T11:10:06.467Z",
               "EditorCaption": ""

@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Identity;
 using CuahangtraicayAPI.Model.DB;
 
 
+
+
 namespace CuahangtraicayAPI
 {
     public class Program
@@ -52,7 +54,7 @@ namespace CuahangtraicayAPI
             builder.Services.AddMemoryCache();
             // Đọc cấu hình GHN từ `appsettings.json`
             builder.Services.Configure<GhnSettings>(builder.Configuration.GetSection("GHN"));
-    builder.Services.AddScoped<ISyncGhnStatusService, SyncGhnStatusService>();
+            builder.Services.AddScoped<ISyncGhnStatusService, SyncGhnStatusService>();
             builder.Services.AddHostedService<GhnSyncBackgroundService>();
             // Đăng ký HttpClient cho IGhnService
             builder.Services.AddHttpClient<IGhnService, GhnService>();
@@ -63,24 +65,26 @@ namespace CuahangtraicayAPI
 
             // đăng ký backroud service 
             builder.Services.AddHostedService<SaleUpdateService>();
-            //đăng ký giao hàng nhanh
-            //builder.Services.AddHttpClient<GhnService>();
+
+            builder.Services.AddHostedService<VoucherUpdateService>();
 
             // đăng ký phản hồi tự động
 
             builder.Services.AddHostedService<AutoPhanHoiService>();
 
+            // đăng ký tự động gữi mail cho users đăng ký nhận thông báo sản phẩm sales
 
-            var API = "allApi";
-            builder.Services.AddCors(ots =>
+            builder.Services.AddHostedService<SanphamSaleCheckerService>();
+
+            builder.Services.AddCors(options =>
             {
-                ots.AddPolicy(name: API, builder =>
+                options.AddPolicy("allApi", builder =>
                 {
-                    builder.SetIsOriginAllowed(_ => true)
-                    .AllowAnyHeader()
-                    .AllowCredentials()
-                    .AllowAnyMethod();
-
+                    builder
+                        .SetIsOriginAllowed(origin => true) // Cho phép tất cả domain
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials(); // Cho phép gửi cookies/token
                 });
             });
 
@@ -151,9 +155,9 @@ namespace CuahangtraicayAPI
                     }
                 });
 
-            }); 
-            
-            
+            });
+
+
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -180,7 +184,7 @@ namespace CuahangtraicayAPI
                         context.HandleResponse(); // T?t thông báo l?i m?c ??nh
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         context.Response.ContentType = "application/json";
-                        var result = System.Text.Json.JsonSerializer.Serialize(new { status = "error", message = "B?n không có quy?n v?i hành ?ông này" });
+                        var result = System.Text.Json.JsonSerializer.Serialize(new { status = "error", message = "Bạn không có quyền với hành động này!!" });
 
                         return context.Response.WriteAsync(result);
                     }
@@ -234,7 +238,7 @@ namespace CuahangtraicayAPI
                 });
             }
 
-         
+
             app.UseCors("allApi");
             app.UseHttpsRedirection();
             app.UseMiddleware<TokenRevocationMiddleware>();
@@ -242,7 +246,7 @@ namespace CuahangtraicayAPI
             app.UseAuthorization();
             app.UseStaticFiles();
             app.MapControllers();
-     
+
 
             app.Run();
 
