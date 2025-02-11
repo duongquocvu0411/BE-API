@@ -412,14 +412,15 @@ namespace CuahangtraicayAPI.Controllers
                 hoaDon.Id,
                 hoaDon.khachhang_id,
                 NgayTao = hoaDon.Created_at,
+                Vouchers = hoaDon.ma_voucher,
+                giamgia = hoaDon.voucher_giamgia,
                 TongTien = hoaDon.total_price,
                 MaDonHang = hoaDon.order_code,
                 TrangThai = hoaDon.status,
                 PhuongThucThanhToan = hoaDon.Thanhtoan,
                 ChiTietHoaDon = hoaDon.HoaDonChiTiets.Select(ct => new
                 {
-
-
+                    Ma_SP = ct.SanPham.ma_sanpham,
                     TenSanPham = ct.SanPham.Tieude, // Lấy tên sản phẩm
                     DonViTinh = ct.SanPham.don_vi_tinh, // Lấy đơn vị tính
                     Gia = ct.price,
@@ -442,11 +443,12 @@ namespace CuahangtraicayAPI.Controllers
 
         // PUT: api/HoaDon/TraCuu/{orderCode}/HuyDon
         [HttpPut("TraCuu/{orderCode}/HuyDon")]
-
-        public async Task<ActionResult<BaseResponseDTO<object>>> CancelOrder(string orderCode)
+        public async Task<ActionResult<BaseResponseDTO<object>>> CancelOrder(string orderCode, [FromBody] HoaDonHuyDTO huydto)
         {
-            // Tìm hóa đơn dựa trên OrderCode
-            var hoaDon = await _context.HoaDons.FirstOrDefaultAsync(hd => hd.order_code == orderCode);
+            // Tìm hóa đơn dựa trên OrderCode, bao gồm thông tin khách hàng
+            var hoaDon = await _context.HoaDons
+                .Include(hd => hd.KhachHang)
+                .FirstOrDefaultAsync(hd => hd.order_code == orderCode);
 
             if (hoaDon == null)
             {
@@ -506,9 +508,33 @@ namespace CuahangtraicayAPI.Controllers
                     Message = "Trạng thái đơn hàng không hợp lệ để hủy."
                 });
             }
-
+            hoaDon.Nguoihuydon = "Khách hàng";
             hoaDon.Updated_at = DateTime.Now;
+
+            // Cập nhật trạng thái khách hàng
+            if (hoaDon.KhachHang != null)
+            {
+                hoaDon.KhachHang.UpdatedBy = "Khách hàng";
+                hoaDon.KhachHang.Updated_at = DateTime.Now;
+                _context.KhachHangs.Update(hoaDon.KhachHang); // Bắt buộc phải có để EF Core theo dõi sự thay đổi
+                Console.WriteLine($"Đã cập nhật trạng thái khách hàng thành: Khách hàng hủy");
+            }
+            else
+            {
+                Console.WriteLine("Không tìm thấy thông tin khách hàng liên kết với hóa đơn.");
+            }
+            // Tạo HoaDonHuy
+            var hoaDonHuy = new HoaDonHuy
+            {
+                hoadon_id = hoaDon.Id,
+                ly_do_huy = huydto.ly_do_huy,
+                Ghi_chu = huydto.Ghi_chu,
+                UpdatedBy = "Khách hàng" // Hoặc lấy thông tin người dùng nếu có
+            };
+            _context.hoaDonHuys.Add(hoaDonHuy);
+
             await _context.SaveChangesAsync();
+
 
             return Ok(new BaseResponseDTO<object>
             {
@@ -524,7 +550,6 @@ namespace CuahangtraicayAPI.Controllers
                 }
             });
         }
-
 
         /// <summary>
         /// Xác nhận hủy đơn hàng 
@@ -706,12 +731,13 @@ namespace CuahangtraicayAPI.Controllers
 
         // PUT: api/HoaDon/UpdateStatus/{id}
         [HttpPut("UpdateStatus/{id}")]
-        public async Task<ActionResult<BaseResponseDTO<HoaDon>>> UpdateStatus(int id, [FromBody] HoadonDTO.UpdateStatusDto dto)
+        public async Task<ActionResult<BaseResponseDTO<object>>> UpdateStatus(int id, [FromBody] HoadonDTO.UpdateStatusDto dto)
         {
-            // Tìm hóa đơn và bao gồm thông tin khách hàng
+            // Tìm hóa đơn và bao gồm thông tin khách hàng và chi tiết hủy
             var bill = await _context.HoaDons
                 .Include(h => h.KhachHang)
                 .Include(ct => ct.HoaDonChiTiets)
+                .Include(hh => hh.hoaDonHuy) // Thêm Include để lấy thông tin hủy
                 .FirstOrDefaultAsync(h => h.Id == id);
 
             if (bill == null)
@@ -776,12 +802,41 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
+            var kh = await _context.KhachHangs.FirstOrDefaultAsync(kh => kh.Id == bill.khachhang_id);
+
+            if (kh != null)
+            {
+
+
+                kh.UpdatedBy = hotenToken;
+                _context.KhachHangs.Update(kh);
+            }
+
             // Cập nhật trạng thái hóa đơn
             if (bill.status != dto.Status)
             {
                 bill.status = dto.Status;
+                bill.Nguoihuydon = hotenToken;
                 bill.UpdatedBy = hotenToken;
                 bill.Updated_at = DateTime.Now;
+            }
+
+            // Tạo HoaDonHuy nếu trạng thái là "Hủy đơn"
+            if (dto.Status == "Hủy đơn")
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState); // Trả về lỗi validation nếu DTO không hợp lệ
+                }
+                var hoaDonHuy = new HoaDonHuy
+                {
+                    hoadon_id = bill.Id,
+                    ly_do_huy = dto.Ly_do_huy,
+                    Ghi_chu = dto.Ghi_chu,
+                    UpdatedBy = hotenToken // Người thực hiện hủy
+                };
+
+                _context.hoaDonHuys.Add(hoaDonHuy);
             }
 
             // Lưu thay đổi vào database
@@ -803,6 +858,11 @@ namespace CuahangtraicayAPI.Controllers
             if (!string.IsNullOrEmpty(khEmail))
             {
                 var EmailSub = "Cập nhật trạng thái đơn hàng";
+
+                // Thêm thông tin hủy đơn hàng vào nội dung email
+                string lyDoHuyText = string.IsNullOrEmpty(dto.Ly_do_huy) ? "Không có lý do hủy cụ thể." : $"Lý do hủy: {dto.Ly_do_huy}";
+                string ghiChuText = string.IsNullOrEmpty(dto.Ghi_chu) ? "Không có ghi chú." : $"Ghi chú: {dto.Ghi_chu}";
+
                 var emailNoidung = $@"
             <html>
             <body>
@@ -819,6 +879,13 @@ namespace CuahangtraicayAPI.Controllers
                                 Đơn hàng của bạn (<strong>Mã đơn: {bill.order_code}</strong>) đã được cập nhật trạng thái thành:
                             </p>
                             <p style='font-size: 20px; font-weight: bold; color: #28a745; margin: 10px 0;'>{bill.status}</p>
+                            {(dto.Status == "Hủy đơn" ?
+                                    $@"<p style='margin: 10px 0;'>
+                                    {lyDoHuyText}
+                                    </p>
+                                    <p style='margin: 10px 0;'>
+                                    {ghiChuText}
+                                    </p>" : "")}
                             <p style='margin: 10px 0;'>
                                 Nếu bạn có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua email hoặc số điện thoại hỗ trợ.
                             </p>
@@ -827,7 +894,7 @@ namespace CuahangtraicayAPI.Controllers
                     <tr>
                         <td align='center' bgcolor='#f8f9fa' style='padding: 20px;'>
                             <p style='margin: 0; font-size: 14px; color: #999999;'>Đây là email tự động, vui lòng không trả lời email này.</p>
-                            <p style='margin: 5px 0; font-size: 14px; color: #999999;'>&copy; 2025 Công ty TNHH. All rights reserved.</p>
+                            <p style='margin: 5px 0; font-size: 14px; color: #999999;'>© 2025 Công ty TNHH. All rights reserved.</p>
                         </td>
                     </tr>
                 </table>
@@ -854,9 +921,17 @@ namespace CuahangtraicayAPI.Controllers
                 Console.WriteLine("Không có email khách hàng để gửi thông báo.");
             }
 
-            return Ok(new BaseResponseDTO<HoaDon>
+            // Tạo đối tượng response mới chứa thông tin cần thiết
+            var responseData = new
             {
-                Data = bill,
+                HoaDon = bill,
+                KhachHang = bill.KhachHang,
+                HoaDonHuy = bill.hoaDonHuy // Sẽ là null nếu không có HoaDonHuy
+            };
+
+            return Ok(new BaseResponseDTO<object>
+            {
+                Data = responseData,
                 Message = "Success"
             });
         }
@@ -924,18 +999,21 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(doanhThuThang);
         }
 
-        // Sinh mã đơn hàng duy nhất
+        // hàm tạo mã hóa đơn 
         private string GenerateOrderCode()
         {
-            var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var madonhang = new string(Enumerable.Repeat(characters, 8)
-                .Select(s => s[new Random().Next(s.Length)]).ToArray());
+            string madonhang;
 
-            if (_context.HoaDons.Any(hd => hd.order_code == madonhang))
-                return GenerateOrderCode();
+            do
+            {
+                // Tiền tố cố định "LP" và chuỗi ngẫu nhiên 8 ký tự từ GUID
+                madonhang = "LP" + Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper(); // Lấy 8 ký tự đầu tiên từ GUID
+
+            } while (_context.HoaDons.Any(hd => hd.order_code == madonhang)); // Kiểm tra sự trùng lặp trong cơ sở dữ liệu
 
             return madonhang;
         }
+
 
         /// <summary>
         /// Lấy danh sách sản phẩm bán chạy trong tháng và năm hiện tại

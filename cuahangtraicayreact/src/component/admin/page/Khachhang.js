@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Modal, Spinner } from 'react-bootstrap';
 import { nanoid } from 'nanoid';
@@ -154,64 +154,90 @@ const Khachhangs = () => {
 
   const [isLoading, setIsLoading] = useState(false); // Trạng thái loading
 
-  const capNhatTrangThai = async (billId, trangthaimoi) => {
-    setIsLoading(true); // Bắt đầu hiển thị hiệu ứng loading
-    try {
-      const token = cookies.adminToken; // Lấy token từ cookie
-      const decodedToken = jwtDecode(token); // Giải mã token
-      const updatedBy = decodedToken.hoten; // Lấy hoten từ token
-      await axios.put(
-        `${process.env.REACT_APP_BASEURL}/api/HoaDon/UpdateStatus/${billId}`,
-        {
-          status: trangthaimoi,
+    const capNhatTrangThai = async (billId, trangthaimoi, lyDoHuy = null, ghiChu = null) => {
+        setIsLoading(true);
+        try {
+            const token = cookies.adminToken;  // Thay bằng cách lấy token thực tế của bạn
+            const decodedToken = jwtDecode(token);
+            const updatedBy = decodedToken["FullName"] || "Unknown"; // Sửa ở đây
+            
+            const requestBody = {
+                status: trangthaimoi,
+                ly_do_huy: lyDoHuy,    // Gửi lý do hủy
+                ghi_chu: ghiChu       // Gửi ghi chú
+            };
+            const response = await axios.put(
+                `${process.env.REACT_APP_BASEURL}/api/HoaDon/UpdateStatus/${billId}`,
+                requestBody,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+            // Nếu thành công -> Cập nhật giao diện
+            if (response.status === 200) {
+                // toast.success('Cập nhật thành công!', {
+                //     position: "top-right",
+                //     autoClose: 3000,
+                // });
+                // Đóng modal chi tiết
+                setHienThiModal(false);
 
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+                setDanhSachKhachHang((prevList) =>
+                    prevList.map((khachHang) => {
+                        if (khachHang.hoaDons) {
+                            khachHang.hoaDons = khachHang.hoaDons.map((hoaDon) => {
+                                if (hoaDon.id === billId) {
+                                    // Đảm bảo clone hoaDon và gán lại thuộc tính
+                                    const updatedHoaDon = { ...hoaDon, status: trangthaimoi, updatedBy: updatedBy };
+                                    return updatedHoaDon;
+                                }
+                                return hoaDon;
+                            });
+                        }
+                        return khachHang;
+                    })
+                );
+
+                setKhachHangHienThi((prevList) =>
+                    prevList.map((khachHang) => {
+                        if (khachHang.hoaDons) {
+                            khachHang.hoaDons = khachHang.hoaDons.map((hoaDon) => {
+                                if (hoaDon.id === billId) {
+                                    const updatedHoaDon = { ...hoaDon, status: trangthaimoi, updatedBy: updatedBy };
+                                    return updatedHoaDon;
+                                }
+                                return hoaDon;
+                            });
+                        }
+                        return khachHang;
+                    })
+                );
+                console.log("Cập nhật thành công")
+                toast.success('Cập nhật thành công!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                });
+                setHienThiModal(false);
+            } else {
+                toast.error('Cập nhật thất bại!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                });
+            }
+        } catch (error) {
+            console.error('Có lỗi khi cập nhật trạng thái đơn hàng:', error);
+            toast.error('Có lỗi khi cập nhật trạng thái đơn hàng!', {
+                position: 'top-right',
+                autoClose: 3000,
+            });
+        } finally {
+            setIsLoading(false);
         }
-      );
-
-      toast.success('Đã cập nhật trạng thái đơn hàng thành công!', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-
-      setDanhSachKhachHang((prevList) =>
-        prevList.map((khachHang) => {
-          if (khachHang.hoaDons) {
-            khachHang.hoaDons = khachHang.hoaDons.map((hoadon) =>
-              hoadon.id === billId ? { ...hoadon, status: trangthaimoi, updatedBy: updatedBy } : hoadon
-            );
-          }
-          return khachHang;
-        })
-      );
-
-      setKhachHangHienThi((prevList) =>
-        prevList.map((khachHang) => {
-          if (khachHang.hoaDons) {
-            khachHang.hoaDons = khachHang.hoaDons.map((hoadon) =>
-              hoadon.id === billId ? { ...hoadon, status: trangthaimoi, updatedBy: updatedBy } : hoadon
-            );
-          }
-          return khachHang;
-        })
-      );
-
-      setHienThiModal(false); // Đóng modal sau khi cập nhật thành công
-    } catch (error) {
-      console.error('Có lỗi khi cập nhật trạng thái đơn hàng:', error);
-      toast.error('Có lỗi khi cập nhật trạng thái đơn hàng!', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-    } finally {
-      setIsLoading(false); // Tắt hiệu ứng loading sau khi hoàn thành
-    }
-  };
+    };
+    const handleClose = () => setHienThiModal(false); // định nghĩa handleClose
   const ghnStatusMapping = {
     ready_to_pick: { text: 'Mới tạo đơn hàng', bgColor: 'badge bg-light text-dark border' },
     picking: { text: 'Nhân viên đang lấy hàng', bgColor: 'badge bg-primary text-white border' },
@@ -239,13 +265,9 @@ const Khachhangs = () => {
 
   };
 
-
-
   const kiemTraTrangThaiHoaDon = (hoadons) => {
-    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công' ||  hoadon.status === "cancel" || hoadon.status === "returned");
+    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công' || hoadon.status === "cancel" || hoadon.status === "returned");
   };
-
-
 
   const layTrangThaiDonHang = (hoaDons) => {
     if (!hoaDons || hoaDons.length === 0) {
@@ -315,7 +337,6 @@ const Khachhangs = () => {
         textColor: mapping.textColor || ''
       };
     }
-
     // Mặc định nếu không có trạng thái phù hợp
     return {
       text: 'Trạng thái không xác định',
@@ -323,8 +344,6 @@ const Khachhangs = () => {
       textColor: ''
     };
   };
-
-
   const handleHienThiModalXoa = (khachHang) => {
     setKhachHangXoa(khachHang); // Lưu thông tin khách hàng cần xóa
     setShowModalXoa(true); // Hiển thị modal
@@ -343,14 +362,13 @@ const Khachhangs = () => {
     }
   };
 
-
   const handleLenDonHang = async (idKhachHang) => {
     const token = cookies.adminToken; // Lấy token từ cookie
     // const idShop = "195758"; // Giá trị idShop mặc định
-    
+
     // Giải mã token để lấy thông tin `updatedBy`
-    const decodedToken = JSON.parse(atob(token.split(".")[1]));
-    const updatedBy = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || "Unknown";
+    const decodedToken = jwtDecode(token);
+            const updatedBy = decodedToken["FullName"] || "Unknown"; // Sửa ở đây
     try {
       // Gửi yêu cầu POST tới API lên đơn hàng
       const response = await axios.post(
@@ -416,8 +434,6 @@ const Khachhangs = () => {
       });
     }
   };
-
-
   const handleXacNhanHuyDon = async (orderCode) => {
     const token = cookies.adminToken; // Lấy token từ cookie
 
@@ -432,7 +448,6 @@ const Khachhangs = () => {
           },
         }
       );
-
       // Hiển thị thông báo thành công
       toast.success(`Đã hủy đơn hàng thành công!`, {
         position: "top-right",
@@ -474,15 +489,12 @@ const Khachhangs = () => {
       });
     }
   };
-
   return (
     <div id="wrapper">
       <SiderbarAdmin />
-
       <div id="content-wrapper" className="d-flex flex-column">
         <div id="content">
           <HeaderAdmin />
-
           <div id="content">
             <div className="content-header">
               <div className="container-fluid">
@@ -496,7 +508,6 @@ const Khachhangs = () => {
                       <li className="breadcrumb-item active">Danh Sách Khách Hàng</li>
                     </ol>
                   </div>
-
                   <div className="col-sm-6">
                     {/* Tìm kiếm nâng cao */}
                     <input
@@ -511,7 +522,6 @@ const Khachhangs = () => {
                 </div>
               </div>
             </div>
-
             <div className="container-fluid">
               <div className="card shadow mb-4">
                 <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -581,7 +591,7 @@ const Khachhangs = () => {
                                 <td>{item.ghiChu}</td>
                                 <td>
                                   {item.hoaDons.map((hoaDon) => (
-                                    <div key={hoaDon.id}>{hoaDon.thanhtoan}</div> 
+                                    <div key={hoaDon.id}>{hoaDon.thanhtoan}</div>
                                   ))}
                                 </td>
                                 <td className={`${trangThaiDonHang.bgColor} ${trangThaiDonHang.textColor}`}>
@@ -602,7 +612,7 @@ const Khachhangs = () => {
                                       <i className="bi bi-eye"></i>
                                     </button>
                                     {item.hoaDons.map((hoaDon) =>
-                                      (hoaDon.ghn === "Chưa lên đơn" && hoaDon.status !== "Hủy đơn" && hoaDon.status !== "Chờ xử lý hủy đơn" && hoaDon.status !== "Thanh toán thất bại" ) ? (
+                                      (hoaDon.ghn === "Chưa lên đơn" && hoaDon.status !== "Hủy đơn" && hoaDon.status !== "Chờ xử lý hủy đơn" && hoaDon.status !== "Thanh toán thất bại") ? (
                                         <button
                                           key={`lenDon-${hoaDon.id}`}
                                           className="btn btn-primary btn-sm me-2"
@@ -617,7 +627,6 @@ const Khachhangs = () => {
                                         )
                                       )
                                     )}
-
                                     {item.hoaDons.map((hoaDon) =>
                                       hoaDon.status === "Chờ xử lý hủy đơn" ? (
                                         <button
@@ -646,16 +655,13 @@ const Khachhangs = () => {
                           })
                         ) : (
                           <tr>
-                            <td colSpan="12" className="text-center">Không tìm thấy khách hàng</td>
+                            <td colSpan="13" className="text-center">Không tìm thấy khách hàng</td>
                           </tr>
                         )}
                       </tbody>
-
                     </table>
-
                   )}
                 </div>
-
                 <div className="card-footer clearfix">
                   {/* Phân trang */}
                   <ul className="pagination pagination-sm m-0 float-right">
@@ -676,20 +682,15 @@ const Khachhangs = () => {
             </div>
           </div>
         </div>
-
         {/* Modal chi tiết khách hàng */}
         <ModalChiTietKhachHang
           show={hienThiModal}
-          handleClose={() => setHienThiModal(false)}
+          handleClose={handleClose}
           chiTietKhachHang={chiTietKhachHang}
           capNhatTrangThai={capNhatTrangThai}
-        
           layTrangThaiDonHang={layTrangThaiDonHang}
           isLoading={isLoading}
         />
-
-
-
         <Modal
           show={showModalXoa}
           onHide={handleDongModalXoa}
@@ -722,13 +723,10 @@ const Khachhangs = () => {
             </Button>
           </Modal.Footer>
         </Modal>
-
         <Footer />
-        <ToastContainer />
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
-
   );
 };
-
 export default Khachhangs;

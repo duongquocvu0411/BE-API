@@ -25,11 +25,18 @@ namespace CuahangtraicayAPI.Controllers
         //  Tạo mã voucher ngẫu nhiên (6 ký tự chữ & số)
         private string GenerateVoucherCode()
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, 6)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+            string voucherCode;
+
+            do
+            {
+                // Sinh mã voucher ngẫu nhiên từ GUID, lấy 6 ký tự đầu tiên
+                voucherCode = "VC" + Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper(); // Lấy 6 ký tự từ GUID và chuyển thành chữ hoa
+
+            } while (_context.Vouchers.Any(v => v.Code == voucherCode)); // Kiểm tra trong cơ sở dữ liệu xem mã voucher đã tồn tại chưa
+
+            return voucherCode;
         }
+
 
 
         /// <summary>

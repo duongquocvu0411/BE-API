@@ -397,6 +397,7 @@ const isNhanvien = role.includes('Employee') && role.includes('User') && !role.i
                       <thead className="table-dark text-center">
                         <tr>
                           <th>#</th>
+                          <th>Mã sản phẩm</th>
                           <th>Hình</th>
                           <th>Tên</th>
                           <th>Giá</th>
@@ -417,6 +418,7 @@ const isNhanvien = role.includes('Employee') && role.includes('User') && !role.i
                           sanPhamTheoTrang.map((sanPham, index) => (
                             <tr key={sanPham.id}>
                               <td className="text-center">{viTriSanPhamDau + index + 1}</td>
+                              <td>{sanPham.ma_sanpham}</td>
                               <td className="text-center">
                                 <img
                                   // src={sanPham.hinhanh}

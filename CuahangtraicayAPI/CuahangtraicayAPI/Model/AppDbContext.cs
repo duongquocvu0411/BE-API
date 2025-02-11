@@ -30,6 +30,7 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     public DbSet<DanhGiaKhachHang> DanhGiaKhachHang { get; set; }
     public DbSet<KhachHang> KhachHangs { get; set; }
     public DbSet<HoaDon> HoaDons { get; set; }
+    public DbSet<HoaDonHuy>hoaDonHuys { get; set; }
     public DbSet<HoaDonChiTiet> HoaDonChiTiets { get; set; }
     public DbSet<Sanphamsale> SanphamSales { get; set; }
     public DbSet<Dactrung> Dactrungs { get; set; }

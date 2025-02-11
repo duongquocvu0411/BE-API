@@ -37,7 +37,7 @@ namespace CuahangtraicayAPI
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-
+            
 
             // Thêm AppDbContext với SQL Server
             //builder.Services.AddDbContext<AppDbContext>(options =>
@@ -181,11 +181,12 @@ namespace CuahangtraicayAPI
                 {
                     OnChallenge = context =>
                     {
-                        context.HandleResponse(); // T?t thông báo l?i m?c ??nh
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        context.Response.ContentType = "application/json";
-                        var result = System.Text.Json.JsonSerializer.Serialize(new { status = "error", message = "Bạn không có quyền với hành động này!!" });
+                        context.HandleResponse(); // Tắt thông báo lỗi mặc định
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden; // Đảm bảo trả về mã 403
+                        context.Response.ContentType = "application/json"; // Đảm bảo content type là application/json
 
+                        // Trả về thông báo lỗi chi tiết
+                        var result = System.Text.Json.JsonSerializer.Serialize(new { status = "error", message = "Bạn không có quyền thực hiện hành động này." });
                         return context.Response.WriteAsync(result);
                     }
                 };

@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { FaUser, FaClipboardList, FaMoneyBillAlt, FaBoxOpen, FaShippingFast, FaCalendarAlt, FaMapMarkerAlt, FaPhone, FaSearch, FaEye, FaEyeSlash, FaRegCreditCard } from "react-icons/fa";
+import React, { useEffect, useState, useRef } from "react";
+import axios from 'axios';
+import { FaUser, FaClipboardList, FaMoneyBillAlt, FaBoxOpen, FaShippingFast, FaCalendarAlt, FaMapMarkerAlt, FaPhone, FaSearch, FaEye, FaEyeSlash, FaRegCreditCard, FaClock, FaTimesCircle, FaCheckCircle } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 import Footerusers from "../Footerusers";
 import HeaderUsers from "../HeaderUsers";
+// import '../Lichsugd.css'; // Import CSS
+import { Button } from "react-bootstrap";
 
 const LichSuGiaoDich = () => {
   const [danhSachGiaoDich, setDanhSachGiaoDich] = useState([]);
@@ -19,6 +22,10 @@ const LichSuGiaoDich = () => {
   const [tuKhoaTimKiem, setTuKhoaTimKiem] = useState("");
   const searchInputRef = useRef(null);
   const [hienThiFullUserId, setHienThiFullUserId] = useState(false);
+  const [tongSoDonHangChoXuLy, setTongSoDonHangChoXuLy] = useState(0);
+  const [tongSoDonHangHuy, setTongSoDonHangHuy] = useState(0);
+  const [tongsodonDagiao, settongsodonDagiao] = useState(0);
+  const [tongsodonDanggiao,setTongsodonDanggiao] = useState(0);
 
   // Thêm mapping trạng thái GHN
   const ghnStatusMapping = {
@@ -46,12 +53,10 @@ const LichSuGiaoDich = () => {
     lost: { text: 'Hàng bị mất', bgColor: 'badge bg-danger text-white border' },
     waiting: { text: 'Chờ xử lý', bgColor: 'badge bg-primary text-white border' },
   };
-
   // Hàm chuyển đổi key trạng thái GHN sang text
   const getGhnStatusText = (statusKey) => {
     return ghnStatusMapping[statusKey]?.text || statusKey; // Trả về key nếu không tìm thấy
   };
-
   const giaiMaToken = (token) => {
     try {
       return jwtDecode(token);
@@ -60,15 +65,12 @@ const LichSuGiaoDich = () => {
       return null;
     }
   };
-
   const layLichSuGiaoDich = async () => {
     try {
       const token = cookies.userToken;
       if (!token) throw new Error("Không tìm thấy token.");
-
       const tokenDaGiaiMa = giaiMaToken(token);
       if (!tokenDaGiaiMa) throw new Error("Token không hợp lệ.");
-
       const userIdFromToken = tokenDaGiaiMa["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
       const response = await fetch(
         `${process.env.REACT_APP_BASEURL}/api/KhachHang/user-orders/${userIdFromToken}`, {
@@ -77,15 +79,17 @@ const LichSuGiaoDich = () => {
         }
       }
       );
-
       if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu từ API.");
-
       const data = await response.json();
       setDanhSachGiaoDich(data.data.customers);
       setDanhSachGiaoDichHienThi(data.data.customers);
       setTongSoDonHang(data.data.totalOrders);
       setTongTienDaMua(data.data.totalSpent);
       setUserId(data.data.userId);
+      setTongSoDonHangChoXuLy(data.data.tongsodonChoXuLy);
+      setTongSoDonHangHuy(data.data.tongsodonHuyDon);
+      settongsodonDagiao(data.data.totalDelivered);
+      setTongsodonDanggiao(data.data.totalDelivering);
     } catch (error) {
       setLoi(error.message);
     } finally {
@@ -131,13 +135,12 @@ const LichSuGiaoDich = () => {
     if (ghnStatusMapping[status]) {
       return ghnStatusMapping[status].bgColor; // Lấy bgColor từ mapping
     }
-
     // Nếu không có trong mapping, sử dụng các case cũ
     switch (status) {
       case "Chờ xử lý": return "badge bg-warning text-dark";
       case "Đang giao hàng": return "badge bg-info text-dark";
       case "Đã giao hàng": return "badge bg-success";
-      case "Đã hủy": return "badge bg-danger";
+      case "Hủy đơn": return "badge bg-danger";
       default: return "badge bg-secondary";
     }
   };
@@ -168,7 +171,6 @@ const LichSuGiaoDich = () => {
       <HeaderUsers />
       <br />
       <br />
-
       <div className="container py-5" style={{ marginTop: '80px' }}>
         <h2 className="text-center mb-4 text-primary fw-bold">
           <FaClipboardList className="me-2" /> Lịch Sử Giao Dịch
@@ -182,19 +184,49 @@ const LichSuGiaoDich = () => {
                 <span className="text-muted small me-1">User ID:</span>
                 <span className="fw-bold">{userIdHienThi}</span>
               </div>
-              <button
-                className="btn btn-sm btn-outline-secondary ms-2"
+              <Button
+                variant="outline-secondary"
+                size="sm"
+                className="ms-2 rounded-pill"
                 onClick={() => setHienThiFullUserId(!hienThiFullUserId)}
                 aria-label={hienThiFullUserId ? "Ẩn User ID" : "Hiển thị User ID"}
               >
                 {hienThiFullUserId ? <FaEyeSlash /> : <FaEye />}
-              </button>
+              </Button>
             </div>
             <div className="d-flex align-items-center mb-2">
               <FaBoxOpen className="me-2 text-muted" />
               <div className="d-flex align-items-center">
                 <span className="text-muted small me-1">Tổng số đơn hàng:</span>
                 <span className="fw-bold">{tongSoDonHang}</span>
+              </div>
+            </div>
+            <div className="d-flex align-items-center mb-2">
+              <FaClock className="me-2 text-muted" />
+              <div className="d-flex align-items-center">
+                <span className="text-muted small me-1">Đơn hàng đang chờ xử lý:</span>
+                <span className="fw-bold">{tongSoDonHangChoXuLy}</span>
+              </div>
+            </div>
+            <div className="d-flex align-items-center mb-2">
+              <FaTimesCircle className="me-2 text-muted" />
+              <div className="d-flex align-items-center">
+                <span className="text-muted small me-1">Đơn hàng đã hủy:</span>
+                <span className="fw-bold">{tongSoDonHangHuy}</span>
+              </div>
+            </div>
+            <div className="d-flex align-items-center mb-2">
+              <FaShippingFast className="me-2 text-muted" />
+              <div className="d-flex align-items-center">
+                <span className="text-muted small me-1">Tổng số đơn hàng đang giao:</span>
+                <span className="fw-bold">{tongsodonDanggiao}</span>
+              </div>
+            </div>
+            <div className="d-flex align-items-center">
+              <FaCheckCircle className="me-2 text-muted" />
+              <div className="d-flex align-items-center">
+                <span className="text-muted small me-1">Tổng đơn hàng hoàn thành:</span>
+                <span className="fw-bold">{tongsodonDagiao}</span>
               </div>
             </div>
             <div className="d-flex align-items-center">
@@ -308,7 +340,6 @@ const LichSuGiaoDich = () => {
         </nav>
       </div>
       <Footerusers />
-
 
     </>
   );

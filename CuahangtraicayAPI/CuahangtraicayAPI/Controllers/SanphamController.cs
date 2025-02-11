@@ -143,6 +143,21 @@ namespace CuahangtraicayAPI.Controllers
             });
         }
 
+        private string GenerateMa_sanpham()
+        {
+            string masanpham;
+
+            do
+            {
+                // Sử dụng Guid để tạo mã duy nhất
+                masanpham = "SP" + Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper(); // Lấy 8 ký tự đầu tiên từ GUID
+
+                // Kiểm tra trong database xem mã sản phẩm đã tồn tại chưa
+            } while (_context.Sanpham.Any(sp => sp.ma_sanpham == masanpham));
+
+            return masanpham;
+        }
+
 
         /// <summary>
         /// Thêm mới sản phẩm
@@ -174,7 +189,7 @@ namespace CuahangtraicayAPI.Controllers
                     Message = "không thể xác định người dùng từ token"
                 });
             }
-
+            var masanpham = GenerateMa_sanpham();
             // Tạo đối tượng sản phẩm mới
             var sanpham = new Sanpham
             {
@@ -186,6 +201,7 @@ namespace CuahangtraicayAPI.Controllers
                 danhmucsanpham_id = request.DanhmucsanphamId,
                 CreatedBy = hotenToken,
                 UpdatedBy = hotenToken,
+                ma_sanpham = masanpham,
             };
 
             // Lưu hình ảnh chính nếu có
@@ -279,7 +295,7 @@ namespace CuahangtraicayAPI.Controllers
             // Trả về kết quả với mã 201 (Created) và thông tin sản phẩm vừa tạo
             return CreatedAtAction(nameof(GetSanphams), new { id = sanpham.Id }, sanpham);
         }
-
+        
 
 
         /// <summary>

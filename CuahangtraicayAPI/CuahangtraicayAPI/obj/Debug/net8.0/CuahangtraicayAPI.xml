@@ -352,7 +352,7 @@
             </summary>
             <returns>Tra cứu theo mã của hóa đơn</returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.HoaDonController.CancelOrder(System.String)">
+        <member name="M:CuahangtraicayAPI.Controllers.HoaDonController.CancelOrder(System.String,CuahangtraicayAPI.DTO.HoaDonHuyDTO)">
             <summary>
             tra cứu đơn và hủy đơn hàng 
             </summary>

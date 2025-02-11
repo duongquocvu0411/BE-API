@@ -3,6 +3,20 @@ import { Button, Modal, Form } from 'react-bootstrap';
 
 const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTrangThai, layTrangThaiDonHang, isLoading }) => {
 
+  const [showHuyDonForm, setShowHuyDonForm] = useState(false);
+  const [lyDoHuy, setLyDoHuy] = useState("");
+  const [ghiChuHuy, setGhiChuHuy] = useState("");
+  const [billIdHuy, setBillIdHuy] = useState(null);
+
+  const lyDoHuyOptions = [
+    { value: "Hết hàng", label: "Hết hàng" },
+    { value: "Không đủ điều kiện giao hàng", label: "Không đủ điều kiện giao hàng (ví dụ: địa chỉ không hợp lệ)" },
+    { value: "Lỗi hệ thống", label: "Lỗi hệ thống" },
+    { value: "Yêu cầu từ khách hàng", label: "Yêu cầu từ khách hàng" },
+    { value: "Nghi ngờ gian lận", label: "Nghi ngờ gian lận" },
+    { value: "Lý do khác", label: "Lý do khác" },
+  ];
+
 
   const inHoaDon = () => {
     const noiDungIn = document.getElementById('printContent').innerHTML;
@@ -14,8 +28,30 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
     window.location.reload();
   };
 
+  const handleCapNhatTrangThai = (billId, trangthaimoi) => {
+    if (trangthaimoi === "Hủy đơn") {
+      setShowHuyDonForm(true);
+      setBillIdHuy(billId); // Lưu billId để sử dụng khi submit form hủy
+    } else {
+      capNhatTrangThai(billId, trangthaimoi, null, null); // Gọi hàm cập nhật trạng thái nếu không phải hủy đơn
+    }
+  };
 
+  const handleHuyDonSubmit = (e) => {
+    e.preventDefault();
+    capNhatTrangThai(billIdHuy, "Hủy đơn", lyDoHuy, ghiChuHuy);
+    setShowHuyDonForm(false);
+    setLyDoHuy("");
+    setGhiChuHuy("");
+    setBillIdHuy(null);
+  };
 
+  const handleHuyDonHuy = () => {
+    setShowHuyDonForm(false);
+    setLyDoHuy("");
+    setGhiChuHuy("");
+    setBillIdHuy(null);
+  };
 
   return (
     <>
@@ -88,6 +124,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                             <thead className="table-primary">
                               <tr>
                                 <th scope="col" className="text-center">#</th>
+                                <th scope='col' className='text-center'>Mã SP</th>
                                 <th scope="col">Sản phẩm</th>
                                 <th scope="col" className="text-center">Số lượng</th>
                                 <th scope="col" className="text-center">Đơn vị tính</th>
@@ -99,6 +136,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                               {bill.hoaDonChiTiets.map((chitiet, idx) => (
                                 <tr key={idx}>
                                   <td className="text-center">{idx + 1}</td>
+                                  <td className='text-center'>{chitiet.ma_Sp}</td>
                                   <td>{chitiet.tieude}</td>
                                   <td className="text-center">{chitiet.quantity}</td>
                                   <td className="text-center">{chitiet.don_vi_tinh}</td>
@@ -113,7 +151,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                             </tbody>
                             <tfoot>
                               <tr>
-                                <th colSpan="5" className="text-end">Tổng cộng:</th>
+                                <th colSpan="6" className="text-end">Tổng cộng:</th>
                                 <th className="text-end">
                                   {bill.hoaDonChiTiets
                                     .reduce((sum, chitiet) => sum + chitiet.quantity * chitiet.price, 0)
@@ -124,7 +162,12 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                             </tfoot>
                           </table>
                         </div>
-
+                        <div className="d-flex justify-content-end align-items-center mt-3">
+                            <strong className="me-2">Thanh toán:</strong>
+                            <span className="text-success fw-bold">
+                             {parseFloat(bill.total_price).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })} VND
+                            </span>
+                          </div>
 
                         {/* Hành động */}
                         <div className="d-flex align-items-center">
@@ -143,7 +186,7 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                                 <Form.Control
                                   as="select"
                                   value=""
-                                  onChange={(e) => capNhatTrangThai(bill.id, e.target.value)}
+                                  onChange={(e) => handleCapNhatTrangThai(bill.id, e.target.value)}
                                   className="form-select-sm"
                                   disabled={isLoading} // Vô hiệu hóa khi đang loading
                                 >
@@ -170,8 +213,6 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                                 )}
                               </Form.Group>
                             )}
-
-
                         </div>
                       </div>
                     ))
@@ -193,8 +234,57 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
         </Modal.Footer>
       </Modal>
 
+      {/* Modal form Hủy đơn */}
+      <Modal show={showHuyDonForm} onHide={handleHuyDonHuy} centered backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title className="text-danger">
+            <i className="bi bi-exclamation-triangle"></i> Xác Nhận Hủy Đơn
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleHuyDonSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Chọn lý do hủy:</Form.Label>
+              <Form.Control
+                as="select"
+                value={lyDoHuy}
+                onChange={(e) => setLyDoHuy(e.target.value)}
+                required
+              >
+                <option value="">Chọn lý do</option>
+                {lyDoHuyOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
 
+            <Form.Group className="mb-3">
+              <Form.Label>Ghi chú thêm (tùy chọn):</Form.Label>
+              <Form.Control as="textarea" rows={3} value={ghiChuHuy} onChange={(e) => setGhiChuHuy(e.target.value)} />
+            </Form.Group>
 
+            <div className="text-center">
+              <Button variant="secondary" onClick={handleHuyDonHuy} className="me-2">
+                <i className="bi bi-arrow-left"></i> Quay lại
+              </Button>
+              <Button variant="danger" type="submit" disabled={!lyDoHuy || isLoading}>
+                {isLoading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Đang xử lý...
+                  </>
+                ) : (
+                  <>
+                    <i className="bi bi-x-circle"></i> Hủy Đơn
+                  </>
+                )}
+              </Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

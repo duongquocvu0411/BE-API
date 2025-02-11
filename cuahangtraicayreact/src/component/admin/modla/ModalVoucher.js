@@ -54,21 +54,27 @@ const ModalVoucher = ({ show, handleClose, isEdit, voucher, fetchVouchers }) => 
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                toast.success(`Voucher ${voucher.code} đã được cập nhật!`);
+                toast.success(`Voucher ${voucher.code} đã được cập nhật!`,
+                    {
+                        position: 'top-right',
+                        autoClose: 3000
+                    }
+                );
             } else {
                 await axios.post(`${process.env.REACT_APP_BASEURL}/api/voucher`, formData, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                toast.success(`Voucher đã được thêm thành công!`,{
+                toast.success(`Voucher đã được thêm thành công!`, {
                     position: 'top-right',
-                    autoClose:3000
+                    autoClose: 3000
                 });
             }
 
-            fetchVouchers();
+
             resetForm();
             handleClose();
+            fetchVouchers();
         } catch (error) {
             toast.error(error.response?.data?.message || 'Đã xảy ra lỗi.');
         }

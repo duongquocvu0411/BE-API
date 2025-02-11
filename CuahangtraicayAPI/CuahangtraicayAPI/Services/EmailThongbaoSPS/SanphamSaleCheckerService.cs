@@ -262,9 +262,9 @@ public class SanphamSaleCheckerService : BackgroundService
                     <li class=""sale-item"">
                         <div class=""sale-details"">
                             <div class=""product-name"">{sale.Sanpham.Tieude}</div>
-                            <span class=""original-price"">{(sale.Sanpham.Giatien != null ? sale.Sanpham.Giatien.ToString("N0") : "Liên hệ")} VND</span>
-                            <span class=""sale-price"">{sale.giasale:N0} VND</span>
-                            <p class=""sale-time""><i class=""far fa-clock""></i> Từ {sale.thoigianbatdau?.ToString("dd/MM/yyyy")} đến {sale.thoigianketthuc?.ToString("dd/MM/yyyy")}</p>
+                            <span class=""original-price"">{(sale?.Sanpham.Giatien != null ? sale.Sanpham.Giatien.ToString("N0") : "Liên hệ")} VND</span>
+                            <span class=""sale-price"">{sale?.giasale:N0} VND</span>
+                            <p class=""sale-time""><i class=""far fa-clock""></i> Từ {sale?.thoigianbatdau?.ToString("dd/MM/yyyy")} đến {sale?.thoigianketthuc?.ToString("dd/MM/yyyy")}</p>
                         </div>
                         <i class=""fas fa-star fa-2x"" style=""color: #ffc107;""></i>
                     </li>"))}

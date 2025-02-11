@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\model\\khachhang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\model\\khachhang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|c:\\users\\dell\\onedrive\\desktop\\d\u1EF1 \u00E1n backend\\be-api\\cuahangtraicayapi\\cuahangtraicayapi\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174A5EC8-566D-494D-81F2-07EE3F8D48E3}|CuahangtraicayAPI\\CuahangtraicayAPI.csproj|solutionrelative:cuahangtraicayapi\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "KhachHang.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\KhachHang.cs",
-              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Model\\KhachHang.cs",
-              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Model\\KhachHang.cs",
-              "RelativeToolTip": "CuahangtraicayAPI\\Model\\KhachHang.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAqwCIAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-08T07:30:30.58Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "KhachHangController.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
-              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\KhachHangController.cs",
-              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\KhachHangController.cs*",
-              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\KhachHangController.cs*",
-              "ViewState": "AgIAAGAAAAAAAAAAAAAIwGkAAAAeAAAAAAAAAA==",
+              "Title": "HoaDonController.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
+              "RelativeDocumentMoniker": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\d\u1EF1 \u00E1n backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
+              "RelativeToolTip": "CuahangtraicayAPI\\Controllers\\HoaDonController.cs",
+              "ViewState": "AgIAAI8AAAAAAAAAAAAgwH0AAABLAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-08T07:22:13.7Z",
+              "WhenOpened": "2025-02-11T06:23:47.857Z",
               "EditorCaption": ""
             }
           ]

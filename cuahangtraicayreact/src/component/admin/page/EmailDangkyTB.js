@@ -38,8 +38,13 @@ const EmailDangkyTB = () => {
 
   const layDanhSachEmail = async () => {
     setDangtai(true);
+    const token = cookies.adminToken;
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Emaildangky`); // Đảm bảo URL chính xác
+      const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/Emaildangky`,{
+        headers: {
+          Authorization:` Bearer ${token}`
+        }
+      }); // Đảm bảo URL chính xác
 
       setEmails(response.data.data); // Giả sử API trả về { data: [], message: "" }
       setDangtai(false);

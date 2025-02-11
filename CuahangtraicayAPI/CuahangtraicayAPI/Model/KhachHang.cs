@@ -12,10 +12,7 @@ namespace CuahangtraicayAPI.Model
         [Key]
         public int Id { get; set; }
 
-
-
         public string Ten { get; set; }
-
 
         public string Ho { get; set; }
 
@@ -33,6 +30,7 @@ namespace CuahangtraicayAPI.Model
 
         public string UpdatedBy { get; set; }
         public string CreatedBy { get; set; }
+       
         public string UserNameLogin { get; set; }
         // Định nghĩa quan hệ một-nhiều với Hóa Đơn (HoaDon)
         [JsonIgnore]

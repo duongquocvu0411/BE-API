@@ -32,7 +32,7 @@ const TrangchuNguoidung = () => {
   const [dactrungs, setDactrungs] = useState([]); // State lưu danh sách đặc trưng
   const [banners, setBanners] = useState([]);
   const [email, SetEmail] = useState('');
-  const [thongbao,setThongbao]= useState('');
+  const [thongbao, setThongbao] = useState('');
   // Phân trang sản phẩm thông thường
   const [trangHienTai, datTrangHienTai] = useState(1);
   const sanPhamMoiTrang = 8;
@@ -173,51 +173,51 @@ const TrangchuNguoidung = () => {
     e.preventDefault();
 
     if (!email || !email.includes('@')) {
-        toast.error('Vui lòng nhập một địa chỉ email hợp lệ.', {
-            position: "top-right",
-            autoClose: 3000,
-        });
-        return;
+      toast.error('Vui lòng nhập một địa chỉ email hợp lệ.', {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
     }
 
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BASEURL}/api/Emaildangky`, { Email: email });
+      const response = await axios.post(`${process.env.REACT_APP_BASEURL}/api/Emaildangky`, { Email: email });
 
-        if (response.data.code === 0 && response.data.message === "Success") {
-          
-            // thông báo thành công
-            setThongbao('🎉 Đăng ký thành công! Cảm ơn bạn đã quan tâm đến cửa hàng.');
+      if (response.data.code === 0 && response.data.message === "Success") {
 
-            SetEmail('');
+        // thông báo thành công
+        setThongbao('🎉 Đăng ký thành công! Cảm ơn bạn đã quan tâm đến cửa hàng.');
 
-            // xóa thông báo sau 5s
-            setTimeout(() =>{
-              setThongbao('');
-            },5000)
-            
-        } else {
-            // Lấy thông báo lỗi từ backend
-            const errorMessage = response.data.message || 'Đã có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.';
-            setThongbao(`❌ ${errorMessage}`); // Hiển thị thông báo từ backend
-            setTimeout(() =>{
-              setThongbao('');
-            },5000)
-        }
+        SetEmail('');
+
+        // xóa thông báo sau 5s
+        setTimeout(() => {
+          setThongbao('');
+        }, 5000)
+
+      } else {
+        // Lấy thông báo lỗi từ backend
+        const errorMessage = response.data.message || 'Đã có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.';
+        setThongbao(`❌ ${errorMessage}`); // Hiển thị thông báo từ backend
+        setTimeout(() => {
+          setThongbao('');
+        }, 5000)
+      }
     } catch (error) {
-        console.error('Lỗi khi đăng ký email:', error);
+      console.error('Lỗi khi đăng ký email:', error);
 
-        // Lấy thông báo lỗi từ backend (nếu có)
-        let errorMessage = 'Đã có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.';
-        if (error.response && error.response.data && error.response.data.message) {
-            errorMessage = error.response.data.message;
-        }
+      // Lấy thông báo lỗi từ backend (nếu có)
+      let errorMessage = 'Đã có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.';
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
 
-       setThongbao(`❌ ${errorMessage}`);
-       setTimeout(() =>{
+      setThongbao(`❌ ${errorMessage}`);
+      setTimeout(() => {
         setThongbao('');
-       },5000)
+      }, 5000)
     }
-};
+  };
   return (
     <>
       <HeaderUsers />
@@ -722,10 +722,10 @@ const TrangchuNguoidung = () => {
                       </button>
                     </div>
                     {thongbao && (
-                          <div className={`mt-3 text-center ${thongbao.startsWith('🎉') ? 'text-success' : 'text-danger'}`}>
-                            {thongbao}
-                          </div>
-                        )}
+                      <div className={`mt-3 text-center ${thongbao.startsWith('🎉') ? 'text-success' : 'text-danger'}`}>
+                        {thongbao}
+                      </div>
+                    )}
                   </form>
                 </div>
               </div>

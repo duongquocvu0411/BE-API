@@ -1671,6 +1671,11 @@
         "Name": "orderCode",
         "Type": "System.String",
         "IsRequired": true
+      },
+      {
+        "Name": "huydto",
+        "Type": "CuahangtraicayAPI.DTO.HoaDonHuyDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -1706,7 +1711,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.HoaDon, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

@@ -30,6 +30,7 @@ namespace CuahangtraicayAPI.Model
         public string don_vi_tinh { get; set; } // Đơn vị tính của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
 
 
+        public string ma_sanpham { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
 

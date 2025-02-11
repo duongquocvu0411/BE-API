@@ -105,6 +105,7 @@ namespace CuahangtraicayAPI.Controllers
                     kh.EmailDiaChi,
                     kh.GhiChu,
                     kh.UserNameLogin,
+
                     Orders = _context.HoaDons
                         .Where(hd => hd.khachhang_id == kh.Id)
                         .Select(hd => new
@@ -137,6 +138,8 @@ namespace CuahangtraicayAPI.Controllers
                         userId,
                         totalOrders = 0,
                         totalSpent = 0,
+                        totalWaitingConfirmOrders = 0,  // Thêm
+                        totalCanceledOrders = 0, // Thêm
                         customers = new List<object>()
                     }
                 });
@@ -148,6 +151,23 @@ namespace CuahangtraicayAPI.Controllers
                                                    .Where(hd => hd.status == "delivered")
                                                    .Sum(o => o.total_price));
 
+            // Tính tổng số đơn hàng ở trạng thái "Chờ xử lý"
+            var tongsodonChoXuLy = customers.Sum(c => c.Orders
+                                                                .Count(o => o.status == "Chờ xử lý"));
+
+            // Tính tổng số đơn hàng ở trạng thái "Hủy đơn"
+            var tongsodonHuyDon = customers.Sum(c => c.Orders
+                                                            .Count(o => o.status == "Hủy đơn"));
+
+            // Tính tổng số đơn hàng ở trạng thái vận chuyển (đang giao + đã giao)
+            var totalDelivering = customers.Sum(c => c.Orders
+                                                               .Count(o => o.status == "delivering"));
+            var totalDelivered = customers.Sum(c => c.Orders
+                                                                .Count(o => o.status == "delivered"));
+
+            // Tính tổng số đơn hàng ở trạng thái vận chuyển (đang giao + đã giao)
+            var tongSoDangGiaoVaDaGiao = totalDelivering + totalDelivered;
+
             return Ok(new
             {
                 status = "success",
@@ -155,13 +175,17 @@ namespace CuahangtraicayAPI.Controllers
                 data = new
                 {
                     userId,
-                    totalOrders, // Tổng số đơn hàng
-                    totalSpent,  // Tổng số tiền đã chi tiêu
-                    customers    // Danh sách khách hàng
+                    totalOrders,           // Tổng số đơn hàng
+                    totalSpent,            // Tổng số tiền đã chi tiêu
+                    tongsodonChoXuLy,   // Thêm
+                    tongsodonHuyDon, // Thêm
+                    //tongSoDangGiaoVaDaGiao,
+                    totalDelivering,
+                    totalDelivered,
+                    customers           // Danh sách khách hàng
                 }
             });
         }
-
 
         /// <summary>
         /// Xem khách hàng theo id có hóa đơn, hóa đơn chi tiết
@@ -206,6 +230,7 @@ namespace CuahangtraicayAPI.Controllers
                 sdt = khachHang.Sdt,
                 email = khachHang.EmailDiaChi,
                 ghichu = khachHang.GhiChu,
+          
                 hoaDons = khachHang.HoaDons.Select(hd => new
                 {
                     id = hd.Id,
@@ -220,6 +245,7 @@ namespace CuahangtraicayAPI.Controllers
 
                     hoaDonChiTiets = hd.HoaDonChiTiets.Select(hdct => new
                     {
+                        Ma_Sp = hdct.SanPham?.ma_sanpham,
                         tieude = hdct.SanPham?.Tieude,
                         don_vi_tinh = hdct.SanPham?.don_vi_tinh,
                         price = hdct.price,
@@ -291,7 +317,8 @@ namespace CuahangtraicayAPI.Controllers
                 GhiChu = kh.GhiChu,
                 UserNameLogin = userId,
                 CreatedBy = "Khách hàng",
-                UpdatedBy = "Chưa tác động"
+                UpdatedBy = "Chưa tác động",
+              
             };
 
             // Thêm khách hàng vào cơ sở dữ liệu

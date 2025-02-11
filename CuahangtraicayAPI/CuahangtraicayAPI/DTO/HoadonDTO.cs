@@ -22,6 +22,9 @@ namespace CuahangtraicayAPI.DTO
         public class UpdateStatusDto
         {
             public string Status { get; set; }
+
+            public string Ly_do_huy { get; set; }
+            public string Ghi_chu { get; set; } = " ";
             //[Required]
             //public string Updated_By { get; set; }
 

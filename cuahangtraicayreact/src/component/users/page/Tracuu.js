@@ -3,17 +3,29 @@ import axios from "axios";
 import HeaderUsers from './../HeaderUsers';
 import Footerusers from './../Footerusers';
 import { toast, ToastContainer } from "react-toastify";
-import { Modal, Button } from 'react-bootstrap';  // Thêm Modal và Button từ react-bootstrap
+import { Modal, Button, Form } from 'react-bootstrap';  // Thêm Form
 import Aos from "aos";
 
 const Tracuu = () => {
   const [madonhang, setmadonhang] = useState("");
   const [dathangchitiet, setDathangchitiet] = useState(null);
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);  // Điều khiển việc hiển thị modal
+  const [showModal, setShowModal] = useState(false);
   const [maDonGhn, setMaDonGhn] = useState(""); // Trạng thái cho mã đơn hàng GHN
   const [ghnData, setGhnData] = useState(null); // Trạng thái để lưu dữ liệu từ GHN
   const [errorGhn, setErrorGhn] = useState(""); // Lỗi khi tra cứu GHN
+  const [lyDoHuy, setLyDoHuy] = useState("");  // Trạng thái cho lý do hủy
+  const [noiDungHuy, setNoiDungHuy] = useState(""); // Trạng thái cho nội dung hủy
+
+  const lyDoHuyOptions = [
+    { value: "Không còn nhu cầu mua hàng", label: "Tôi không còn nhu cầu mua hàng nữa" },
+    { value: "Thời gian giao hàng quá lâu", label: "Thời gian giao hàng quá lâu so với dự kiến" },
+    { value: "Sản phẩm bị lỗi", label: "Sản phẩm bị lỗi/hư hỏng" },
+    { value: "Thay đổi địa chỉ nhận hàng", label: "Tôi muốn thay đổi địa chỉ nhận hàng" },
+    { value: "Tìm được ưu đãi tốt hơn ở nơi khác", label: "Tôi tìm được ưu đãi tốt hơn ở nơi khác" },
+    { value: "Lý do khác", label: "Lý do khác" },
+  ];
+
   useEffect(() => {
     // Khởi tạo AOS sau khi component được render
     Aos.init({
@@ -71,8 +83,14 @@ const Tracuu = () => {
 
   const handleCancelOrder = async () => {
     try {
-      // Gửi yêu cầu hủy đơn hàng đến API
-      await axios.put(`${process.env.REACT_APP_BASEURL}/api/hoadon/tracuu/${madonhang}/huydon`);
+      // Gửi yêu cầu hủy đơn hàng đến API, bao gồm lý do và nội dung
+      await axios.put(
+        `${process.env.REACT_APP_BASEURL}/api/hoadon/tracuu/${madonhang}/huydon`,
+        {
+          ly_do_huy: lyDoHuy,
+          Ghi_chu: noiDungHuy,
+        }
+      );
 
       // Cập nhật trạng thái đơn hàng trong giao diện
       setDathangchitiet({ ...dathangchitiet, status: "Hủy đơn" });
@@ -83,8 +101,10 @@ const Tracuu = () => {
         autoClose: 3000,
       });
 
-      // Đóng modal sau khi hủy thành công
+      // Đóng modal và reset trạng thái
       setShowModal(false);
+      setLyDoHuy("");
+      setNoiDungHuy("");
       // Gọi lại API để load lại dữ liệu mới
       await handleLookupOrder(new Event('submit'));
     } catch (error) {
@@ -117,7 +137,7 @@ const Tracuu = () => {
         return { text: 'Thanh toán thất bại', class: 'bg-secondary text-white' }; // Màu xám cho thanh toán thất bại
       case 'Chờ xử lý':
         return { text: 'Chờ xử lý', class: 'bg-info text-white' }; // Màu xanh da trời cho chờ xử lý
-        case 'Chờ lấy hàng':
+      case 'Chờ lấy hàng':
         return { text: 'Chờ lấy hàng', class: 'bg-info text-white' }; // Màu xanh da trời cho chờ xử lấy hàng
       case 'Chờ xử lý hủy đơn':
         return { text: 'Chờ xử lý hủy đơn', class: 'bg-warning text-white' }; // Màu vàng cho chờ xử lý hủy đơn
@@ -228,6 +248,17 @@ const Tracuu = () => {
   // const statusInfo = getStatusClass(dathangchitiet.trangThai);
   const statusInfo = dathangchitiet ? getStatusClass(dathangchitiet.trangThai) : { text: "Trạng thái không xác định", class: "bg-light text-muted" };
 
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setLyDoHuy(""); // Reset lyDoHuy khi đóng modal
+    setNoiDungHuy(""); // Reset noiDungHuy khi đóng modal
+  };
+
+
   return (
     <>
       <HeaderUsers />
@@ -238,15 +269,15 @@ const Tracuu = () => {
             <span className="animated-letter">T</span>
             <span className="animated-letter">r</span>
             <span className="animated-letter">a</span>
-            &nbsp;
+
             <span className="animated-letter">C</span>
             <span className="animated-letter">ứ</span>
             <span className="animated-letter">u</span>
-            &nbsp;
+
             <span className="animated-letter">Đ</span>
             <span className="animated-letter">ơ</span>
             <span className="animated-letter">n</span>
-            &nbsp;
+
             <span className="animated-letter">H</span>
             <span className="animated-letter">à</span>
             <span className="animated-letter">n</span>
@@ -285,14 +316,22 @@ const Tracuu = () => {
             </div>
             <div className="card-body">
               <p className="card-text">
-                <strong>Trạng thái đơn hàng:</strong>{' '}
+                <strong><i className="fas fa-info-circle me-1"></i> Trạng thái đơn hàng:</strong>{' '}
                 <span className={`badge ${statusInfo.class}`}>
                   {statusInfo.text}
                 </span>
               </p>
               <p className="card-text">
-                <strong>Phương thức thanh toán:</strong>{" "}
+                <strong><i className="fas fa-credit-card me-1"></i> Phương thức thanh toán:</strong>{" "}
                 <span className="">{dathangchitiet.phuongThucThanhToan}</span>
+              </p>
+              <p className="card-text">
+                <strong><i className="fas fa-tag me-1"></i> Mã voucher áp dụng:</strong>{" "}
+                <span className="">{dathangchitiet.vouchers || "Không có"}</span>
+              </p>
+              <p className="card-text">
+                <strong><i className="fas fa-percent me-1"></i> Được giảm giá:</strong>{" "}
+                <span className="">{dathangchitiet.giamgia?.toLocaleString("vi-VN") || "0"} VND</span>
               </p>
 
 
@@ -303,6 +342,7 @@ const Tracuu = () => {
                 <table className="table table-striped table-hover">
                   <thead className="table-primary">
                     <tr>
+                      <th scope="col">Mã SP</th>
                       <th scope="col">Sản phẩm</th>
                       <th scope="col">Số lượng</th>
                       <th scope="col">Giá</th>
@@ -312,6 +352,7 @@ const Tracuu = () => {
                     {dathangchitiet.chiTietHoaDon && Array.isArray(dathangchitiet.chiTietHoaDon) ? (
                       dathangchitiet.chiTietHoaDon.map((item, index) => (
                         <tr key={index}>
+                          <td>{item.ma_SP}</td>
                           <td>{item.tenSanPham}</td>
                           <td>{item.soLuong} {item.donViTinh}</td>
                           <td>{parseFloat(item.gia).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })} VND</td>
@@ -319,7 +360,7 @@ const Tracuu = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="3" className="text-center">Không có chi tiết sản phẩm</td>
+                        <td colSpan="4" className="text-center">Không có chi tiết sản phẩm</td>
                       </tr>
                     )}
                   </tbody>
@@ -335,9 +376,7 @@ const Tracuu = () => {
                 <div className="text-center mt-4">
                   <button
                     className="btn btn-danger rounded-3 py-2 px-4"
-                    onClick={() => {
-                      setShowModal(true); // Hiển thị modal khi nhấn hủy
-                    }}
+                    onClick={handleShowModal} // Hiển thị modal khi nhấn hủy
                   >
                     <i className="fas fa-ban"></i> Hủy đơn hàng
                   </button>
@@ -349,82 +388,82 @@ const Tracuu = () => {
           </div>
         )}
         {/* <div className="container my-5 py-5" data-aos="fade-up">
-          <h3 className="mb-4 text-center">Tra cứu mã đơn </h3>
-  
-          <form onSubmit={handleLookupGhnOrder} className="mb-5">
-            <div className="input-group input-group-lg shadow-sm">
-              <input
-                type="text"
-                className="form-control border-success rounded-3"
-                placeholder="Nhập mã đơn hàng GHN của bạn"
-                value={maDonGhn}
-                onChange={(e) => setMaDonGhn(e.target.value)}
-                aria-label="Mã đơn hàng GHN"
-              />
-              <button className="btn btn-success rounded-3" type="submit">
-                <i className="fas fa-search"></i> Tra cứu GHN
-              </button>
+      <h3 className="mb-4 text-center">Tra cứu mã đơn </h3>
+
+      <form onSubmit={handleLookupGhnOrder} className="mb-5">
+        <div className="input-group input-group-lg shadow-sm">
+          <input
+            type="text"
+            className="form-control border-success rounded-3"
+            placeholder="Nhập mã đơn hàng GHN của bạn"
+            value={maDonGhn}
+            onChange={(e) => setMaDonGhn(e.target.value)}
+            aria-label="Mã đơn hàng GHN"
+          />
+          <button className="btn btn-success rounded-3" type="submit">
+            <i className="fas fa-search"></i> Tra cứu GHN
+          </button>
+        </div>
+      </form>
+
+      {errorGhn && <div className="alert alert-danger text-center">{errorGhn}</div>}
+
+
+      {ghnData && (
+        <div className="card shadow-lg border-0 mb-5">
+          <div className="card-header bg-success text-white d-flex justify-content-between align-items-center rounded-top">
+            <h5 className="mb-0">Chi tiết đơn hàng GHN: {ghnData.order_code}</h5>
+            <small className="text-white">Ngày tạo: {new Date(ghnData.created_date).toLocaleDateString()}</small>
+          </div>
+          <div className="card-body">
+            <p className="card-text">
+              <strong>Trạng thái:</strong>{" "}
+              <span className="badge bg-primary">{getTrangthaidonhangGHN(ghnData.status)}</span>
+            </p>
+            <p className="card-text">
+              <strong>Người nhận:</strong> {ghnData.to_name} - {ghnData.to_phone}
+            </p>
+            <p className="card-text">
+              <strong>Địa chỉ giao hàng:</strong> {ghnData.to_address}
+            </p>
+            <p className="card-text">
+              <strong>Tổng giá trị (COD):</strong> {ghnData.cod_amount.toLocaleString("vi-VN")} VND
+            </p>
+
+
+            <h6 className="mt-4 text-success">
+              <i className="fas fa-box"></i> Chi tiết sản phẩm:
+            </h6>
+            <div className="table-responsive">
+              <table className="table table-striped table-hover">
+                <thead className="table-success">
+                  <tr>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Mã sản phẩm</th>
+                    <th scope="col">Số lượng</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ghnData.items.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.name}</td>
+                      <td>{item.code}</td>
+                      <td>{item.quantity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </form>
-
-          {errorGhn && <div className="alert alert-danger text-center">{errorGhn}</div>}
-
-        
-          {ghnData && (
-            <div className="card shadow-lg border-0 mb-5">
-              <div className="card-header bg-success text-white d-flex justify-content-between align-items-center rounded-top">
-                <h5 className="mb-0">Chi tiết đơn hàng GHN: {ghnData.order_code}</h5>
-                <small className="text-white">Ngày tạo: {new Date(ghnData.created_date).toLocaleDateString()}</small>
-              </div>
-              <div className="card-body">
-                <p className="card-text">
-                  <strong>Trạng thái:</strong>{" "}
-                  <span className="badge bg-primary">{getTrangthaidonhangGHN(ghnData.status)}</span>
-                </p>
-                <p className="card-text">
-                  <strong>Người nhận:</strong> {ghnData.to_name} - {ghnData.to_phone}
-                </p>
-                <p className="card-text">
-                  <strong>Địa chỉ giao hàng:</strong> {ghnData.to_address}
-                </p>
-                <p className="card-text">
-                  <strong>Tổng giá trị (COD):</strong> {ghnData.cod_amount.toLocaleString("vi-VN")} VND
-                </p>
-
-            
-                <h6 className="mt-4 text-success">
-                  <i className="fas fa-box"></i> Chi tiết sản phẩm:
-                </h6>
-                <div className="table-responsive">
-                  <table className="table table-striped table-hover">
-                    <thead className="table-success">
-                      <tr>
-                        <th scope="col">Tên sản phẩm</th>
-                        <th scope="col">Mã sản phẩm</th>
-                        <th scope="col">Số lượng</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {ghnData.items.map((item, index) => (
-                        <tr key={index}>
-                          <td>{item.name}</td>
-                          <td>{item.code}</td>
-                          <td>{item.quantity}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
-        </div> */}
+          </div>
+        </div>
+      )}
+    </div> */}
       </div>
 
       {/* Modal xác nhận hủy đơn hàng */}
       <Modal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={handleCloseModal}
         centered
         backdrop="static" // Không cho phép đóng khi click ra ngoài
       >
@@ -434,17 +473,45 @@ const Tracuu = () => {
           </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body className="text-center">
-          <i className="fas fa-ban fa-4x text-danger mb-3"></i>
-          <h5 className="mb-3">Bạn có chắc chắn muốn hủy đơn hàng này?</h5>
-          <p className="text-muted">Hành động này không thể hoàn tác.</p>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Chọn lý do hủy:</Form.Label>
+              <Form.Select
+                value={lyDoHuy}
+                onChange={(e) => setLyDoHuy(e.target.value)}
+                required
+              >
+                <option value="">Chọn lý do</option>
+                {lyDoHuyOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Nội dung chi tiết (tùy chọn):</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={noiDungHuy}
+                onChange={(e) => setNoiDungHuy(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
         </Modal.Body>
 
         <Modal.Footer className="justify-content-center">
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="secondary" onClick={handleCloseModal}>
             <i className="fas fa-times me-2"></i> Hủy
           </Button>
-          <Button variant="danger" onClick={handleCancelOrder}>
+          <Button
+            variant="danger"
+            onClick={handleCancelOrder}
+            disabled={!lyDoHuy} // Disable nút nếu chưa chọn lý do
+          >
             <i className="fas fa-check me-2"></i> Xác nhận hủy
           </Button>
         </Modal.Footer>

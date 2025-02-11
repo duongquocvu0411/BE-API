@@ -1,7 +1,9 @@
 ﻿using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -23,10 +25,12 @@ namespace CuahangtraicayAPI.Controllers
         /// Xem danh sách Email đăng ký nhận thông báo
         /// </summary>
         /// <returns>Xem danh sách Email đăng ký nhận thông báo</returns>
-
+        [Authorize(Roles ="Admin,Employee")]
         [HttpGet]
         public async Task<ActionResult<BaseResponseDTO<IEnumerable<EmaildangkyTB>>>> GetEmailDangkyTBS()
         {
+          
+
             var data = await _context.emaildangkyTBs.ToListAsync();
             return new BaseResponseDTO<IEnumerable<EmaildangkyTB>>
             {
@@ -42,6 +46,8 @@ namespace CuahangtraicayAPI.Controllers
         /// <param name="id">Xem Email nhận thông báo theo {id}</param>
         /// <returns>Xem Email nhận thông báo theo {id}</returns>
 
+
+        [Authorize(Roles ="Admin,Employee")]
         [HttpGet("{id}")]
         public async Task<ActionResult<BaseResponseDTO<EmaildangkyTB>>> GetIDemaildangk(int id)
         {
@@ -108,6 +114,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <param name="id">Xóa 1 Email nhận thông báo của khách hàng</param>
         /// <returns>Xóa 1 Email nhận thông báo của khách hàng</returns>
 
+        [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<BaseResponseDTO<EmaildangkyTB>>> DeletEmaildangky(int id)
         {
