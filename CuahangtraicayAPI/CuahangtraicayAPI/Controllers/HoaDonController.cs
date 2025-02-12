@@ -94,7 +94,7 @@ namespace CuahangtraicayAPI.Controllers
 
             }
 
-            //kiem3 tra voucher nếu có 
+            // Kiểm tra voucher nếu có
             decimal voucherDiscount = 0m;
             string appliedVoucherCode = null;
             if (!string.IsNullOrEmpty(hoaDonDto.VoucherCode))
@@ -107,24 +107,28 @@ namespace CuahangtraicayAPI.Controllers
 
                 if (voucher != null)
                 {
-                    // Kiểm tra nếu số lần sử dụng đã đạt giới hạn
-                    if (voucher.Toidasudung != null && voucher.Solandasudung >= voucher.Toidasudung)
-                    {
-                        // Cập nhật trạng thái voucher thành "Không hoạt động"
-                        voucher.TrangthaiVoucher = false;
-                        _context.Vouchers.Update(voucher);
-                        await _context.SaveChangesAsync();
-
-                        return BadRequest(new { message = "Voucher này đã đạt giới hạn sử dụng và không còn hiệu lực." });
-                    }
-
                     // Kiểm tra nếu đơn hàng đạt giá trị tối thiểu để sử dụng voucher
                     if (totalPrice >= voucher.Giatridonhang)
                     {
                         voucherDiscount = voucher.Sotiengiamgia;
                         appliedVoucherCode = voucher.Code;
-                        voucher.Solandasudung++; // Cập nhật số lần sử dụng
+
+                        // Cập nhật số lần sử dụng voucher (TĂNG TRƯỚC KHI KIỂM TRA)
+                        voucher.Solandasudung++;
                         _context.Vouchers.Update(voucher);
+
+                        // KIỂM TRA SAU KHI TĂNG SOLANDASUDUNG
+                        if (voucher.Toidasudung != null && voucher.Solandasudung >= voucher.Toidasudung)
+                        {
+                            // Cập nhật trạng thái voucher thành "Không hoạt động" (NẾU CHƯA BỊ VÔ HIỆU HÓA)
+                            if (voucher.TrangthaiVoucher) // Kiểm tra trạng thái trước khi cập nhật
+                            {
+                                voucher.TrangthaiVoucher = false;
+                                _context.Vouchers.Update(voucher);
+                            }
+                        }
+
+                        await _context.SaveChangesAsync(); // Lưu thay đổi (quan trọng!)
                     }
                     else
                     {
@@ -136,7 +140,6 @@ namespace CuahangtraicayAPI.Controllers
                     return BadRequest(new { message = "Mã giảm giá không hợp lệ hoặc đã hết hạn." });
                 }
             }
-
 
             // Áp dụng giảm giá
             totalPrice -= voucherDiscount;
@@ -196,6 +199,7 @@ namespace CuahangtraicayAPI.Controllers
                 // Tạo URL thanh toán VnPay
                 var paymentInfo = new PaymentInformationModel
                 {
+                    
                     OrderType = "billpayment",
                     Amount = (double)totalPrice,
                     OrderDescription = $"Thanh toán hóa đơn {orderCode}",

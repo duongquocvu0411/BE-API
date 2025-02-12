@@ -41,6 +41,7 @@ import { useEffect, useState } from "react";
 import LoadingScreen from "./component/users/page/Loadingwebsite";
 import LichSuGiaoDich from "./component/users/page/Lichsugiaodich";
 import EmailDangkyTB from "./component/admin/page/EmailDangkyTB";
+import DonViTinh from "./component/admin/page/DonViTinh";
 
 // import MenuFooter from "./component/admin/page/MenuFooter";
 
@@ -80,6 +81,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Tencuahang />
+              </ProtectedRoute>
+            }
+          />
+            <Route
+            path="/admin/donvitinh"
+            element={
+              <ProtectedRoute>
+                <DonViTinh />
               </ProtectedRoute>
             }
           />

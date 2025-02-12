@@ -28,6 +28,7 @@ const ModlaSanpham = ({
   const [hinhanhPhu, setHinhanhPhu] = useState([]); // Hình ảnh phụ mới chọn
   const [existingHinhanhPhu, setExistingHinhanhPhu] = useState([]); // Ảnh phụ hiện có từ API
   const [saleData, setSaleData] = useState(null);
+  const [donvitinh, setDonvitinh] = useState([]);
   // Modal chi tiết sản phẩm
   const [showChiTietModal, setShowChiTietModal] = useState(false);
   const [chiTiet, setChiTiet] = useState({
@@ -52,6 +53,14 @@ const ModlaSanpham = ({
         console.log("Có lỗi khi lấy dữ liệu từ API ", error);
       });
   
+      axios
+      .get(`${process.env.REACT_APP_BASEURL}/api/donvitinh`)
+      .then((response) => {
+        setDonvitinh(response.data.data);
+      })
+      .catch((error) => {
+        console.log("Có lỗi khi lấy dữ liệu từ API ", error);
+      });
     // console.log("Product data:", product); // Kiểm tra giá trị của `product`
   
     if (isEdit && product) {
@@ -433,13 +442,12 @@ const ModlaSanpham = ({
                 onChange={(e) => setDvt(e.target.value)}
                 className="shadow-sm"
               >
-                <option value="">Chọn đơn vị tính</option>
-                <option value="kg">kg</option>
-                <option value="gói">Gói</option>
-                <option value="bó">bó</option>
-                <option value="thùng">Thùng</option>
-                <option value="Lốc">Lốc</option>
-                <option value="gram">Gram</option>
+                <option value="">Chọn danh mục sản phẩm</option>
+                {donvitinh.map((dvts) => (
+                  <option key={dvts.id} value={dvts.id}>
+                    {dvts.name}
+                  </option>
+                ))}
               </Form.Control>
             </Form.Group>
 

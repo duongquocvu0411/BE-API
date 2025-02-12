@@ -243,7 +243,7 @@ const Cuahang = () => {
 
                           <p className="text-dark fs-5 fw-bold">
                             {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
-                            / {sanPham.don_vi_tinh}
+                            / {sanPham.donvitinhs.name}
                           </p>
                           {sanPham.trangthai === "Hết hàng" ? (
                             <span className="badge bg-danger py-2 px-3">Hết hàng</span>
@@ -400,7 +400,7 @@ const Cuahang = () => {
                                     minimumFractionDigits: 3,
                                   })}{" "}
                                   VND  */}
-                                  / {sanPham.don_vi_tinh}
+                                  / {sanPham.donvitinhs.name}
                                 </p>
                               </div>
                               {!daHethan && sanPham.trangthai !== "Hết hàng" && laySoLuongKhaDung(sanPham) > 0 && (

@@ -56,18 +56,26 @@ namespace CuahangtraicayAPI.Controllers
                     return NotFound(new { success = false, message = $"Không tìm thấy hóa đơn với mã {orderId}." });
                 }
 
-                // Kiểm tra xem giao dịch đã được xử lý hay chưa
                 var existingTransaction = await _context.PaymentTransactions
-                    .FirstOrDefaultAsync(pt => pt.TransactionId == transactionId && pt.Status == "Success");
+     .FirstOrDefaultAsync(pt => pt.TransactionId == transactionId);
 
                 if (existingTransaction != null)
                 {
+                    var responseMessage = "Giao dịch này đã được xử lý thành công trước đó.";
+
+                    // Kiểm tra trạng thái và trả về đúng thông báo
+                    if (existingTransaction.Status == "Failed")
+                    {
+                        responseMessage = "Giao dịch này đã thất bại .";
+                    }
+
                     return Ok(new
                     {
-                        success = true,
-                        message = "Giao dịch này đã được xử lý thành công trước đó.",
+                        success = existingTransaction.Status == "Success",
+                        message = responseMessage,
                         data = new
                         {
+                            
                             orderId = orderId,
                             transactionId = transactionId,
                             amount = decimal.Parse(amount).ToString("N0", new CultureInfo("vi-VN")),
@@ -77,20 +85,22 @@ namespace CuahangtraicayAPI.Controllers
                     });
                 }
 
-               
-                    var newTransaction = new PaymentTransaction
-                    {
-                        OrderId = orderId,
-                        TransactionId = transactionId,
-                        Amount = decimal.TryParse(amount, out var parsedAmount) ? parsedAmount : 0,
-                        PaymentMethod = "Momo",
-                        Status = errorCode == "0" ? "Success" : "Failed",
-                        ResponseMessage = errorCode == "0" ? "Thanh toán thành công" : "Thanh toán thất bại",
-                        Created_at = DateTime.Now,
-                       CreatedBy = "Khách hàng",
-                       UpdatedBy = "chưa có tác động"
-                    };
-                    _context.PaymentTransactions.Add(newTransaction);
+
+
+                var newTransaction = new PaymentTransaction
+                {
+                    id_hoadons = hoaDon.Id,
+                    OrderId = orderId,
+                    TransactionId = transactionId,
+                    Amount = decimal.TryParse(amount, out var parsedAmount) ? parsedAmount : 0,
+                    PaymentMethod = "Momo",
+                    Status = errorCode == "0" ? "Success" : "Failed",
+                    ResponseMessage = errorCode == "0" ? "Thanh toán thành công" : "Thanh toán thất bại",
+                    Created_at = DateTime.Now,
+                    CreatedBy = "Khách hàng",
+                    UpdatedBy = "chưa có tác động"
+                };
+                _context.PaymentTransactions.Add(newTransaction);
                 //}
 
                 if (errorCode == "0")
@@ -190,8 +200,10 @@ namespace CuahangtraicayAPI.Controllers
         {
             try
             {
+                // Lấy dữ liệu trả về từ VnPay
                 var response = _vnPayService.PaymentExecute(Request.Query);
 
+                // Kiểm tra xem phản hồi có hợp lệ không
                 if (response == null)
                 {
                     return BadRequest(new { success = false, message = "Phản hồi từ VnPay không hợp lệ." });
@@ -207,41 +219,64 @@ namespace CuahangtraicayAPI.Controllers
 
                 // Kiểm tra xem giao dịch đã được xử lý hay chưa
                 var giaodichxuly = await _context.PaymentTransactions
-                    .FirstOrDefaultAsync(pt => pt.TransactionId == response.TransactionId && pt.Status == "Success");
+                    .FirstOrDefaultAsync(pt => pt.TransactionId == response.TransactionId);
 
                 if (giaodichxuly != null)
                 {
-                    // Nếu giao dịch đã thành công trước đó, trả về phản hồi
-                    return Ok(new
+                    // Nếu giao dịch đã được xử lý, chỉ cần kiểm tra trạng thái
+                    if (giaodichxuly.Status == "Success")
                     {
-                        success = true,
-                        message = "Giao dịch này đã được xử lý thành công .",
-                        data = new
+                        return Ok(new
                         {
-                            orderId = response.OrderId,
-                            amount = response.Amount.ToString("N0", new CultureInfo("vi-VN")),
-                            status = hoaDon.status,
-                            orderInfo = hoaDon.order_code
-                        }
-                    });
-                }
-         
-                    // Tạo mới giao dịch
-                    var newTransaction = new PaymentTransaction
+                            success = true,
+                            message = "Giao dịch này đã được xử lý thành công.",
+                            data = new
+                            {
+                                orderId = response.OrderId,
+                                amount = response.Amount.ToString("N0", new CultureInfo("vi-VN")),
+                                transactionId = response.TransactionId, // Thêm mã giao dịch
+                                status = hoaDon.status,
+                                orderInfo = hoaDon.order_code
+                            }
+                        });
+                    }
+                    else if (giaodichxuly.Status == "Failed")
                     {
-                        OrderId = response.OrderId,
-                        TransactionId = response.TransactionId ?? Guid.NewGuid().ToString(),
-                        Amount = response.Amount,
-                        PaymentMethod = "VnPay",
-                        Status = response.Success ? "Success" : "Failed",
-                        ResponseMessage = response.Success ? "Thanh toán thành công" : "Thanh toán thất bại",
-                        Created_at = DateTime.Now,
-                        CreatedBy ="Khách hàng",
-                        UpdatedBy="Chưa có tác động"
-                        
-                    };
-                    _context.PaymentTransactions.Add(newTransaction);
-                //}
+                        // Nếu giao dịch đã thất bại trước đó, không thêm nữa
+                        return Ok(new
+                        {
+                            success = false,
+                            message = "Giao dịch này đã thất bại .",
+                            data = new
+                            {
+                                orderId = response.OrderId,
+                                amount = response.Amount.ToString("N0", new CultureInfo("vi-VN")),
+                                transactionId = response.TransactionId, // Thêm mã giao dịch
+                                status = hoaDon.status,
+                                orderInfo = hoaDon.order_code
+                            }
+                        });
+                    }
+                }
+
+                // Tạo mới giao dịch
+                var newTransaction = new PaymentTransaction
+                {
+                    id_hoadons=hoaDon.Id,
+                    OrderId = response.OrderId,
+                    TransactionId = response.TransactionId ?? Guid.NewGuid().ToString(),
+                    Amount = response.Amount,
+                    PaymentMethod = "VnPay",
+                    Status = response.Success ? "Success" : "Failed",
+                    ResponseMessage = response.Success ? "Thanh toán thành công" : "Thanh toán thất bại",
+                    Created_at = DateTime.Now,
+                    CreatedBy = "Khách hàng",
+                    UpdatedBy = "Chưa có tác động"
+                };
+
+                // Thêm giao dịch vào cơ sở dữ liệu chỉ nếu chưa có
+                _context.PaymentTransactions.Add(newTransaction);
+                await _context.SaveChangesAsync();
 
                 // Cập nhật trạng thái hóa đơn
                 if (response.Success)
@@ -324,6 +359,7 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
         }
+
 
 
         private async Task GuiEmailHoaDon(HoaDon bill, decimal totalPrice, string orderCode)
@@ -411,4 +447,4 @@ namespace CuahangtraicayAPI.Controllers
 
     }
 }
-    
+

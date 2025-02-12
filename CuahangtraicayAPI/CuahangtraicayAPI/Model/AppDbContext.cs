@@ -30,7 +30,7 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     public DbSet<DanhGiaKhachHang> DanhGiaKhachHang { get; set; }
     public DbSet<KhachHang> KhachHangs { get; set; }
     public DbSet<HoaDon> HoaDons { get; set; }
-    public DbSet<HoaDonHuy>hoaDonHuys { get; set; }
+    public DbSet<HoaDonHuy> hoaDonHuys { get; set; }
     public DbSet<HoaDonChiTiet> HoaDonChiTiets { get; set; }
     public DbSet<Sanphamsale> SanphamSales { get; set; }
     public DbSet<Dactrung> Dactrungs { get; set; }
@@ -48,7 +48,7 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     public DbSet<PhanHoiDanhGia> PhanHoiDanhGias { get; set; }
     public DbSet<Voucher> Vouchers { get; set; }
     public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
-
+    public DbSet<Donvitinh> donvitinhs { get; set; }
     public DbSet<EmaildangkyTB> emaildangkyTBs { get; set; }
     public DbSet<GhnOrder> GhnOrders { get; set; }
     // Cấu hình mối quan hệ và chuyển đổi dữ liệu
@@ -106,6 +106,11 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
             .HasOne(s => s.Danhmucsanpham)
             .WithMany()
             .HasForeignKey(s => s.danhmucsanpham_id);
+
+        modelBuilder.Entity<Sanpham>()
+            .HasOne(s => s.Donvitinhs)
+            .WithMany()
+            .HasForeignKey(s => s.don_vi_tinh);
 
         modelBuilder.Entity<Sanpham>()
             .HasOne(s => s.ChiTiet)

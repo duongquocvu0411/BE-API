@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from 'axios';
-import { FaUser, FaClipboardList, FaMoneyBillAlt, FaBoxOpen, FaShippingFast, FaCalendarAlt, FaMapMarkerAlt, FaPhone, FaSearch, FaEye, FaEyeSlash, FaRegCreditCard, FaClock, FaTimesCircle, FaCheckCircle } from "react-icons/fa";
+import { FaUser, FaClipboardList, FaMoneyBillAlt, FaBoxOpen, FaShippingFast, FaCalendarAlt, FaMapMarkerAlt, FaPhone, FaSearch, FaEye, FaEyeSlash, FaRegCreditCard, FaClock, FaTimesCircle, FaCheckCircle, FaReply, FaQuestionCircle } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 import Footerusers from "../Footerusers";
@@ -25,7 +25,7 @@ const LichSuGiaoDich = () => {
   const [tongSoDonHangChoXuLy, setTongSoDonHangChoXuLy] = useState(0);
   const [tongSoDonHangHuy, setTongSoDonHangHuy] = useState(0);
   const [tongsodonDagiao, settongsodonDagiao] = useState(0);
-  const [tongsodonDanggiao,setTongsodonDanggiao] = useState(0);
+  const [tongsodonDanggiao, setTongsodonDanggiao] = useState(0);
 
   // Thêm mapping trạng thái GHN
   const ghnStatusMapping = {
@@ -164,6 +164,19 @@ const LichSuGiaoDich = () => {
       </div>
     );
   }
+
+  const getStatusInfo = (responseMessage) => {
+    switch (responseMessage) {
+      case "Thanh toán thành công":
+        return { icon: <FaCheckCircle />, color: "text-success", tooltip: "Thanh toán thành công" };
+      case "Hoàn tiền thành công":
+        return { icon: <FaReply />, color: "text-info", tooltip: "Hoàn tiền thành công" };
+      case "Thanh toán thất bại":
+        return { icon: <FaTimesCircle />, color: "text-danger", tooltip: "Thanh toán thất bại" };
+      default:
+        return { };
+    }
+  };
 
   return (
     <>
@@ -304,6 +317,12 @@ const LichSuGiaoDich = () => {
                           <p className="card-text"><FaShippingFast className="me-1" /> Phương thức: {donHang.thanhtoan}</p>
                           <p className="card-text text-muted">
                             <FaRegCreditCard className="me-1" /> Mã giao dịch: {donHang.transactionId || "không có mã giao dịch"}
+                          </p>
+                          <p className="card-text text-muted">
+                            <span className={`me-1 ${getStatusInfo(donHang.responseMessage).color}`} title={getStatusInfo(donHang.responseMessage).tooltip}>
+                              {getStatusInfo(donHang.responseMessage).icon} {/* Icon */}
+                            </span>
+                            <span>{donHang.responseMessage}</span> {/* Response Message */}
                           </p>
                         </div>
                       </div>

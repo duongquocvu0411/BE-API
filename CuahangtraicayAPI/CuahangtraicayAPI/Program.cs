@@ -88,11 +88,25 @@ namespace CuahangtraicayAPI
                 });
             });
 
-            // Thêm dịch vụ cho các controller và cấu hình JSON để bỏ qua vòng lặp
+            //Thêm dịch vụ cho các controller và cấu hình JSON để bỏ qua vòng lặp
             builder.Services.AddControllers()
-                .AddJsonOptions(options =>
-                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+              .AddJsonOptions(options =>
+              {
+                  // Bỏ qua các tham chiếu vòng
+                  options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 
+                  // Loại bỏ các giá trị null
+                  options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+
+                  // Các tùy chọn khác (nếu cần)
+                  // options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+              });
+
+            //builder.Services.AddControllers()
+            //.AddJsonOptions(options =>
+            //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+
+            //    );
             // Cấu hình Swagger với tài liệu XML
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>

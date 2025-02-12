@@ -27,7 +27,7 @@ namespace CuahangtraicayAPI.Model
         public string Trangthai { get; set; } // Trạng thái của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
 
         public int Soluong { get; set; }
-        public string don_vi_tinh { get; set; } // Đơn vị tính của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
+        public int don_vi_tinh { get; set; } // Đơn vị tính của sản phẩm, nullable nếu cơ sở dữ liệu cho phép NULL
 
 
         public string ma_sanpham { get; set; }
@@ -48,7 +48,10 @@ namespace CuahangtraicayAPI.Model
         [ForeignKey("danhmucsanpham_id")]
         public virtual Danhmucsanpham? Danhmucsanpham { get; set; }
 
+        [ForeignKey("don_vi_tinh")]
+        public virtual Donvitinh Donvitinhs { get; set; }
 
+       
 
         // Liên kết với chi tiết sản phẩm
 

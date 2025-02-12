@@ -118,6 +118,12 @@ const SiderbarAdmin = () => {
             <span>Quản lý Danh mục</span>
           </Link>
         </li>
+        <li className={`nav-item ${vitriRoute.pathname === '/admin/donvitinh' ? 'active' : ''}`}>
+          <Link className="nav-link" to="/admin/donvitinh">
+            <i className="fas fa-tags"></i> {/* Icon danh mục */}
+            <span>Quản lý DVT</span>
+          </Link>
+        </li>
 
         {/* Quản lý Giới thiệu */}
         <li className={`nav-item ${vitriRoute.pathname === '/admin/gioithieuAdmin' ? 'active' : ''}`}>

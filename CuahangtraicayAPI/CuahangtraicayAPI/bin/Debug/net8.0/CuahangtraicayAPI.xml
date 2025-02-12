@@ -219,6 +219,36 @@
             </summary>
             <returns> lấy danh sách địa chỉ chi tiết đang có status : "đang sử dụng"</returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.DonvitinhController.GetDonvitinh">
+            <summary>
+            Lấy danh sách của đơn vị tính sản phẩm
+            </summary>
+            <returns> Lấy danh sách của đơn vị tính sản phẩm</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.DonvitinhController.GetDonvitinh(System.Int32)">
+            <summary>
+            Lấy danh sách đơn vị tính sản phẩm theo {id}
+            </summary>
+            <returns> Lấy danh sách đơn vị tính sản phẩm theo {id}</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.DonvitinhController.PostDonvitinh(CuahangtraicayAPI.DTO.DvtDTO.PostDvtDTO)">
+            <summary>
+             Thêm mới 1 đơn vị tính sản phẩm
+            </summary>
+            <returns> Thêm mới 1 đơn vị tính sản phẩm </returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.DonvitinhController.PutDonvitinh(System.Int32,CuahangtraicayAPI.DTO.DvtDTO.PutDvtDTO)">
+            <summary>
+            Chỉnh sửa đơn vị tính sản phẩm theo {id}
+            </summary>
+            <returns> Chỉnh sửa đơn vị tính sản phẩm theo {id}</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.DonvitinhController.DeleteDonvitinh(System.Int32)">
+            <summary>
+            Xóa 1 đơn vị tính sản phẩm theo {id}
+            </summary>
+            <returns> Xóa 1 đơn vị tính sản phẩm theo {id}</returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.EmaildangkyController.GetEmailDangkyTBS">
             <summary>
             Xem danh sách Email đăng ký nhận thông báo

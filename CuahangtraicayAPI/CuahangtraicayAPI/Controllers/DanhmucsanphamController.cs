@@ -28,7 +28,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // GET: api/Danhmucsanpham
         [HttpGet]
-        public async Task<ActionResult<BaseResponseDTO< IEnumerable<Danhmucsanpham>>>> GetDanhmucsanpham()
+        public async Task<ActionResult<BaseResponseDTO<IEnumerable<Danhmucsanpham>>>> GetDanhmucsanpham()
         {
             //ActionResult là một lớp trong ASP.NET Core, được sử dụng để trả về các kết quả HTTP từ controller.
             // api có thể trả về một danh sách các đối tượng trong danhmucsanpham
@@ -75,7 +75,7 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/Danhmucsanpham
         [HttpPost]
-        [Authorize(Roles ="Admin,Employee")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult<BaseResponseDTO<Danhmucsanpham>>> PostDanhmucsanpham([FromBody] PostDanhmucDTO dto)
         {
             // Kiểm tra xem tên danh mục đã tồn tại chưa
@@ -141,7 +141,7 @@ namespace CuahangtraicayAPI.Controllers
                     Message = " Không thể xác định người dùng từ token"
                 });
             }
-            
+
 
 
             // Cập nhật danh mục
@@ -191,8 +191,8 @@ namespace CuahangtraicayAPI.Controllers
 
         // DELETE: api/Danhmucsanpham/{id}
         [HttpDelete("{id}")]
-        [Authorize(Roles ="Admin")]
-       public async Task<ActionResult<BaseResponseDTO<Danhmucsanpham>>> DeleteDanhmucsanpham(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<BaseResponseDTO<Danhmucsanpham>>> DeleteDanhmucsanpham(int id)
         {
             // Tìm danh mục sản phẩm theo ID
             var danhmucsanpham = await _context.Danhmucsanpham.FindAsync(id);

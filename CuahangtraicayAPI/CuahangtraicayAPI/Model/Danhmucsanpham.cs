@@ -14,5 +14,7 @@ namespace CuahangtraicayAPI.Model
         public string CreatedBy { get; set; }
 
         public string UpdatedBy { get; set; }
+
+    
     }
 }

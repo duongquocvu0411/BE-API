@@ -12,6 +12,7 @@ using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -49,6 +50,7 @@ namespace CuahangtraicayAPI.Controllers
                 .Where(s => s.Xoa == false)
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.Images)
+                .Include(s => s.Donvitinhs)
                 .Include(s => s.ChiTiet)
                 .Include(s => s.SanphamSales)
                 .OrderBy(s => s.Danhmucsanpham.ID)
@@ -86,6 +88,7 @@ namespace CuahangtraicayAPI.Controllers
                 .Include(s => s.ChiTiet)
                 .Include(s => s.Images)
                 .Include(s => s.Danhmucsanpham)
+                .Include(s => s.Donvitinhs)
                 .Include(s => s.Danhgiakhachhangs) // Include đánh giá khách hàng
                     .ThenInclude(dg => dg.PhanHoi) // Include phản hồi của từng đánh giá
                 .Include(s => s.SanphamSales)
@@ -117,6 +120,7 @@ namespace CuahangtraicayAPI.Controllers
             // Lấy sản phẩm hiện tại
             var spht = await _context.Sanpham
                 .Include(s => s.Danhmucsanpham)
+                .Include(s => s.Donvitinhs)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (spht == null)
@@ -127,6 +131,7 @@ namespace CuahangtraicayAPI.Controllers
             // Lấy danh sách sản phẩm liên quan
             var relatedProducts = await _context.Sanpham
                 .Include(s => s.SanphamSales)
+                .Include(s => s.Donvitinhs)
                 .Where(s =>
                     s.Id != id && // Loại trừ sản phẩm hiện tại
                     s.Xoa == false && // Chỉ lấy sản phẩm không bị xóa
@@ -295,7 +300,7 @@ namespace CuahangtraicayAPI.Controllers
             // Trả về kết quả với mã 201 (Created) và thông tin sản phẩm vừa tạo
             return CreatedAtAction(nameof(GetSanphams), new { id = sanpham.Id }, sanpham);
         }
-        
+
 
 
         /// <summary>
@@ -340,7 +345,7 @@ namespace CuahangtraicayAPI.Controllers
             if (!string.IsNullOrEmpty(request.Tieude)) sanpham.Tieude = request.Tieude;
             if (request.Giatien != 0) sanpham.Giatien = request.Giatien;
             if (!string.IsNullOrEmpty(request.Trangthai)) sanpham.Trangthai = request.Trangthai;
-            if (!string.IsNullOrEmpty(request.DonViTinh)) sanpham.don_vi_tinh = request.DonViTinh;
+            if (request.DonViTinh != 0) sanpham.don_vi_tinh = request.DonViTinh;
             if (request.DanhmucsanphamId != 0) sanpham.danhmucsanpham_id = request.DanhmucsanphamId;
             sanpham.UpdatedBy = hotenToken;
             sanpham.Xoa = request.Xoasp;
@@ -587,6 +592,7 @@ namespace CuahangtraicayAPI.Controllers
             var sanphams = await _context.Sanpham
                 .Where(s => s.danhmucsanpham_id == danhmucId && s.Xoa == false)
                 .Include(s => s.Danhmucsanpham)
+                .Include(s => s.Donvitinhs)
                 .Include(s => s.SanphamSales)
                 .ToListAsync();
 
@@ -629,6 +635,7 @@ namespace CuahangtraicayAPI.Controllers
             var sanphams = await _context.Sanpham
                 .Where(s => s.danhmucsanpham_id == danhmucId && s.Xoa == false && s.SanphamSales.All(sale => sale.trangthai == "Không áp dụng"))
                 .Include(s => s.Danhmucsanpham)
+                .Include( s => s.Donvitinhs)
                 .Include(s => s.SanphamSales)
 
                 .Include(s => s.ChiTiet)
@@ -731,7 +738,8 @@ namespace CuahangtraicayAPI.Controllers
                .Where(s => s.Xoa == false && s.SanphamSales.All(sale => sale.trangthai == "Không áp dụng"))
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.ChiTiet)
-                .Include(s => s.SanphamSales) // Include thông tin sale
+                .Include(s => s.SanphamSales)
+                 .Include(s => s.Donvitinhs)
                 .OrderBy(s => s.Danhmucsanpham.ID)
                 .ToListAsync();
 
@@ -755,6 +763,7 @@ namespace CuahangtraicayAPI.Controllers
             var sanphams = await _context.Sanpham
                 .Include(s => s.Danhmucsanpham)
                 .Include(s => s.ChiTiet)
+                 .Include(s => s.Donvitinhs)
                 .Include(s => s.SanphamSales)
                .Where(s => s.Xoa == false && s.SanphamSales.Any(sale => sale.trangthai == "Đang áp dụng"))// Include thông tin sale
                 .ToListAsync();

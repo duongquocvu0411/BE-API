@@ -2,10 +2,11 @@
 
 namespace CuahangtraicayAPI.Model
 {
-    [Table("PaymentTransactions ")]
+    [Table("PaymentTransactions")]
     public class PaymentTransaction :BaseModel
     {
         public int Id { get; set; }
+        public int id_hoadons { get; set; }
         public string OrderId { get; set; }
         public string TransactionId { get; set; }
         public decimal Amount { get; set; }
@@ -17,5 +18,7 @@ namespace CuahangtraicayAPI.Model
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
 
+        [ForeignKey("id_hoadons")]
+        public virtual HoaDon HoaDon { get; set; }
     }
 }

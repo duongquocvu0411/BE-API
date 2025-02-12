@@ -76,7 +76,7 @@ const SanPham = () => {
 
       const response = await axios.get(url);
       setDanhSachSanPham(response.data.data || []); // Lưu danh sách sản phẩm vào state
-      setTrangHienTai(1); // Đặt lại trang hiện tại về 1 khi thay đổi danh mục
+      // setTrangHienTai(1); // Đặt lại trang hiện tại về 1 khi thay đổi danh mục
     } catch (error) {
       if (error.response && error.response.status === 404) {
         setDanhSachSanPham([]); // Khi API trả về 404, đặt danh sách sản phẩm là mảng rỗng
@@ -440,7 +440,7 @@ const isNhanvien = role.includes('Employee') && role.includes('User') && !role.i
                               <td>
                                 {sanPham.soluongtamgiu}
                               </td>
-                              <td>{sanPham.don_vi_tinh}</td>
+                              <td>{sanPham.donvitinhs.name}</td>
                               <td className="text-center">
                                 <button className="btn btn-outline-info btn-sm" onClick={() => moModalChiTiet(sanPham.id)}>
                                   <i className="fas fa-eye"></i>

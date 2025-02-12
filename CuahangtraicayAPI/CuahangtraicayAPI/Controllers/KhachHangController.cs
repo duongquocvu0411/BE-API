@@ -121,7 +121,14 @@ namespace CuahangtraicayAPI.Controllers
                             TransactionId = _context.PaymentTransactions
                                 .Where(pt => pt.OrderId == hd.order_code) // Giả sử OrderId trong PaymentTransactions khớp với order_code trong HoaDons
                                 .Select(pt => pt.TransactionId)
-                                .FirstOrDefault() // Lấy mã giao dịch đầu tiên nếu có
+                                .FirstOrDefault(), // Lấy mã giao dịch đầu tiên nếu có
+
+                            // lấy thêm trạng thái mã giao dịch
+
+                            ResponseMessage = _context.PaymentTransactions
+                                .Where(gd => gd.OrderId == hd.order_code)
+                                .Select(gd => gd.ResponseMessage)
+                                .FirstOrDefault()
                         })
                         .ToList()
                 })
@@ -201,6 +208,7 @@ namespace CuahangtraicayAPI.Controllers
                 .Include(kh => kh.HoaDons)
                     .ThenInclude(hd => hd.HoaDonChiTiets)
                     .ThenInclude(sp => sp.SanPham)
+                    .ThenInclude(sp => sp.Donvitinhs)
 
                 .FirstOrDefaultAsync(kh => kh.Id == id);
 
@@ -247,7 +255,7 @@ namespace CuahangtraicayAPI.Controllers
                     {
                         Ma_Sp = hdct.SanPham?.ma_sanpham,
                         tieude = hdct.SanPham?.Tieude,
-                        don_vi_tinh = hdct.SanPham?.don_vi_tinh,
+                        don_vi_tinh = hdct.SanPham.Donvitinhs.name,
                         price = hdct.price,
                         quantity = hdct.quantity,
                         id = hdct.Id,
@@ -440,6 +448,7 @@ namespace CuahangtraicayAPI.Controllers
                 .Include(kh => kh.HoaDons)
                 .ThenInclude(hd => hd.HoaDonChiTiets)
                 .ThenInclude(hdct => hdct.SanPham)
+                .ThenInclude(hdct => hdct.Donvitinhs)
                 .FirstOrDefault(kh => kh.Id == id);
         }
         /// <summary>

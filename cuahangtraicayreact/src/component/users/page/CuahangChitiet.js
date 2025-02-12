@@ -238,7 +238,7 @@ const CuahangChitiet = () => {
                       <div>
                         <p className="text-muted mb-2" style={{ textDecoration: "line-through" }}>
                           {parseFloat(sanPham.giatien).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
-                          ({sanPham.don_vi_tinh})
+                          ({sanPham.donvitinhs.name})
 
                         </p>
                         <p className="mb-3 ">Số lượng: {laySoLuongKhaDung(sanPham) <= 0 ? (
@@ -248,14 +248,14 @@ const CuahangChitiet = () => {
                         )}</p>
                         <p className="text-danger fw-bold mb-2">
                           Giá khuyến mãi: {parseFloat(sale.giasale).toLocaleString('vi-VN', { style: 'decimal', minimumFractionDigits: 0 })} VNĐ
-                          {/* {parseFloat(sale.giasale).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "}/ vnđ */} ({sanPham.don_vi_tinh})
+                          {/* {parseFloat(sale.giasale).toLocaleString("vi-VN", { minimumFractionDigits: 3 })}{" "}/ vnđ */} ({sanPham.donvitinhs.name})
                         </p>
                         <p className="text-warning">
                           <Countdown date={new Date(sale.thoigianketthuc)} renderer={countdownRenderer} />
                         </p>
                       </div>
                     ) : (
-                      <h5 className="fw-bold mb-3">{parseFloat(sanPham.giatien).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })}{" "} vnđ / {sanPham.don_vi_tinh}</h5>
+                      <h5 className="fw-bold mb-3">{parseFloat(sanPham.giatien).toLocaleString("vi-VN", { style: 'decimal', minimumFractionDigits: 0 })}{" "} vnđ / {sanPham.donvitinhs.name}</h5>
                     )}
 
                     {/* Kiểm tra trạng thái Hết hàng */}
@@ -594,7 +594,7 @@ const CuahangChitiet = () => {
                       <div className="card-body text-center">
                         <h5 className="card-title text-truncate">{sanPham.tieude}</h5>
                         <p className="card-text">
-                          {parseFloat(sanPham.giatien).toLocaleString("vi-VN")}  vnđ / {sanPham.don_vi_tinh}
+                          {parseFloat(sanPham.giatien).toLocaleString("vi-VN")}  vnđ / {sanPham.donvitinhs.name}
                         </p>
                         {sanPham.trangthai === "Hết hàng" ? (
                           <span className="badge bg-danger py-2 px-3">Hết hàng</span>

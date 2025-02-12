@@ -55,10 +55,7 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
 
 
   const handleRemoveExistingImage = async (imageId) => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'; // Kiểm tra trạng thái lưu đăng nhập
-    const token = isLoggedIn ? localStorage.getItem('adminToken') : sessionStorage.getItem('adminToken'); // Lấy token từ localStorage nếu đã lưu, nếu không lấy từ sessionStorage
-
-
+   const token  = cookies.adminToken;
 
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/TenFooter/DeleteImage/${imageId}`, {

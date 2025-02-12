@@ -21,7 +21,7 @@ namespace CuahangtraicayAPI.DTO
             //public string Trangthai { get; set; }
 
             [Required]
-            public string DonViTinh { get; set; }
+            public int DonViTinh { get; set; }
 
             [Required]
             public int DanhmucsanphamId { get; set; }
@@ -47,7 +47,7 @@ namespace CuahangtraicayAPI.DTO
 
             public string Trangthai { get; set; }
 
-            public string DonViTinh { get; set; }
+            public int DonViTinh { get; set; }
 
             public int DanhmucsanphamId { get; set; }
             public bool Xoasp { get; set; }

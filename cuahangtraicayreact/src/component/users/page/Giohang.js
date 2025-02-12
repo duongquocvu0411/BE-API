@@ -120,7 +120,7 @@ const Giohang = () => {
                         <td>
                           {parseFloat(sanPham.gia).toLocaleString("vi-VN", { style: "decimal", minimumFractionDigits: 0 })}
                           VNĐ
-                          / {sanPham.don_vi_tinh}
+                          / {sanPham.donvitinhs.name}
                         </td>
                         <td>
                           <div className="input-group justify-content-center">

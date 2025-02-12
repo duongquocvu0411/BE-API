@@ -294,7 +294,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>Xóa Hình ảnh icon của Footer {imageId}</returns>
         
         [HttpDelete("DeleteImage/{imageId}")]
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> DeleteImage(int imageId)
         {
             // Tìm hình ảnh theo ID
