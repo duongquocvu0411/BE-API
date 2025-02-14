@@ -162,21 +162,23 @@ namespace CuahangtraicayAPI.Controllers
 
             if (editTenFooter == null)
             {
-                return BadRequest( new BaseResponseDTO<TenFooters>
+                return NotFound(new BaseResponseDTO<TenFooters>
                 {
                     Code = 404,
-                    Message ="Tên footer không tồn tại trong hệ thóng"
+                    Message = "TenFooter không tồn tại."
                 });
             }
+
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Danhmucsanpham>
                 {
                     Data = null,
-                    Message = " Không thể xác định người dùng từ token"
+                    Message = "Không thể xác định người dùng từ token."
                 });
             }
+
             // Update basic fields (nếu DTO có giá trị)
             if (!string.IsNullOrWhiteSpace(dto.Tieude))
             {
@@ -187,22 +189,70 @@ namespace CuahangtraicayAPI.Controllers
                 editTenFooter.phude = dto.Phude;
             }
 
-            editTenFooter.UpdatedBy =hotenToken;
-            editTenFooter.Updated_at=DateTime.Now;
-            // Handle images
-            if (dto.Images != null && dto.Images.Count > 0)
+            editTenFooter.UpdatedBy = hotenToken;
+            editTenFooter.Updated_at = DateTime.Now;
+
+            // 1. Xử lý cập nhật ảnh cũ (dựa trên ImageIds)
+            if (dto.ImageIds != null && dto.ImageIds.Any())
+            {
+                for (int i = 0; i < dto.ImageIds.Count; i++)
+                {
+                    var imageId = dto.ImageIds[i];
+                    var existingImage = await _context.FooterImgs.FindAsync(imageId);
+
+                    if (existingImage == null)
+                    {
+                        return NotFound(new BaseResponseDTO<FooterImgs>
+                        {
+                            Code = 404,
+                            Message = $"Không tìm thấy FooterImg với ID = {imageId}."
+                        });
+                    }
+
+                    // Nếu ImageId tồn tại, tiếp tục xử lý
+                    if (dto.Links != null && dto.Links.Count > i)
+                    {
+                        existingImage.link = dto.Links[i];
+                    }
+
+                    if (dto.Images != null && dto.Images.Count > i)
+                    {
+                        // Xóa ảnh cũ
+                        var oldFilePath = Path.Combine(_environment.WebRootPath, existingImage.ImagePath.TrimStart('/'));
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+
+                        // Upload ảnh mới
+                        var image = dto.Images[i];
+                        var fileExtension = Path.GetExtension(image.FileName);
+                        var uniqueFileName = Guid.NewGuid().ToString("N") + fileExtension;
+                        var filePath = Path.Combine(_environment.WebRootPath, "footer", uniqueFileName);
+                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await image.CopyToAsync(stream);
+                        }
+
+                        // Cập nhật ImagePath
+                        existingImage.ImagePath = $"/footer/{uniqueFileName}";
+                    }
+                }
+            }
+
+            // 2. Xử lý thêm ảnh mới (không có ImageIds)
+            if (dto.Images != null && dto.Images.Any() && (dto.ImageIds == null || !dto.ImageIds.Any()))
             {
                 for (int i = 0; i < dto.Images.Count; i++)
                 {
                     var image = dto.Images[i];
                     var link = dto.Links != null && dto.Links.Count > i ? dto.Links[i] : null;
 
-                    // Lấy phần mở rộng của tệp ảnh gốc (ví dụ: .jpg, .png, v.v.)
+                    // Xử lý upload ảnh mới và tạo FooterImgs
                     var fileExtension = Path.GetExtension(image.FileName);
-
-                    // Tạo một chuỗi duy nhất bằng GUID và kết hợp với phần mở rộng của tệp
                     var uniqueFileName = Guid.NewGuid().ToString("N") + fileExtension;
-
                     var filePath = Path.Combine(_environment.WebRootPath, "footer", uniqueFileName);
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
@@ -211,16 +261,17 @@ namespace CuahangtraicayAPI.Controllers
                         await image.CopyToAsync(stream);
                     }
 
-                    // Cập nhật thông tin hình ảnh vào đối tượng
-                    editTenFooter.FooterIMG.Add(new FooterImgs
+                    var newFooterImg = new FooterImgs
                     {
                         ImagePath = $"/footer/{uniqueFileName}",
-                        link = link
-                    });
+                        link = link,
+                        Footer_ID = editTenFooter.Id
+                    };
+
+                    _context.FooterImgs.Add(newFooterImg); // Thêm vào context
+                    editTenFooter.FooterIMG.Add(newFooterImg); // Thêm vào collection của TenFooter
                 }
             }
-
-            _context.Entry(editTenFooter).State = EntityState.Modified;
 
             try
             {
@@ -238,12 +289,12 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-            return Ok(new BaseResponseDTO<TenFooters>{
+            return Ok(new BaseResponseDTO<TenFooters>
+            {
                 Data = editTenFooter,
-                Message = "Success"
+                Message = "Cập nhật thành công."
             });
         }
-
 
         /// <summary>
         /// Xóa Tên Footer {id}

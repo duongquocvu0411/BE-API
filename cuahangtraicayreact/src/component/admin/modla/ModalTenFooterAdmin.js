@@ -12,6 +12,7 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
   const [links, setLinks] = useState([]); // Link cho hình ảnh mới
   const [hienCo, setHienCo] = useState([]); // Hình ảnh và link hiện có từ API
   const [cookies] = useCookies(['adminToken', 'loginhoten'])
+
   useEffect(() => {
     if (isEdit && tenFooter) {
       setTieude(tenFooter.tieude || '');
@@ -22,6 +23,7 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
         id: img.id,
         imagePath: img.imagePath,
         link: img.link,
+        originalLink: img.link, // Thêm originalLink
       })) || [];
       setHienCo(existingImages);
 
@@ -42,9 +44,23 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
   };
 
   const handleFileChange = (index, file) => {
-    const updatedHinhanhs = [...hinhanhs];
-    updatedHinhanhs[index] = file;
-    setHinhanhs(updatedHinhanhs);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const updatedHinhanhs = [...hinhanhs];
+        updatedHinhanhs[index] = {
+          file: file,
+          preview: reader.result
+        };
+        setHinhanhs(updatedHinhanhs);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      const updatedHinhanhs = [...hinhanhs];
+      delete updatedHinhanhs[index].file;
+      delete updatedHinhanhs[index].preview;
+      setHinhanhs(updatedHinhanhs);
+    }
   };
 
   const handleLinkChange = (index, link) => {
@@ -55,7 +71,7 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
 
 
   const handleRemoveExistingImage = async (imageId) => {
-   const token  = cookies.adminToken;
+    const token = cookies.adminToken;
 
     try {
       await axios.delete(`${process.env.REACT_APP_BASEURL}/api/TenFooter/DeleteImage/${imageId}`, {
@@ -72,10 +88,10 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
   };
 
   const handleSave = async () => {
-    const token = cookies.adminToken; // Lấy token từ cookie
-    const decodedToken = jwtDecode(token); // Giải mã token
-    const loggedInUser = decodedToken.hoten; // Lấy hoten từ token
-    // Kiểm tra nếu không có token thì yêu cầu đăng nhập lại
+    const token = cookies.adminToken;
+
+   
+
     if (!token) {
       toast.error("Vui lòng đăng nhập để tiếp tục!", {
         position: "top-right",
@@ -88,41 +104,46 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
     formData.append('tieude', tieude);
     formData.append('phude', phude);
 
-    // Xử lý hình ảnh hiện có (thay đổi link hoặc cập nhật hình ảnh)
+    // Xử lý ảnh hiện có
     hienCo.forEach((img) => {
-      if (img.newFile) {
-        // Nếu hình ảnh mới được chọn, gửi cả file và ID để thay đổi
-        formData.append('existingImages', JSON.stringify({ id: img.id, link: img.link }));
-        formData.append('newFiles', img.newFile);
-      } else {
-        // Chỉ cập nhật link nếu không có file mới
-        formData.append('existingLinks', JSON.stringify({ id: img.id, link: img.link }));
+      //Nếu có file ảnh mới hoặc link thay đổi, thì gửi ImageId
+      if (img.newFile || img.link !== img.originalLink) {
+        formData.append('ImageIds', img.id);
+
+        //Gửi Link (luôn gửi link, ngay cả khi không thay đổi)
+        formData.append('Links', img.link);
+
+        //Nếu có file ảnh mới, thì gửi ảnh mới
+        if (img.newFile) {
+          formData.append('Images', img.newFile);
+        }
       }
     });
 
-    // Thêm hình ảnh mới
-    hinhanhs.forEach((file, i) => {
-      if (file) {
-        formData.append('images', file);
-        formData.append('links', links[i]);
+
+    // Xử lý hình ảnh mới (không có ImageIds)
+    hinhanhs.forEach((img, i) => {
+      if (img?.file) {
+        formData.append('Images', img.file);
+        formData.append('Links', links[i]);
       }
     });
+
 
     try {
       if (isEdit) {
-        formData.append('Updated_By', loggedInUser);
+       
         await axios.put(`${process.env.REACT_APP_BASEURL}/api/TenFooter/${tenFooter.id}`, formData, {
           headers: {
-            Authorization: `Bearer ${token}`, // Thêm token vào header
+            Authorization: `Bearer ${token}`,
           },
         });
         toast.success('Cập nhật TenFooter thành công!');
       } else {
-        formData.append("Updated_By", loggedInUser);
-        formData.append("Created_By", loggedInUser);
+  
         await axios.post(`${process.env.REACT_APP_BASEURL}/api/TenFooter`, formData, {
           headers: {
-            Authorization: `Bearer ${token}`, // Thêm token vào header
+            Authorization: `Bearer ${token}`,
           },
         });
         toast.success('Thêm TenFooter thành công!');
@@ -132,22 +153,18 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
       ResetForm();
     } catch (error) {
       if (error.response?.status === 403) {
-        toast.error("Bạn không có quyền lưu TenFooter.", {
+        toast.error("Bạn không có quyền thực hiện hành động này.", {
           position: "top-right",
           autoClose: 3000,
         });
       } else {
-        toast.error(
-          `Không thể lưu TenFooter: ${error.response?.data?.message || error.message || "Đã xảy ra lỗi không xác định."}`,
-          {
-            position: "top-right",
-            autoClose: 3000,
-          }
-        );
+        toast.error(`Lỗi: ${error.message || "Có lỗi xảy ra."}`, {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        console.error("Chi tiết lỗi:", error);
       }
-      console.error("Lỗi khi lưu TenFooter:", error.response?.data || error.message || error);
     }
-
   };
 
   const ResetForm = () => {
@@ -240,12 +257,32 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
                   type="file"
                   accept="image/*"
                   onChange={(e) => {
-                    const updatedHienCo = [...hienCo];
-                    updatedHienCo[index].newFile = e.target.files[0];
-                    setHienCo(updatedHienCo);
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        const updatedHienCo = [...hienCo];
+                        updatedHienCo[index].newFile = file;
+                        updatedHienCo[index].preview = reader.result;
+                        setHienCo(updatedHienCo);
+                      };
+                      reader.readAsDataURL(file);
+                    } else {
+                      const updatedHienCo = [...hienCo];
+                      delete updatedHienCo[index].newFile;
+                      delete updatedHienCo[index].preview;
+                      setHienCo(updatedHienCo);
+                    }
                   }}
                   className="me-2 shadow-sm rounded"
                 />
+                {img.preview && (
+                  <img
+                    src={img.preview}
+                    alt="New Preview"
+                    style={{ width: '50px', height: '50px', marginLeft: '10px', objectFit: 'cover' }}
+                  />
+                )}
                 <Button
                   variant="outline-danger"
                   onClick={() => handleRemoveExistingImage(img.id)}
@@ -262,7 +299,7 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
             <Form.Label className="fw-bold">
               <i className="bi bi-plus-circle me-2"></i> Thêm hình ảnh mới
             </Form.Label>
-            {hinhanhs.map((file, index) => (
+            {hinhanhs.map((img, index) => (
               <div key={index} className="d-flex align-items-center mb-3">
                 <Form.Control
                   type="file"
@@ -270,6 +307,13 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
                   accept="image/*"
                   className="shadow-sm rounded"
                 />
+                {img?.preview && (
+                  <img
+                    src={img.preview}
+                    alt="Preview"
+                    style={{ width: '50px', height: '50px', marginLeft: '10px', objectFit: 'cover' }}
+                  />
+                )}
                 <Form.Control
                   type="text"
                   placeholder="Link hình ảnh"
@@ -314,7 +358,6 @@ const ModalTenFooterAdmin = ({ show, handleClose, isEdit, tenFooter, fetchTenFoo
         </Button>
       </Modal.Footer>
     </Modal>
-
   );
 };
 

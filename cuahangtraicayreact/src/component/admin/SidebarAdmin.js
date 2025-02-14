@@ -69,10 +69,7 @@ const SiderbarAdmin = () => {
                   <i className="fas fa-list"></i> {/* Icon menu */}
                   Menu điều hướng
                 </Link>
-                {/* <Link className={`collapse-item ${vitriRoute.pathname === '/admin/tencuahang' ? 'active' : ''}`} to="/admin/tencuahang">
-                <i className="fas fa-sign"></i> 
-                Tên cửa hàng
-              </Link> */}
+
 
                 <Link className={`collapse-item ${vitriRoute.pathname === '/admin/Banners' ? 'active' : ''}`} to="/admin/Banners">
                   <i className="fas fa-images"></i> {/* Icon banners */}
@@ -177,14 +174,7 @@ const SiderbarAdmin = () => {
         )}
 
 
-        {/* Quản lý Địa chỉ 
-        <li className={`nav-item ${vitriRoute.pathname === '/admin/diachichitiet' ? 'active' : ''}`}>
-          <Link className="nav-link" to="/admin/diachichitiet">
-            <i className="fas fa-map-marker-alt"></i> 
-            <span>Quản lý Địa chỉ</span>
-          </Link>
-        </li>
-          */}
+
         {/* Quản lý Liên hệ */}
         <li className={`nav-item ${vitriRoute.pathname === '/admin/lienhe' ? 'active' : ''}`}>
           <Link className="nav-link" to="/admin/lienhe">

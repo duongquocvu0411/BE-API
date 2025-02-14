@@ -24,7 +24,7 @@ namespace CuahangtraicayAPI.DTO
         {
             public string? Tieude { get; set; } 
             public string? Phude { get; set; }
-   
+            public List<int>? ImageIds { get; set; }
             public List<IFormFile>? Images { get; set; }
             public List<string>? Links { get; set; }
             //public string Updated_By { get; set; }
