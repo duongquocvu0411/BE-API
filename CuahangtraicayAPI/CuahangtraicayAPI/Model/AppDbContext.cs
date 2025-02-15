@@ -15,7 +15,7 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     // Định nghĩa các DbSet cho các bảng trong cơ sở dữ liệu
-    //public DbSet<AccountGoogle> AccountGoogle { get; set; }
+    
     public DbSet<Danhmucsanpham> Danhmucsanpham { get; set; }
     public DbSet<Admin> Admins { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
@@ -50,6 +50,7 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
     public DbSet<Donvitinh> donvitinhs { get; set; }
     public DbSet<EmaildangkyTB> emaildangkyTBs { get; set; }
+    public DbSet<AccountGoogle> AccountGoogle { get; set; }
     public DbSet<GhnOrder> GhnOrders { get; set; }
     // Cấu hình mối quan hệ và chuyển đổi dữ liệu
     protected override void OnModelCreating(ModelBuilder modelBuilder)

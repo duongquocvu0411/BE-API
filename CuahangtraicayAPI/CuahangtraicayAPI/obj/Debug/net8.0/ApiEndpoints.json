@@ -175,6 +175,22 @@
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
+    "Method": "LoginGoogle",
+    "RelativePath": "api/Authenticate/login-google",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CuahangtraicayAPI.Controllers.AuthenticateController\u002BGoogleLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "Register",
     "RelativePath": "api/Authenticate/register",
     "HttpMethod": "POST",

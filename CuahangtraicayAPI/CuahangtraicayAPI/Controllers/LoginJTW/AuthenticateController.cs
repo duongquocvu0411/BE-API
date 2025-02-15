@@ -12,6 +12,11 @@ using CuahangtraicayAPI.Modles;
 using CuahangtraicayAPI.Model.DB;
 using Microsoft.AspNetCore.Authorization;
 using CuahangtraicayAPI.Model.jwt;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
+using Google.Apis.Auth;
+using CuahangtraicayAPI.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -28,10 +33,10 @@ namespace CuahangtraicayAPI.Controllers
         public AuthenticateController(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration ,
+            IConfiguration configuration,
             AppDbContext context,
             IMemoryCache cache)
-        
+
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -39,6 +44,120 @@ namespace CuahangtraicayAPI.Controllers
             _context = context;
             _cache = cache;
         }
+
+        [HttpPost("login-google")]
+        public async Task<IActionResult> LoginGoogle([FromBody] GoogleLoginRequest request)
+        {
+            if (string.IsNullOrEmpty(request.AccessToken))
+                return Unauthorized(new { status = "error", message = "Access token is required." });
+
+            try
+            {
+                // Validate the token with Google and get user info
+                var payload = await GoogleJsonWebSignature.ValidateAsync(request.AccessToken);
+
+                var email = payload.Email;
+                var fullName = payload.Name;
+                var googleAccountId = payload.Subject; // GoogleAccountId (subject) is the unique ID
+
+                // Kiểm tra xem người dùng đã tồn tại trong IdentityUser chưa
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    user = new IdentityUser
+                    {
+                        UserName = email,
+                        Email = email,
+                        SecurityStamp = Guid.NewGuid().ToString()
+                    };
+
+                    var createResult = await _userManager.CreateAsync(user);
+                    if (!createResult.Succeeded)
+                        return StatusCode(StatusCodes.Status500InternalServerError, new { status = "error", message = "Failed to create user." });
+
+                    // Gán vai trò mặc định cho người dùng
+                    if (!await _roleManager.RoleExistsAsync("User"))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("User"));
+                    }
+                    await _userManager.AddToRoleAsync(user, "User");
+
+                    var userProfile = new UserProfile
+                    {
+                        UserId = user.Id,
+                        TrangThaiTK = 1,
+                        Hoten = fullName ?? "Unknown",
+                        Chucvu = "User",
+                        Sodienthoai = " "
+                    };
+
+                    _context.UserProfiles.Add(userProfile);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Kiểm tra xem đã có bản ghi AccountGoogle cho người dùng này chưa
+                var kiemtraAccountGoolge = _context.AccountGoogle.FirstOrDefault(a => a.UserId == user.Id);
+
+                if (kiemtraAccountGoolge == null)
+                {
+                    // Tạo bản ghi AccountGoogle mới
+                    var accountGoogle = new AccountGoogle
+                    {
+                        UserId = user.Id,
+                        GoogleAccountId = googleAccountId,
+                        Email = email,
+                        AccessToken = request.AccessToken,
+                        RefreshToken = "N/A" // Cập nhật RefreshToken nếu có
+                    };
+
+                    _context.AccountGoogle.Add(accountGoogle);
+                }
+                else
+                {
+                    // Cập nhật thông tin AccountGoogle (ví dụ: AccessToken)
+                    kiemtraAccountGoolge.AccessToken = request.AccessToken;
+
+                    _context.AccountGoogle.Update(kiemtraAccountGoolge);
+                }
+
+                await _context.SaveChangesAsync();
+
+                var userRoles = await _userManager.GetRolesAsync(user);
+
+                var authClaims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.UserName),
+        new Claim(ClaimTypes.NameIdentifier, user.Id),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim("FullName", fullName ?? "Unknown"),
+        new Claim(ClaimTypes.Email, email),
+        new Claim("Sodienthoai", " ")
+    };
+
+                foreach (var userRole in userRoles)
+                {
+                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                }
+
+                var token = GetToken(authClaims);
+
+                return Ok(new
+                {
+                    status = "success",
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    expiration = token.ValidTo
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { status = "error", message = "Token validation failed.", error = ex.Message });
+            }
+        }
+        public class GoogleLoginRequest
+        {
+            public string AccessToken { get; set; }
+        }
+
 
         [HttpPost]
         [Route("login")]
@@ -182,9 +301,6 @@ namespace CuahangtraicayAPI.Controllers
         }
 
 
-
-
-
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
@@ -264,7 +380,7 @@ namespace CuahangtraicayAPI.Controllers
                     UserId = user.Id,
                     Hoten = registerModel.hoten,
                     Chucvu = "USER",
-                    Sodienthoai= registerModel.Sodienthoai,
+                    Sodienthoai = registerModel.Sodienthoai,
                     Created_at = DateTime.Now,
                     Updated_at = DateTime.Now,
 
@@ -454,10 +570,10 @@ namespace CuahangtraicayAPI.Controllers
                 {
                     UserId = user.Id,
                     Hoten = registerModel.hoten,
-                    Chucvu="Employee",
-                    Sodienthoai=registerModel.Sodienthoai,
-                    Created_at=DateTime.Now,
-                    Updated_at=DateTime.Now,
+                    Chucvu = "Employee",
+                    Sodienthoai = registerModel.Sodienthoai,
+                    Created_at = DateTime.Now,
+                    Updated_at = DateTime.Now,
                 });
                 await _context.SaveChangesAsync();
 
@@ -487,7 +603,7 @@ namespace CuahangtraicayAPI.Controllers
         }
         [HttpGet]
         [Route("get-all-employees")]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllEmployees()
         {
             try
@@ -538,7 +654,7 @@ namespace CuahangtraicayAPI.Controllers
         }
         [HttpDelete]
         [Route("delete-employee-User/{userId}")]
-        [Authorize(Roles ="Admin")]    
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteEmployee(string userId)
         {
             try

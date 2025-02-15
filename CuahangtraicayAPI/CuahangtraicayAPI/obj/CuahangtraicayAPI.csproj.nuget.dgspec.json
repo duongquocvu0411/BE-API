@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DELL\\OneDrive\\Desktop\\dự án backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj": {}
+    "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DELL\\OneDrive\\Desktop\\dự án backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj": {
+    "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DELL\\OneDrive\\Desktop\\dự án backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
+        "projectUniqueName": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
         "projectName": "CuahangtraicayAPI",
-        "projectPath": "C:\\Users\\DELL\\OneDrive\\Desktop\\dự án backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
+        "projectPath": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\CuahangtraicayAPI.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DELL\\OneDrive\\Desktop\\dự án backend\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\obj\\",
+        "outputPath": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -50,9 +50,17 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.69.0, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[4.9.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.Google": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
