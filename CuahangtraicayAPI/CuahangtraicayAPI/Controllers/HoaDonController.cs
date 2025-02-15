@@ -12,6 +12,7 @@ using System.Globalization;
 using CuahangtraicayAPI.Model.VnPay;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 
 namespace CuahangtraicayAPI.Controllers
@@ -24,13 +25,15 @@ namespace CuahangtraicayAPI.Controllers
         private readonly EmailHelper _emailHelper;
         private readonly IVnPayService _vnPayService;
         private readonly MoMoPaymentService _momoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HoaDonController(AppDbContext context, EmailHelper emailHelper, IVnPayService vnPayService, MoMoPaymentService momoService)
+        public HoaDonController(AppDbContext context, EmailHelper emailHelper, IVnPayService vnPayService, MoMoPaymentService momoService, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _emailHelper = emailHelper;
             _vnPayService = vnPayService;
             _momoService = momoService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -589,6 +592,13 @@ namespace CuahangtraicayAPI.Controllers
 
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
+
             if (hotenToken == null)
             {
                 return Unauthorized(new { message = "Không thể xác định người dùng từ token." });
@@ -625,6 +635,15 @@ namespace CuahangtraicayAPI.Controllers
             giaodich.Updated_at = DateTime.Now;
             giaodich.UpdatedBy = hotenToken;
             _context.PaymentTransactions.Update(giaodich);
+
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xác nhận hủy đơn hoàn tiền cho giao dịch " + " " + giaodich.TransactionId,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+            _context.Logss.Add(log);
 
             // Hoàn lại số lượng sản phẩm && số lượng tạm giữ
             var chiTietHoaDon = await _context.HoaDonChiTiets.Where(ct => ct.bill_id == hoaDon.Id).ToListAsync();
@@ -734,6 +753,7 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns> Chỉnh sửa status của hóa đơn </returns>
 
         // PUT: api/HoaDon/UpdateStatus/{id}
+        [Authorize(Roles ="Admin, Employee")]
         [HttpPut("UpdateStatus/{id}")]
         public async Task<ActionResult<BaseResponseDTO<object>>> UpdateStatus(int id, [FromBody] HoadonDTO.UpdateStatusDto dto)
         {
@@ -748,6 +768,13 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new { message = "Không tìm thấy đơn hàng" });
 
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
 
             if (hotenToken == null)
             {
@@ -846,6 +873,15 @@ namespace CuahangtraicayAPI.Controllers
             // Lưu thay đổi vào database
             try
             {
+                var log = new Logs
+                {
+                    UserId = users,
+                    HanhDong = $"Cập nhật trạng thái hóa đơn {bill.Id} - {bill.status}",
+                    CreatedBy = hotenToken,
+                    Chucvu = chucVu,
+                };
+                _context.Logss.Add(log);
+
                 var rowsAffected = await _context.SaveChangesAsync();
                 Console.WriteLine($"Số bản ghi được cập nhật: {rowsAffected}");
             }

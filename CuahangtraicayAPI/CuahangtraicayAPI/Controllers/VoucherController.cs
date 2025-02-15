@@ -8,6 +8,7 @@ using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model.DB;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -16,10 +17,12 @@ namespace CuahangtraicayAPI.Controllers
     public class VoucherController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public VoucherController(AppDbContext context)
+        public VoucherController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         //  Tạo mã voucher ngẫu nhiên (6 ký tự chữ & số)
@@ -106,6 +109,13 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<BaseResponseDTO<Voucher>>> CreateVoucher([FromBody] VoucherDTO voucherDto)
         {
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             if (hotenToken == null)
             {
                 return Unauthorized(new { message = "Không thể xác định người dùng từ token" });
@@ -143,7 +153,17 @@ namespace CuahangtraicayAPI.Controllers
                 UpdatedBy = hotenToken
             };
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Thêm mới Voucher {voucher.Code} - trị giá {voucher.Sotiengiamgia}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+
             _context.Vouchers.Add(voucher);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return new BaseResponseDTO<Voucher>
@@ -171,6 +191,13 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             if (hotenToken == null)
             {
                 return Unauthorized(new { message = "Không thể xác định người dùng từ token" });
@@ -197,7 +224,16 @@ namespace CuahangtraicayAPI.Controllers
             voucher.TrangthaiVoucher = voucherDto.TrangthaiVoucher;
             voucher.UpdatedBy = hotenToken;
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Chỉnh sửa Voucher {voucher.Code}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.Vouchers.Update(voucher);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return new BaseResponseDTO<Voucher>
@@ -217,13 +253,30 @@ namespace CuahangtraicayAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<BaseResponseDTO<Voucher>>> DeleteVoucher(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var voucher = await _context.Vouchers.FindAsync(id);
             if (voucher == null)
             {
                 return NotFound(new { message = "Voucher không tồn tại" });
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Xóa Voucher {voucher.Code} - trị giá {voucher.Sotiengiamgia}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.Vouchers.Remove(voucher);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return new BaseResponseDTO<Voucher>

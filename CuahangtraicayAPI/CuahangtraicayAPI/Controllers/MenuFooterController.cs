@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -22,11 +23,12 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly AppDbContext _context;
-
-        public MenuFooterController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public MenuFooterController(AppDbContext context, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
         /// <summary>
         /// Tải lên một tệp hình ảnh để sử dụng trong menu footer.
@@ -36,10 +38,10 @@ namespace CuahangtraicayAPI.Controllers
         /// <returns>URL của hình ảnh đã tải lên hoặc thông báo lỗi nếu thất bại.</returns>
 
         [HttpPost("upload-image")]
- 
-
         public async Task<IActionResult> UploadImage(IFormFile upload)
         {
+
+
             if (upload == null || upload.Length == 0)
             {
                 return BadRequest(new { uploaded = false, error = new { message = "Không có tệp nào được tải lên" } });
@@ -138,6 +140,12 @@ namespace CuahangtraicayAPI.Controllers
         {
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<MenuFooter> {Code=404, Message = "Không thể xác định người dùng từ token." });
@@ -158,7 +166,16 @@ namespace CuahangtraicayAPI.Controllers
                
             };
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Thêm mới MenuFooter  {menuFooter.Id}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.MenuFooters.Add(menuFooter);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok( new BaseResponseDTO<MenuFooter>
@@ -200,6 +217,12 @@ namespace CuahangtraicayAPI.Controllers
             }
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             menuFooter.Tieu_de = menuFooterUpdateDto.Tieu_de;
             menuFooter.Noi_dung = menuFooterUpdateDto.Noi_dung;
             menuFooter.Thutuhienthi = menuFooterUpdateDto.Thutuhienthi;
@@ -207,6 +230,15 @@ namespace CuahangtraicayAPI.Controllers
             menuFooter.Updated_at = DateTime.Now;
 
             _context.Entry(menuFooter).State = EntityState.Modified;
+
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Chỉnh sửa MenuFooter {menuFooter.Id}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<MenuFooter>
@@ -226,6 +258,14 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<MenuFooter>> DeleteMenuFooter(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var menuFooter = await _context.MenuFooters.FindAsync(id);
             if (menuFooter == null)
             {
@@ -236,7 +276,16 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Xóa MenuFooter {menuFooter.Id} - {menuFooter.Tieu_de}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.MenuFooters.Remove(menuFooter);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok( new BaseResponseDTO<MenuFooter>

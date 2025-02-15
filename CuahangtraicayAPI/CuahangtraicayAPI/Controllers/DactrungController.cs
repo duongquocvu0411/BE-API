@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -16,11 +17,13 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DactrungController(AppDbContext context, IWebHostEnvironment environment)
+        public DactrungController(AppDbContext context, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _environment = environment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -80,6 +83,13 @@ namespace CuahangtraicayAPI.Controllers
         {
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
+
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Dactrung>
@@ -113,9 +123,17 @@ namespace CuahangtraicayAPI.Controllers
                 // Lưu file icon và gán đường dẫn cho trường Icon
                 dactrung.Icon = await SaveIconFileAsync(dto.IconFile);
             }
-
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Thêm mới  đặc trưng" + " " + dactrung.Tieude,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+            
             // Lưu đối tượng vào cơ sở dữ liệu
             _context.Dactrungs.Add(dactrung);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             // Trả về đối tượng vừa được tạo
@@ -140,28 +158,38 @@ namespace CuahangtraicayAPI.Controllers
             var dactrung = await _context.Dactrungs.FindAsync(id);
             if (dactrung == null)
             {
-                return BadRequest( new BaseResponseDTO<Dactrung>
+                return BadRequest(new BaseResponseDTO<Dactrung>
                 {
                     Code = 404,
-                    Message = "Đặc trưng không tồn tại trong hệ thông"
-                }); // Trả về 404 nếu không tìm thấy bản ghi
-            }
-            var exists = await _context.Dactrungs.AnyAsync(mn => mn.Thutuhienthi == dto.Thutuhienthi);
-            if (exists)
-            {
-                return BadRequest(new BaseResponseDTO<Menu>
-                {
-                    Code = 404,
-                    Message = "Số thứ tự đã tồn tại trong hệ thống"
+                    Message = "Đặc trưng không tồn tại trong hệ thống"
                 });
             }
+
+            // Kiểm tra nếu Số thứ tự hiển thị thay đổi thì mới kiểm tra trùng lặp
+            if (dto.Thutuhienthi.HasValue && dto.Thutuhienthi.Value != dactrung.Thutuhienthi)
+            {
+                var exists = await _context.Dactrungs.AnyAsync(mn => mn.Thutuhienthi == dto.Thutuhienthi);
+                if (exists)
+                {
+                    return BadRequest(new BaseResponseDTO<Dactrung>
+                    {
+                        Code = 400,
+                        Message = "Số thứ tự đã tồn tại trong hệ thống"
+                    });
+                }
+            }
+
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee";
 
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Dactrung>
                 {
-                    Code = 404,
+                    Code = 401,
                     Message = "Không thể xác định người dùng từ token"
                 });
             }
@@ -169,66 +197,66 @@ namespace CuahangtraicayAPI.Controllers
             // Cập nhật các trường từ DTO
             if (!string.IsNullOrEmpty(dto.Tieude))
             {
-                dactrung.Tieude = dto.Tieude; // Cập nhật tiêu đề
+                dactrung.Tieude = dto.Tieude;
             }
             if (!string.IsNullOrEmpty(dto.Phude))
             {
-                dactrung.Phude = dto.Phude; // Cập nhật phú đề
+                dactrung.Phude = dto.Phude;
             }
-            if (dto.Thutuhienthi.HasValue && dto.Thutuhienthi > 0)
+            if (dto.Thutuhienthi.HasValue && dto.Thutuhienthi.Value > 0)
             {
-                dactrung.Thutuhienthi = dto.Thutuhienthi.Value; // Cập nhật thứ tự hiển thị (nếu có)
+                dactrung.Thutuhienthi = dto.Thutuhienthi.Value;
             }
-            dactrung.UpdatedBy=hotenToken;
-            dactrung.Updated_at=DateTime.Now;
+            dactrung.UpdatedBy = hotenToken;
+            dactrung.Updated_at = DateTime.UtcNow;
 
             // Xử lý file icon mới (nếu có)
             if (dto.IconFile != null)
             {
-                // Xóa icon cũ nếu có
                 if (!string.IsNullOrEmpty(dactrung.Icon))
                 {
                     var oldFilePath = Path.Combine(_environment.WebRootPath, dactrung.Icon);
                     if (System.IO.File.Exists(oldFilePath))
                     {
-                        System.IO.File.Delete(oldFilePath); // Xóa file cũ
+                        System.IO.File.Delete(oldFilePath);
                     }
                 }
-
-                // Lưu icon mới và cập nhật đường dẫn
                 dactrung.Icon = await SaveIconFileAsync(dto.IconFile);
             }
 
-            // Cập nhật thời gian sửa đổi
-            dactrung.Updated_at = DateTime.UtcNow;
-
-            // Đánh dấu đối tượng là đã thay đổi
             _context.Entry(dactrung).State = EntityState.Modified;
 
             try
             {
-                // Lưu thay đổi vào cơ sở dữ liệu
+                var log = new Logs
+                {
+                    UserId = users,
+                    HanhDong = "Cập nhật đặc trưng " + dactrung.Tieude,
+                    CreatedBy = hotenToken,
+                    Chucvu = chucVu,
+                };
+                _context.Logss.Add(log);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                // Kiểm tra nếu bản ghi không tồn tại
                 if (!DactrungExists(id))
                 {
-                    return NotFound(); // Trả về 404 nếu không tìm thấy bản ghi
+                    return NotFound();
                 }
                 else
                 {
-                    throw; // Nếu có lỗi khác thì ném lại ngoại lệ
+                    throw;
                 }
             }
 
-            return Ok( new BaseResponseDTO<Dactrung>
+            return Ok(new BaseResponseDTO<Dactrung>
             {
                 Data = dactrung,
                 Message = "Success"
-            }); // Trả về đối tượng đã được cập nhật
+            });
         }
+
 
         /// <summary>
         /// Xóa Đặc trưng theo {id}
@@ -250,6 +278,14 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
 
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             // Xóa tệp tin icon nếu có
             if (!string.IsNullOrEmpty(dactrung.Icon))
             {
@@ -259,8 +295,16 @@ namespace CuahangtraicayAPI.Controllers
                     System.IO.File.Delete(filePath);
                 }
             }
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa đặc trưng " + " " + dactrung.Tieude,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
 
             _context.Dactrungs.Remove(dactrung);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok( new BaseResponseDTO<Dactrung>

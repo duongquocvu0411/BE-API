@@ -8,6 +8,7 @@ using System.Reflection;
 using CuahangtraicayAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -17,11 +18,13 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BannersController(AppDbContext context, IWebHostEnvironment environment)
+        public BannersController(AppDbContext context, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _environment = environment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
      
@@ -128,6 +131,12 @@ namespace CuahangtraicayAPI.Controllers
            
              var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Bannerts>
@@ -155,8 +164,17 @@ namespace CuahangtraicayAPI.Controllers
                     banner.BannerImages.Add(new BannerImages { ImagePath = imagePath });
                 }
             }
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Thêm mới Banners " + " " + banner.Tieude,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
 
             _context.Banners.Add(banner);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<Bannerts>
@@ -186,6 +204,13 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value ;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
 
             if (hotenToken == null)
             {
@@ -220,10 +245,21 @@ namespace CuahangtraicayAPI.Controllers
            
             banner.Updated_at = DateTime.Now;
             _context.Entry(banner).State = EntityState.Modified;
+          
+           
 
             try
             {
-                await _context.SaveChangesAsync();
+                var log = new Logs
+                {
+                    UserId = users,
+                    HanhDong = "Chỉnh sửa Banners " + " " + banner.Tieude,
+                    CreatedBy = hotenToken,
+                    Chucvu = chucVu,
+                };
+                _context.Logss.Add(log);
+                await _context.SaveChangesAsync(); 
+                
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -264,6 +300,14 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
 
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             // Xóa tất cả hình ảnh liên quan
             foreach (var image in banner.BannerImages)
             {
@@ -273,8 +317,17 @@ namespace CuahangtraicayAPI.Controllers
                     System.IO.File.Delete(filePath);
                 }
             }
+            var logs = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa Banners " + " " + banner.Tieude,
+                Chucvu = chucVu,
+                CreatedBy = hotenToken
+            };
+            
 
             _context.Banners.Remove(banner);
+            _context.Logss.Add(logs);
             await _context.SaveChangesAsync();
 
             return Ok( new BaseResponseDTO<Bannerts>
@@ -305,15 +358,33 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound("Hình ảnh không tồn tại.");
             }
 
+
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
             // Xóa tệp hình ảnh khỏi thư mục
             var filePath = Path.Combine(_environment.WebRootPath, image.ImagePath);
+            
             if (System.IO.File.Exists(filePath))
             {
                 System.IO.File.Delete(filePath);
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa hình ảnh Banners"+ " " + image.BannerId,
+                Chucvu = chucVu,
+                CreatedBy = hotenToken
+                
+            };
             // Xóa bản ghi hình ảnh trong cơ sở dữ liệu
             _context.BannerImages.Remove(image);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return NoContent(); // Trả về NoContent nếu xóa thành công
@@ -344,6 +415,12 @@ namespace CuahangtraicayAPI.Controllers
             }
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             if (hotenToken == null)
             {
                 return Unauthorized(new { message = "Không thể xác định người dùng từ token." });
@@ -361,8 +438,17 @@ namespace CuahangtraicayAPI.Controllers
                 banner.UpdatedBy = hotenToken; // Cập nhật người thực hiện
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong ="Sử dụng Banners" + " " + selectedBanner.Tieude,
+                Chucvu= chucVu,
+                CreatedBy = hotenToken
+            };
+            _context.Logss.Add(log);
             // Lưu thay đổi
             await _context.SaveChangesAsync();
+
 
             return Ok(new { message = "Trạng thái banner đã được cập nhật." });
         }

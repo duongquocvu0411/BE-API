@@ -7,6 +7,7 @@ using Azure.Core;
 using CuahangtraicayAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -15,10 +16,12 @@ namespace CuahangtraicayAPI.Controllers
     public class DonvitinhController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DonvitinhController(AppDbContext context)
+        public DonvitinhController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -102,6 +105,13 @@ namespace CuahangtraicayAPI.Controllers
             // Lấy thông tin "hoten" từ token
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
+
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Donvitinh>
@@ -118,7 +128,16 @@ namespace CuahangtraicayAPI.Controllers
                 UpdatedBy = hotenToken
             };
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Thêm mới DVT " + " " + Donvitinh.name,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.donvitinhs.Add(Donvitinh);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return new BaseResponseDTO<Donvitinh>
@@ -141,6 +160,12 @@ namespace CuahangtraicayAPI.Controllers
         {
             // Lấy thông tin "hoten" từ token
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
 
             if (hotenToken == null)
             {
@@ -180,7 +205,17 @@ namespace CuahangtraicayAPI.Controllers
             Donvitinh.UpdatedBy = hotenToken;
             Donvitinh.Updated_at = DateTime.Now;
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Chỉnh sửa DVT" + " " + Donvitinh.name,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+
             _context.Entry(Donvitinh).State = EntityState.Modified;
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<Donvitinh>
@@ -203,6 +238,15 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Donvitinh>>> DeleteDonvitinh(int id)
         {
+
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             // Tìm đơn vị tính sản phẩm theo ID
             var Donvitinh = await _context.donvitinhs.FindAsync(id);
             if (Donvitinh == null)
@@ -228,9 +272,17 @@ namespace CuahangtraicayAPI.Controllers
 
                 });
             }
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa DVT " + " " + Donvitinh.name,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
 
             // Xóa đơn vị tính nếu không có sản phẩm nào chưa bị xóa
             _context.donvitinhs.Remove(Donvitinh);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<Donvitinh>

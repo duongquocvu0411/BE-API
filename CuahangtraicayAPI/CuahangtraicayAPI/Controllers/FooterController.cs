@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using static CuahangtraicayAPI.DTO.FooterDto;
 using static CuahangtraicayAPI.DTO.TenFooterDTO;
 
@@ -15,10 +16,11 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly AppDbContext _context;
 
-
-        public FooterController(AppDbContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public FooterController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -73,6 +75,11 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Footer>> CreateFooter([FromBody] DTO.FooterDto.FooterCreateDto dto)
         {
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
 
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             var footer = new Footer
@@ -83,7 +90,16 @@ namespace CuahangtraicayAPI.Controllers
                 CreatedBy = hotenToken,
                 UpdatedBy = hotenToken,
             };
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Thêm mới Footer " + " " + footer.Id,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.Footers.Add(footer);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetFooter",new { Id = footer.Id },footer);
         }
@@ -99,12 +115,19 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateFooter(int id, [FromBody] DTO.FooterDto.FooterUpdateDto footerDto)
         {
+
             var footer = await _context.Footers.FindAsync(id);
             if (footer == null)
             {
                 return NotFound();
             }
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
 
             footer.NoiDungFooter = footerDto.NoiDungFooter;
             //footer.UpdatedBy = footerDto.UpdatedBy;
@@ -116,7 +139,17 @@ namespace CuahangtraicayAPI.Controllers
             footer.UpdatedBy = hotenToken;
             footer.Updated_at = DateTime.Now;
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Chỉnh sửa Footer " + " " + footer.Id,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+
             _context.Entry(footer).State = EntityState.Modified;
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -132,13 +165,31 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteFooter(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
+
             var footer = await _context.Footers.FindAsync(id);
             if (footer == null)
             {
                 return NotFound();
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa Footer " + " " + footer.Id,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.Footers.Remove(footer);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -172,6 +223,13 @@ namespace CuahangtraicayAPI.Controllers
             }
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             // Cập nhật trạng thái cho tất cả các Footer
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             foreach (var footer in allFooters)
             {
                 footer.TrangThai = 0; // Đặt trạng thái mặc định cho tất cả
@@ -184,6 +242,14 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Sử dụng Footer " + " " + footerToUpdate.Id,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+            _context.Logss.Add(log);
             // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 

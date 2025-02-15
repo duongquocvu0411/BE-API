@@ -6,6 +6,7 @@ using static CuahangtraicayAPI.DTO.MenuDTO;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -14,9 +15,13 @@ namespace CuahangtraicayAPI.Controllers
     public class MenuController : ControllerBase
     {
         private readonly AppDbContext _context;
-        public MenuController(AppDbContext context)
+
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public MenuController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -74,6 +79,13 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<BaseResponseDTO< Menu>>> CreateMenu(MenuCreateDTO menuDTO)
         {
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var exists = await _context.Menus.AnyAsync(mn => mn.Thutuhien == menuDTO.Thutuhien);
             if (exists)
             {
@@ -101,7 +113,16 @@ namespace CuahangtraicayAPI.Controllers
                 UpdatedBy = hotenToken ,
             };
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Thêm mới menu {menu.Id} - {menu.Name}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.Menus.Add(menu);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<Menu>
@@ -151,6 +172,14 @@ namespace CuahangtraicayAPI.Controllers
             }
 
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
+
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Menu>
@@ -178,6 +207,15 @@ namespace CuahangtraicayAPI.Controllers
 
             try
             {
+                var log = new Logs
+                {
+                    UserId = users,
+                    HanhDong = $"Cập nhật menu {editMenu.Id} ",
+                    CreatedBy = hotenToken,
+                    Chucvu = chucVu,
+                };
+                
+                _context.Logss.Add(log);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -209,6 +247,14 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Menu>>> DeleteMenu(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var menu = await _context.Menus.FindAsync(id);
             if (menu == null)
             {
@@ -219,7 +265,16 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Xóa Menu {menu.Id} - {menu.Name}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.Menus.Remove(menu);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok( new BaseResponseDTO<Menu>

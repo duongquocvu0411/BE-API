@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.Model.DB;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 namespace CuahangtraicayAPI.Controllers
@@ -15,10 +16,12 @@ namespace CuahangtraicayAPI.Controllers
     public class DanhGiaKhachHangController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DanhGiaKhachHangController(AppDbContext context)
+        public DanhGiaKhachHangController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
         /// <summary>
         /// lấy danh sách của Đánh giá khách hàng
@@ -99,12 +102,28 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteDanhGiaKhachHang(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
             var danhgia = await _context.DanhGiaKhachHang.FindAsync(id);
 
             if (danhgia == null)
                 return NotFound(new { message = "Đánh giá không tồn tại" });
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa đánh giá " + " " + danhgia.noi_dung,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+           
             _context.DanhGiaKhachHang.Remove(danhgia);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Đánh giá đã được xóa thành công" });

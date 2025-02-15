@@ -413,6 +413,13 @@ namespace CuahangtraicayAPI.Controllers
             var ghnOrderId = ghnResponse.Data.OrderCode;
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             // Lưu thông tin đơn hàng GHN vào cơ sở dữ liệu
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var ghnOrder = new GhnOrder
             {
                 ghn_order_id = ghnOrderId,
@@ -431,7 +438,15 @@ namespace CuahangtraicayAPI.Controllers
             hoaDon.UpdatedBy = hotenToken;
             _context.HoaDons.Update(hoaDon);
 
+            var logs = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Lên đơn GHN {ghnOrder.ghn_order_id} - mã đơn hàng oreder_code: {hoaDon.order_code}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
 
+            };
+            _context.Logss.Add(logs);
 
             await _context.SaveChangesAsync();
 
@@ -465,6 +480,13 @@ namespace CuahangtraicayAPI.Controllers
             var khachHang = await _context.KhachHangs.FindAsync(id);
             // Lấy thông tin "hoten" từ token
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             // Kiểm tra nếu không tìm thấy khách hàng
             if (khachHang == null)
             {
@@ -474,6 +496,17 @@ namespace CuahangtraicayAPI.Controllers
             // Cập nhật cột 'xoa' thành true
             khachHang.Xoa = true;
             khachHang.UpdatedBy = hotenToken;
+            khachHang.Updated_at = DateTime.Now;
+
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Xóa khách hàng {khachHang.Id} - {khachHang.Ho} {khachHang.Ten}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+            _context.Logss.Add(log);
             // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 

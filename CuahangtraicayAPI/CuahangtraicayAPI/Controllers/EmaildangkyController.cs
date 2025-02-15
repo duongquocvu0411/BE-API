@@ -13,11 +13,14 @@ namespace CuahangtraicayAPI.Controllers
     public class EmaildangkyController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public EmaildangkyController(AppDbContext context)
+
+        public EmaildangkyController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -118,6 +121,14 @@ namespace CuahangtraicayAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<BaseResponseDTO<EmaildangkyTB>>> DeletEmaildangky(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var data = await _context.emaildangkyTBs.FindAsync(id);
             
             if (data == null)
@@ -128,7 +139,17 @@ namespace CuahangtraicayAPI.Controllers
                     Message = " Không tồn tại Email trong hệ thống!!"
                 };
             }
+
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa Email đăng ký TB " + " " + data.Email,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.emaildangkyTBs.Remove(data);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
             return new BaseResponseDTO<EmaildangkyTB>
             {

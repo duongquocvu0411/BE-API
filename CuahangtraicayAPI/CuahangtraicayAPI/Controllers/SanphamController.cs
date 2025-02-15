@@ -13,6 +13,7 @@ using CuahangtraicayAPI.Model;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -22,11 +23,13 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SanphamController(AppDbContext context, IWebHostEnvironment environment)
+        public SanphamController(AppDbContext context, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _environment = environment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         private string GetImageUrl(string relativePath)
@@ -186,6 +189,13 @@ namespace CuahangtraicayAPI.Controllers
             }
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
+
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Sanpham>
@@ -255,9 +265,16 @@ namespace CuahangtraicayAPI.Controllers
                     sanpham.Images.Add(new HinhAnhSanPham { hinhanh = Path.Combine("hinhanhphu", uniqueFileName) });
                 }
             }
-
+            var logsanpham = new Logs
+            {
+                UserId = users,
+                HanhDong = "Thêm sản phẩm " + " " + sanpham.ma_sanpham,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
             // Lưu thông tin sản phẩm vào cơ sở dữ liệu
             _context.Sanpham.Add(sanpham);
+            _context.Logss.Add(logsanpham);
             await _context.SaveChangesAsync();
 
 
@@ -332,6 +349,12 @@ namespace CuahangtraicayAPI.Controllers
             //    return BadRequest(new { message = "Số lượng sản phẩm phải lớn hơn hoặc bằng 1." });
             //}
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
 
             if (hotenToken == null)
             {
@@ -483,7 +506,14 @@ namespace CuahangtraicayAPI.Controllers
                 };
                 _context.SanphamSales.Add(sale);
             }
-
+            var logEditsp = new Logs
+            {
+                UserId = users,
+                HanhDong = "Chỉnh sửa sản phẩm " + " " + sanpham.ma_sanpham,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+            _context.Logss.Add(logEditsp);
             // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
@@ -514,6 +544,11 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Sản phẩm không tồn tại" });
             }
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
 
             // Kiểm tra sản phẩm có liên quan đến đơn hàng chưa hoàn thành không
             var hoaDonChiTiets = await _context.HoaDonChiTiets
@@ -535,8 +570,15 @@ namespace CuahangtraicayAPI.Controllers
             sanpham.Xoa = true;
             sanpham.UpdatedBy = hotenToken;
 
+            var LogDLT = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa sản phẩm " + " " + sanpham.ma_sanpham,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
 
-
+            };
+            _context.Logss.Add(LogDLT);
             // Cập nhật thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 

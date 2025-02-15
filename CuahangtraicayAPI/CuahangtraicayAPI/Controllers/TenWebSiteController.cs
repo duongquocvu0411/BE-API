@@ -6,6 +6,7 @@ using CuahangtraicayAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 namespace CuahangtraicayAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -13,9 +14,11 @@ namespace CuahangtraicayAPI.Controllers
     public class TenWebSiteController : ControllerBase
     {
         private readonly AppDbContext _context;
-        public TenWebSiteController(AppDbContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public TenWebSiteController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -71,6 +74,12 @@ namespace CuahangtraicayAPI.Controllers
         {
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var newTenWebSite = new TenwebSite
             {
                 Tieu_de = createDto.TieuDe,
@@ -97,7 +106,16 @@ namespace CuahangtraicayAPI.Controllers
                 newTenWebSite.Favicon = $"/tenwebsite/{uniqueFileName}";
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Thêm mới Cấu hình Website {newTenWebSite.Id}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.TenwebSites.Add(newTenWebSite);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok( new BaseResponseDTO<TenwebSite>
@@ -141,6 +159,12 @@ namespace CuahangtraicayAPI.Controllers
 
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             edit.UpdatedBy = hotenToken;
             edit.Updated_at = DateTime.Now;
 
@@ -167,6 +191,16 @@ namespace CuahangtraicayAPI.Controllers
                 edit.Favicon = $"/tenwebsite/{uniqueFileName}";
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Chỉnh sửa cấu hình Website  {edit.Id} ",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+            _context.Logss.Add(log);
+
             await _context.SaveChangesAsync();
             return Ok( new BaseResponseDTO<TenwebSite>
             {
@@ -185,6 +219,14 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<TenwebSite>>> Delete(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var tenWebSite = await _context.TenwebSites.FindAsync(id);
             if (tenWebSite == null)
                 return BadRequest(new BaseResponseDTO<TenwebSite>
@@ -201,7 +243,16 @@ namespace CuahangtraicayAPI.Controllers
                     System.IO.File.Delete(filePath);
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Xóa cấu hình Website {tenWebSite.Id} - {tenWebSite.Tieu_de}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.TenwebSites.Remove(tenWebSite);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
             return Ok( new BaseResponseDTO<TenwebSite>
             {

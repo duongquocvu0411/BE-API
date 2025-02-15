@@ -7,6 +7,8 @@ using Azure.Core;
 using CuahangtraicayAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
+using System.Data;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -15,10 +17,11 @@ namespace CuahangtraicayAPI.Controllers
     public class DanhmucsanphamController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-        public DanhmucsanphamController(AppDbContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public DanhmucsanphamController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -80,6 +83,21 @@ namespace CuahangtraicayAPI.Controllers
         {
             // Kiểm tra xem tên danh mục đã tồn tại chưa
             var exists = await _context.Danhmucsanpham.AnyAsync(dm => dm.Name == dto.Name);
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
+            if (users == null)
+            {
+                return Unauthorized(new BaseResponseDTO<Danhmucsanpham>
+                {
+                    Data = null,
+                    Message = "không thể xác định userid từ token"
+                });
+            }
+
             if (exists)
             {
                 return BadRequest(new BaseResponseDTO<Danhmucsanpham>
@@ -102,6 +120,8 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
 
+
+
             var danhmucsanpham = new Danhmucsanpham
             {
                 Name = dto.Name,
@@ -109,7 +129,16 @@ namespace CuahangtraicayAPI.Controllers
                 UpdatedBy = hotenToken
             };
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Thêm mới danh mục" + " " + danhmucsanpham.Name,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu
+            };  
+
             _context.Danhmucsanpham.Add(danhmucsanpham);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return new BaseResponseDTO<Danhmucsanpham>
@@ -132,6 +161,11 @@ namespace CuahangtraicayAPI.Controllers
         {
             // Lấy thông tin "hoten" từ token
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+             var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
 
             if (hotenToken == null)
             {
@@ -171,6 +205,15 @@ namespace CuahangtraicayAPI.Controllers
             danhmucsanpham.UpdatedBy = hotenToken;
             danhmucsanpham.Updated_at = DateTime.Now;
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Chỉnh sửa danh mục" + " " + danhmucsanpham.Name,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+            _context.Logss.Add(log);
             _context.Entry(danhmucsanpham).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 

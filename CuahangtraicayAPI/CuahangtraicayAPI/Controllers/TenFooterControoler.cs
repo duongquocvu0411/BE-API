@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -19,11 +20,14 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _environment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TenFooterController(AppDbContext context, IWebHostEnvironment environment)
+
+        public TenFooterController(AppDbContext context, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _environment = environment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -87,6 +91,13 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<BaseResponseDTO<TenFooters>>> PostTenFooter([FromForm] TenFooterPostDto dto)
         {
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Danhmucsanpham>
@@ -132,9 +143,17 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Thêm mới tênFooter {tenFooter.Id} - {tenFooter.tieude}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
 
 
             _context.TenFooters.Add(tenFooter);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<TenFooters>
@@ -168,6 +187,11 @@ namespace CuahangtraicayAPI.Controllers
                     Message = "TenFooter không tồn tại."
                 });
             }
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
 
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             if (hotenToken == null)
@@ -275,6 +299,15 @@ namespace CuahangtraicayAPI.Controllers
 
             try
             {
+                var log = new Logs
+                {
+                    UserId = users,
+                    HanhDong = $"Chỉnh sửa TenFooter  {editTenFooter.Id}",
+                    CreatedBy = hotenToken,
+                    Chucvu = chucVu,
+                };
+
+                _context.Logss.Add(log);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -306,6 +339,14 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<TenFooters>> DeleteTenFooter(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var tenFooter = await _context.TenFooters
                 .Include(tf => tf.FooterIMG)
                 .FirstOrDefaultAsync(tf => tf.Id == id);
@@ -329,7 +370,17 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Xóa Tenfooter {tenFooter.Id} - {tenFooter.tieude}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+
             _context.TenFooters.Remove(tenFooter);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<TenFooters>
@@ -348,6 +399,14 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> DeleteImage(int imageId)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             // Tìm hình ảnh theo ID
             var image = await _context.FooterImgs.FindAsync(imageId);
 
@@ -363,8 +422,17 @@ namespace CuahangtraicayAPI.Controllers
                 System.IO.File.Delete(filePath);
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Xóa hình ảnh Tenfooter {image.Footer_ID} - hình ảnh {image.Id}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             // Xóa bản ghi trong cơ sở dữ liệu
             _context.FooterImgs.Remove(image);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok("Xóa hình ảnh thành công.");

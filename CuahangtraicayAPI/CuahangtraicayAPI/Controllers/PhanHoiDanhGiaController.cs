@@ -7,6 +7,7 @@ using CuahangtraicayAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -15,10 +16,12 @@ namespace CuahangtraicayAPI.Controllers
     public class PhanHoiDanhGiaController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PhanHoiDanhGiaController(AppDbContext context)
+        public PhanHoiDanhGiaController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -74,6 +77,12 @@ namespace CuahangtraicayAPI.Controllers
 
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             // Thêm phản hồi mới
             var newPhanHoi = new PhanHoiDanhGia
             {
@@ -83,7 +92,16 @@ namespace CuahangtraicayAPI.Controllers
                 UpdatedBy = hotenToken
             };
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Phản hồi đánh giá {newPhanHoi.Id} - {newPhanHoi.noi_dung}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.PhanHoiDanhGias.Add(newPhanHoi);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetPhanHoiByDanhGiaId), new { danhgiaId = newPhanHoi.danhgia_id }, newPhanHoi);
@@ -103,11 +121,28 @@ namespace CuahangtraicayAPI.Controllers
 
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             editPhanHoi.noi_dung = dto.noi_dung;
             editPhanHoi.UpdatedBy = hotenToken;
             editPhanHoi.Updated_at = DateTime.Now;
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Chỉnh sử phản hồi {editPhanHoi.Id} - {editPhanHoi.noi_dung}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+            _context.Logss.Add(log);
+
             await _context.SaveChangesAsync();
+
             return Ok(new { message = "Phản hồi đã được cập nhật thành công" });
         }
 
@@ -118,11 +153,29 @@ namespace CuahangtraicayAPI.Controllers
        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<PhanHoiDanhGia>>> DeletePhanHoi(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var phanhoi = await _context.PhanHoiDanhGias.FindAsync(id);
             if (phanhoi == null)
                 return NotFound(new { message = "Phản hồi không tồn tại" });
 
+
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Xóa phản hồi {phanhoi.Id} - {phanhoi.noi_dung}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             _context.PhanHoiDanhGias.Remove(phanhoi);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<PhanHoiDanhGia> {Code=200, Message = "Phản hồi đã được xóa thành công" });

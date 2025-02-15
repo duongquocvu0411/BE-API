@@ -9,6 +9,7 @@ using CuahangtraicayAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -18,10 +19,11 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly AppDbContext _context;
         private readonly string _imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "gioithieu");
-
-        public GioithieuController(AppDbContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public GioithieuController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -112,6 +114,12 @@ namespace CuahangtraicayAPI.Controllers
         {
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             if (hotenToken == null)
             {
                 return Unauthorized(new BaseResponseDTO<Gioithieu> { Code=404,Message = "Không thể xác định người dùng từ token." });
@@ -154,8 +162,17 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Thêm mới giới thiệu " + " " + gioithieu.Tieu_de,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             // Thêm mục giới thiệu vào CSDL
             _context.Gioithieu.Add(gioithieu);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             // Lưu thông tin hình ảnh vào bảng GioithieuImg
@@ -195,6 +212,12 @@ namespace CuahangtraicayAPI.Controllers
                 return NotFound();
             }
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
 
             if (hotenToken == null)
             {
@@ -243,6 +266,16 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Chỉnh sửa giới thiệu" + " " + gioithieu.Id,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
+            _context.Logss.Add(log);
+
             // Lưu tất cả các thay đổi
             await _context.SaveChangesAsync();
 
@@ -264,6 +297,14 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Gioithieu>>> DeleteGioithieu(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var gioithieu = await _context.Gioithieu.FindAsync(id);
 
             if (gioithieu == null)
@@ -277,8 +318,17 @@ namespace CuahangtraicayAPI.Controllers
 
             var imagesToDelete = await _context.GioithieuImg.Where(g => g.Id_gioithieu == id).ToListAsync();
             _context.GioithieuImg.RemoveRange(imagesToDelete);
+           
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa Giới thiệu " + " " + gioithieu.Tieu_de,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
 
             _context.Gioithieu.Remove(gioithieu);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<Gioithieu>
@@ -300,6 +350,14 @@ namespace CuahangtraicayAPI.Controllers
 
         public async Task<ActionResult> DeleteImage(int imageId)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var gioithieuImg = await _context.GioithieuImg.FindAsync(imageId);
 
             if (gioithieuImg == null)
@@ -314,8 +372,17 @@ namespace CuahangtraicayAPI.Controllers
                 System.IO.File.Delete(filePath);
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = "Xóa bài giới thiệu " + " " + gioithieuImg.Id_gioithieu,
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
+
             // Xóa hình ảnh khỏi cơ sở dữ liệu
             _context.GioithieuImg.Remove(gioithieuImg);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return NoContent();

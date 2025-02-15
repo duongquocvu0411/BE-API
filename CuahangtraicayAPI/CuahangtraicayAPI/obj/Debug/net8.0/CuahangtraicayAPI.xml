@@ -177,48 +177,6 @@
             </summary>
             <returns> Xóa 1 danh mục sản phẩm theo {id}</returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.Index">
-            <summary>
-            Lấy danh sách tất cả các địa chỉ chi tiết.
-            </summary>
-            <returns>Danh sách các đối tượng Diachichitiet</returns>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.Store(CuahangtraicayAPI.DTO.DiachichitietDTO.CreateDiachichitietDto)">
-            <summary>
-            thêm 1  địa chỉ chi tiết.
-            </summary>
-            <returns>thêm 1  địa chỉ chi tiết.</returns>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.Show(System.Int32)">
-            <summary>
-            xem id  địa chỉ chi tiết.
-            </summary>
-            <returns>xem id  địa chỉ chi tiết.</returns>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.Update(System.Int32,CuahangtraicayAPI.DTO.DiachichitietDTO.UpdateDiachichitietDto)">
-            <summary>
-            chỉnh sửa  địa chỉ chi tiết theo {id}.
-            </summary>
-            <returns>chỉnh sửa  địa chỉ chi tiết theo {id}.</returns>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.Destroy(System.Int32)">
-            <summary>
-            Xóa địa chỉ chi tiết theo {id}.
-            </summary>
-            <returns>Xóa địa chỉ chi tiết theo {id}..</returns>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.SetDiaChiHien(System.Int32,CuahangtraicayAPI.DTO.DiachichitietDTO.SetDiachichitietDto)">
-            <summary>
-            post địa chỉ chi tiết {id} status thành: "đang sử dụng"
-            </summary>
-            <returns>post địa chỉ chi tiết {id} status thành: "đang sử dụng"</returns>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DiachichitietController.GetDiaChiHien">
-            <summary>
-            lấy danh sách địa chỉ chi tiết đang có status : "đang sử dụng"
-            </summary>
-            <returns> lấy danh sách địa chỉ chi tiết đang có status : "đang sử dụng"</returns>
-        </member>
         <member name="M:CuahangtraicayAPI.Controllers.DonvitinhController.GetDonvitinh">
             <summary>
             Lấy danh sách của đơn vị tính sản phẩm
@@ -681,44 +639,6 @@
         <member name="M:CuahangtraicayAPI.Controllers.SanphamSaleController.GetSaleBySanphamId(System.Int32)">
             <summary>
             Lấy chi tiết sale của một sản phẩm theo {sanphamId}
-            </summary>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.Index">
-            <summary>
-            Lấy danh sách tất cả tên cửa hàng.
-            </summary>
-            <returns>Danh sách các đối tượng Tencuahang</returns>
-            
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.Show(System.Int32)">
-            <summary>
-            Lấy thông tin chi tiết của tên cửa hàng theo id.
-            </summary>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.Store(CuahangtraicayAPI.DTO.TencuahangDTO.CreateTencuahangDTO)">
-            <summary>
-            Thêm một tên cửa hàng mới.
-            </summary>
-            
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.Update(System.Int32,CuahangtraicayAPI.DTO.TencuahangDTO.UpdateTencuahangDTO)">
-            <summary>
-            Chỉnh sửa thông tin của một tên cửa hàng theo id.
-            </summary>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.Destroy(System.Int32)">
-            <summary>
-            Xóa một tên cửa hàng theo id.
-            </summary>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.SetTencuahang(System.Int32,CuahangtraicayAPI.DTO.TencuahangDTO.SetTencuahangDto)">
-            <summary>
-            Đặt một tên cửa hàng có trạng thái "đang sử dụng" theo id.
-            </summary>
-        </member>
-        <member name="M:CuahangtraicayAPI.Controllers.TencuahangController.GetHien">
-            <summary>
-            Lấy tên cửa hàng đang có trạng thái "đang sử dụng".
             </summary>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.TenFooterController.GetTenFooters">

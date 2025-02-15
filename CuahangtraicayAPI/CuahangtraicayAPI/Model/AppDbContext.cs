@@ -17,9 +17,10 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     // Định nghĩa các DbSet cho các bảng trong cơ sở dữ liệu
     //public DbSet<AccountGoogle> AccountGoogle { get; set; }
     public DbSet<Danhmucsanpham> Danhmucsanpham { get; set; }
-    public DbSet<Diachichitiet> Diachichitiets { get; set; }
     public DbSet<Admin> Admins { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
+    
+    public DbSet<Logs> Logss { get; set; }
     public DbSet<AdminProfile> AdminProfiles { get; set; }
     public DbSet<EmployeeProfile> EmployeeProfiles { get; set; }
     public DbSet<AdminResponse> AdminResponses { get; set; }
@@ -37,7 +38,6 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Bannerts> Banners { get; set; }
     public DbSet<BannerImages> BannerImages { get; set; }
     public DbSet<Menu> Menus { get; set; }
-    public DbSet<Tencuahang> Tencuahangs { get; set; }
     public DbSet<TenFooters> TenFooters { get; set; }
     public DbSet<FooterImgs> FooterImgs { get; set; }
     public DbSet<Gioithieu> Gioithieu { get; set; }

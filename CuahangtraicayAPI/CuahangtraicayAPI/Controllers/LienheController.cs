@@ -6,6 +6,7 @@ using CuahangtraicayAPI.Model;
 using Microsoft.AspNetCore.Authorization;
 using CuahangtraicayAPI.DTO;
 using CuahangtraicayAPI.Model.DB;
+using System.Security.Claims;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -15,9 +16,11 @@ namespace CuahangtraicayAPI.Controllers
     {
         private readonly AppDbContext _context;
 
-        public LienHeController(AppDbContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public LienHeController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -70,13 +73,29 @@ namespace CuahangtraicayAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BaseResponseDTO<Lienhe>>> DeleteLienHe(int id)
         {
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
+            var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Xác định chức vụ từ Roles trong Token
+
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+
             var lienHe = await _context.Lienhes.FindAsync(id);
             if (lienHe == null)
             {
                 return BadRequest(new BaseResponseDTO<Lienhe>{ Code=404, Message= "Không tìm thấy liên hệ!" });
             }
 
+            var log = new Logs
+            {
+                UserId = users,
+                HanhDong = $"Xóa liên hệ {lienHe.id} - {lienHe.email}",
+                CreatedBy = hotenToken,
+                Chucvu = chucVu,
+            };
             _context.Lienhes.Remove(lienHe);
+            _context.Logss.Add(log);
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<Lienhe>{ Code=404,Message = "Liên hệ đã được xóa thành công!" });

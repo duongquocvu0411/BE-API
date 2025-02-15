@@ -5,7 +5,6 @@ import Sanpham from './component/admin/page/Sanpham';
 import { CartProvider } from "./component/users/page/CartContext";
 import ProtectedRoute from './component/routerbaove/ProtectedRoute';
 import LoginAdmin from "./component/admin/page/LoginAdmin";
-import DiaChiChiTiet from "./component/admin/page/DiaChiChiTiet";
 import LienHe from "./component/users/page/LienHe";
 import LienHeAdmin from "./component/admin/page/LienHeAdmin";
 import Khachhangs from "./component/admin/page/Khachhang";
@@ -22,7 +21,6 @@ import TrangChuAdmin from "./component/admin/page/TrangchuAdmin";
 import Danhmucsanpham from "./component/admin/page/Danhmucsanpham";
 import Dactrung from "./component/admin/page/Dactrung";
 import Banners from "./component/admin/page/Banners";
-import Tencuahang from "./component/admin/page/Tencuahang";
 import Menu from "./component/admin/page/Menu";
 import TenFooterAdmin from "./component/admin/page/TenFooterAdmin";
 import GioithieuAdmin from "./component/admin/page/GioithieuAdmin";
@@ -67,23 +65,6 @@ function App() {
           {/* Admin Routes */}
           <Route path="/admin/login" element={<ProtectedRoute congkhai={true}><LoginAdmin /></ProtectedRoute>} />
 
-
-          {/* <Route
-            path="/admin/diachichitiet"
-            element={
-              <ProtectedRoute>
-                <DiaChiChiTiet />
-              </ProtectedRoute>
-            }
-          /> */}
-          <Route
-            path="/admin/tencuahang"
-            element={
-              <ProtectedRoute>
-                <Tencuahang />
-              </ProtectedRoute>
-            }
-          />
             <Route
             path="/admin/donvitinh"
             element={
