@@ -139,6 +139,22 @@
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
+    "Method": "ForgotPassword",
+    "RelativePath": "api/Authenticate/forgot-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CuahangtraicayAPI.Model.jwt.ForgotPasswordModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "GetAllEmployees",
     "RelativePath": "api/Authenticate/get-all-employees",
     "HttpMethod": "GET",
@@ -151,6 +167,16 @@
     "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "GetAllUser",
     "RelativePath": "api/Authenticate/get-all-user",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
+    "Method": "HasPassword",
+    "RelativePath": "api/Authenticate/has-password",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -183,7 +209,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "CuahangtraicayAPI.Controllers.AuthenticateController\u002BGoogleLoginRequest",
+        "Type": "CuahangtraicayAPI.Model.jwt.GoogleLoginRequest",
         "IsRequired": true
       }
     ],
@@ -239,6 +265,54 @@
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
+    "Method": "RequestChangePassword",
+    "RelativePath": "api/Authenticate/request-change-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CuahangtraicayAPI.Model.jwt.ChangePasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
+    "Method": "ResetPassword",
+    "RelativePath": "api/Authenticate/reset-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CuahangtraicayAPI.Model.jwt.ResetPasswordModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
+    "Method": "SetPassword",
+    "RelativePath": "api/Authenticate/set-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CuahangtraicayAPI.Model.jwt.SetPasswordModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "VerifyOtp",
     "RelativePath": "api/Authenticate/verify-otp",
     "HttpMethod": "POST",
@@ -248,6 +322,22 @@
       {
         "Name": "otp",
         "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
+    "Method": "VerifyOtpAndChangePassword",
+    "RelativePath": "api/Authenticate/verify-otp-and-change-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CuahangtraicayAPI.DTO.LoginDTO\u002BVerifyOtpRequest",
         "IsRequired": true
       }
     ],

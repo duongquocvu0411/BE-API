@@ -11,22 +11,22 @@ const Footerusers = () => {
   const [footerActive, setFooterActive] = useState([]);
    const [thongTinWebsite, setThongTinWebsite] = useState({ tieu_de: "",phu_de:"", favicon: "", email: "", diachi: "", sdt: "" });
   useEffect(() => {
-    const fetchCurrentDiaChi = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/DiaChiChiTiet/getDiaChiHien`);
-        if (response.data) {
-          setChiTietDiaChi({
-            diachi: response.data.diachi, // sử dụng 'diachi' từ API
-            email: response.data.email,
-            sdt: response.data.sdt // sdt nếu được trả về từ API
-          });
-        } else {
-          console.log('Không có địa chỉ đang sử dụng');
-        }
-      } catch (err) {
-        console.log('Lỗi khi lấy thông tin từ API:', err);
-      }
-    };
+    // const fetchCurrentDiaChi = async () => {
+    //   try {
+    //     const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/DiaChiChiTiet/getDiaChiHien`);
+    //     if (response.data) {
+    //       setChiTietDiaChi({
+    //         diachi: response.data.diachi, // sử dụng 'diachi' từ API
+    //         email: response.data.email,
+    //         sdt: response.data.sdt // sdt nếu được trả về từ API
+    //       });
+    //     } else {
+    //       console.log('Không có địa chỉ đang sử dụng');
+    //     }
+    //   } catch (err) {
+    //     console.log('Lỗi khi lấy thông tin từ API:', err);
+    //   }
+    // };
     const fetchTenFooter = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASEURL}/api/TenFooter`);
@@ -78,7 +78,7 @@ const Footerusers = () => {
 
     fetchFooterActive();
     fetchTenFooter();
-    fetchCurrentDiaChi();
+    // fetchCurrentDiaChi();
     fetchMenuFooter();
     layThongTinWebsiteHoatDong();
   }, []);

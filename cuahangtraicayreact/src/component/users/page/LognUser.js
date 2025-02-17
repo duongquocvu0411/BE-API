@@ -20,6 +20,14 @@ const LoginUser = () => {
 
   const [cookies, setCookie] = useCookies(['userToken', 'userName', 'loginTime']);
 
+  // Forgot password states
+  const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
+  const [email, setEmail] = useState('');
+  const [showResetPasswordForm, setShowResetPasswordForm] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [forgotPasswordOtp, setForgotPasswordOtp] = useState('');
+
   useEffect(() => {
     if (cookies.userToken) {
       toast.info("bạn đã đăng nhập", {
@@ -181,9 +189,88 @@ const LoginUser = () => {
             autoClose: 3000,
         });
     }
-};
+  };
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
 
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASEURL}/api/Authenticate/forgot-password`, {
+        email: email,
+      });
+
+      if (response.data.status === 'success') {
+        toast.success(response.data.message, {
+          position: 'top-center',
+          autoClose: 3000,
+        });
+        setShowForgotPasswordForm(false); // Hide email form
+        setShowResetPasswordForm(true); // Show OTP and new password form
+      } else {
+        // Display the backend's error message
+        toast.error(response.data.message, {
+          position: 'top-center',
+          autoClose: 3000,
+        });
+      }
+    } catch (error) {
+      console.error('Lỗi quên mật khẩu:', error);
+
+      // Check if the error is a 404 error, and display the backend's message if available
+      if (error.response && error.response.status === 404 && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message, {
+          position: 'top-center',
+          autoClose: 3000,
+        });
+      } else {
+        // If it's a different type of error, display a generic message
+        toast.error('Yêu cầu đặt lại mật khẩu thất bại. Vui lòng thử lại.', {
+          position: 'top-center',
+          autoClose: 3000,
+        });
+      }
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+
+    if (newPassword !== confirmNewPassword) {
+      toast.error('Mật khẩu mới và xác nhận mật khẩu không khớp.', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASEURL}/api/Authenticate/reset-password`, {
+        otp: forgotPasswordOtp,
+        newPassword: newPassword,
+      });
+
+      if (response.data.status === 'success') {
+        toast.success(response.data.message, {
+          position: 'top-center',
+          autoClose: 3000,
+        });
+        setShowResetPasswordForm(false); // Hide the reset password form
+        setShowForgotPasswordForm(false); //hide forgot password form
+        // navigate('/loginuser'); // Redirect to login page after successful password reset
+      } else {
+        toast.error(response.data.message, {
+          position: 'top-center',
+          autoClose: 3000,
+        });
+      }
+    } catch (error) {
+      console.error('Lỗi đặt lại mật khẩu:', error);
+      toast.error('Đặt lại mật khẩu thất bại. Vui lòng thử lại.', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
+    }
+  };
 
 
   return (
@@ -198,62 +285,136 @@ const LoginUser = () => {
                 <h4 className="card-title mb-0 text-center">User Login</h4>
               </div>
               <div className="card-body">
-                {!showOtpForm ? (
-                  <form onSubmit={handleLogin}>
+                {!showForgotPasswordForm && !showResetPasswordForm ? ( // Show Login or OTP form
+                  !showOtpForm ? (
+                    <form onSubmit={handleLogin}>
+                      <div className="mb-3">
+                        <label className="form-label">Tên đăng nhập</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Nhập tên đăng nhập"
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Mật khẩu</label>
+                        <input
+                          type="password"
+                          className="form-control"
+                          placeholder="Nhập mật khẩu"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="mb-3 form-check">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={rememberLogin}
+                          onChange={(e) => setRememberLogin(e.target.checked)}
+                        />
+                        <label className="form-check-label">Lưu thông tin đăng nhập</label>
+                      </div>
+                      <button type="submit" className="btn btn-primary w-100" disabled={isProcessing}>
+                        {isProcessing ? 'Đang xử lý...' : 'Đăng nhập'}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-link w-100 mt-2"
+                        onClick={() => setShowForgotPasswordForm(true)}
+                      >
+                        Quên mật khẩu?
+                      </button>
+                    </form>
+                  ) : (
+                    <form onSubmit={handleVerifyOtp}>
+                      <div className="mb-3">
+                        <label className="form-label">Nhập mã xác thực</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Nhập mã xác thực"
+                          value={otp}
+                          onChange={(e) => setOtp(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <button type="submit" className="btn btn-primary w-100" disabled={isVerifyingOtp}>
+                        {isVerifyingOtp ? 'Đang xử lý...' : 'Xác thực'}
+                      </button>
+                    </form>
+                  )
+                ) : showForgotPasswordForm ? ( //Show forgot password form
+                  <form onSubmit={handleForgotPassword}>
                     <div className="mb-3">
-                      <label className="form-label">Tên đăng nhập</label>
+                      <label className="form-label">Email</label>
                       <input
-                        type="text"
+                        type="email"
                         className="form-control"
-                        placeholder="Nhập tên đăng nhập"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Nhập email của bạn"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                       />
                     </div>
-                    <div className="mb-3">
-                      <label className="form-label">Mật khẩu</label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        placeholder="Nhập mật khẩu"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="mb-3 form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={rememberLogin}
-                        onChange={(e) => setRememberLogin(e.target.checked)}
-                      />
-                      <label className="form-check-label">Lưu thông tin đăng nhập</label>
-                    </div>
-                    <button type="submit" className="btn btn-primary w-100" disabled={isProcessing}>
-                      {isProcessing ? 'Đang xử lý...' : 'Đăng nhập'}
+                    <button type="submit" className="btn btn-primary w-100">
+                      Gửi mã xác thực
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary w-100 mt-2"
+                      onClick={() => setShowForgotPasswordForm(false)}
+                    >
+                      Quay lại đăng nhập
                     </button>
                   </form>
-                ) : (
-                  <form onSubmit={handleVerifyOtp}>
+                ) : ( // Show reset password form
+                  <form onSubmit={handleResetPassword}>
                     <div className="mb-3">
-                      <label className="form-label">Nhập mã xác thực</label>
+                      <label className="form-label">Mã xác thực</label>
                       <input
                         type="text"
                         className="form-control"
                         placeholder="Nhập mã xác thực"
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value)}
+                        value={forgotPasswordOtp}
+                        onChange={(e) => setForgotPasswordOtp(e.target.value)}
                         required
                       />
                     </div>
-                    <button type="submit" className="btn btn-primary w-100" disabled={isVerifyingOtp}>
-                      {isVerifyingOtp ? 'Đang xử lý...' : 'Xác thực'}
+                    <div className="mb-3">
+                      <label className="form-label">Mật khẩu mới</label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Nhập mật khẩu mới"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Xác nhận mật khẩu mới</label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Xác nhận mật khẩu mới"
+                        value={confirmNewPassword}
+                        onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <button type="submit" className="btn btn-primary w-100">
+                      Đặt lại mật khẩu
                     </button>
                   </form>
                 )}
-               <GoogleOAuthProvider clientId="272536894236-3sl25tri9oc80al1tjlo0tfm7l75ce0l.apps.googleusercontent.com" >
+
+
+                <GoogleOAuthProvider clientId="272536894236-3sl25tri9oc80al1tjlo0tfm7l75ce0l.apps.googleusercontent.com" >
                   <div className="mt-4">
                     <GoogleLogin
                       onSuccess={handleGoogleLogin}

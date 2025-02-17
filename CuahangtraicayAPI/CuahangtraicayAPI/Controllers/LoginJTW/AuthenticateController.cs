@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Authentication;
 using Google.Apis.Auth;
 using CuahangtraicayAPI.Model;
 using Microsoft.EntityFrameworkCore;
+using static CuahangtraicayAPI.DTO.LoginDTO;
+using static CuahangtraicayAPI.Controllers.AuthenticateController;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -44,6 +46,13 @@ namespace CuahangtraicayAPI.Controllers
             _context = context;
             _cache = cache;
         }
+
+
+        /// <summary>
+        /// Login Google cho user 
+        /// </summary>
+        /// <param name="request">Login Google cho user</param>
+        /// <returns>Login Google cho user</returns>
 
         [HttpPost("login-google")]
         public async Task<IActionResult> LoginGoogle([FromBody] GoogleLoginRequest request)
@@ -95,6 +104,15 @@ namespace CuahangtraicayAPI.Controllers
                     await _context.SaveChangesAsync();
                 }
 
+                // thêm thông tin vào AspNetLogins nếu chưa có
+
+                var userlogin = await _context.UserLogins.FirstOrDefaultAsync(ul => ul.UserId == user.Id && ul.LoginProvider == "Goolge");
+
+                if (userlogin == null)
+                {
+                    await _userManager.AddLoginAsync(user, new UserLoginInfo("Google", googleAccountId, "Google"));
+                }
+
                 // Kiểm tra xem đã có bản ghi AccountGoogle cho người dùng này chưa
                 var kiemtraAccountGoolge = _context.AccountGoogle.FirstOrDefault(a => a.UserId == user.Id);
 
@@ -122,17 +140,32 @@ namespace CuahangtraicayAPI.Controllers
 
                 await _context.SaveChangesAsync();
 
+                // lưu access token vào bảng userToken
+
+                var kiemtraToken = await _userManager.GetAuthenticationTokenAsync(user, "Goolge", "AccessToke");
+                if (kiemtraToken == null)
+                {
+                    await _userManager.SetAuthenticationTokenAsync(user, "Google", "AccessToken", request.AccessToken);
+
+                }
+                else
+                {
+                    await _userManager.RemoveAuthenticationTokenAsync(user, "Google", "RefreshToken");
+                    await _userManager.SetAuthenticationTokenAsync(user, "Google", "AccessToken", request.AccessToken);
+                }
+
+
                 var userRoles = await _userManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, user.UserName),
-        new Claim(ClaimTypes.NameIdentifier, user.Id),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim("FullName", fullName ?? "Unknown"),
-        new Claim(ClaimTypes.Email, email),
-        new Claim("Sodienthoai", " ")
-    };
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim("FullName", fullName ?? "Unknown"),
+                        new Claim(ClaimTypes.Email, email),
+                        new Claim("Sodienthoai", " ")
+                    };
 
                 foreach (var userRole in userRoles)
                 {
@@ -153,11 +186,60 @@ namespace CuahangtraicayAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { status = "error", message = "Token validation failed.", error = ex.Message });
             }
         }
-        public class GoogleLoginRequest
+
+
+        /// <summary>
+        /// Tạo mật khẩu cho tài khoản login google lần đầu
+        /// </summary>
+        /// <param name="model">Tạo mật khẩu cho tài khoản login google lần đầu</param>
+        /// <returns>Tạo mật khẩu cho tài khoản login google lần đầu</returns>
+        [HttpPost("set-password")]
+        [Authorize]
+        public async Task<IActionResult> SetPassword([FromBody] SetPasswordModel model)
         {
-            public string AccessToken { get; set; }
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound(new { status = "error", message = "Không tìm thấy người dùng." });
+            }
+
+            var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
+
+            if (!addPasswordResult.Succeeded)
+            {
+                return BadRequest(new { status = "error", message = "Thiết lập mật khẩu thất bại.", errors = addPasswordResult.Errors });
+            }
+
+            return Ok(new { status = "success", message = "Mật khẩu đã được thiết lập thành công." });
         }
 
+
+        /// <summary>
+        /// Xem tài khoản có Password chưa
+        /// </summary>
+        /// <returns>Xem tài khoản có Password chưa</returns>
+
+        [HttpGet("has-password")]
+        [Authorize]
+        public async Task<IActionResult> HasPassword()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound(new { status = "error", message = "Không tìm thấy người dùng." });
+            }
+
+            var hasPassword = await _userManager.HasPasswordAsync(user);
+
+            return Ok(new { status = "success", hasPassword = hasPassword });
+        }
+
+
+        /// <summary>
+        /// Login Cho admin user Eployee khi login nó trả về token có role
+        /// </summary>
+        /// <param name="model">Login Cho admin user Eployee khi login nó trả về token có role</param>
+        /// <returns>Login Cho admin user Eployee khi login nó trả về token có role</returns>
 
         [HttpPost]
         [Route("login")]
@@ -187,7 +269,7 @@ namespace CuahangtraicayAPI.Controllers
                 _cache.Set("current-username", user.UserName, TimeSpan.FromMinutes(5));
 
                 Console.WriteLine($"[DEBUG] OTP: {otpCode}, Username: {user.UserName}, Email: {user.Email}");
-
+#pragma warning disable CS4014
                 Task.Run(() =>
                 {
                     var emailBody = $@"
@@ -222,6 +304,13 @@ namespace CuahangtraicayAPI.Controllers
 
             return visiblePart + "*****" + domain; // Chỉ hiển thị ký tự đầu và phần domain
         }
+
+        /// <summary>
+        /// Xác nhận mã otp khi login gữi về Email
+        /// </summary>
+        /// <param name="otp">Xác nhận mã otp khi login gữi về Email</param>
+        /// <returns>Xác nhận mã otp khi login gữi về Email</returns>
+
         [HttpPost]
         [Route("verify-otp")]
         public async Task<IActionResult> VerifyOtp([FromBody] string otp)
@@ -301,6 +390,12 @@ namespace CuahangtraicayAPI.Controllers
         }
 
 
+        /// <summary>
+        /// Đăng ký tài khoản users
+        /// </summary>
+        /// <param name="model">Đăng ký tài khoản users</param>
+        /// <returns>Đăng ký tài khoản users</returns>
+
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
@@ -344,6 +439,13 @@ namespace CuahangtraicayAPI.Controllers
                 message = "Mã xác thực đã được gửi đến email của bạn. Vui lòng kiểm tra email để xác nhận."
             });
         }
+
+        /// <summary>
+        /// Xác thực mã otp đăng ký tài khoản được gữi về mail
+        /// </summary>
+        /// <param name="otp">Xác thực mã otp đăng ký tài khoản được gữi về mail</param>
+        /// <returns>Xác thực mã otp đăng ký tài khoản được gữi về mail</returns>
+
         [HttpPost]
         [Route("verify-register-otp")]
         public async Task<IActionResult> VerifyRegisterOtp([FromBody] string otp)
@@ -396,6 +498,13 @@ namespace CuahangtraicayAPI.Controllers
             return Unauthorized(new { status = "error", message = "Mã OTP không hợp lệ hoặc đã hết hạn." });
         }
 
+
+        /// <summary>
+        /// Đăng ký tài khoản Admin
+        /// </summary>
+        /// <param name="model">Đăng ký tài khoản Admin</param>
+        /// <returns>Đăng ký tài khoản Admin</returns>
+
         [HttpPost]
         [Route("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
@@ -439,6 +548,13 @@ namespace CuahangtraicayAPI.Controllers
                 message = "Mã xác thực đã được gửi đến email của bạn. Vui lòng kiểm tra email để xác nhận."
             });
         }
+
+        /// <summary>
+        /// Xác thực mã otp gữi về mail 
+        /// </summary>
+        /// <param name="otp">Xác thực mã otp gữi về mail </param>
+        /// <returns>Xác thực mã otp gữi về mail </returns>
+
         [HttpPost]
         [Route("xacthuc-otp-admin")]
         public async Task<IActionResult> VerifyRegisterAdminOtp([FromBody] string otp)
@@ -491,6 +607,14 @@ namespace CuahangtraicayAPI.Controllers
 
             return Unauthorized(new { status = "error", message = "Mã OTP không hợp lệ hoặc đã hết hạn." });
         }
+
+
+        /// <summary>
+        /// Đăng ký tài khoản Employee
+        /// </summary>
+        /// <param name="model">Đăng ký tài khoản Employee</param>
+        /// <returns>Đăng ký tài khoản Employee</returns>
+
         [HttpPost]
         [Route("register-employee")]
         public async Task<IActionResult> RegisterEmployee([FromBody] RegisterModel model)
@@ -534,6 +658,14 @@ namespace CuahangtraicayAPI.Controllers
                 message = "Mã xác thực đã được gửi đến email của bạn. Vui lòng kiểm tra email để xác nhận."
             });
         }
+
+
+        /// <summary>
+        /// Xác thực mã otp Employee gữi về Mail
+        /// </summary>
+        /// <param name="otp">Xác thực mã otp Employee gữi về Mail</param>
+        /// <returns>Xác thực mã otp Employee gữi về Mail</returns>
+
         [HttpPost]
         [Route("verify-register-employee-otp")]
         public async Task<IActionResult> VerifyRegisterEmployeeOtp([FromBody] string otp)
@@ -601,6 +733,13 @@ namespace CuahangtraicayAPI.Controllers
 
             return token;
         }
+
+
+        /// <summary>
+        /// Xem danh sách tài khoản nhân viên với quyền Admin
+        /// </summary>
+        /// <returns>Xem danh sách tài khoản nhân viên với quyền Admin</returns>
+
         [HttpGet]
         [Route("get-all-employees")]
         [Authorize(Roles = "Admin")]
@@ -652,6 +791,15 @@ namespace CuahangtraicayAPI.Controllers
             }
 
         }
+
+
+        /// <summary>
+        /// Xóa tài khoản nhân viên - Users quyền Admin
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>Xóa tài khoản nhân viên quyền - Users Admin</returns>
+
+
         [HttpDelete]
         [Route("delete-employee-User/{userId}")]
         [Authorize(Roles = "Admin")]
@@ -718,6 +866,12 @@ namespace CuahangtraicayAPI.Controllers
                 });
             }
         }
+
+        /// <summary>
+        /// xem danh sách tài khoản Users quyền Admin
+        /// </summary>
+        /// <returns>xem danh sách tài khoản Users quyền Admin</returns>
+
         [HttpGet]
         [Route("get-all-user")]
         [Authorize(Roles = "Admin")]
@@ -771,8 +925,17 @@ namespace CuahangtraicayAPI.Controllers
 
 
         }
+
+
+        /// <summary>
+        /// Khóa tài khoản Users Quyền Admin
+        /// </summary>
+        /// <param name="userId">Khóa tài khoản Users Quyền Admin</param>
+        /// <returns>Khóa tài khoản Users Quyền Admin</returns>
+
         [HttpPost]
         [Route("admin/lock-account")]
+        [Authorize(Roles = "Admin")]
         public IActionResult LockAccount(string userId)
         {
             var user = _context.UserProfiles.FirstOrDefault(a => a.UserId == userId);
@@ -785,8 +948,16 @@ namespace CuahangtraicayAPI.Controllers
             return NotFound("Không tìm thấy tài khoản.");
         }
 
+
+        /// <summary>
+        /// Mở khóa tài khoản users quyền Admin
+        /// </summary>
+        /// <param name="userId">Mở khóa tài khoản users quyền Admin</param>
+        /// <returns>Mở khóa tài khoản users quyền Admin</returns>
+
         [HttpPost]
         [Route("admin/unlock-account")]
+        [Authorize(Roles = "Admin")]
         public IActionResult UnlockAccount(string userId)
         {
             // Tìm tài khoản trong cơ sở dữ liệu
@@ -811,6 +982,191 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(new { message = "Tài khoản đã được mở khóa thành công!" });
         }
 
+        /// <summary>
+        /// Yêu cầu đặt lại mật khẩu.  Gửi mã xác thực về email của người dùng.
+        /// </summary>
+        /// <param name="model">Model chứa email của người dùng.</param>
+        /// <returns>Kết quả của yêu cầu.</returns>
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound(new { status = "error", message = "Không tìm thấy tài khoản với email này." });
+            }
+
+            // Tạo mã OTP ngẫu nhiên
+            var otpCode = new Random().Next(100000, 999999).ToString();
+
+            // Lưu OTP và username vào MemoryCache với thời hạn 10 phút
+            _cache.Set($"reset-password-otp-{user.UserName}", otpCode, TimeSpan.FromMinutes(10));
+            _cache.Set("current-reset-username", user.UserName, TimeSpan.FromMinutes(10));
+
+            Console.WriteLine($"[DEBUG] Reset Password OTP: {otpCode}, Username: {user.UserName}, Email: {user.Email}");
+#pragma warning disable CS4014
+            // Gửi OTP qua email
+            Task.Run(() =>
+            {
+                var emailBody = $@"
+            <div style='font-family: Arial, sans-serif;'>
+                <h3>Xin chào {user.UserName},</h3>
+                <p>Mã xác thực OTP để đặt lại mật khẩu của bạn là:</p>
+                <h2 style='color: #007bff;'>{otpCode}</h2>
+                <p>Vui lòng sử dụng mã này để đặt lại mật khẩu. Mã OTP có hiệu lực trong 10 phút.</p>
+                <hr />
+                <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
+            </div>";
+                SendEmail(user.Email, "Mã OTP đặt lại mật khẩu", emailBody);
+            });
+
+            return Ok(new
+            {
+                status = "success",
+                message = $"Mã xác thực đặt lại mật khẩu đã được gửi đến email: {FormatEmailForDisplay(user.Email)}"
+            });
+        }
+
+        /// <summary>
+        /// Xác minh OTP và đặt lại mật khẩu.
+        /// </summary>
+        /// <param name="model">Model chứa OTP, email và mật khẩu mới.</param>
+        /// <returns>Kết quả của việc đặt lại mật khẩu.</returns>
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
+        {
+            // Lấy username từ MemoryCache
+            if (_cache.TryGetValue("current-reset-username", out string username) &&
+                _cache.TryGetValue($"reset-password-otp-{username}", out string cachedOtp))
+            {
+                Console.WriteLine($"[DEBUG] Reset Password OTP từ cache: {cachedOtp}, OTP nhận: {model.Otp}, Username: {username}");
+
+                if (cachedOtp == model.Otp)
+                {
+                    // Xóa OTP và username khỏi cache sau khi xác thực thành công
+                    _cache.Remove($"reset-password-otp-{username}");
+                    _cache.Remove("current-reset-username");
+
+                    // Tìm thông tin người dùng
+                    var user = await _userManager.FindByNameAsync(username);
+
+                    // Đặt lại mật khẩu
+                    var resetPasswordResult = await _userManager.ResetPasswordAsync(user, await _userManager.GeneratePasswordResetTokenAsync(user), model.NewPassword);
+
+
+                    if (resetPasswordResult.Succeeded)
+                    {
+                        return Ok(new { status = "success", message = "Mật khẩu đã được đặt lại thành công." });
+                    }
+                    else
+                    {
+                        return BadRequest(new { status = "error", message = "Đặt lại mật khẩu thất bại.", errors = resetPasswordResult.Errors });
+                    }
+                }
+            }
+
+            // Nếu không tìm thấy OTP hoặc OTP không khớp
+            return Unauthorized(new { status = "error", message = "Mã OTP không hợp lệ hoặc đã hết hạn." });
+        }
+
+
+
+        /// <summary>
+        /// API Yêu cầu Đổi Mật Khẩu (gửi OTP)
+        /// </summary>
+        /// <param name="request">Mật khẩu cũ và mật khẩu mới</param>
+        /// <returns>thành công hoặc thất bại</returns>
+        [HttpPost("request-change-password")]
+        [Authorize] // Cần xác thực người dùng trước khi đổi mật khẩu
+        public async Task<IActionResult> RequestChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound(new { status = "error", message = "Không tìm thấy người dùng." });
+            }
+
+            // Xác minh mật khẩu cũ
+            var passwordCheckResult = await _userManager.CheckPasswordAsync(user, request.OldPassword);
+            if (!passwordCheckResult)
+            {
+                return BadRequest(new { status = "error", message = "Mật khẩu cũ không đúng." });
+            }
+
+            // Tạo mã OTP ngẫu nhiên
+            var otpCode = new Random().Next(100000, 999999).ToString();
+
+            // Lưu OTP VÀ mật khẩu mới vào cache (sử dụng UserId làm key)
+            var cacheEntry = new { Otp = otpCode, NewPassword = request.NewPassword }; // Lưu cả OTP và mật khẩu mới
+            _cache.Set($"change-password-otp-{user.Id}", cacheEntry, TimeSpan.FromMinutes(10));
+
+            // Gửi OTP qua email
+            Task.Run(() =>
+            {
+                var emailBody = $@"
+                    <div style='font-family: Arial, sans-serif;'>
+                        <h3>Xin chào {user.UserName},</h3>
+                        <p>Mã xác thực OTP để thay đổi mật khẩu của bạn là:</p>
+                        <h2 style='color: #007bff;'>{otpCode}</h2>
+                        <p>Vui lòng sử dụng mã này để xác nhận thay đổi mật khẩu. Mã OTP có hiệu lực trong 10 phút.</p>
+                        <hr />
+                        <p>Nếu bạn không yêu cầu thay đổi mật khẩu, vui lòng bỏ qua email này.</p>
+                    </div>";
+                SendEmail(user.Email, "Mã OTP Thay Đổi Mật Khẩu", emailBody);
+            });
+
+            return Ok(new { status = "success", message = "Mã OTP đã được gửi đến email của bạn." });
+        }
+
+
+
+        /// <summary>
+        /// API Xác Minh OTP và Lưu Mật Khẩu Mới
+        /// </summary>
+        /// <param name="request">OTP và mật khẩu mới</param>
+        /// <returns>Kết quả thành công hoặc thất bại</returns>
+        [HttpPost("verify-otp-and-change-password")]
+        [Authorize]
+        public async Task<IActionResult> VerifyOtpAndChangePassword([FromBody] VerifyOtpRequest request) // Dùng VerifyOtpRequest
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound(new { status = "error", message = "Không tìm thấy người dùng." });
+            }
+
+            // Lấy thông tin từ cache (bao gồm OTP và mật khẩu mới)
+            if (!_cache.TryGetValue($"change-password-otp-{user.Id}", out var cachedEntry))
+            {
+                return BadRequest(new { status = "error", message = "Mã OTP không hợp lệ hoặc đã hết hạn." });
+            }
+
+            // Ép kiểu cho cachedEntry
+            var cacheData = (dynamic)cachedEntry;
+            string cachedOtp = cacheData.Otp;
+            string newPassword = cacheData.NewPassword;
+
+
+            // Kiểm tra OTP
+            if (cachedOtp != request.Otp)
+            {
+                return BadRequest(new { status = "error", message = "Mã OTP không đúng." });
+            }
+
+            // Reset mật khẩu
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetResult = await _userManager.ResetPasswordAsync(user, resetToken, newPassword); // Sử dụng newPassword từ cache
+
+            if (!resetResult.Succeeded)
+            {
+                return StatusCode(500, new { status = "error", message = "Thay đổi mật khẩu thất bại.", errors = resetResult.Errors });
+            }
+
+            // Xóa OTP khỏi cache
+            _cache.Remove($"change-password-otp-{user.Id}");
+
+            return Ok(new { status = "success", message = "Mật khẩu đã được thay đổi thành công." });
+        }
 
 
 

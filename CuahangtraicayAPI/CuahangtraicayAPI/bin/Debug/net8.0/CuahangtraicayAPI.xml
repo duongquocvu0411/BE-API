@@ -440,6 +440,143 @@
             </summary>
             <returns>  Xóa liên hệ theo {id} </returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.LoginGoogle(CuahangtraicayAPI.Model.jwt.GoogleLoginRequest)">
+            <summary>
+            Login Google cho user 
+            </summary>
+            <param name="request">Login Google cho user</param>
+            <returns>Login Google cho user</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.SetPassword(CuahangtraicayAPI.Model.jwt.SetPasswordModel)">
+            <summary>
+            Tạo mật khẩu cho tài khoản login google lần đầu
+            </summary>
+            <param name="model">Tạo mật khẩu cho tài khoản login google lần đầu</param>
+            <returns>Tạo mật khẩu cho tài khoản login google lần đầu</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.HasPassword">
+            <summary>
+            Xem tài khoản có Password chưa
+            </summary>
+            <returns>Xem tài khoản có Password chưa</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.Login(CuahangtraicayAPI.Modles.LoginModel)">
+            <summary>
+            Login Cho admin user Eployee khi login nó trả về token có role
+            </summary>
+            <param name="model">Login Cho admin user Eployee khi login nó trả về token có role</param>
+            <returns>Login Cho admin user Eployee khi login nó trả về token có role</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.VerifyOtp(System.String)">
+            <summary>
+            Xác nhận mã otp khi login gữi về Email
+            </summary>
+            <param name="otp">Xác nhận mã otp khi login gữi về Email</param>
+            <returns>Xác nhận mã otp khi login gữi về Email</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.Register(CuahangtraicayAPI.Modles.RegisterModel)">
+            <summary>
+            Đăng ký tài khoản users
+            </summary>
+            <param name="model">Đăng ký tài khoản users</param>
+            <returns>Đăng ký tài khoản users</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.VerifyRegisterOtp(System.String)">
+            <summary>
+            Xác thực mã otp đăng ký tài khoản được gữi về mail
+            </summary>
+            <param name="otp">Xác thực mã otp đăng ký tài khoản được gữi về mail</param>
+            <returns>Xác thực mã otp đăng ký tài khoản được gữi về mail</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.RegisterAdmin(CuahangtraicayAPI.Modles.RegisterModel)">
+            <summary>
+            Đăng ký tài khoản Admin
+            </summary>
+            <param name="model">Đăng ký tài khoản Admin</param>
+            <returns>Đăng ký tài khoản Admin</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.VerifyRegisterAdminOtp(System.String)">
+            <summary>
+            Xác thực mã otp gữi về mail 
+            </summary>
+            <param name="otp">Xác thực mã otp gữi về mail </param>
+            <returns>Xác thực mã otp gữi về mail </returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.RegisterEmployee(CuahangtraicayAPI.Modles.RegisterModel)">
+            <summary>
+            Đăng ký tài khoản Employee
+            </summary>
+            <param name="model">Đăng ký tài khoản Employee</param>
+            <returns>Đăng ký tài khoản Employee</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.VerifyRegisterEmployeeOtp(System.String)">
+            <summary>
+            Xác thực mã otp Employee gữi về Mail
+            </summary>
+            <param name="otp">Xác thực mã otp Employee gữi về Mail</param>
+            <returns>Xác thực mã otp Employee gữi về Mail</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.GetAllEmployees">
+            <summary>
+            Xem danh sách tài khoản nhân viên với quyền Admin
+            </summary>
+            <returns>Xem danh sách tài khoản nhân viên với quyền Admin</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.DeleteEmployee(System.String)">
+            <summary>
+            Xóa tài khoản nhân viên - Users quyền Admin
+            </summary>
+            <param name="userId"></param>
+            <returns>Xóa tài khoản nhân viên quyền - Users Admin</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.GetAllUser">
+            <summary>
+            xem danh sách tài khoản Users quyền Admin
+            </summary>
+            <returns>xem danh sách tài khoản Users quyền Admin</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.LockAccount(System.String)">
+            <summary>
+            Khóa tài khoản Users Quyền Admin
+            </summary>
+            <param name="userId">Khóa tài khoản Users Quyền Admin</param>
+            <returns>Khóa tài khoản Users Quyền Admin</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.UnlockAccount(System.String)">
+            <summary>
+            Mở khóa tài khoản users quyền Admin
+            </summary>
+            <param name="userId">Mở khóa tài khoản users quyền Admin</param>
+            <returns>Mở khóa tài khoản users quyền Admin</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.ForgotPassword(CuahangtraicayAPI.Model.jwt.ForgotPasswordModel)">
+            <summary>
+            Yêu cầu đặt lại mật khẩu.  Gửi mã xác thực về email của người dùng.
+            </summary>
+            <param name="model">Model chứa email của người dùng.</param>
+            <returns>Kết quả của yêu cầu.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.ResetPassword(CuahangtraicayAPI.Model.jwt.ResetPasswordModel)">
+            <summary>
+            Xác minh OTP và đặt lại mật khẩu.
+            </summary>
+            <param name="model">Model chứa OTP, email và mật khẩu mới.</param>
+            <returns>Kết quả của việc đặt lại mật khẩu.</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.RequestChangePassword(CuahangtraicayAPI.Model.jwt.ChangePasswordRequest)">
+            <summary>
+            API Yêu cầu Đổi Mật Khẩu (gửi OTP)
+            </summary>
+            <param name="request">Mật khẩu cũ và mật khẩu mới</param>
+            <returns>thành công hoặc thất bại</returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.VerifyOtpAndChangePassword(CuahangtraicayAPI.DTO.LoginDTO.VerifyOtpRequest)">
+            <summary>
+            API Xác Minh OTP và Lưu Mật Khẩu Mới
+            </summary>
+            <param name="request">OTP và mật khẩu mới</param>
+            <returns>Kết quả thành công hoặc thất bại</returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.MenuController.GetMenus">
             <summary>
             Xem danh sách Menu

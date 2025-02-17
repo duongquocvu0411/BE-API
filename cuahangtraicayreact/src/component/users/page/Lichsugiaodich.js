@@ -6,7 +6,8 @@ import { useCookies } from "react-cookie";
 import Footerusers from "../Footerusers";
 import HeaderUsers from "../HeaderUsers";
 // import '../Lichsugd.css'; // Import CSS
-import { Button } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap"; // Import Modal and Form
+// import { toast, ToastContainer } from "react-toastify"; // REMOVE
 
 const LichSuGiaoDich = () => {
   const [danhSachGiaoDich, setDanhSachGiaoDich] = useState([]);
@@ -26,6 +27,21 @@ const LichSuGiaoDich = () => {
   const [tongSoDonHangHuy, setTongSoDonHangHuy] = useState(0);
   const [tongsodonDagiao, settongsodonDagiao] = useState(0);
   const [tongsodonDanggiao, setTongsodonDanggiao] = useState(0);
+
+  // New state for change password modal
+  const [showDoiMatKhauModal, setShowDoiMatKhauModal] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState(""); // Thêm state xác nhận mật khẩu
+  const [otp, setOtp] = useState("");
+  const [doiMatKhauLoi, setDoiMatKhauLoi] = useState(null);
+  const [doiMatKhauThanhCong, setDoiMatKhauThanhCong] = useState(false);
+  const [daGuiOtp, setDaGuiOtp] = useState(false); // State để theo dõi đã gửi OTP hay chưa
+  const [hasPassword, setHasPassword] = useState(null); // Mặc định là null
+
+  const [newPasswordError, setNewPasswordError] = useState("");
+  const [confirmNewPasswordError, setConfirmNewPasswordError] = useState("");
+
 
   // Thêm mapping trạng thái GHN
   const ghnStatusMapping = {
@@ -81,6 +97,13 @@ const LichSuGiaoDich = () => {
       );
       if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu từ API.");
       const data = await response.json();
+
+      if (!data || !data.data || !data.data.customers) {
+          console.error("Dữ liệu API không hợp lệ:", data);
+          setLoi("Dữ liệu trả về từ API không hợp lệ.");
+          return;
+      }
+
       setDanhSachGiaoDich(data.data.customers);
       setDanhSachGiaoDichHienThi(data.data.customers);
       setTongSoDonHang(data.data.totalOrders);
@@ -98,8 +121,42 @@ const LichSuGiaoDich = () => {
   };
 
   useEffect(() => {
-    layLichSuGiaoDich();
-  }, []);
+    if (cookies.userToken) {
+        layLichSuGiaoDich();
+        kiemTraMatKhau();
+    } else {
+        console.warn("Không tìm thấy token trong cookie.");
+        // Xử lý khi không có token, ví dụ chuyển hướng người dùng đến trang đăng nhập
+    }
+  }, [cookies.userToken]);
+
+
+
+
+  const kiemTraMatKhau = async () => {
+    try {
+      const token = cookies.userToken;
+      if (!token) throw new Error("Không tìm thấy token.");
+
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASEURL}/api/Authenticate/has-password`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.data.status === "success") {
+        setHasPassword(response.data.hasPassword);
+
+      } else {
+        throw new Error(response.data.message || "Đã có lỗi xảy ra.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi kiểm tra mật khẩu:", error);
+      // Xử lý lỗi (ví dụ: hiển thị thông báo cho người dùng)
+    }
+  };
+
 
   const timKiemGiaoDich = (tuKhoa) => {
     setTuKhoaTimKiem(tuKhoa);
@@ -170,13 +227,206 @@ const LichSuGiaoDich = () => {
       case "Thanh toán thành công":
         return { icon: <FaCheckCircle />, color: "text-success", tooltip: "Thanh toán thành công" };
       case "Hoàn tiền thành công":
-        return { icon: <FaReply />, color: "text-info", tooltip: "Hoàn tiền thành công" };
+        return { icon: <FaReply />, color: "text-info", tooltip: "Thanh toán thành công" };
       case "Thanh toán thất bại":
         return { icon: <FaTimesCircle />, color: "text-danger", tooltip: "Thanh toán thất bại" };
       default:
-        return { };
+        return {};
     }
   };
+
+  const validatePassword = (password) => {
+    let error = "";
+    if (!/(.*[A-Z].*)/.test(password)) {
+      error = "Mật khẩu phải có ít nhất một chữ hoa. ";
+    }
+    if (!/(.*[a-z].*)/.test(password)) {
+      error += "Mật khẩu phải có ít nhất một chữ thường. ";
+    }
+    if (!/(.*[0-9].*)/.test(password)) {
+      error += "Mật khẩu phải có ít nhất một chữ số. ";
+    }
+    if (!/(.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?].*)/.test(password)) {
+      error += "Mật khẩu phải có ít nhất một ký tự đặc biệt. ";
+    }
+    if (password.length < 6) {
+      error += "Mật khẩu phải có ít nhất 6 ký tự. ";
+    }
+    return error;
+  };
+
+
+  // Modal event handlers
+  const handleOpenDoiMatKhauModal = () => {
+    setShowDoiMatKhauModal(true);
+    setDaGuiOtp(false); // Reset state khi mở modal
+    setDoiMatKhauLoi(null);
+    setDoiMatKhauThanhCong(false);
+    setNewPasswordError("");
+    setConfirmNewPasswordError("");
+
+  };
+
+  const handleCloseDoiMatKhauModal = () => {
+    setShowDoiMatKhauModal(false);
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmNewPassword("");
+    setOtp("");
+    setDoiMatKhauLoi(null);
+    setDoiMatKhauThanhCong(false);
+    setDaGuiOtp(false); // Reset state khi đóng modal
+    setNewPasswordError("");
+    setConfirmNewPasswordError("");
+
+  };
+
+  const handleRequestDoiMatKhau = async () => {
+      setDoiMatKhauLoi(null);
+      setDoiMatKhauThanhCong(false);
+
+      // Validate mật khẩu mới và xác nhận mật khẩu
+      if (newPassword !== confirmNewPassword) {
+          setDoiMatKhauLoi("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+          return;
+      }
+
+      const newPasswordErrorText = validatePassword(newPassword);
+      if (newPasswordErrorText) {
+          setDoiMatKhauLoi(newPasswordErrorText);
+          return;
+      }
+      try {
+          const token = cookies.userToken;
+          if (!token) throw new Error("Không tìm thấy token.");
+
+          const response = await axios.post(
+              `${process.env.REACT_APP_BASEURL}/api/Authenticate/request-change-password`,
+              {
+                  oldPassword: oldPassword,
+                  newPassword: newPassword,
+              },
+              {
+                  headers: { Authorization: `Bearer ${token}` },
+              }
+          );
+
+          if (response.data.status === "success") {
+              setDoiMatKhauThanhCong(true);
+              setDaGuiOtp(true); // Chuyển sang form nhập OTP
+              setDoiMatKhauLoi("OTP đã được gửi đến email của bạn."); // Thông báo thành công bằng span
+          } else {
+              setDoiMatKhauLoi(response.data.message); // Lấy thông báo lỗi từ backend
+          }
+      } catch (error) {
+          // Xử lý lỗi mạng hoặc lỗi không mong muốn khác
+          if (error.response && error.response.data && error.response.data.message) {
+              setDoiMatKhauLoi(error.response.data.message);
+          } else {
+              setDoiMatKhauLoi("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+          }
+      }
+  };
+
+  const handleVerifyOtpAndChangePassword = async () => {
+    setDoiMatKhauLoi(null);
+    setDoiMatKhauThanhCong(false);
+
+    try {
+      const token = cookies.userToken;
+      if (!token) throw new Error("Không tìm thấy token.");
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/Authenticate/verify-otp-and-change-password`,
+        {
+          otp: otp,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.data.status === "success") {
+        setDoiMatKhauThanhCong(true);
+        setDoiMatKhauLoi(response.data.message); // Thông báo thành công bằng span
+        handleCloseDoiMatKhauModal();
+      } else {
+        setDoiMatKhauLoi(response.data.message);
+      }
+    } catch (error) {
+      // Xử lý lỗi mạng hoặc lỗi không mong muốn khác
+      if (error.response && error.response.data && error.response.data.message) {
+        setDoiMatKhauLoi(error.response.data.message);
+      } else {
+        setDoiMatKhauLoi("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+      }
+    }
+  };
+  const handleSetPassword = async () => {
+      setDoiMatKhauLoi(null);
+      setDoiMatKhauThanhCong(false);
+
+      // Validate mật khẩu mới và xác nhận mật khẩu
+      if (newPassword !== confirmNewPassword) {
+          setDoiMatKhauLoi("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+          return;
+      }
+
+      const newPasswordErrorText = validatePassword(newPassword);
+      if (newPasswordErrorText) {
+          setDoiMatKhauLoi(newPasswordErrorText);
+          return;
+      }
+
+      try {
+          const token = cookies.userToken;
+          if (!token) throw new Error("Không tìm thấy token.");
+
+          const response = await axios.post(
+              `${process.env.REACT_APP_BASEURL}/api/Authenticate/set-password`,
+              {
+                  newPassword: newPassword,
+              },
+              {
+                  headers: { Authorization: `Bearer ${token}` },
+              }
+          );
+
+          if (response.data.status === "success") {
+              setDoiMatKhauThanhCong(true);
+              setDoiMatKhauLoi(response.data.message); // Thông báo thành công bằng span
+              setHasPassword(true);
+              handleCloseDoiMatKhauModal();
+          } else {
+              setDoiMatKhauLoi(response.data.message);
+          }
+      } catch (error) {
+          // Xử lý lỗi mạng hoặc lỗi không mong muốn khác
+          if (error.response && error.response.data && error.response.data.message) {
+              setDoiMatKhauLoi(error.response.data.message);
+          } else {
+              setDoiMatKhauLoi("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+          }
+      }
+  };
+
+  const handleNewPasswordChange = (e) => {
+    const password = e.target.value;
+    setNewPassword(password);
+    setNewPasswordError(validatePassword(password));
+  };
+
+  const handleConfirmNewPasswordChange = (e) => {
+    const confirmPassword = e.target.value;
+    setConfirmNewPassword(confirmPassword);
+
+    if (newPassword !== confirmPassword) {
+      setConfirmNewPasswordError("Mật khẩu không khớp");
+    } else {
+      setConfirmNewPasswordError("");
+    }
+  };
+
 
   return (
     <>
@@ -184,6 +434,7 @@ const LichSuGiaoDich = () => {
       <HeaderUsers />
       <br />
       <br />
+      {/* <ToastContainer /> // REMOVE */}
       <div className="container py-5" style={{ marginTop: '80px' }}>
         <h2 className="text-center mb-4 text-primary fw-bold">
           <FaClipboardList className="me-2" /> Lịch Sử Giao Dịch
@@ -249,6 +500,11 @@ const LichSuGiaoDich = () => {
                 <span className="fw-bold">{parseFloat(tongTienDaMua).toLocaleString("vi-VN")} VND</span>
               </div>
             </div>
+            {hasPassword !== null && (
+              <Button variant="primary" onClick={handleOpenDoiMatKhauModal}>
+                {hasPassword ? "Đổi Mật Khẩu" : "Tạo Mật Khẩu"}
+              </Button>
+            )}
           </div>
 
           <div className="ms-auto">
@@ -358,8 +614,129 @@ const LichSuGiaoDich = () => {
           </ul>
         </nav>
       </div>
-      <Footerusers />
 
+      {/* Change Password Modal */}
+      <Modal show={showDoiMatKhauModal} onHide={handleCloseDoiMatKhauModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{hasPassword ? "Đổi Mật Khẩu" : "Tạo Mật Khẩu"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+        {doiMatKhauLoi && (
+          <div className="alert alert-danger mt-3" role="alert">
+            {doiMatKhauLoi}
+          </div>
+        )}
+          {/* Form nhập mật khẩu cũ và mật khẩu mới (hiện ban đầu) */}
+          {hasPassword && !daGuiOtp && (
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Mật Khẩu Cũ</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Nhập mật khẩu cũ"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Mật Khẩu Mới</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Nhập mật khẩu mới"
+                  value={newPassword}
+                  onChange={handleNewPasswordChange}
+                />
+                 {newPasswordError && (
+                    <span className="text-danger">{newPasswordError}</span>
+                )}
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Xác nhận Mật Khẩu Mới</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Xác nhận mật khẩu mới"
+                  value={confirmNewPassword}
+                  onChange={handleConfirmNewPasswordChange}
+                />
+                 {confirmNewPasswordError && (
+                    <span className="text-danger">{confirmNewPasswordError}</span>
+                )}
+              </Form.Group>
+              <Button variant="primary" onClick={handleRequestDoiMatKhau}>
+                Gửi OTP
+              </Button>
+            </Form>
+          )}
+
+          {/* Form nhập OTP (hiện sau khi gửi OTP) */}
+          {hasPassword && daGuiOtp && (
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>OTP</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Nhập mã OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+              </Form.Group>
+            </Form>
+          )}
+          {/* Form set password */}
+          {!hasPassword && (
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Mật Khẩu Mới</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Nhập mật khẩu mới"
+                  value={newPassword}
+                  onChange={handleNewPasswordChange}
+                />
+                 {newPasswordError && (
+                    <span className="text-danger">{newPasswordError}</span>
+                )}
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Xác nhận Mật Khẩu Mới</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Xác nhận mật khẩu mới"
+                  value={confirmNewPassword}
+                  onChange={handleConfirmNewPasswordChange}
+                />
+                  {confirmNewPasswordError && (
+                    <span className="text-danger">{confirmNewPasswordError}</span>
+                )}
+              </Form.Group>
+              <Button variant="primary" onClick={handleSetPassword}>
+                Đặt Mật Khẩu
+              </Button>
+              </Form>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDoiMatKhauModal}>
+            Đóng
+          </Button>
+          {/* Button Xác nhận OTP chỉ hiện khi đã gửi OTP */}
+          {hasPassword && daGuiOtp && (
+            <Button variant="primary" onClick={handleVerifyOtpAndChangePassword}>
+              Xác Nhận OTP và Đổi Mật Khẩu
+            </Button>
+          )}
+        </Modal.Footer>
+
+        {doiMatKhauThanhCong && (
+          <div className="alert alert-success mt-3" role="alert">
+            Đổi mật khẩu thành công!
+          </div>
+        )}
+      </Modal>
+
+      <Footerusers />
+      {/* <ToastContainer /> // REMOVE */}
     </>
   );
 };

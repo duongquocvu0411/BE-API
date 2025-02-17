@@ -9,7 +9,7 @@ import { HelmetProvider, Helmet } from "react-helmet-async";
 import { jwtDecode } from "jwt-decode";
 import { Modal, Button } from "react-bootstrap"; // Import Modal và Button
 import './HeaderUsers.css';  // Import file CSS
-
+import { useNavigate } from 'react-router-dom';
 const HeaderUsers = ({ tieudeSanPham }) => {
   const vitriRoute = useLocation();
   const [menuData, setMenuData] = useState([]);
@@ -28,6 +28,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
+  const navigae = useNavigate();
   // Thêm state cho modal xác nhận đăng xuất
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
@@ -142,6 +143,8 @@ const HeaderUsers = ({ tieudeSanPham }) => {
       autoClose: 3000,
     });
     setIsLoggedIn(false);
+
+    navigae("/"); 
   };
 
   const isDetailPage = vitriRoute.pathname.includes("/sanpham/");

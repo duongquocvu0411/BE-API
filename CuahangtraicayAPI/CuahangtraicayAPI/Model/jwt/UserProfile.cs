@@ -10,6 +10,6 @@ namespace CuahangtraicayAPI.Modles
         public string Hoten { get; set; }
         public string Chucvu { get; set; }
         public string Sodienthoai { get; set; }
-        public int TrangThaiTK { get; set; } 
+        public int TrangThaiTK { get; set; } = 1; 
     }
 }
