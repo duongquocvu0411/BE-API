@@ -62,130 +62,154 @@ namespace CuahangtraicayAPI.Controllers
 
             try
             {
-                // Validate the token with Google and get user info
+                // Xác thực token với Google và lấy thông tin người dùng
                 var payload = await GoogleJsonWebSignature.ValidateAsync(request.AccessToken);
 
-                var email = payload.Email;
-                var fullName = payload.Name;
-                var googleAccountId = payload.Subject; // GoogleAccountId (subject) is the unique ID
+                var emailNguoiDung = payload.Email;
+                var hoTenNguoiDung = payload.Name;
+                var maGoogle = payload.Subject; // ID duy nhất từ Google
 
-                // Kiểm tra xem người dùng đã tồn tại trong IdentityUser chưa
-                var user = await _userManager.FindByEmailAsync(email);
-                if (user == null)
+                // Kiểm tra xem người dùng đã tồn tại trong hệ thống chưa
+                var nguoiDung = await _userManager.FindByEmailAsync(emailNguoiDung);
+
+                if (nguoiDung != null)
                 {
-                    user = new IdentityUser
+                    var vaiTroNguoiDung = await _userManager.GetRolesAsync(nguoiDung);
+                    if (vaiTroNguoiDung.Contains("Admin")) // Nếu tài khoản là Admin
                     {
-                        UserName = email,
-                        Email = email,
+                        var danhSachClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, nguoiDung.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, nguoiDung.Id),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("FullName", hoTenNguoiDung ?? "Không xác định"),
+                    new Claim(ClaimTypes.Email, emailNguoiDung),
+                    new Claim("SoDienThoai", " ")
+                };
+
+                        foreach (var vaiTro in vaiTroNguoiDung)
+                        {
+                            danhSachClaims.Add(new Claim(ClaimTypes.Role, vaiTro));
+                        }
+
+                        var tokenAdmin = GetToken(danhSachClaims);
+
+                        return Ok(new
+                        {
+                            status = "success",
+                            token = new JwtSecurityTokenHandler().WriteToken(tokenAdmin),
+                            expiration = tokenAdmin.ValidTo
+                        });
+                    }
+                }
+
+                // Nếu không phải Admin, kiểm tra tiếp và tạo tài khoản nếu chưa có
+                if (nguoiDung == null)
+                {
+                    nguoiDung = new IdentityUser
+                    {
+                        UserName = emailNguoiDung,
+                        Email = emailNguoiDung,
                         SecurityStamp = Guid.NewGuid().ToString()
                     };
 
-                    var createResult = await _userManager.CreateAsync(user);
-                    if (!createResult.Succeeded)
-                        return StatusCode(StatusCodes.Status500InternalServerError, new { status = "error", message = "Failed to create user." });
+                    var taoNguoiDung = await _userManager.CreateAsync(nguoiDung);
+                    if (!taoNguoiDung.Succeeded)
+                        return StatusCode(StatusCodes.Status500InternalServerError, new { status = "error", message = "Không thể tạo tài khoản." });
 
                     // Gán vai trò mặc định cho người dùng
                     if (!await _roleManager.RoleExistsAsync("User"))
                     {
                         await _roleManager.CreateAsync(new IdentityRole("User"));
                     }
-                    await _userManager.AddToRoleAsync(user, "User");
+                    await _userManager.AddToRoleAsync(nguoiDung, "User");
 
-                    var userProfile = new UserProfile
+                    var hoSoNguoiDung = new UserProfile
                     {
-                        UserId = user.Id,
+                        UserId = nguoiDung.Id,
                         TrangThaiTK = 1,
-                        Hoten = fullName ?? "Unknown",
+                        Hoten = hoTenNguoiDung ?? "Không xác định",
                         Chucvu = "User",
                         Sodienthoai = " "
                     };
 
-                    _context.UserProfiles.Add(userProfile);
-                    await _context.SaveChangesAsync();
+                    _context.UserProfiles.Add(hoSoNguoiDung);
                 }
 
-                // thêm thông tin vào AspNetLogins nếu chưa có
-
-                var userlogin = await _context.UserLogins.FirstOrDefaultAsync(ul => ul.UserId == user.Id && ul.LoginProvider == "Goolge");
-
-                if (userlogin == null)
+                // Kiểm tra nếu đã có tài khoản Google
+                var taiKhoanGoogle = await _context.AccountGoogle.FirstOrDefaultAsync(a => a.UserId == nguoiDung.Id);
+                if (taiKhoanGoogle == null)
                 {
-                    await _userManager.AddLoginAsync(user, new UserLoginInfo("Google", googleAccountId, "Google"));
-                }
-
-                // Kiểm tra xem đã có bản ghi AccountGoogle cho người dùng này chưa
-                var kiemtraAccountGoolge = _context.AccountGoogle.FirstOrDefault(a => a.UserId == user.Id);
-
-                if (kiemtraAccountGoolge == null)
-                {
-                    // Tạo bản ghi AccountGoogle mới
-                    var accountGoogle = new AccountGoogle
+                    var accountGoogleMoi = new AccountGoogle
                     {
-                        UserId = user.Id,
-                        GoogleAccountId = googleAccountId,
-                        Email = email,
+                        UserId = nguoiDung.Id,
+                        GoogleAccountId = maGoogle,
+                        Email = emailNguoiDung,
                         AccessToken = request.AccessToken,
-                        RefreshToken = "N/A" // Cập nhật RefreshToken nếu có
+                        RefreshToken = "N/A" // Nếu có Refresh Token thì cập nhật sau
                     };
-
-                    _context.AccountGoogle.Add(accountGoogle);
+                    _context.AccountGoogle.Add(accountGoogleMoi);
                 }
                 else
                 {
-                    // Cập nhật thông tin AccountGoogle (ví dụ: AccessToken)
-                    kiemtraAccountGoolge.AccessToken = request.AccessToken;
+                    taiKhoanGoogle.AccessToken = request.AccessToken;
+                    _context.AccountGoogle.Update(taiKhoanGoogle);
+                }
 
-                    _context.AccountGoogle.Update(kiemtraAccountGoolge);
+                // Thêm thông tin vào AspNetUserLogins nếu chưa có
+                var dangNhapGoogle = await _context.UserLogins
+                    .FirstOrDefaultAsync(dn => dn.UserId == nguoiDung.Id && dn.LoginProvider == "Google");
+
+                if (dangNhapGoogle == null)
+                {
+                    await _userManager.AddLoginAsync(nguoiDung, new UserLoginInfo("Google", maGoogle, "Google"));
+                }
+
+                // Lưu Access Token vào bảng AspNetUserTokens
+                var accessTokenHienTai = await _userManager.GetAuthenticationTokenAsync(nguoiDung, "Google", "AccessToken");
+                if (accessTokenHienTai == null)
+                {
+                    await _userManager.SetAuthenticationTokenAsync(nguoiDung, "Google", "AccessToken", request.AccessToken);
+                }
+                else
+                {
+                    await _userManager.RemoveAuthenticationTokenAsync(nguoiDung, "Google", "AccessToken");
+                    await _userManager.SetAuthenticationTokenAsync(nguoiDung, "Google", "AccessToken", request.AccessToken);
                 }
 
                 await _context.SaveChangesAsync();
 
-                // lưu access token vào bảng userToken
+                var vaiTroNguoiDungCuoi = await _userManager.GetRolesAsync(nguoiDung);
+                var danhSachClaimsCuoi = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, nguoiDung.UserName),
+            new Claim(ClaimTypes.NameIdentifier, nguoiDung.Id),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim("FullName", hoTenNguoiDung ?? "Không xác định"),
+            new Claim(ClaimTypes.Email, emailNguoiDung),
+            new Claim("SoDienThoai", " ")
+        };
 
-                var kiemtraToken = await _userManager.GetAuthenticationTokenAsync(user, "Goolge", "AccessToke");
-                if (kiemtraToken == null)
+                foreach (var vaiTro in vaiTroNguoiDungCuoi)
                 {
-                    await _userManager.SetAuthenticationTokenAsync(user, "Google", "AccessToken", request.AccessToken);
-
-                }
-                else
-                {
-                    await _userManager.RemoveAuthenticationTokenAsync(user, "Google", "RefreshToken");
-                    await _userManager.SetAuthenticationTokenAsync(user, "Google", "AccessToken", request.AccessToken);
-                }
-
-
-                var userRoles = await _userManager.GetRolesAsync(user);
-
-                var authClaims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(ClaimTypes.NameIdentifier, user.Id),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim("FullName", fullName ?? "Unknown"),
-                        new Claim(ClaimTypes.Email, email),
-                        new Claim("Sodienthoai", " ")
-                    };
-
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                    danhSachClaimsCuoi.Add(new Claim(ClaimTypes.Role, vaiTro));
                 }
 
-                var token = GetToken(authClaims);
+                var tokenNguoiDung = GetToken(danhSachClaimsCuoi);
 
                 return Ok(new
                 {
                     status = "success",
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
+                    token = new JwtSecurityTokenHandler().WriteToken(tokenNguoiDung),
+                    expiration = tokenNguoiDung.ValidTo
                 });
             }
-            catch (Exception ex)
+            catch (Exception loi)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { status = "error", message = "Token validation failed.", error = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { status = "error", message = "Xác thực token thất bại.", chiTietLoi = loi.Message });
             }
         }
+
 
 
         /// <summary>
@@ -313,6 +337,7 @@ namespace CuahangtraicayAPI.Controllers
 
         [HttpPost]
         [Route("verify-otp")]
+
         public async Task<IActionResult> VerifyOtp([FromBody] string otp)
         {
             // Lấy username từ MemoryCache
@@ -387,6 +412,72 @@ namespace CuahangtraicayAPI.Controllers
 
             // Nếu không tìm thấy OTP hoặc OTP không khớp
             return Unauthorized(new { status = "error", message = "Mã OTP không hợp lệ hoặc đã hết hạn." });
+        }
+       
+        
+        /// <summary>
+        /// Gửi lại mã xác nhận otp cho tài khoản login 
+        /// </summary>
+        /// <returns>Gửi lại mã xác nhận otp cho tài khoản login </returns>
+        
+        [HttpPost]
+        [Route("resend-otp")]
+        public IActionResult ResendOtp()
+        {
+            if (!_cache.TryGetValue("current-username", out string username))
+            {
+                return BadRequest(new { status = "error", message = "Không tìm thấy phiên đăng nhập nào cần OTP." });
+            }
+
+            if (!_cache.TryGetValue($"otp-{username}", out string otpCode))
+            {
+                return BadRequest(new { status = "error", message = "OTP đã hết hạn hoặc không hợp lệ." });
+            }
+
+            // Kiểm tra số lần gửi lại OTP (để tránh spam)
+            var otpResendKey = $"otp-resend-{username}";
+            if (!_cache.TryGetValue(otpResendKey, out int resendCount))
+            {
+                resendCount = 0;
+            }
+
+            if (resendCount >= 3) // Giới hạn gửi lại 3 lần
+            {
+                return BadRequest(new { status = "error", message = "Bạn đã vượt quá số lần gửi lại OTP. Vui lòng thử lại sau." });
+            }
+
+            // Tăng bộ đếm số lần gửi lại OTP
+            _cache.Set(otpResendKey, resendCount + 1, TimeSpan.FromMinutes(10));
+
+            // Lấy thông tin người dùng để gửi lại email
+            var user = _userManager.FindByNameAsync(username).Result;
+            if (user == null)
+            {
+                return BadRequest(new { status = "error", message = "Không tìm thấy tài khoản người dùng." });
+            }
+
+            // Gửi lại email
+#pragma warning disable CS4014
+            Task.Run(() =>
+            {
+                var emailBody = $@"
+            <div style='font-family: Arial, sans-serif;'>
+                <h3>Xin chào {user.UserName},</h3>
+                <p>Mã xác thực OTP của bạn là:</p>
+                <h2 style='color: #007bff;'>{otpCode}</h2>
+                <p>Vui lòng sử dụng mã này để đăng nhập. Mã OTP có hiệu lực trong 5 phút.</p>
+                <hr />
+                <p>Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email này.</p>
+            </div>";
+                SendEmail(user.Email, "Mã OTP đăng nhập", emailBody);
+            });
+
+            return Ok(new
+            {
+                status = "success",
+                message = $"Mã OTP đã được gửi lại đến email: {FormatEmailForDisplay(user.Email)}",
+                resendCount = resendCount + 1 // Trả về số lần đã gửi lại
+            });
         }
 
 

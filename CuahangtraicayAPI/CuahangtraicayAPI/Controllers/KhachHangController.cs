@@ -492,6 +492,39 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound(new { message = "Không tìm thấy khách hàng với ID này" });
             }
+            
+
+            // kiểm tra xem khách hàng có hóa đơn thành công hoặc hủy đơn chưa
+
+            var hoadons = await _context.HoaDons.Where(hd => hd.khachhang_id == id) .ToListAsync();
+
+
+            // lấy danh sách các mã đơn hàng chưa hoàn thành
+            var donhangchuahoanthanh = new List<string>();
+
+            
+            foreach( var hoadon in hoadons)
+            {
+               if(hoadon.status != "delivered" && hoadon.status != "Hủy đơn")
+                {
+                    // thêm mã đơn hàng vào danh sách
+                    donhangchuahoanthanh.Add(hoadon.order_code);
+                }
+            }
+
+            // kiểm tra trạng thái của các đơn hàng liên quan
+            if (donhangchuahoanthanh.Any())
+            {
+                // tạo chuỗi các mã đơn 
+                string madonhang = string.Join(", " ,donhangchuahoanthanh);
+
+                return BadRequest(new
+                {
+                    message = $"Khách hàng này có đơn hàng chưa hoàn thành (Mã đơn hàng: {madonhang}), không thể xóa"
+                });
+            }
+
+
 
             // Cập nhật cột 'xoa' thành true
             khachHang.Xoa = true;

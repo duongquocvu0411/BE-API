@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "./page/CartContext";
 import axios from "axios";
 import ScrollToTop from "react-scroll-to-top";
@@ -7,11 +7,12 @@ import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { jwtDecode } from "jwt-decode";
-import { Modal, Button } from "react-bootstrap"; // Import Modal và Button
-import './HeaderUsers.css';  // Import file CSS
-import { useNavigate } from 'react-router-dom';
+import { Modal, Button } from "react-bootstrap";
+import './HeaderUsers.css';
+
 const HeaderUsers = ({ tieudeSanPham }) => {
   const vitriRoute = useLocation();
+  const navigate = useNavigate();
   const [menuData, setMenuData] = useState([]);
   const { giohang } = useContext(CartContext);
   const [thongTinWebsite, setThongTinWebsite] = useState({
@@ -27,9 +28,6 @@ const HeaderUsers = ({ tieudeSanPham }) => {
   const [anhDaiDien, setAnhDaiDien] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
-
-  const navigae = useNavigate();
-  // Thêm state cho modal xác nhận đăng xuất
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
   const tongSoLuong = giohang.reduce((tong, sanPham) => tong + sanPham.soLuong, 0);
@@ -130,7 +128,6 @@ const HeaderUsers = ({ tieudeSanPham }) => {
     setShowLogoutConfirmation(false);
   };
 
-
   const handleLogout = () => {
     setShowLogoutConfirmation(false); // Ẩn modal
 
@@ -144,7 +141,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
     });
     setIsLoggedIn(false);
 
-    navigae("/"); 
+    navigate("/");
   };
 
   const isDetailPage = vitriRoute.pathname.includes("/sanpham/");
@@ -191,8 +188,9 @@ const HeaderUsers = ({ tieudeSanPham }) => {
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarCollapse"
+              aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"
             >
-              <span className="fa fa-bars text-primary" />
+              <span className="fa fa-bars text-primary"></span>
             </button>
 
             <div className="collapse navbar-collapse bg-white" id="navbarCollapse">
@@ -209,7 +207,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
               </div>
               <div className="d-flex m-3 me-0">
                 <Link to="/giohang" className="position-relative me-4 my-auto">
-                  <i className="fa fa-shopping-bag fa-2x" />
+                  <i className="fa fa-shopping-bag fa-2x"></i>
                   {tongSoLuong > 0 && (
                     <span
                       className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark"
@@ -228,18 +226,17 @@ const HeaderUsers = ({ tieudeSanPham }) => {
               </div>
 
               {isLoggedIn ? (
-                <li className={`nav-item dropdown no-arrow ${showDropdown ? 'show' : ''}`}
-                  ref={dropdownRef}
-                  onMouseEnter={() => setShowDropdown(true)}
-                  onMouseLeave={() => setShowDropdown(false)}
-                  style={{ listStyleType: 'none' }}>
-                  <a className="nav-link"
+                <li className="nav-item dropdown" style={{ listStyleType: 'none' }}>
+                  <a
+                    className="nav-link"  // REMOVED dropdown-toggle
                     href="#"
                     id="userDropdown"
                     role="button"
-                    aria-haspopup="true"
-                    aria-expanded={showDropdown}
-                    style={{ padding: "0px" }}>
+                    data-bs-toggle="dropdown" //removed data-bs-toggle
+                    // aria-expanded={showDropdown}
+                    // onClick={(e) => { e.preventDefault(); setShowDropdown(!showDropdown); }}
+                    style={{display:'flex', alignItems:'center'}}
+                  >
                     <img
                       src={anhDaiDien}
                       alt="Ảnh đại diện"
@@ -248,18 +245,19 @@ const HeaderUsers = ({ tieudeSanPham }) => {
                     />
 
                   </a>
-                  {/* Dropdown - User Information */}
-                  <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                    <Link className="dropdown-item" to="/lichsugiaodich">
-                      <i className="fas fa-clipboard-list fa-sm fa-fw mr-2 text-gray-400" />
+                  <ul className={`dropdown-menu dropdown-menu-end ${showDropdown ? 'show' : ''}`} aria-labelledby="userDropdown">
+                    <li><Link className="dropdown-item" to="/lichsugiaodich">
+                      <i className="fas fa-clipboard-list fa-sm fa-fw mr-2 text-gray-400"></i>
                       Lịch sử giao dịch
-                    </Link>
-                    <div className="dropdown-divider" />
-                    <button className="dropdown-item" onClick={handleShowLogoutConfirmation}> {/* Hiển thị modal */}
-                      <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" />
+                    </Link></li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li><button className="dropdown-item" onClick={handleShowLogoutConfirmation}>
+                      <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                       Đăng xuất
-                    </button>
-                  </div>
+                    </button></li>
+                  </ul>
                 </li>
 
               ) : (
@@ -288,8 +286,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
           <i className="bi bi-arrow-up-circle-fill text-primary" style={{ fontSize: "3rem" }}></i>
         }
       />
-      {/* Modal xác nhận đăng xuất */}
-      <Modal show={showLogoutConfirmation} onHide={handleCancelLogout} centered>
+      <Modal show={showLogoutConfirmation} onHide={() => setShowLogoutConfirmation(false)} centered>
         <Modal.Header closeButton className="bg-light">
           <Modal.Title className="text-warning fw-bold">Xác nhận đăng xuất</Modal.Title>
         </Modal.Header>
@@ -297,7 +294,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
           Bạn có chắc chắn muốn đăng xuất khỏi tài khoản này?
         </Modal.Body>
         <Modal.Footer className="justify-content-center bg-light border-top-0">
-          <Button variant="secondary" onClick={handleCancelLogout} className="me-2">
+          <Button variant="secondary" onClick={() => setShowLogoutConfirmation(false)} className="me-2">
             Hủy
           </Button>
           <Button variant="warning" onClick={handleLogout}>

@@ -30,7 +30,7 @@ namespace CuahangtraicayAPI.Services.gn
                 }
 
                 // Lặp lại sau mỗi 10 phút
-                await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
             }
         }
     }

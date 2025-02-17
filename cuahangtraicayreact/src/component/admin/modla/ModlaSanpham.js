@@ -10,7 +10,7 @@ import { jwtDecode } from "jwt-decode";
 const ModlaSanpham = ({
   show,
   handleClose,
-  isEdit, 
+  isEdit,
   product,
   fetchSanpham,
 }) => {
@@ -36,13 +36,14 @@ const ModlaSanpham = ({
     baiViet: "",
   });
   const [soLuong, setSoLuong] = useState("");
+  const [soLuongTamGiu, setSoLuongTamGiu] = useState(""); // State cho số lượng tạm giữ
   const [cookies] = useCookies(['adminToken', 'loginhoten'])
 
   const getImageUrl = (path) => {
-    const BASE_URL = process.env.REACT_APP_BASEURL ;
+    const BASE_URL = process.env.REACT_APP_BASEURL;
     return path ? `${BASE_URL}/${path}` : "";
   };
-  
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASEURL}/api/danhmucsanpham`)
@@ -52,8 +53,8 @@ const ModlaSanpham = ({
       .catch((error) => {
         console.log("Có lỗi khi lấy dữ liệu từ API ", error);
       });
-  
-      axios
+
+    axios
       .get(`${process.env.REACT_APP_BASEURL}/api/donvitinh`)
       .then((response) => {
         setDonvitinh(response.data.data);
@@ -61,8 +62,7 @@ const ModlaSanpham = ({
       .catch((error) => {
         console.log("Có lỗi khi lấy dữ liệu từ API ", error);
       });
-    // console.log("Product data:", product); // Kiểm tra giá trị của `product`
-  
+
     if (isEdit && product) {
       setTieude(product.tieude || "");
       setTrangthai(product.trangthai || "");
@@ -70,38 +70,39 @@ const ModlaSanpham = ({
       setDvt(product.don_vi_tinh || "");
       setDanhmucsanphamID(product.danhmucsanpham_id || "");
       setSoLuong(product.soluong || "");
-  
+      setSoLuongTamGiu(product.soluongtamgiu || ""); // Khởi tạo giá trị số lượng tạm giữ
+
       setSaleData(
         product.sanphamSales && product.sanphamSales.length > 0
           ? {
-              ...product.sanphamSales[0],
-              thoigianbatdau: product.sanphamSales[0].thoigianbatdau
-                ? product.sanphamSales[0].thoigianbatdau.substring(0, 16)
-                : "",
-              thoigianketthuc: product.sanphamSales[0].thoigianketthuc
-                ? product.sanphamSales[0].thoigianketthuc.substring(0, 16)
-                : "",
-            }
+            ...product.sanphamSales[0],
+            thoigianbatdau: product.sanphamSales[0].thoigianbatdau
+              ? product.sanphamSales[0].thoigianbatdau.substring(0, 16)
+              : "",
+            thoigianketthuc: product.sanphamSales[0].thoigianketthuc
+              ? product.sanphamSales[0].thoigianketthuc.substring(0, 16)
+              : "",
+          }
           : null
       );
-  
+
       // Hiển thị ảnh chính
       if (product.hinhanh) {
-        setXemtruocHinhAnh(getImageUrl(product.hinhanh)); // Chuyển thành URL đầy đủ
+        setXemtruocHinhAnh(getImageUrl(product.hinhanh));
       } else {
         setXemtruocHinhAnh("");
       }
-  
+
       // Hiển thị ảnh phụ
       if (product.images) {
         const formattedImages = product.images.map((img) => ({
           ...img,
-          hinhanh: getImageUrl(img.hinhanh), // Chuyển thành URL đầy đủ
+          hinhanh: getImageUrl(img.hinhanh),
         }));
         setExistingHinhanhPhu(formattedImages);
-        setFileanhphu(formattedImages.map(() => ({}))); // Tạo input tương ứng với số ảnh phụ
+        setFileanhphu(formattedImages.map(() => ({})));
       }
-  
+
       if (product.chiTiet) {
         setChiTiet({
           moTaChung: product.chiTiet.mo_ta_chung || "",
@@ -119,9 +120,6 @@ const ModlaSanpham = ({
       setFileanhphu([{}]);
     }
   }, [isEdit, product]);
-  
-
-
 
 
   const handleSaveChiTiet = () => {
@@ -183,14 +181,17 @@ const ModlaSanpham = ({
       hasError = true;
     }
 
-    // if (!trangthai) {
-    //   toast.error("Vui lòng chọn trạng thái sản phẩm.", { autoClose: 3000 });
-    //   hasError = true;
-    // }
-
     if (!isEdit && !hinhanh) {
       toast.error("Vui lòng chọn hình ảnh chính.", { autoClose: 3000 });
       hasError = true;
+    }
+
+    // Validation cho số lượng tạm giữ khi cập nhật
+    if (isEdit) {
+      if (soLuongTamGiu !== "" && (parseInt(soLuongTamGiu, 10) < 0 || parseInt(soLuongTamGiu, 10) > parseInt(soLuong, 10))) {
+        toast.error("Số lượng tạm giữ phải lớn hơn hoặc bằng 0 và không lớn hơn số lượng sản phẩm.", { autoClose: 3000 });
+        hasError = true;
+      }
     }
 
     if (hasError) return;
@@ -203,6 +204,12 @@ const ModlaSanpham = ({
     formData.append("DonViTinh", dvt);
     formData.append("So_luong", soLuong);
     formData.append("DanhmucsanphamId", danhmucsanphamID);
+
+    // Thêm số lượng tạm giữ nếu có (chỉ cho PUT)
+    if (isEdit && soLuongTamGiu !== "") {
+      formData.append("so_luong_tam_giu", soLuongTamGiu);
+    }
+
 
     // Thêm hình ảnh chính nếu có hình ảnh mới
     if (hinhanh) {
@@ -243,11 +250,6 @@ const ModlaSanpham = ({
         ? `${process.env.REACT_APP_BASEURL}/api/sanpham/${product.id}`
         : `${process.env.REACT_APP_BASEURL}/api/sanpham`;
 
-      // Gửi CreatedBy khi POST và UpdatedBy khi PUT
-      // if (!isEdit) {
-       
-      // }
-    
 
       const response = await axios({
         method,
@@ -287,6 +289,7 @@ const ModlaSanpham = ({
     setGiatien("");
     setDvt("");
     setSoLuong("");
+    setSoLuongTamGiu(""); // Reset số lượng tạm giữ
     setHinhanh(null);
     setXemtruocHinhAnh("");
     setDanhmucsanphamID("");
@@ -318,6 +321,19 @@ const ModlaSanpham = ({
     }
   };
 
+
+let role = [];
+  if (cookies.adminToken) {
+    try {
+      const giaimatoken = jwtDecode(cookies.adminToken);
+      role = giaimatoken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+    }
+    catch (error) {
+      console.log("có lỗi khi giải mã token:", error);
+    }
+  } 
+
+  const isAdmin = role.includes('Admin');
   return (
     <>
       <Modal show={show} onHide={handleClose} size="lg" centered backdrop="static">
@@ -381,22 +397,40 @@ const ModlaSanpham = ({
               )}
             </Form.Group>
 
-            {/* Trạng thái */}
-            {/* <Form.Group className="mb-4">
-              <Form.Label className="fw-bold">
-                <i className="bi bi-toggle2-off"></i> Trạng thái
-              </Form.Label>
-              <Form.Control
-                as="select"
-                value={trangthai}
-                onChange={(e) => setTrangthai(e.target.value)}
-                className="shadow-sm"
-              >
-                <option value="">Chọn trạng thái</option>
-                <option value="Còn hàng">Còn hàng</option>
-                <option value="Hết hàng">Hết hàng</option>
-              </Form.Control>
-            </Form.Group> */}
+            {/* Số lượng tạm giữ (chỉ hiển thị khi chỉnh sửa) */}
+            {isEdit &&  isAdmin &&(
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-bold">
+                  <i className="bi bi-card-text"></i> Số lượng tạm giữ
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  value={soLuongTamGiu}
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+                    // Chỉ cho phép nhập số nguyên không âm
+                    if (/^\d*$/.test(inputValue)) {
+                      setSoLuongTamGiu(inputValue);
+                    }
+                  }}
+                  onBlur={() => {
+                    if (soLuongTamGiu === "") {
+                      setSoLuongTamGiu(""); // Reset giá trị nếu không hợp lệ
+                    } else {
+                      setSoLuongTamGiu(parseInt(soLuongTamGiu, 10).toString()); // Đảm bảo giá trị là số nguyên
+                    }
+                  }}
+                  placeholder="Nhập số lượng tạm giữ"
+                  className="shadow-sm"
+                />
+                {soLuongTamGiu !== "" && (parseInt(soLuongTamGiu, 10) < 0 || parseInt(soLuongTamGiu, 10) > parseInt(soLuong, 10)) && (
+                  <small className="text-danger">
+                    Số lượng tạm giữ phải lớn hơn hoặc bằng 0 và không lớn hơn số lượng sản phẩm.
+                  </small>
+                )}
+              </Form.Group>
+            )}
+
 
             {/* Giá */}
             <Form.Group className="mb-4">

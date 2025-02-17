@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using static CuahangtraicayAPI.DTO.SanphamDTO;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -344,17 +345,11 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return BadRequest(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Giá gốc của sản phẩm phải lớn hơn hoặc bằng 1000." });
             }
-            //if (request.So_luong <= 0)
-            //{
-            //    return BadRequest(new { message = "Số lượng sản phẩm phải lớn hơn hoặc bằng 1." });
-            //}
+
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
-
             var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            // Xác định chức vụ từ Roles trong Token
-
             var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
-            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee"; // Mặc định là Employee nếu không phải Admin
+            string chucVu = roles.Contains("Admin") ? "Admin" : "Employee";
 
             if (hotenToken == null)
             {
@@ -364,6 +359,7 @@ namespace CuahangtraicayAPI.Controllers
                     Message = "không thể xác định người dùng từ token"
                 });
             }
+
             // Cập nhật thông tin sản phẩm
             if (!string.IsNullOrEmpty(request.Tieude)) sanpham.Tieude = request.Tieude;
             if (request.Giatien != 0) sanpham.Giatien = request.Giatien;
@@ -372,12 +368,60 @@ namespace CuahangtraicayAPI.Controllers
             if (request.DanhmucsanphamId != 0) sanpham.danhmucsanpham_id = request.DanhmucsanphamId;
             sanpham.UpdatedBy = hotenToken;
             sanpham.Xoa = request.Xoasp;
-            //if (request.So_luong !=0 ) sanpham.Soluong = request.So_luong.Value;
 
 
             // Kiểm tra và cập nhật số lượng
             if (request.So_luong.HasValue)
             {
+                // Kiểm tra so_luong_tam_giu
+                if (request.so_luong_tam_giu.HasValue)
+                {
+                    if (request.so_luong_tam_giu < 0)
+                    {
+                        return BadRequest(new BaseResponseDTO<Sanpham>
+                        {
+                            Code = 400,
+                            Message = "Số lượng tạm giữ không được nhỏ hơn 0."
+                        });
+                    }
+
+                    if (request.so_luong_tam_giu > request.So_luong)
+                    {
+                        return BadRequest(new BaseResponseDTO<Sanpham>
+                        {
+                            Code = 400,
+                            Message = "Số lượng tạm giữ không được lớn hơn số lượng sản phẩm."
+                        });
+                    }
+
+                    // Tính tổng số lượng tạm giữ cho các đơn hàng COD có trạng thái khác delivered và Hủy đơn
+                    var pendingCodQuantity = await _context.HoaDonChiTiets
+                        .Include(hdct => hdct.HoaDon)
+                        .Where(hdct => hdct.sanpham_ids == id &&
+                                       hdct.HoaDon.Thanhtoan == "cod" &&
+                                       hdct.HoaDon.status != "delivered" &&
+                                       hdct.HoaDon.status != "Hủy đơn")
+                        .SumAsync(hdct => hdct.quantity);
+
+                    // Kiểm tra nếu số lượng tạm giữ MỚI nhỏ hơn pendingCodQuantity, báo lỗi
+                    if (request.so_luong_tam_giu < pendingCodQuantity)
+                    {
+                        return BadRequest(new BaseResponseDTO<Sanpham>
+                        {
+                            Code = 400,
+                            Message = $"Số lượng tạm giữ mới ({request.so_luong_tam_giu}) phải lớn hơn hoặc bằng số lượng đang được giữ trong các đơn hàng COD chưa hoàn thành ({pendingCodQuantity}). Vui lòng điều chỉnh số lượng tạm giữ."
+                        });
+                    }
+
+
+                    sanpham.Soluongtamgiu = request.so_luong_tam_giu.Value;
+                }
+                else
+                {
+                    // Nếu không cung cấp so_luong_tam_giu, gán giá trị hiện tại vào nó
+                    sanpham.Soluongtamgiu = sanpham.Soluongtamgiu;
+                }
+
                 // Nếu số lượng tạm giữ lớn hơn số lượng mới muốn cập nhật, trả về lỗi
                 if (sanpham.Soluongtamgiu > request.So_luong.Value)
                 {
@@ -403,18 +447,16 @@ namespace CuahangtraicayAPI.Controllers
                 }
             }
 
-
             // Lưu ảnh chính (giống như gioithieu)
             if (request.Hinhanh != null)
             {
-                // Lấy phần mở rộng của tệp
                 var fileExtension = Path.GetExtension(request.Hinhanh.FileName);
-                var imagePath = Path.Combine(_environment.WebRootPath, "sanpham", Guid.NewGuid().ToString() + fileExtension); // Tạo tên file duy nhất
+                var imagePath = Path.Combine(_environment.WebRootPath, "sanpham", Guid.NewGuid().ToString() + fileExtension);
                 using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
                     await request.Hinhanh.CopyToAsync(stream);
                 }
-                sanpham.Hinhanh = Path.Combine("sanpham", Path.GetFileName(imagePath)); // Lưu đường dẫn file mới
+                sanpham.Hinhanh = Path.Combine("sanpham", Path.GetFileName(imagePath));
             }
 
             // Cập nhật chi tiết sản phẩm
@@ -432,7 +474,6 @@ namespace CuahangtraicayAPI.Controllers
             // Xử lý ảnh phụ: giữ lại ảnh hiện có, thêm mới ảnh
             if (request.ExistingImageIds != null)
             {
-                // Xóa ảnh phụ không nằm trong danh sách ExistingImageIds
                 var imagesToDelete = sanpham.Images
                     .Where(img => !request.ExistingImageIds.Contains(img.Id))
                     .ToList();
@@ -440,7 +481,6 @@ namespace CuahangtraicayAPI.Controllers
             }
             else
             {
-                // Nếu không có ExistingImageIds, xóa tất cả ảnh phụ
                 _context.HinhAnhSanPhams.RemoveRange(sanpham.Images);
             }
 
@@ -448,25 +488,19 @@ namespace CuahangtraicayAPI.Controllers
             {
                 foreach (var image in request.Images)
                 {
-                    // Lấy phần mở rộng của tệp
                     var fileExtension = Path.GetExtension(image.FileName);
-
-                    // Tạo tên file duy nhất
                     var uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
-
-                    // Đường dẫn lưu hình ảnh
                     var imagePath = Path.Combine(_environment.WebRootPath, "hinhanhphu", uniqueFileName);
 
-                    // Lưu file vào thư mục
                     using (var stream = new FileStream(imagePath, FileMode.Create))
                     {
                         await image.CopyToAsync(stream);
                     }
 
-                    // Thêm thông tin hình ảnh vào danh sách hình ảnh sản phẩm
                     sanpham.Images.Add(new HinhAnhSanPham { hinhanh = Path.Combine("hinhanhphu", uniqueFileName) });
                 }
             }
+
             // Kiểm tra giá sale và thời gian nếu có
             if (request.Sale != null)
             {
@@ -490,7 +524,6 @@ namespace CuahangtraicayAPI.Controllers
                     return BadRequest(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu." });
                 }
 
-                // Xử lý thông tin khuyến mãi
                 if (sanpham.SanphamSales.Any())
                 {
                     _context.SanphamSales.RemoveRange(sanpham.SanphamSales);
@@ -506,6 +539,7 @@ namespace CuahangtraicayAPI.Controllers
                 };
                 _context.SanphamSales.Add(sale);
             }
+
             var logEditsp = new Logs
             {
                 UserId = users,
@@ -514,7 +548,7 @@ namespace CuahangtraicayAPI.Controllers
                 Chucvu = chucVu,
             };
             _context.Logss.Add(logEditsp);
-            // Lưu thay đổi vào cơ sở dữ liệu
+
             await _context.SaveChangesAsync();
 
             return Ok(new BaseResponseDTO<Sanpham>
@@ -523,6 +557,7 @@ namespace CuahangtraicayAPI.Controllers
                 Data = sanpham,
             });
         }
+
 
 
         /// <summary>
@@ -560,7 +595,7 @@ namespace CuahangtraicayAPI.Controllers
             // Kiểm tra trạng thái của các đơn hàng liên quan
             foreach (var chiTiet in hoaDonChiTiets)
             {
-                if (chiTiet.HoaDon.status != "Đã giao thành công" && chiTiet.HoaDon.status != "Hủy đơn")
+                if (chiTiet.HoaDon.status != "delivered" && chiTiet.HoaDon.status != "Hủy đơn")
                 {
                     return BadRequest(new { message = "Sản phẩm này liên quan đến đơn hàng chưa hoàn thành, không thể Xóa." });
                 }

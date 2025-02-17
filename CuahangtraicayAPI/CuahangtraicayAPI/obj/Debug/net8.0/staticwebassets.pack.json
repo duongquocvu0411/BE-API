@@ -553,6 +553,10 @@
       "PackagePath": "staticwebassets\\menuFooter\\638731405236358257_footer_payment_img.webp"
     },
     {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\0478b3be-6023-45b3-b080-a9998cbd947d.jpg",
+      "PackagePath": "staticwebassets\\sanpham\\0478b3be-6023-45b3-b080-a9998cbd947d.jpg"
+    },
+    {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg",
       "PackagePath": "staticwebassets\\sanpham\\1b0ac8fc-d20a-446a-b032-cdda6dd887fe.jpg"
     },
@@ -647,6 +651,10 @@
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\559de3fb-dfc3-420c-96f1-2109976ab9a3.jpg",
       "PackagePath": "staticwebassets\\sanpham\\559de3fb-dfc3-420c-96f1-2109976ab9a3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\594a7c94-7353-4ad8-b956-02d436f23c4e.jpg",
+      "PackagePath": "staticwebassets\\sanpham\\594a7c94-7353-4ad8-b956-02d436f23c4e.jpg"
     },
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\5f8fd845-b28a-48ec-85a6-ec5ee3f61343.jpg",
@@ -859,6 +867,10 @@
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\fe5c7bfa-5646-41ff-8610-75b24fb21627.jpg",
       "PackagePath": "staticwebassets\\sanpham\\fe5c7bfa-5646-41ff-8610-75b24fb21627.jpg"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\sanpham\\ff5f589c-8016-4777-8ddb-f0c83b52f8f0.jpg",
+      "PackagePath": "staticwebassets\\sanpham\\ff5f589c-8016-4777-8ddb-f0c83b52f8f0.jpg"
     },
     {
       "Id": "C:\\Users\\DELL\\OneDrive\\Desktop\\project BE\\BE-API\\CuahangtraicayAPI\\CuahangtraicayAPI\\wwwroot\\tenwebsite\\74428bc0-880d-40b9-8832-343c87aff776.jpg",

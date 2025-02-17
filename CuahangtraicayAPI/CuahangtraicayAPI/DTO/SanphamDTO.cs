@@ -43,6 +43,7 @@ namespace CuahangtraicayAPI.DTO
 
             public string Tieude { get; set; }
             public int? So_luong { get; set; }
+            public int? so_luong_tam_giu { get; set; }
             public decimal Giatien { get; set; }
 
             public string Trangthai { get; set; }

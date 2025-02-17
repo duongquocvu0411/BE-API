@@ -474,6 +474,12 @@
             <param name="otp">Xác nhận mã otp khi login gữi về Email</param>
             <returns>Xác nhận mã otp khi login gữi về Email</returns>
         </member>
+        <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.ResendOtp">
+            <summary>
+            Gửi lại mã xác nhận otp cho tài khoản login 
+            </summary>
+            <returns>Gửi lại mã xác nhận otp cho tài khoản login </returns>
+        </member>
         <member name="M:CuahangtraicayAPI.Controllers.AuthenticateController.Register(CuahangtraicayAPI.Modles.RegisterModel)">
             <summary>
             Đăng ký tài khoản users

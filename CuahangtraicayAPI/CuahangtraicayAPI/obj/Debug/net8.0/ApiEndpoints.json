@@ -281,6 +281,16 @@
   },
   {
     "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
+    "Method": "ResendOtp",
+    "RelativePath": "api/Authenticate/resend-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.AuthenticateController",
     "Method": "ResetPassword",
     "RelativePath": "api/Authenticate/reset-password",
     "HttpMethod": "POST",
@@ -2625,6 +2635,11 @@
       },
       {
         "Name": "So_luong",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "so_luong_tam_giu",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
