@@ -135,30 +135,45 @@ const SanPham = () => {
   const xoaSanPham = async (id) => {
     const SanphamXoa = danhSachSanPham.find((sanpham) => sanpham.id === id);
     const token = cookies.adminToken; // Lấy token từ cookie
-    // const loggedInUser = cookies.loginhoten; // Lấy họ tên người dùng từ cookie
+  
     try {
-      // ?UpdatedBy=${encodeURIComponent(loggedInUser)} truyền updatedBy vào api xóa để lấy thông tin người cập nhật cuối cùng 
-      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}?UpdatedBy=${encodeURIComponent(token)}`, {
+      await axios.delete(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Thêm token vào header
+          Authorization: `Bearer ${token}`,
         },
       });
-
+  
       toast.success(`Sản phẩm ${SanphamXoa.tieude} đã được xóa thành công!`, {
         position: 'top-right',
         autoClose: 3000,
       });
-     
+  
       layDanhSachSanPham(); // Cập nhật danh sách sản phẩm sau khi xóa
     } catch (error) {
-      console.log('Lỗi khi xóa sản phẩm:', error);
-      // Kiểm tra lỗi từ backend
-      if (error.response.status === 403) {
-        // Nếu lỗi từ backend có thông báo cụ thể
-        toast.error("Bạn không có quyền xóa sản phẩm.");
-      }  else {
-        toast.error(error.response?.data?.message || "Đã xảy ra lỗi.");
-    }
+      console.error('Lỗi khi xóa sản phẩm:', error);
+  
+      let message = "Đã xảy ra lỗi khi xóa sản phẩm.";
+      let orderCodes = []; // Khởi tạo một mảng rỗng cho orderCodes
+  
+      if (error.response && error.response.data) {
+        if (error.response.data.message) {
+          message = error.response.data.message;
+        }
+        if (error.response.data.order_codes) {
+          orderCodes = error.response.data.order_codes;
+        }
+      }
+  
+      // Tạo thông báo chi tiết hơn
+      let detailedMessage = message;
+      if (orderCodes.length > 0) {
+        detailedMessage += ` Mã đơn hàng: ${orderCodes.join(', ')}`;
+      }
+  
+      toast.error(detailedMessage, {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
   };
 

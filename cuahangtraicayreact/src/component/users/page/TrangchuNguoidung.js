@@ -702,7 +702,7 @@ const TrangchuNguoidung = () => {
                 )}
               </div>
             </div>
-            <div className="row justify-content-center mt-5">
+            <div className="row justify-content-center mt-5" data-aos="fade-up">
               <div className="col-md-8 col-lg-6">
                 <div className="bg-light p-4 rounded shadow-sm">
                   <h5 className="text-center mb-3">Đăng ký nhận thông báo khuyến mãi</h5>

@@ -64,7 +64,6 @@ namespace CuahangtraicayAPI.Controllers
         /// </summary>
         /// <param name="userId">Xem lịch sử giao dịch Admin toàn quyền</param>
         /// <returns>Xem lịch sử giao dịch Admin toàn quyền</returns>
-
         [HttpGet]
         [Route("user-orders/{userId}")]
         [Authorize] // Yêu cầu xác thực
@@ -91,7 +90,7 @@ namespace CuahangtraicayAPI.Controllers
 
             // Tìm danh sách khách hàng theo UserId
             var customers = await _context.KhachHangs
-                .Where(kh => kh.UserNameLogin == userId)
+                .Where(kh => kh.UserNameLogin == userId )
                 .Select(kh => new
                 {
                     kh.Id,
@@ -128,7 +127,23 @@ namespace CuahangtraicayAPI.Controllers
                             ResponseMessage = _context.PaymentTransactions
                                 .Where(gd => gd.OrderId == hd.order_code)
                                 .Select(gd => gd.ResponseMessage)
-                                .FirstOrDefault()
+                                .FirstOrDefault(),
+
+                            // Thêm thông tin chi tiết đơn hàng
+                            OrderDetails = _context.HoaDonChiTiets
+                                .Where(hdct => hdct.bill_id == hd.Id)
+                                .Select(hdct => new
+                                {
+                                    hdct.Id,
+                                    hdct.SanPham.Tieude,
+                                   
+                                    hdct.quantity,
+                                    hdct.SanPham.Donvitinhs.name,
+                                    hdct.price,
+                                    // Lấy thông tin sản phẩm liên quan (nếu cần)
+                                   
+                                })
+                                .ToList()
                         })
                         .ToList()
                 })
@@ -186,7 +201,7 @@ namespace CuahangtraicayAPI.Controllers
                     totalSpent,            // Tổng số tiền đã chi tiêu
                     tongsodonChoXuLy,   // Thêm
                     tongsodonHuyDon, // Thêm
-                    //tongSoDangGiaoVaDaGiao,
+                                     //tongSoDangGiaoVaDaGiao,
                     totalDelivering,
                     totalDelivered,
                     customers           // Danh sách khách hàng
@@ -474,7 +489,7 @@ namespace CuahangtraicayAPI.Controllers
         // DELETE: api/KhachHang/5
         [HttpDelete("{id}")]
         [Authorize(Roles ="Admin,Employee")]
-        public async Task<IActionResult> DeleteKhachHang(int id)
+        public async Task<ActionResult<BaseResponseDTO<KhachHang>>> DeleteKhachHang(int id)
         {
             // Tìm khách hàng theo ID
             var khachHang = await _context.KhachHangs.FindAsync(id);
@@ -490,7 +505,19 @@ namespace CuahangtraicayAPI.Controllers
             // Kiểm tra nếu không tìm thấy khách hàng
             if (khachHang == null)
             {
-                return NotFound(new { message = "Không tìm thấy khách hàng với ID này" });
+                return new BaseResponseDTO<KhachHang>
+                {
+                    Code = 404,
+                    Message = "Không tìm thấy khách hàng với ID này",
+                };
+            }
+            if(khachHang.Xoa == true)
+            {
+                return new BaseResponseDTO<KhachHang>
+                {
+                    Code = 404,
+                    Message = $"Khách hàng {khachHang.Id} đã dược xóa trước đó "
+                };
             }
             
 
@@ -518,10 +545,11 @@ namespace CuahangtraicayAPI.Controllers
                 // tạo chuỗi các mã đơn 
                 string madonhang = string.Join(", " ,donhangchuahoanthanh);
 
-                return BadRequest(new
+                return new BaseResponseDTO<KhachHang>
                 {
-                    message = $"Khách hàng này có đơn hàng chưa hoàn thành (Mã đơn hàng: {madonhang}), không thể xóa"
-                });
+                    Code = 404,
+                    Message = $"Khách hàng này có đơn hàng chưa hoàn thành (Mã đơn hàng: {madonhang}), không thể xóa"
+                };
             }
 
 
@@ -543,7 +571,11 @@ namespace CuahangtraicayAPI.Controllers
             // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Khách hàng đã được đánh dấu là đã xoá" });
+            return new BaseResponseDTO<KhachHang>
+            {
+                Message = $"Success ( Xóa thành công Khách hàng {khachHang.Ho} {khachHang.Ten})",
+                Data =khachHang
+            };
         }
 
 
@@ -562,7 +594,7 @@ namespace CuahangtraicayAPI.Controllers
 
             // Lọc các khách hàng có Created_at trong tháng hiện tại
             var tongSoKhachHangMoi = await _context.KhachHangs
-                .Where(kh => kh.Created_at.Month == thangHientai && kh.Created_at.Year == namHientai)
+                .Where(kh => kh.Created_at.Month == thangHientai && kh.Created_at.Year == namHientai && kh.Xoa == false)
                 .CountAsync();
 
             // Tạo đối tượng phản hồi

@@ -128,20 +128,63 @@ const HeaderUsers = ({ tieudeSanPham }) => {
     setShowLogoutConfirmation(false);
   };
 
-  const handleLogout = () => {
+
+
+  const handleLogout = async  () => {
     setShowLogoutConfirmation(false); // Ẩn modal
+    try {
+      // Kiểm tra token trước khi sử dụng
+      const token = cookies.userToken; // Lấy token từ cookie
+      if (!token || typeof token !== "string") {
+          toast.error("Không tìm thấy token hợp lệ. Vui lòng đăng nhập lại.", {
+              position: "top-right",
+              autoClose: 3000,
+          });
+          return;
+      }
 
-    removeCookie("userToken", { path: "/" });
-    removeCookie("loginTime", { path: "/" });
-    removeCookie("isUserLoggedIn", { path: "/" });
+      // Gửi yêu cầu đến API /logout
+      const response = await axios.post(
+          `${process.env.REACT_APP_BASEURL}/api/admin/logout`,
+          {},
+          {
+              headers: {
+                  Authorization: `Bearer ${token}`, // Đính kèm token vào header
+              },
+          }
+      );
 
-    toast.success("Đăng xuất thành công!", {
-      position: "top-right",
-      autoClose: 3000,
-    });
-    setIsLoggedIn(false);
+      if (response.data.status === "success") {
+          // Xóa cookie sau khi đăng xuất thành công
+          removeCookie("userToken", { path: "/" });
+          removeCookie("loginTime", { path: "/" });
+          removeCookie("isUserLoggedIn", { path: "/" });
+      
+          toast.success("Đăng xuất thành công!", {
+            position: "top-right",
+            autoClose: 3000,
+          });
 
-    navigate("/");
+          navigate("/");
+      } else {
+          toast.error(response.data.message || "Đăng xuất thất bại.", {
+              position: "top-right",
+              autoClose: 3000,
+          });
+      }
+  } catch (error) {
+      console.error("Lỗi khi đăng xuất:", error);
+      toast.error(
+          error.response?.data?.message || "Đã xảy ra lỗi khi đăng xuất.",
+          {
+              position: "top-right",
+              autoClose: 3000,
+          }
+      );
+  } finally {
+      setIsLoggedIn(false); 
+  }
+   
   };
 
   const isDetailPage = vitriRoute.pathname.includes("/sanpham/");
@@ -284,7 +327,7 @@ const HeaderUsers = ({ tieudeSanPham }) => {
         className="scroll-to-top"
         component={
           <i className="bi bi-arrow-up-circle-fill text-primary" style={{ fontSize: "3rem" }}></i>
-        }
+        } 
       />
       <Modal show={showLogoutConfirmation} onHide={() => setShowLogoutConfirmation(false)} centered>
         <Modal.Header closeButton className="bg-light">

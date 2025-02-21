@@ -726,7 +726,7 @@
             </summary>
             <returns> Chỉnh sửa sản phẩm theo {id}  </returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.SanphamController.DeleteSanpham(System.Int32,System.String)">
+        <member name="M:CuahangtraicayAPI.Controllers.SanphamController.DeleteSanpham(System.Int32)">
             <summary>
              Xóa sản phẩm theo {id}
             </summary>

@@ -15,6 +15,7 @@ using CuahangtraicayAPI.Services.gn;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using CuahangtraicayAPI.Model.DB;
+using CuahangtraicayAPI.Middleware;
 
 
 
@@ -255,6 +256,7 @@ namespace CuahangtraicayAPI
 
 
             app.UseCors("allApi");
+            app.UseNotfaundMiddleware();
             app.UseHttpsRedirection();
             app.UseMiddleware<TokenRevocationMiddleware>();
             app.UseAuthentication();

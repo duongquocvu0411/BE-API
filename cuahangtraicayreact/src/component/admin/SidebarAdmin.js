@@ -9,16 +9,16 @@ const SiderbarAdmin = () => {
   const [cookies] = useCookies(['adminToken']);
 
   //giải mã token để lấy role
-  let role = [];
-  if (cookies.adminToken) {
-    try {
-      const giaimatoken = jwtDecode(cookies.adminToken);
-      role = giaimatoken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
-    }
-    catch (error) {
-      console.log("có lỗi khi giải mã token:", error);
-    }
-  } 
+    let role = [];
+    if (cookies.adminToken) {
+      try {
+        const giaimatoken = jwtDecode(cookies.adminToken);
+        role = giaimatoken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+      }
+      catch (error) {
+        console.log("có lỗi khi giải mã token:", error);
+      }
+    } 
 
   // kiểm tra vai trò role Employee
 

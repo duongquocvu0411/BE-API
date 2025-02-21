@@ -1025,6 +1025,7 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetDoanhThuTheoTungThang()
         {
             var doanhThuThang = await _context.HoaDons
+                .Where(hd => hd.status == "delivered")
                 .GroupBy(hd => new { hd.Created_at.Year, hd.Created_at.Month })
                 .Select(g => new
                 {

@@ -22,6 +22,8 @@ namespace CuahangtraicayAPI.DTO
         [Required]
         public string xaphuong { get; set; }
 
+
+
         [Phone] // Đảm bảo số điện thoại hợp lệ
         public string Sdt { get; set; }
 

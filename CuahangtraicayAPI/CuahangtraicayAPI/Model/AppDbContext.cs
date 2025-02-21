@@ -145,6 +145,11 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
             .HasForeignKey(hdct => hdct.sanpham_ids)
             .OnDelete(DeleteBehavior.Cascade);
 
+
+        // mối quan hệ 1 nhiều chinhanh && tinhthanh
+
+     
+
         base.OnModelCreating(modelBuilder);
     }
 }

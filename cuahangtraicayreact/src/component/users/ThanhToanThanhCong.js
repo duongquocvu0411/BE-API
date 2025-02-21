@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HeaderUsers from "./HeaderUsers";
 import Footerusers from "./Footerusers";
+import CoppyOrder from './CoppyStatus/CoppyOrder';
 
 const ThanhToanThanhCong = () => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const ThanhToanThanhCong = () => {
             </p>
             <div className="alert alert-info">
               <strong>Mã đơn hàng:</strong> {orderCode}
+              <CoppyOrder orderCode={orderCode}/>
             </div>
             <div className="mt-4 text-start">
               <h5 className="text-success">Thông tin khách hàng</h5>

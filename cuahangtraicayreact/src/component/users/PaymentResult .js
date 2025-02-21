@@ -1,128 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import HeaderUsers from "./HeaderUsers";
-// import Footerusers from "./Footerusers";
-// import { FaCheckCircle, FaExclamationCircle, FaArrowLeft } from 'react-icons/fa'; // Import React Icons
-// import "./PaymentResult.css";
-
-// const PaymentResult = () => {
-//   const [paymentStatus, setPaymentStatus] = useState(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchPaymentResult = async () => {
-//       try {
-//         const response = await axios.get(
-//           `${process.env.REACT_APP_BASEURL}/api/payment/PaymentResponse`,
-//           {
-//             params: new URLSearchParams(window.location.search),
-//           }
-//         );
-//         setPaymentStatus(response.data);
-//       } catch (error) {
-//         setPaymentStatus({
-//           success: false,
-//           message: "Không tìm thấy hóa đơn hoặc lỗi xảy ra.",
-//           errorDetail: error.response?.data || error.message,
-//         });
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchPaymentResult();
-//   }, []);
-
-//   if (loading) {
-//     return (
-//       <div className="text-center mt-5">
-//         <div className="spinner-border text-primary" role="status">
-//           <span className="visually-hidden">Đang xử lý giao dịch...</span>
-//         </div>
-//         <p className="mt-3">Đang xử lý giao dịch...</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <>
-//       <HeaderUsers />
-//       {paymentStatus && paymentStatus.success ? (
-//         <div className="success-page d-flex flex-column align-items-center justify-content-center vh-100">
-//           <div className="wallet-animation mb-4">
-//             <div className="wallet success-wallet">
-//               <div className="wallet-flap"></div>
-//               <div className="wallet-body"></div>
-//             </div>
-//           </div>
-//           <FaCheckCircle className="text-success icon-size" />
-//           <h1 className="text-success fw-bold mt-3">Thanh toán thành công!</h1>
-//           <p className="text-muted">Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</p>
-//           <p>
-//             <strong>Mã đơn hàng:</strong> {paymentStatus?.data?.orderId}
-//           </p>
-//           <p>
-//             <strong>Số tiền:</strong>{" "}
-//             {paymentStatus?.data?.amount &&
-//               new Intl.NumberFormat("vi-VN", {
-//                 style: "currency",
-//                 currency: "VND",
-//               }).format(Number(paymentStatus.data.amount.replace(/\./g, "")))}
-//           </p>
-//           <p>
-//             <strong>Transaction ID:</strong> {paymentStatus?.data?.transactionId || "Không có"}
-//           </p>
-//           <p>
-//             <strong>Thông tin đơn hàng:</strong> {paymentStatus?.data?.orderInfo || "Không có"}
-//           </p>
-
-//           <button
-//             className="btn btn-primary mt-3"
-//             onClick={() => (window.location.href = "/")}
-//           >
-//             <FaArrowLeft /> Quay lại trang chủ
-//           </button>
-//         </div>
-//       ) : (
-//         <div className="failure-page d-flex flex-column align-items-center justify-content-center vh-100">
-//           <div className="wallet-animation mb-4">
-//             <div className="wallet failure-wallet">
-//               <div className="wallet-flap"></div>
-//               <div className="wallet-body"></div>
-//             </div>
-//           </div>
-//           <FaExclamationCircle className="text-danger icon-size" />
-//           <h1 className="text-danger fw-bold mt-3">Thanh toán thất bại</h1>
-//           <p className="text-muted">
-//             {paymentStatus?.message || "Đã xảy ra lỗi trong quá trình xử lý thanh toán."}
-//           </p>
-//           {paymentStatus?.data && (
-//             <>
-//               <p><strong>Transaction ID:</strong> {paymentStatus?.data?.transactionId || "Không có"}</p>
-//               <p><strong>Thông tin đơn hàng:</strong> {paymentStatus?.data?.orderInfo || "Không có"}</p>
-//               <p><strong>Số tiền:</strong> {paymentStatus?.data?.amount || "Không có"}</p>
-//             </>
-//           )}
-//           {paymentStatus?.errorDetail && (
-//             <pre className="text-danger">
-//               {JSON.stringify(paymentStatus.errorDetail, null, 2)}
-//             </pre>
-//           )}
-//           <button
-//             className="btn btn-secondary mt-3"
-//             onClick={() => (window.location.href = "/")}
-//           >
-//             <FaArrowLeft /> Thử lại
-//           </button>
-//         </div>
-//       )}
-//       <Footerusers />
-//     </>
-//   );
-// };
-
-// export default PaymentResult;
-
 
 
 import React, { useEffect, useState } from "react";
@@ -139,6 +14,7 @@ import {
   FaShoppingCart,
 } from "react-icons/fa"; // Import more React Icons
 import "./PaymentResult.css";
+import CoppyOrder from './CoppyStatus/CoppyOrder';
 
 const PaymentResult = () => {
   const [paymentStatus, setPaymentStatus] = useState(null);
@@ -199,6 +75,7 @@ const PaymentResult = () => {
             <p>
               <FaShoppingCart className="me-1" />{" "}
               <strong>Mã đơn hàng:</strong> {paymentStatus?.data?.orderId}
+              <CoppyOrder orderCode={paymentStatus?.data?.orderId}/>
             </p>
             <p>
               <FaMoneyBillWave className="me-1" />{" "}
@@ -216,11 +93,11 @@ const PaymentResult = () => {
               <strong>Transaction ID:</strong>{" "}
               {paymentStatus?.data?.transactionId || "Không có"}
             </p>
-            <p>
+            {/* <p>
               <FaInfoCircle className="me-1" />
               <strong>Thông tin đơn hàng:</strong>{" "}
               {paymentStatus?.data?.orderInfo || "Không có"}
-            </p>
+            </p> */}
           </div>
 
           <button

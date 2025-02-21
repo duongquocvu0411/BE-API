@@ -6,7 +6,6 @@ using System.Net.Mail;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
-
 using Microsoft.Extensions.Caching.Memory;
 using CuahangtraicayAPI.Modles;
 using CuahangtraicayAPI.Model.DB;
@@ -19,6 +18,7 @@ using CuahangtraicayAPI.Model;
 using Microsoft.EntityFrameworkCore;
 using static CuahangtraicayAPI.DTO.LoginDTO;
 using static CuahangtraicayAPI.Controllers.AuthenticateController;
+using System.Text.RegularExpressions;
 
 namespace CuahangtraicayAPI.Controllers
 {
@@ -75,7 +75,7 @@ namespace CuahangtraicayAPI.Controllers
                 if (nguoiDung != null)
                 {
                     var vaiTroNguoiDung = await _userManager.GetRolesAsync(nguoiDung);
-                    if (vaiTroNguoiDung.Contains("Admin")) // Nếu tài khoản là Admin
+                    if (vaiTroNguoiDung.Contains("Admin") && vaiTroNguoiDung.Contains("Employee")) // Nếu tài khoản là Admin
                     {
                         var danhSachClaims = new List<Claim>
                 {
@@ -493,11 +493,11 @@ namespace CuahangtraicayAPI.Controllers
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "username đã tồn tại trong hệ thống!" });
 
             var emailExists = await _userManager.FindByEmailAsync(model.Email);
             if (emailExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Email already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Email đã tồn tại trong hệ thông!" });
 
             // Tạo mã OTP ngẫu nhiên
             var otpCode = new Random().Next(100000, 999999).ToString();
@@ -602,11 +602,11 @@ namespace CuahangtraicayAPI.Controllers
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Username đã tồn tại trong hệ thông!" });
 
             var emailExists = await _userManager.FindByEmailAsync(model.Email);
             if (emailExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Email already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Email đã tồn tại trong hệ thống!" });
 
             // Tạo mã OTP ngẫu nhiên
             var otpCode = new Random().Next(100000, 999999).ToString();
@@ -712,11 +712,11 @@ namespace CuahangtraicayAPI.Controllers
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Username đã tồn tại trong hệ thông!" });
 
             var emailExists = await _userManager.FindByEmailAsync(model.Email);
             if (emailExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Email already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Email đã tồn tại trong hệ thống!" });
 
             // Tạo mã OTP ngẫu nhiên
             var otpCode = new Random().Next(100000, 999999).ToString();

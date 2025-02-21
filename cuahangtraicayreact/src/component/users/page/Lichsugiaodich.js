@@ -1,12 +1,22 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from 'axios';
-import { FaUser, FaClipboardList, FaMoneyBillAlt, FaBoxOpen, FaShippingFast, FaCalendarAlt, FaMapMarkerAlt, FaPhone, FaSearch, FaEye, FaEyeSlash, FaRegCreditCard, FaClock, FaTimesCircle, FaCheckCircle, FaReply, FaQuestionCircle } from "react-icons/fa";
+import {
+  FaUser, FaClipboardList, FaMoneyBillAlt, FaBoxOpen, FaShippingFast, FaCalendarAlt, FaMapMarkerAlt,
+  FaPhone, FaSearch, FaEye, FaEyeSlash, FaRegCreditCard, FaClock, FaTimesCircle, FaCheckCircle, FaReply, FaQuestionCircle,
+  FaShoppingCart, FaTruck, FaCode, FaFileInvoiceDollar,
+  FaRegCheckCircle,
+  FaLock,
+  FaKey,
+  FaEnvelope,
+  FaReceipt
+} from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 import Footerusers from "../Footerusers";
 import HeaderUsers from "../HeaderUsers";
 // import '../Lichsugd.css'; // Import CSS
 import { Button, Modal, Form } from "react-bootstrap"; // Import Modal and Form
+import CoppyOrder from "../CoppyStatus/CoppyOrder";
 // import { toast, ToastContainer } from "react-toastify"; // REMOVE
 
 const LichSuGiaoDich = () => {
@@ -42,6 +52,8 @@ const LichSuGiaoDich = () => {
   const [newPasswordError, setNewPasswordError] = useState("");
   const [confirmNewPasswordError, setConfirmNewPasswordError] = useState("");
 
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState(null); // Thêm state để lưu thông tin khách hàng
 
   // Thêm mapping trạng thái GHN
   const ghnStatusMapping = {
@@ -99,9 +111,9 @@ const LichSuGiaoDich = () => {
       const data = await response.json();
 
       if (!data || !data.data || !data.data.customers) {
-          console.error("Dữ liệu API không hợp lệ:", data);
-          setLoi("Dữ liệu trả về từ API không hợp lệ.");
-          return;
+        console.error("Dữ liệu API không hợp lệ:", data);
+        setLoi("Dữ liệu trả về từ API không hợp lệ.");
+        return;
       }
 
       setDanhSachGiaoDich(data.data.customers);
@@ -122,11 +134,11 @@ const LichSuGiaoDich = () => {
 
   useEffect(() => {
     if (cookies.userToken) {
-        layLichSuGiaoDich();
-        kiemTraMatKhau();
+      layLichSuGiaoDich();
+      kiemTraMatKhau();
     } else {
-        console.warn("Không tìm thấy token trong cookie.");
-        // Xử lý khi không có token, ví dụ chuyển hướng người dùng đến trang đăng nhập
+      console.warn("Không tìm thấy token trong cookie.");
+      // Xử lý khi không có token, ví dụ chuyển hướng người dùng đến trang đăng nhập
     }
   }, [cookies.userToken]);
 
@@ -255,6 +267,20 @@ const LichSuGiaoDich = () => {
     return error;
   };
 
+  const handleShowOrderDetails = (order) => {
+    setSelectedOrder(order);
+
+    // Tìm thông tin khách hàng tương ứng với đơn hàng được chọn
+    const customer = danhSachGiaoDich.find(customer =>
+      customer.orders.some(o => o.id === order.id)
+    );
+    setSelectedCustomer(customer || null);
+  };
+
+
+  const handleCloseOrderDetails = () => {
+    setSelectedOrder(null);
+  };
 
   // Modal event handlers
   const handleOpenDoiMatKhauModal = () => {
@@ -282,50 +308,50 @@ const LichSuGiaoDich = () => {
   };
 
   const handleRequestDoiMatKhau = async () => {
-      setDoiMatKhauLoi(null);
-      setDoiMatKhauThanhCong(false);
+    setDoiMatKhauLoi(null);
+    setDoiMatKhauThanhCong(false);
 
-      // Validate mật khẩu mới và xác nhận mật khẩu
-      if (newPassword !== confirmNewPassword) {
-          setDoiMatKhauLoi("Mật khẩu mới và xác nhận mật khẩu không khớp.");
-          return;
+    // Validate mật khẩu mới và xác nhận mật khẩu
+    if (newPassword !== confirmNewPassword) {
+      setDoiMatKhauLoi("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+      return;
+    }
+
+    const newPasswordErrorText = validatePassword(newPassword);
+    if (newPasswordErrorText) {
+      setDoiMatKhauLoi(newPasswordErrorText);
+      return;
+    }
+    try {
+      const token = cookies.userToken;
+      if (!token) throw new Error("Không tìm thấy token.");
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/Authenticate/request-change-password`,
+        {
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.data.status === "success") {
+        setDoiMatKhauThanhCong(true);
+        setDaGuiOtp(true); // Chuyển sang form nhập OTP
+        // setDoiMatKhauLoi("OTP đã được gửi đến email của bạn."); // Thông báo thành công bằng span
+      } else {
+        setDoiMatKhauLoi(response.data.message); // Lấy thông báo lỗi từ backend
       }
-
-      const newPasswordErrorText = validatePassword(newPassword);
-      if (newPasswordErrorText) {
-          setDoiMatKhauLoi(newPasswordErrorText);
-          return;
+    } catch (error) {
+      // Xử lý lỗi mạng hoặc lỗi không mong muốn khác
+      if (error.response && error.response.data && error.response.data.message) {
+        setDoiMatKhauLoi(error.response.data.message);
+      } else {
+        setDoiMatKhauLoi("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
       }
-      try {
-          const token = cookies.userToken;
-          if (!token) throw new Error("Không tìm thấy token.");
-
-          const response = await axios.post(
-              `${process.env.REACT_APP_BASEURL}/api/Authenticate/request-change-password`,
-              {
-                  oldPassword: oldPassword,
-                  newPassword: newPassword,
-              },
-              {
-                  headers: { Authorization: `Bearer ${token}` },
-              }
-          );
-
-          if (response.data.status === "success") {
-              setDoiMatKhauThanhCong(true);
-              setDaGuiOtp(true); // Chuyển sang form nhập OTP
-              setDoiMatKhauLoi("OTP đã được gửi đến email của bạn."); // Thông báo thành công bằng span
-          } else {
-              setDoiMatKhauLoi(response.data.message); // Lấy thông báo lỗi từ backend
-          }
-      } catch (error) {
-          // Xử lý lỗi mạng hoặc lỗi không mong muốn khác
-          if (error.response && error.response.data && error.response.data.message) {
-              setDoiMatKhauLoi(error.response.data.message);
-          } else {
-              setDoiMatKhauLoi("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
-          }
-      }
+    }
   };
 
   const handleVerifyOtpAndChangePassword = async () => {
@@ -363,51 +389,51 @@ const LichSuGiaoDich = () => {
     }
   };
   const handleSetPassword = async () => {
-      setDoiMatKhauLoi(null);
-      setDoiMatKhauThanhCong(false);
+    setDoiMatKhauLoi(null);
+    setDoiMatKhauThanhCong(false);
 
-      // Validate mật khẩu mới và xác nhận mật khẩu
-      if (newPassword !== confirmNewPassword) {
-          setDoiMatKhauLoi("Mật khẩu mới và xác nhận mật khẩu không khớp.");
-          return;
+    // Validate mật khẩu mới và xác nhận mật khẩu
+    if (newPassword !== confirmNewPassword) {
+      setDoiMatKhauLoi("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+      return;
+    }
+
+    const newPasswordErrorText = validatePassword(newPassword);
+    if (newPasswordErrorText) {
+      setDoiMatKhauLoi(newPasswordErrorText);
+      return;
+    }
+
+    try {
+      const token = cookies.userToken;
+      if (!token) throw new Error("Không tìm thấy token.");
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/Authenticate/set-password`,
+        {
+          newPassword: newPassword,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.data.status === "success") {
+        setDoiMatKhauThanhCong(true);
+        setDoiMatKhauLoi(response.data.message); // Thông báo thành công bằng span
+        setHasPassword(true);
+        handleCloseDoiMatKhauModal();
+      } else {
+        setDoiMatKhauLoi(response.data.message);
       }
-
-      const newPasswordErrorText = validatePassword(newPassword);
-      if (newPasswordErrorText) {
-          setDoiMatKhauLoi(newPasswordErrorText);
-          return;
+    } catch (error) {
+      // Xử lý lỗi mạng hoặc lỗi không mong muốn khác
+      if (error.response && error.response.data && error.response.data.message) {
+        setDoiMatKhauLoi(error.response.data.message);
+      } else {
+        setDoiMatKhauLoi("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
       }
-
-      try {
-          const token = cookies.userToken;
-          if (!token) throw new Error("Không tìm thấy token.");
-
-          const response = await axios.post(
-              `${process.env.REACT_APP_BASEURL}/api/Authenticate/set-password`,
-              {
-                  newPassword: newPassword,
-              },
-              {
-                  headers: { Authorization: `Bearer ${token}` },
-              }
-          );
-
-          if (response.data.status === "success") {
-              setDoiMatKhauThanhCong(true);
-              setDoiMatKhauLoi(response.data.message); // Thông báo thành công bằng span
-              setHasPassword(true);
-              handleCloseDoiMatKhauModal();
-          } else {
-              setDoiMatKhauLoi(response.data.message);
-          }
-      } catch (error) {
-          // Xử lý lỗi mạng hoặc lỗi không mong muốn khác
-          if (error.response && error.response.data && error.response.data.message) {
-              setDoiMatKhauLoi(error.response.data.message);
-          } else {
-              setDoiMatKhauLoi("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
-          }
-      }
+    }
   };
 
   const handleNewPasswordChange = (e) => {
@@ -426,7 +452,6 @@ const LichSuGiaoDich = () => {
       setConfirmNewPasswordError("");
     }
   };
-
 
   return (
     <>
@@ -500,11 +525,13 @@ const LichSuGiaoDich = () => {
                 <span className="fw-bold">{parseFloat(tongTienDaMua).toLocaleString("vi-VN")} VND</span>
               </div>
             </div>
+            <div className="d-flex align-items-center">
             {hasPassword !== null && (
               <Button variant="primary" onClick={handleOpenDoiMatKhauModal}>
                 {hasPassword ? "Đổi Mật Khẩu" : "Tạo Mật Khẩu"}
               </Button>
             )}
+            </div>
           </div>
 
           <div className="ms-auto">
@@ -555,7 +582,8 @@ const LichSuGiaoDich = () => {
                       <div className="card mb-3 shadow-sm border-0 order-card" key={donHang.id}>
                         <div className="card-body">
                           <div className="d-flex justify-content-between align-items-center mb-2">
-                            <h6 className="card-title fw-bold">Mã: {donHang.order_code}</h6>
+                            <h6 className="card-title fw-bold">Mã: {donHang.order_code}
+                            <CoppyOrder orderCode={donHang.order_code}/></h6>
                             <span className={trangThaiBadgeClass(donHang.status)}>
                               {getGhnStatusText(donHang.status)} {/* Sử dụng getGhnStatusText */}
                             </span>
@@ -580,6 +608,9 @@ const LichSuGiaoDich = () => {
                             </span>
                             <span>{donHang.responseMessage}</span> {/* Response Message */}
                           </p>
+                          <Button variant="primary" onClick={() => handleShowOrderDetails(donHang)}>
+                            <FaEye className="me-1" /> Xem Chi Tiết
+                          </Button>
                         </div>
                       </div>
                     ))}
@@ -616,22 +647,22 @@ const LichSuGiaoDich = () => {
       </div>
 
       {/* Change Password Modal */}
-      <Modal show={showDoiMatKhauModal} onHide={handleCloseDoiMatKhauModal} centered>
+      <Modal show={showDoiMatKhauModal} onHide={handleCloseDoiMatKhauModal} centered  backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{hasPassword ? "Đổi Mật Khẩu" : "Tạo Mật Khẩu"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {doiMatKhauLoi && (
+            <div className="alert alert-danger mt-3" role="alert">
+              {doiMatKhauLoi}
+            </div>
+          )}
 
-        {doiMatKhauLoi && (
-          <div className="alert alert-danger mt-3" role="alert">
-            {doiMatKhauLoi}
-          </div>
-        )}
           {/* Form nhập mật khẩu cũ và mật khẩu mới (hiện ban đầu) */}
           {hasPassword && !daGuiOtp && (
             <Form>
               <Form.Group className="mb-3">
-                <Form.Label>Mật Khẩu Cũ</Form.Label>
+                <Form.Label><FaKey className="me-2" /> Mật Khẩu Cũ</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu cũ"
@@ -640,27 +671,27 @@ const LichSuGiaoDich = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Mật Khẩu Mới</Form.Label>
+                <Form.Label><FaLock className="me-2" /> Mật Khẩu Mới</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu mới"
                   value={newPassword}
                   onChange={handleNewPasswordChange}
                 />
-                 {newPasswordError && (
-                    <span className="text-danger">{newPasswordError}</span>
+                {newPasswordError && (
+                  <span className="text-danger">{newPasswordError}</span>
                 )}
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Xác nhận Mật Khẩu Mới</Form.Label>
+                <Form.Label><FaRegCheckCircle className="me-2" /> Xác nhận Mật Khẩu Mới</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Xác nhận mật khẩu mới"
                   value={confirmNewPassword}
                   onChange={handleConfirmNewPasswordChange}
                 />
-                 {confirmNewPasswordError && (
-                    <span className="text-danger">{confirmNewPasswordError}</span>
+                {confirmNewPasswordError && (
+                  <span className="text-danger">{confirmNewPasswordError}</span>
                 )}
               </Form.Group>
               <Button variant="primary" onClick={handleRequestDoiMatKhau}>
@@ -673,7 +704,7 @@ const LichSuGiaoDich = () => {
           {hasPassword && daGuiOtp && (
             <Form>
               <Form.Group className="mb-3">
-                <Form.Label>OTP</Form.Label>
+                <Form.Label><FaEnvelope className="me-2" /> OTP</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Nhập mã OTP"
@@ -683,37 +714,38 @@ const LichSuGiaoDich = () => {
               </Form.Group>
             </Form>
           )}
+
           {/* Form set password */}
           {!hasPassword && (
             <Form>
               <Form.Group className="mb-3">
-                <Form.Label>Mật Khẩu Mới</Form.Label>
+                <Form.Label><FaLock className="me-2" /> Mật Khẩu Mới</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu mới"
                   value={newPassword}
                   onChange={handleNewPasswordChange}
                 />
-                 {newPasswordError && (
-                    <span className="text-danger">{newPasswordError}</span>
+                {newPasswordError && (
+                  <span className="text-danger">{newPasswordError}</span>
                 )}
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Xác nhận Mật Khẩu Mới</Form.Label>
+                <Form.Label><FaRegCheckCircle className="me-2" /> Xác nhận Mật Khẩu Mới</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Xác nhận mật khẩu mới"
                   value={confirmNewPassword}
                   onChange={handleConfirmNewPasswordChange}
                 />
-                  {confirmNewPasswordError && (
-                    <span className="text-danger">{confirmNewPasswordError}</span>
+                {confirmNewPasswordError && (
+                  <span className="text-danger">{confirmNewPasswordError}</span>
                 )}
               </Form.Group>
               <Button variant="primary" onClick={handleSetPassword}>
                 Đặt Mật Khẩu
               </Button>
-              </Form>
+            </Form>
           )}
         </Modal.Body>
         <Modal.Footer>
@@ -735,6 +767,133 @@ const LichSuGiaoDich = () => {
         )}
       </Modal>
 
+
+      {/* HDCT Modal */}
+      <Modal show={selectedOrder !== null} onHide={handleCloseOrderDetails} centered size="lg">
+        <Modal.Header closeButton className="bg-primary text-white">
+          <Modal.Title className="text-white fw-bold">
+            <FaClipboardList className="me-2" /> Chi tiết đơn hàng: {selectedOrder?.order_code}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedOrder ? (
+            <>
+              <h6 className="mb-3 text-muted"><FaUser className="me-1" /> Thông tin khách hàng</h6>
+              <div className="row">
+                <div className="col-md-6">
+                  <p>
+                    <strong><FaUser className="me-1" /> Họ tên:</strong> {selectedCustomer?.ho} {selectedCustomer?.ten}
+                  </p>
+                  <p>
+                    <strong><FaPhone className="me-1" /> Số điện thoại:</strong> {selectedCustomer?.sdt}
+                  </p>
+                </div>
+                <div className="col-md-6">
+                  <p>
+                    <strong><FaMapMarkerAlt className="me-1" /> Địa chỉ:</strong> {selectedCustomer?.diaChiCuThe}, {selectedCustomer?.xaphuong}
+                  </p>
+                  <p>
+                    {selectedCustomer?.tinhthanhquanhuyen}, {selectedCustomer?.thanhPho}
+                  </p>
+                </div>
+              </div>
+
+              <h6 className="mt-4 mb-3 text-muted"><FaShoppingCart className="me-1" /> Thông tin đơn hàng</h6>
+              <div className="row">
+                <div className="col-md-6">
+                  <p>
+                    <strong><FaReceipt className="me-1" /> Mã đơn hàng:</strong> {selectedOrder.order_code}
+                    <CoppyOrder orderCode={selectedOrder.order_code}/>
+                  </p>
+                  <p>
+                    <strong><FaFileInvoiceDollar className="me-1" /> Phương thức thanh toán:</strong> {selectedOrder.thanhtoan}
+                  </p>
+                  <p>
+                    <strong><FaRegCreditCard className="me-1" /> Mã giao dịch:{" "}</strong>
+                    {selectedOrder?.transactionId || "không có"}
+                  </p>
+                </div>
+                <div className="col-md-6">
+                  <p>
+                    <strong><FaCalendarAlt className="me-1" /> Ngày tạo:</strong>
+                    {new Date(selectedOrder.created_at).toLocaleDateString("vi-VN", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                  <p>
+                    <strong><FaTruck className="me-1" /> Trạng thái:</strong>
+                    <span className={trangThaiBadgeClass(selectedOrder.status)}>
+                      {getGhnStatusText(selectedOrder.status)}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <h6 className="mt-4 mb-3 text-muted"><FaShoppingCart className="me-1" /> Chi tiết đơn hàng</h6>
+              {selectedOrder.orderDetails && selectedOrder.orderDetails.length > 0 ? (
+                <div className="table-responsive">
+                  <table className="table table-striped table-hover">
+                    <thead>
+                      <tr className="bg-light">
+                        <th>#</th>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedOrder.orderDetails.map((item, index) => (
+                        <tr key={item.id}>
+                          <td>{index + 1}</td>
+                          <td>{item.tieude}</td>
+                          <td>{item.quantity}</td>
+                          <td>{parseFloat(item.price).toLocaleString("vi-VN")} VND</td>
+                          <td>
+                            {parseFloat(item.quantity * item.price).toLocaleString("vi-VN")} VND
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr className="fw-bold">
+                        <th colSpan="4" className="text-end">
+                          Tổng cộng:
+                        </th>
+                        <th>
+                          {parseFloat(selectedOrder.total_price).toLocaleString("vi-VN")} VND
+                        </th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <FaQuestionCircle className="me-2 text-muted" size={30} />
+                  <p>Không có chi tiết đơn hàng.</p>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-center">
+              <p>Không có dữ liệu đơn hàng.</p>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer className="justify-content-between">
+          <div className="text-muted small">
+            <FaRegCreditCard className="me-1" /> Mã giao dịch:{" "}
+            {selectedOrder?.transactionId || "không có"}
+          </div>
+          <Button variant="danger" onClick={handleCloseOrderDetails}>
+            <FaTimesCircle className="me-1" /> Đóng
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Footerusers />
       {/* <ToastContainer /> // REMOVE */}
     </>

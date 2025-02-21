@@ -266,7 +266,11 @@ const Khachhangs = () => {
   };
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
-    return hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' || hoadon.status === 'Thanh toán thất bại' || hoadon.status === 'Thanh toán không thành công' || hoadon.status === "cancel" || hoadon.status === "returned");
+    return hoadons?.length ===0 || hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' 
+      || hoadon.status === 'Thanh toán thất bại' 
+      || hoadon.status === 'Thanh toán không thành công' 
+      || hoadon.status === "cancel" 
+      || hoadon.status === "returned");
   };
 
   const layTrangThaiDonHang = (hoaDons) => {
@@ -489,6 +493,21 @@ const Khachhangs = () => {
       });
     }
   };
+
+
+  let role = [];
+  if (cookies.adminToken) {
+    try {
+      const giaimatoken = jwtDecode(cookies.adminToken);
+      role = giaimatoken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+    }
+    catch (error) {
+      console.log("có lỗi khi giải mã token:", error);
+    }
+  } 
+
+  const isAdmin = role.includes('Admin');
+
   return (
     <div id="wrapper">
       <SiderbarAdmin />
@@ -639,7 +658,7 @@ const Khachhangs = () => {
                                         </button>
                                       ) : null
                                     )}
-                                    {kiemTraTrangThaiHoaDon(item.hoaDons) && (
+                                    {kiemTraTrangThaiHoaDon(item.hoaDons) && isAdmin &&  (
                                       <button
                                         className="btn btn-outline-danger btn-sm"
                                         title="Xóa khách hàng"

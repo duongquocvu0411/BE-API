@@ -568,7 +568,7 @@ namespace CuahangtraicayAPI.Controllers
         // DELETE: api/Sanpham/{id}
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<BaseResponseDTO<Sanpham>>> DeleteSanpham(int id, [FromQuery] string UpdatedBy)
+        public async Task<ActionResult<BaseResponseDTO<Sanpham>>> DeleteSanpham(int id)
         {
             var sanpham = await _context.Sanpham
                 .Include(s => s.Images)
@@ -578,7 +578,18 @@ namespace CuahangtraicayAPI.Controllers
             {
                 return NotFound(new BaseResponseDTO<Sanpham> { Code = 404, Message = "Sản phẩm không tồn tại" });
             }
+
+            if (sanpham.Xoa == true)
+            {
+                return new BaseResponseDTO<Sanpham>
+                {
+                    Code = 404,
+                    Message = $"Sản phẩm {sanpham.Id} đã được xóa trước đó"
+                };
+            }
+
             var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
             var users = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             // Xác định chức vụ từ Roles trong Token
 
@@ -592,13 +603,24 @@ namespace CuahangtraicayAPI.Controllers
                 .Include(hdct => hdct.HoaDon)
                 .ToListAsync();
 
-            // Kiểm tra trạng thái của các đơn hàng liên quan
+            // Lấy danh sách order_code của các đơn hàng chưa hoàn thành
+            var orderCodesChuaHoanThanh = new List<string>();
             foreach (var chiTiet in hoaDonChiTiets)
             {
                 if (chiTiet.HoaDon.status != "delivered" && chiTiet.HoaDon.status != "Hủy đơn")
                 {
-                    return BadRequest(new { message = "Sản phẩm này liên quan đến đơn hàng chưa hoàn thành, không thể Xóa." });
+                    orderCodesChuaHoanThanh.Add(chiTiet.HoaDon.order_code);
                 }
+            }
+
+            // Nếu có đơn hàng chưa hoàn thành, trả về thông báo lỗi và danh sách order_code
+            if (orderCodesChuaHoanThanh.Any())
+            {
+                return BadRequest(new
+                {
+                    message = $"Sản phẩm này liên quan đến các đơn hàng chưa hoàn thành, không thể xóa. Mã đơn hàng: ",
+                    order_codes = orderCodesChuaHoanThanh // Thêm danh sách order_code vào response
+                });
             }
 
             // "Ẩn" sản phẩm thay vì xóa
@@ -611,7 +633,6 @@ namespace CuahangtraicayAPI.Controllers
                 HanhDong = "Xóa sản phẩm " + " " + sanpham.ma_sanpham,
                 CreatedBy = hotenToken,
                 Chucvu = chucVu,
-
             };
             _context.Logss.Add(LogDLT);
             // Cập nhật thay đổi vào cơ sở dữ liệu
@@ -743,7 +764,7 @@ namespace CuahangtraicayAPI.Controllers
         public async Task<ActionResult<BaseResponseDTO<object>>> GetTongSanPham()
         {
             // Tính tổng số sản phẩm
-            var tongSanPham = await _context.Sanpham.CountAsync();
+            var tongSanPham = await _context.Sanpham.Where(sp => sp.Xoa == false).CountAsync();
 
             // Chuẩn bị dữ liệu trả về
             var result = new
