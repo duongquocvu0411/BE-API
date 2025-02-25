@@ -236,6 +236,13 @@ namespace CuahangtraicayAPI.Controllers
             return Ok(new { message = "Dịch vụ phản hồi tự động đã được tắt" });
         }
 
+
+
+        /// <summary>
+        /// api xem đánh giá tự động có được bật hay k 
+        /// </summary>
+        /// <returns>api xem đánh giá tự động có được bật hay k </returns>
+
         [HttpGet("danhgiatudong")]
         public async Task<IActionResult> GetallPhanhoitudon()
         {

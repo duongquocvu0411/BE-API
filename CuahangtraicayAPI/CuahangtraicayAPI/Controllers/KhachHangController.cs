@@ -12,6 +12,7 @@ using CuahangtraicayAPI.Model.ghn;
 using System.IdentityModel.Tokens.Jwt;
 using CuahangtraicayAPI.Model.DB;
 using System.Security.Claims;
+using ClosedXML.Excel;
 
 
 
@@ -91,6 +92,7 @@ namespace CuahangtraicayAPI.Controllers
             // Tìm danh sách khách hàng theo UserId
             var customers = await _context.KhachHangs
                 .Where(kh => kh.UserNameLogin == userId )
+                .OrderByDescending(kh => kh.Created_at )   // xắp xếp theo thứ tự giảm dần theo created_at  
                 .Select(kh => new
                 {
                     kh.Id,
@@ -136,12 +138,25 @@ namespace CuahangtraicayAPI.Controllers
                                 {
                                     hdct.Id,
                                     hdct.SanPham.Tieude,
-                                   
+                                   hdct.sanpham_ids,
                                     hdct.quantity,
                                     hdct.SanPham.Donvitinhs.name,
                                     hdct.price,
+
                                     // Lấy thông tin sản phẩm liên quan (nếu cần)
-                                   
+                                    // Lấy danh sách đánh giá của sản phẩm trong đơn hàng
+                                    DanhGiaKhachHangs = _context.DanhGiaKhachHang
+                                    .Where(dg => dg.sanphams_id == hdct.sanpham_ids && dg.hoadon_id == hd.Id)
+                                    .Select(dg => new
+                                    {
+                                        dg.so_sao,
+                                        dg.tieude,
+                                        dg.noi_dung,
+                                        dg.ho_ten,
+                                        dg.Created_at
+                                    })
+                                        .ToList()
+
                                 })
                                 .ToList()
                         })
@@ -614,8 +629,121 @@ namespace CuahangtraicayAPI.Controllers
         }
 
 
-        // Phương thức kiểm tra sự tồn tại của KhachHang
-        private bool KhachHangExists(int id)
+        /// <summary>
+        /// Xuất file excel
+        /// </summary>
+        /// <param name="id">Xuất file excel</param>
+        /// <returns>Xuất file excel</returns>
+
+        [HttpGet("XuatFile-Excel")]
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<ActionResult<BaseResponseDTO<KhachHang>>> XuatFileExcel(int nam, int thang)
+        {
+
+            // kiểm tra tính hợp lệ của tháng năm
+            if (thang < 1 || thang > 12 || nam < 2000 || nam > DateTime.Now.Year + 1)
+            {
+                return BadRequest(new { message = "Tháng hoặc năm không hợp lệ" });
+            }
+
+            if(thang == null)
+            {
+               return BadRequest(new { message = " Vui lòng chọn tháng cần xuất file" });
+            }
+
+            if (nam == null)
+            {
+                return BadRequest(new { message = " Vui lòng chọn năm cần xuất file" });
+            }
+
+
+
+            // Lấy danh sách khách hàng (bỏ qua khách hàng đã xóa)
+            var khachHangs = await _context.KhachHangs
+                .Where(kh => kh.Xoa == false && kh.Created_at.Year == nam && kh.Created_at.Month == thang)
+                .Select( kh => new
+                {
+                    kh.UserNameLogin,
+                    kh.Ho,
+                    kh.Ten,
+                    kh.DiaChiCuThe,
+                    kh.xaphuong,
+                    kh.tinhthanhquanhuyen,
+                    kh.ThanhPho,
+                    kh.Sdt,
+                    kh.EmailDiaChi,
+                    HoaDons = kh.HoaDons.Select(hd => new
+                    {
+                        hd.order_code,
+                        hd.Thanhtoan,
+                        hd.status,
+                        hd.total_price
+                    }).ToList()
+                })
+                .ToListAsync();
+            if (khachHangs.Count == 0)
+            {
+                return NotFound(new { message = $"Không có dữ liệu khách hàng cho tháng {thang} năm {nam}" });
+            }
+
+            // Tạo workbook và worksheet
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("KhachHang");
+
+                // Tiêu đề các cột
+                worksheet.Cell(1, 1).Value = "UserId";
+                worksheet.Cell(1, 2).Value = "Họ";
+                worksheet.Cell(1, 3).Value = "Tên";
+                worksheet.Cell(1, 4).Value = "Địa chỉ";
+                worksheet.Cell(1, 5).Value = "Xã/Phường";
+                worksheet.Cell(1, 6).Value = "Quận/Huyện";
+                worksheet.Cell(1, 7).Value = "Thành phố";
+                worksheet.Cell(1, 8).Value = "Điện thoại";
+                worksheet.Cell(1, 9).Value = "Email";
+                worksheet.Cell(1, 10).Value = "Mã đơn hàng";
+                worksheet.Cell(1, 11).Value = "Thanh toán";
+                worksheet.Cell(1, 12).Value = "Trạng thái";
+                worksheet.Cell(1, 13).Value = "Tổng tiền";
+
+                // Đổ dữ liệu từ danh sách khách hàng vào worksheet
+                int row = 2;
+                foreach( var khachHang in khachHangs)
+                {
+                    foreach(var hoaDon in khachHang.HoaDons)
+                    {
+                        worksheet.Cell(row, 1).Value = khachHang.UserNameLogin;
+                        worksheet.Cell(row, 2).Value = khachHang.Ho;
+                        worksheet.Cell(row, 3).Value = khachHang.Ten;
+                        worksheet.Cell(row, 4).Value = khachHang.DiaChiCuThe;
+                        worksheet.Cell(row, 5).Value = khachHang.xaphuong;
+                        worksheet.Cell(row, 6).Value = khachHang.tinhthanhquanhuyen;
+                        worksheet.Cell(row, 7).Value = khachHang.ThanhPho;
+                        worksheet.Cell(row, 8).Value = khachHang.Sdt;
+                        worksheet.Cell(row, 9).Value = khachHang.EmailDiaChi;
+                        worksheet.Cell(row, 10).Value = hoaDon.order_code;
+                        worksheet.Cell(row, 11).Value = hoaDon.Thanhtoan;
+                        worksheet.Cell(row, 12).Value = hoaDon.status;
+                        worksheet.Cell(row, 13).Value = hoaDon.total_price;
+                        row++;
+                    }
+                }
+
+                // Thiết lập Content-Type và Header để tải file
+                var stream = new MemoryStream();
+                workbook.SaveAs(stream);
+                stream.Seek(0, SeekOrigin.Begin); // Reset stream position
+
+                string fileName = $"KhachHang_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+
+
+            }
+        }
+    
+
+    // Phương thức kiểm tra sự tồn tại của KhachHang
+    private bool KhachHangExists(int id)
         {
             return _context.KhachHangs.Any(e => e.Id == id);
         }

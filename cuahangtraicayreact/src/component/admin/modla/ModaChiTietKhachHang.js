@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
+import CoppyOrder from './../../users/CoppyStatus/CoppyOrder';
 
 const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTrangThai, layTrangThaiDonHang, isLoading }) => {
 
@@ -112,9 +113,12 @@ const ModalChiTietKhachHang = ({ show, handleClose, chiTietKhachHang, capNhatTra
                         <p>
                           <i className="bi bi-circle-fill"></i> <strong>Trạng thái:</strong> <span className={`badge ${layTrangThaiDonHang([bill]).bgColor}`}>{bill.status}</span>
                         </p>
-                        <p><i className="bi bi-hash"></i> <strong>Mã đơn hàng:</strong> {bill.order_code}</p>
+                        <p><i className="bi bi-hash"></i> <strong>Mã đơn hàng:</strong> {bill.order_code}     <CoppyOrder orderCode={bill.order_code}/></p>
+                    
                         <p><i className="bi bi-hash"></i> <strong>Mã GHN đơn hàng:</strong>{""}
                           {bill.ghn && bill.ghn.ghn_order_id ? bill.ghn.ghn_order_id : "không có thông tn"}
+                            {bill.ghn && <span><CoppyOrder orderCode={bill.ghn?.ghn_order_id}/></span>}
+                          
                         </p>
                         <h6 className="mt-4 text-primary">
                           <i className="bi bi-cart-check"></i> Chi tiết sản phẩm:

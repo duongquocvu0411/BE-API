@@ -31,7 +31,18 @@ const Khachhangs = () => {
   const cacPhanTuHienTai = khachHangHienThi.slice(chiSoPhanTuDau, chiSoPhanTuCuoi);
   const tongSoTrang = Math.ceil(khachHangHienThi.length / soPhanTuMotTrang);
 
+  const [chonnam, setChonnam] = useState(''); // năm mặc định
+  const [chonthang, setChonthang] = useState(''); // tháng mặc định (1-12)
+
+
   const thayDoiTrang = (soTrang) => setTrangHienTai(soTrang);
+
+
+
+  useEffect(() => {
+    layDanhSachKhachHang();
+  }, []);
+
 
   const layDanhSachKhachHang = async () => {
     setDangtai(true);
@@ -57,9 +68,57 @@ const Khachhangs = () => {
     }
   };
 
-  useEffect(() => {
-    layDanhSachKhachHang();
-  }, []);
+  const handleXuatFileExcel = async () => {
+
+    if (!chonnam || !chonthang) {
+      toast.warn("Vui lòng chọn năm và tháng trước khi hủy đơn hàng!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return; // Dừng thực hiện hàm nếu chưa chọn năm tháng
+    }
+    
+    const token = cookies.adminToken;
+
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASEURL}/api/KhachHang/XuatFile-Excel`, // Sử dụng query parameters
+        {
+          params: {
+            nam: chonnam,
+            thang: chonthang,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: 'blob', // Quan trọng: chỉ định kiểu response là 'blob'
+        }
+      );
+
+      // Tạo URL tạm thời để tải file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `KhachHang_${chonnam}_${chonthang}.xlsx`); // Đặt tên file
+      document.body.appendChild(link);
+      link.click();
+
+      // Giải phóng URL
+      window.URL.revokeObjectURL(url);
+
+      toast.success(`Xuất file Excel tháng ${chonthang} thành công!`, {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.error('Có lỗi khi xuất file Excel:', error);
+      toast.error('Có lỗi khi xuất file Excel!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    }
+  };
+  const years = Array.from({ length: new Date().getFullYear() - 2020 + 1 }, (_, i) => 2020 + i);
 
   const xuLyTimKiem = (e) => {
     const giaTriTimKiem = e.target.value.toLowerCase();
@@ -154,90 +213,90 @@ const Khachhangs = () => {
 
   const [isLoading, setIsLoading] = useState(false); // Trạng thái loading
 
-    const capNhatTrangThai = async (billId, trangthaimoi, lyDoHuy = null, ghiChu = null) => {
-        setIsLoading(true);
-        try {
-            const token = cookies.adminToken;  // Thay bằng cách lấy token thực tế của bạn
-            const decodedToken = jwtDecode(token);
-            const updatedBy = decodedToken["FullName"] || "Unknown"; // Sửa ở đây
-            
-            const requestBody = {
-                status: trangthaimoi,
-                ly_do_huy: lyDoHuy,    // Gửi lý do hủy
-                ghi_chu: ghiChu       // Gửi ghi chú
-            };
-            const response = await axios.put(
-                `${process.env.REACT_APP_BASEURL}/api/HoaDon/UpdateStatus/${billId}`,
-                requestBody,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-            );
-            // Nếu thành công -> Cập nhật giao diện
-            if (response.status === 200) {
-                // toast.success('Cập nhật thành công!', {
-                //     position: "top-right",
-                //     autoClose: 3000,
-                // });
-                // Đóng modal chi tiết
-                setHienThiModal(false);
+  const capNhatTrangThai = async (billId, trangthaimoi, lyDoHuy = null, ghiChu = null) => {
+    setIsLoading(true);
+    try {
+      const token = cookies.adminToken;  // Thay bằng cách lấy token thực tế của bạn
+      const decodedToken = jwtDecode(token);
+      const updatedBy = decodedToken["FullName"] || "Unknown"; // Sửa ở đây
 
-                setDanhSachKhachHang((prevList) =>
-                    prevList.map((khachHang) => {
-                        if (khachHang.hoaDons) {
-                            khachHang.hoaDons = khachHang.hoaDons.map((hoaDon) => {
-                                if (hoaDon.id === billId) {
-                                    // Đảm bảo clone hoaDon và gán lại thuộc tính
-                                    const updatedHoaDon = { ...hoaDon, status: trangthaimoi, updatedBy: updatedBy };
-                                    return updatedHoaDon;
-                                }
-                                return hoaDon;
-                            });
-                        }
-                        return khachHang;
-                    })
-                );
-
-                setKhachHangHienThi((prevList) =>
-                    prevList.map((khachHang) => {
-                        if (khachHang.hoaDons) {
-                            khachHang.hoaDons = khachHang.hoaDons.map((hoaDon) => {
-                                if (hoaDon.id === billId) {
-                                    const updatedHoaDon = { ...hoaDon, status: trangthaimoi, updatedBy: updatedBy };
-                                    return updatedHoaDon;
-                                }
-                                return hoaDon;
-                            });
-                        }
-                        return khachHang;
-                    })
-                );
-                console.log("Cập nhật thành công")
-                toast.success('Cập nhật thành công!', {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-                setHienThiModal(false);
-            } else {
-                toast.error('Cập nhật thất bại!', {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            }
-        } catch (error) {
-            console.error('Có lỗi khi cập nhật trạng thái đơn hàng:', error);
-            toast.error('Có lỗi khi cập nhật trạng thái đơn hàng!', {
-                position: 'top-right',
-                autoClose: 3000,
-            });
-        } finally {
-            setIsLoading(false);
+      const requestBody = {
+        status: trangthaimoi,
+        ly_do_huy: lyDoHuy,    // Gửi lý do hủy
+        ghi_chu: ghiChu       // Gửi ghi chú
+      };
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASEURL}/api/HoaDon/UpdateStatus/${billId}`,
+        requestBody,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
         }
-    };
-    const handleClose = () => setHienThiModal(false); // định nghĩa handleClose
+      );
+      // Nếu thành công -> Cập nhật giao diện
+      if (response.status === 200) {
+        // toast.success('Cập nhật thành công!', {
+        //     position: "top-right",
+        //     autoClose: 3000,
+        // });
+        // Đóng modal chi tiết
+        setHienThiModal(false);
+
+        setDanhSachKhachHang((prevList) =>
+          prevList.map((khachHang) => {
+            if (khachHang.hoaDons) {
+              khachHang.hoaDons = khachHang.hoaDons.map((hoaDon) => {
+                if (hoaDon.id === billId) {
+                  // Đảm bảo clone hoaDon và gán lại thuộc tính
+                  const updatedHoaDon = { ...hoaDon, status: trangthaimoi, updatedBy: updatedBy };
+                  return updatedHoaDon;
+                }
+                return hoaDon;
+              });
+            }
+            return khachHang;
+          })
+        );
+
+        setKhachHangHienThi((prevList) =>
+          prevList.map((khachHang) => {
+            if (khachHang.hoaDons) {
+              khachHang.hoaDons = khachHang.hoaDons.map((hoaDon) => {
+                if (hoaDon.id === billId) {
+                  const updatedHoaDon = { ...hoaDon, status: trangthaimoi, updatedBy: updatedBy };
+                  return updatedHoaDon;
+                }
+                return hoaDon;
+              });
+            }
+            return khachHang;
+          })
+        );
+        console.log("Cập nhật thành công")
+        toast.success('Cập nhật thành công!', {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        setHienThiModal(false);
+      } else {
+        toast.error('Cập nhật thất bại!', {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      }
+    } catch (error) {
+      console.error('Có lỗi khi cập nhật trạng thái đơn hàng:', error);
+      toast.error('Có lỗi khi cập nhật trạng thái đơn hàng!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleClose = () => setHienThiModal(false); // định nghĩa handleClose
   const ghnStatusMapping = {
     ready_to_pick: { text: 'Mới tạo đơn hàng', bgColor: 'badge bg-light text-dark border' },
     picking: { text: 'Nhân viên đang lấy hàng', bgColor: 'badge bg-primary text-white border' },
@@ -266,10 +325,10 @@ const Khachhangs = () => {
   };
 
   const kiemTraTrangThaiHoaDon = (hoadons) => {
-    return hoadons?.length ===0 || hoadons?.some(hoadon => hoadon.status === 'Hủy đơn' 
-      || hoadon.status === 'Thanh toán thất bại' 
-      || hoadon.status === 'Thanh toán không thành công' 
-      || hoadon.status === "cancel" 
+    return hoadons?.length === 0 || hoadons?.some(hoadon => hoadon.status === 'Hủy đơn'
+      || hoadon.status === 'Thanh toán thất bại'
+      || hoadon.status === 'Thanh toán không thành công'
+      || hoadon.status === "cancel"
       || hoadon.status === "returned");
   };
 
@@ -372,7 +431,7 @@ const Khachhangs = () => {
 
     // Giải mã token để lấy thông tin `updatedBy`
     const decodedToken = jwtDecode(token);
-            const updatedBy = decodedToken["FullName"] || "Unknown"; // Sửa ở đây
+    const updatedBy = decodedToken["FullName"] || "Unknown"; // Sửa ở đây
     try {
       // Gửi yêu cầu POST tới API lên đơn hàng
       const response = await axios.post(
@@ -439,6 +498,9 @@ const Khachhangs = () => {
     }
   };
   const handleXacNhanHuyDon = async (orderCode) => {
+   
+    
+  
     const token = cookies.adminToken; // Lấy token từ cookie
 
     try {
@@ -504,7 +566,7 @@ const Khachhangs = () => {
     catch (error) {
       console.log("có lỗi khi giải mã token:", error);
     }
-  } 
+  }
 
   const isAdmin = role.includes('Admin');
 
@@ -541,6 +603,7 @@ const Khachhangs = () => {
                 </div>
               </div>
             </div>
+
             <div className="container-fluid">
               <div className="card shadow mb-4">
                 <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -562,6 +625,37 @@ const Khachhangs = () => {
                     <option value="Đã Thanh toán">Đã Thanh toán</option>
                     <option value="Thanh toán thất bại">Thanh toán thất bại</option>
                   </select>
+                  <div className="d-flex align-items-center mb-3">
+                    <select
+                      className="form-control me-2"
+                      value={chonnam}
+                      onChange={(e) => setChonnam(parseInt(e.target.value))}
+                      style={{ maxWidth: '100px' }}
+                    >
+                      <option value="">Chọn năm</option>
+                      {years.map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      className="form-control me-2"
+                      value={chonthang}
+                      onChange={(e) => setChonthang(parseInt(e.target.value))}
+                      style={{ maxWidth: '80px' }}
+                    >
+                      <option value="">Chọn tháng</option>
+                      {[...Array(12)].map((_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          Tháng {i + 1}
+                        </option>
+                      ))}
+                    </select>
+                    <button className="btn btn-success" onClick={handleXuatFileExcel}>
+                      <i className="fas fa-file-excel me-2"></i>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="card-body table-responsive" style={{ maxHeight: '400px' }}>
@@ -658,7 +752,7 @@ const Khachhangs = () => {
                                         </button>
                                       ) : null
                                     )}
-                                    {kiemTraTrangThaiHoaDon(item.hoaDons) && isAdmin &&  (
+                                    {kiemTraTrangThaiHoaDon(item.hoaDons) && isAdmin && (
                                       <button
                                         className="btn btn-outline-danger btn-sm"
                                         title="Xóa khách hàng"

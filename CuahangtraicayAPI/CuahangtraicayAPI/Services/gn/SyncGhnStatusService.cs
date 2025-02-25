@@ -30,7 +30,7 @@ namespace CuahangtraicayAPI.Services.gn
                 }
 
                 // Lặp lại sau mỗi 10 phút
-                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
             }
         }
     }
@@ -41,7 +41,7 @@ namespace CuahangtraicayAPI.Services.gn
         private readonly GhnSettings _settings;
         private readonly EmailHelper _emailHelper;
 
-        public SyncGhnStatusService(AppDbContext dbContext, HttpClient httpClient, IOptions<GhnSettings> settings,EmailHelper emailHelper)
+        public SyncGhnStatusService(AppDbContext dbContext, HttpClient httpClient, IOptions<GhnSettings> settings, EmailHelper emailHelper)
         {
             _dbContext = dbContext;
             _httpClient = httpClient;
@@ -56,6 +56,12 @@ namespace CuahangtraicayAPI.Services.gn
 
             foreach (var ghnOrder in ghnOrders)
             {
+                // Skip if the order is already delivered or cancelled
+                if (ghnOrder.Status == "delivered" || ghnOrder.Status == "Hủy đơn")
+                {
+                    continue; // Skip to the next order
+                }
+
                 // Thêm Token và ShopId vào Header
                 _httpClient.DefaultRequestHeaders.Clear();
                 _httpClient.DefaultRequestHeaders.Add("Token", _settings.Token);
@@ -89,43 +95,43 @@ namespace CuahangtraicayAPI.Services.gn
                     .Include(h => h.HoaDonChiTiets) // Bao gồm chi tiết hóa đơn
                     .FirstOrDefaultAsync(h => h.order_code == ghnOrder.Client_order_code);
 
-               
 
-                    // Nếu trạng thái là "delivered" và thanh toán là COD, và trạng thái trước đó KHÔNG PHẢI "delivered", trừ số lượng sản phẩm
-                    if (hoadon != null)
+
+                // Nếu trạng thái là "delivered" và thanh toán là COD, và trạng thái trước đó KHÔNG PHẢI "delivered", trừ số lượng sản phẩm
+                if (hoadon != null)
+                {
+                    var trangthaitruoc = hoadon.status;
+                    hoadon.status = ghnOrderDetail.Data.Status;
+                    hoadon.Updated_at = DateTime.Now;
+                    // Nếu trạng thái là "delivered" và thanh toán là COD, và trạng thái trước đó KHÔNG PHẢI "delivered"
+                    if (hoadon.Thanhtoan == "cod" && ghnOrderDetail.Data.Status == "delivered" && trangthaitruoc != "delivered")
                     {
-                        var trangthaitruoc = hoadon.status;
-                        hoadon.status = ghnOrderDetail.Data.Status;
-
-                        // Nếu trạng thái là "delivered" và thanh toán là COD, và trạng thái trước đó KHÔNG PHẢI "delivered"
-                        if (hoadon.Thanhtoan == "cod" && ghnOrderDetail.Data.Status == "delivered" && trangthaitruoc != "delivered")
+                        foreach (var chiTiet in hoadon.HoaDonChiTiets)
                         {
-                            foreach (var chiTiet in hoadon.HoaDonChiTiets)
+                            var sanpham = await _dbContext.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
+
+                            if (sanpham != null)
                             {
-                                var sanpham = await _dbContext.Sanpham.FirstOrDefaultAsync(sp => sp.Id == chiTiet.sanpham_ids);
+                                // Trừ số lượng sản phẩm thực tế và số lượng tạm giữ
+                                sanpham.Soluong -= chiTiet.quantity;
+                                sanpham.Soluongtamgiu -= chiTiet.quantity;
 
-                                if (sanpham != null)
+                                if (sanpham.Soluong <= 0)
                                 {
-                                    // Trừ số lượng sản phẩm thực tế và số lượng tạm giữ
-                                    sanpham.Soluong -= chiTiet.quantity;
-                                    sanpham.Soluongtamgiu -= chiTiet.quantity;
-
-                                    if (sanpham.Soluong <= 0)
-                                    {
-                                        sanpham.Soluong = 0;
-                                        sanpham.Trangthai = "Hết hàng"; // Cập nhật trạng thái sản phẩm
-                                    }
-
-                                    _dbContext.Sanpham.Update(sanpham);
+                                    sanpham.Soluong = 0;
+                                    sanpham.Trangthai = "Hết hàng"; // Cập nhật trạng thái sản phẩm
                                 }
-                            }
 
-                            Console.WriteLine($"Đã trừ số lượng sản phẩm và cập nhật trạng thái kho cho hóa đơn {hoadon.Id}.");
+                                _dbContext.Sanpham.Update(sanpham);
+                            }
                         }
 
+                        Console.WriteLine($"Đã trừ số lượng sản phẩm và cập nhật trạng thái kho cho hóa đơn {hoadon.Id}.");
+                    }
+
                     // Nếu trạng thái là "returned" và trước đó trạng thái không phải "returned"
-           
-                    else if ((hoadon.Thanhtoan == "cod" || hoadon.Thanhtoan == "VnPay" || hoadon.Thanhtoan == "Momo") 
+
+                    else if ((hoadon.Thanhtoan == "cod" || hoadon.Thanhtoan == "VnPay" || hoadon.Thanhtoan == "Momo")
                              && ghnOrderDetail.Data.Status == "returned" && trangthaitruoc != "returned")
                     {
                         foreach (var chiTiet in hoadon.HoaDonChiTiets)
@@ -162,13 +168,13 @@ namespace CuahangtraicayAPI.Services.gn
                             }
                         }
 
-                            Console.WriteLine($"Đã xử lý trạng thái 'returned' cho hóa đơn {hoadon.Id}.");
-                        }
+                        Console.WriteLine($"Đã xử lý trạng thái 'returned' cho hóa đơn {hoadon.Id}.");
+                    }
 
-                        // Cập nhật trạng thái hóa đơn
-                        _dbContext.HoaDons.Update(hoadon);
+                    // Cập nhật trạng thái hóa đơn
+                    _dbContext.HoaDons.Update(hoadon);
 
-                        Console.WriteLine($"Trạng thái đơn hàng {hoadon.Id} đã được cập nhật thành {ghnOrderDetail.Data.Status}.");
+                    Console.WriteLine($"Trạng thái đơn hàng {hoadon.Id} đã được cập nhật thành {ghnOrderDetail.Data.Status}.");
 
 
                     // Gửi email thông báo nếu trạng thái thay đổi

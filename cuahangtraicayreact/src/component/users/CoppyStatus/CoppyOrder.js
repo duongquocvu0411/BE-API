@@ -26,7 +26,7 @@ const CoppyOrder = ({ orderCode }) => {
                     {coppytStatus ? <FaCheck /> : <FaCopy />}
                 </button>
             </CopyToClipboard>
-            {copied && <span className="ms-2 text-success">Đã sao chép mã đơn hàng {orderCode}</span>} {/* Render message when copied is true */}
+            {/* {copied && <span className="ms-2 text-success">Đã sao chép mã đơn hàng {orderCode}</span>}  */}
         </>
     )
 

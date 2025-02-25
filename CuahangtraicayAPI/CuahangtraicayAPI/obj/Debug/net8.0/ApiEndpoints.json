@@ -852,14 +852,19 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "danhgia",
-        "Type": "CuahangtraicayAPI.Model.DanhGiaKhachHang",
+        "Name": "dto",
+        "Type": "CuahangtraicayAPI.DTO.DanhGiaKhachHangDTO",
         "IsRequired": true
+      },
+      {
+        "Name": "hoadonId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "CuahangtraicayAPI.Model.DanhGiaKhachHang",
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.DanhGiaKhachHang, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1993,6 +1998,37 @@
     "ReturnTypes": [
       {
         "Type": "CuahangtraicayAPI.Model.KhachHang",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CuahangtraicayAPI.Controllers.KhachHangController",
+    "Method": "XuatFileExcel",
+    "RelativePath": "api/KhachHang/XuatFile-Excel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nam",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "thang",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CuahangtraicayAPI.DTO.BaseResponseDTO\u00601[[CuahangtraicayAPI.Model.KhachHang, CuahangtraicayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

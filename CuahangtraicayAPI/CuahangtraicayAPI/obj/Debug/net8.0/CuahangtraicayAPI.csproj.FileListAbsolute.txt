@@ -1319,3 +1319,11 @@ C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\Cuahangtraica
 C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\CuahangtraicayAPI.genruntimeconfig.cache
 C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\obj\Debug\net8.0\ref\CuahangtraicayAPI.dll
 C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\Facebook.dll
+C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\ClosedXML.dll
+C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\ClosedXML.Parser.dll
+C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\ExcelNumberFormat.dll
+C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\RBush.dll
+C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\SixLabors.Fonts.dll
+C:\Users\DELL\OneDrive\Desktop\project BE\BE-API\CuahangtraicayAPI\CuahangtraicayAPI\bin\Debug\net8.0\System.IO.Packaging.dll

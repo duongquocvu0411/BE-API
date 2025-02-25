@@ -146,7 +146,10 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
             .OnDelete(DeleteBehavior.Cascade);
 
 
-        // mối quan hệ 1 nhiều chinhanh && tinhthanh
+        modelBuilder.Entity<DanhGiaKhachHang>()
+             .HasOne(dg => dg.HoaDon) // một đánh giá phải có một id hoadon
+             .WithMany(hd => hd.DanhGiaKhachHangs)
+             .HasForeignKey(dg => dg.hoadon_id);
 
      
 

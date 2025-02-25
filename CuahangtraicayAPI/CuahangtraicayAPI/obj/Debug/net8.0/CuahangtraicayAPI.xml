@@ -135,7 +135,7 @@
             </summary>
             <returns> Lấy đánh giá khách hàng theo {id_sanpham}</returns>
         </member>
-        <member name="M:CuahangtraicayAPI.Controllers.DanhGiaKhachHangController.CreateDanhGiaKhachHang(CuahangtraicayAPI.Model.DanhGiaKhachHang)">
+        <member name="M:CuahangtraicayAPI.Controllers.DanhGiaKhachHangController.CreateDanhGiaKhachHang(CuahangtraicayAPI.DTO.DanhGiaKhachHangDTO,System.Int32)">
             <summary>
              Thêm mới 1 đánh giá  của {id_sanpham}
             </summary>
@@ -421,6 +421,13 @@
             Lấy tổng số khách hàng mới trong tháng hiện tại
             </summary>
             <returns> Tổng số khách hàng mới trong tháng hiện tại </returns>
+        </member>
+        <member name="M:CuahangtraicayAPI.Controllers.KhachHangController.XuatFileExcel(System.Int32,System.Int32)">
+            <summary>
+            Xuất file excel
+            </summary>
+            <param name="id">Xuất file excel</param>
+            <returns>Xuất file excel</returns>
         </member>
         <member name="M:CuahangtraicayAPI.Controllers.LienHeController.GetLienHes">
             <summary>

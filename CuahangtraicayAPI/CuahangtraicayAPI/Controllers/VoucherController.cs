@@ -58,6 +58,12 @@ namespace CuahangtraicayAPI.Controllers
             };
         }
 
+
+        /// <summary>
+        /// xem danh sách voucher đang hoạt động
+        /// </summary>
+        /// <returns>xem danh sách voucher đang hoạt động</returns>
+
         // 🟢 GET: api/Voucher/Active
         [HttpGet("Active")]
         public async Task<ActionResult<BaseResponseDTO<IEnumerable<Voucher>>>> GetActiveVouchers()

@@ -44,6 +44,7 @@
     "react-icons": "^5.4.0",
     "react-modal-image": "^2.6.0",
     "react-paginate": "^8.2.0",
+    "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^6.28.0",
     "react-scripts": "^5.0.1",
     "react-scroll-to-top": "^3.0.0",

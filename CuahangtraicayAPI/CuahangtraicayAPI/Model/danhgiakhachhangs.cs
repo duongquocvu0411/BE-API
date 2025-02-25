@@ -19,6 +19,9 @@ namespace CuahangtraicayAPI.Model
    
         public string ho_ten { get; set; }
 
+        [Required]
+        public string User_Id { get; set; }
+
         [MaxLength(255)]
         
         public string tieude { get; set; }
@@ -30,6 +33,12 @@ namespace CuahangtraicayAPI.Model
         [Required]
     
         public string noi_dung { get; set; }
+
+        [Required]
+        public int hoadon_id { get; set; }
+
+        [ForeignKey("hoadon_id")]
+        public virtual HoaDon HoaDon { get; set; }
 
         [ForeignKey("sanphams_id")]
         [JsonIgnore]

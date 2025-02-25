@@ -10,6 +10,7 @@ import Countdown from "react-countdown";
 import Aos from "aos";
 import axios from "axios";
 import Marquee from "react-fast-marquee";
+import { useCookies } from "react-cookie";
 
 const CuahangChitiet = () => {
   const { id, name } = useParams(); // Lấy ID sản phẩm từ URL
@@ -19,13 +20,14 @@ const CuahangChitiet = () => {
   const { addToCart } = useContext(CartContext); // Hàm thêm sản phẩm vào giỏ hàng từ context
   const [soSao, setSoSao] = useState(0); // Số sao được chọn khi viết đánh giá
   const [showModal, setShowModal] = useState(false); // Hiển thị modal nhập đánh giá
-  const [hoTen, setHoTen] = useState(""); // Họ tên của khách hàng
+  // const [hoTen, setHoTen] = useState(""); // Họ tên của khách hàng
   const [tieude, setTieude] = useState(""); // Tiêu đề đánh giá của khách hàng
   const [noiDung, setNoiDung] = useState(""); // Nội dung đánh giá
   const [hinhanhPhu, setHinhanhPhu] = useState([]); // Danh sách hình ảnh phụ của sản phẩm
   const [largeImage, setLargeImage] = useState(null); // Hình ảnh lớn để hiển thị khi click vào
   const [dangtai, setDangtai] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [cookies] = useCookies(['userToken'])
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_BASEURL}/api/sanpham/${id}/sanphamlienquan`)
       .then((response) => {
@@ -74,10 +76,7 @@ const CuahangChitiet = () => {
 
   // Hàm gửi đánh giá
   const guiDanhGia = async () => {
-    if (!hoTen.trim()) {
-      toast.error("Họ tên không được bỏ trống!", { position: "top-right", autoClose: 3000 });
-      return;
-    }
+
     if (!tieude.trim()) {
       toast.error("Tiêu đề không được bỏ trống!", { position: "top-right", autoClose: 3000 });
       return;
@@ -89,16 +88,21 @@ const CuahangChitiet = () => {
 
     const danhGiaMoi = {
       sanphams_id: id,
-      ho_ten: hoTen,
+      // ho_ten: hoTen,
       tieude: tieude,
       so_sao: soSao,
       noi_dung: noiDung,
     };
 
     try {
+
+      const token = cookies.userToken;
       const response = await fetch(`${process.env.REACT_APP_BASEURL}/api/danhgiakhachhang`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify(danhGiaMoi),
       });
 
@@ -110,17 +114,22 @@ const CuahangChitiet = () => {
         // Cập nhật danh sách đánh giá dựa trên phản hồi từ server
         setSanPham((prevSanPham) => ({
           ...prevSanPham,
-          danhgiakhachhangs: [...prevSanPham.danhgiakhachhangs, danhGiaTraVe],
+          danhgiakhachhangs: [...(prevSanPham.danhgiakhachhangs || []), danhGiaTraVe.data],
         }));
 
         // Đóng modal và reset state
         setShowModal(false);
-        setHoTen("");
+        // setHoTen("");
         setTieude("");
         setNoiDung("");
         setSoSao(0);
       } else {
-        toast.warning("Có lỗi xảy ra, vui lòng thử lại!", { position: "top-right", autoClose: 3000 });
+        // Lấy thông báo lỗi từ response body
+        const errorData = await response.json();
+        const errorMessage = errorData.message || "Có lỗi xảy ra, vui lòng thử lại!";
+
+        // Hiển thị thông báo lỗi bằng toast
+        toast.warn(errorMessage, { position: "top-right", autoClose: 3000 });
       }
     } catch (error) {
       console.error("Lỗi khi gửi đánh giá:", error);
@@ -170,16 +179,16 @@ const CuahangChitiet = () => {
               <span className="animated-letter">C</span>
               <span className="animated-letter">h</span>
               <span className="animated-letter">i</span>
-              &nbsp;
+               
               <span className="animated-letter">T</span>
               <span className="animated-letter">i</span>
               <span className="animated-letter">ế</span>
               <span className="animated-letter">t</span>
-              &nbsp;
+               
               <span className="animated-letter">S</span>
               <span className="animated-letter">ả</span>
               <span className="animated-letter">n</span>
-              &nbsp;
+               
               <span className="animated-letter">P</span>
               <span className="animated-letter">h</span>
               <span className="animated-letter">ẩ</span>
@@ -212,22 +221,17 @@ const CuahangChitiet = () => {
                     <div className="mt-3">
                       <h5>Hình ảnh khác của sản phẩm:</h5>
                       <div className="d-flex flex-wrap">
-                        {hinhanhPhu.length > 0 ? (
-                          hinhanhPhu.map((img, index) => (
-                            <img
-                              key={index}
-                              // src={img.hinhanh}
-                              src={`${process.env.REACT_APP_BASEURL}/${img.hinhanh}`}
-                              className="img-thumbnail me-2"
-                              alt={`Hình ảnh phụ ${index + 1}`}
-                              style={{ width: "100px", height: "100px", cursor: "pointer" }}
-                              onClick={() => setLargeImage(img.hinhanh)} // Mở lightbox khi click vào
-                            />
-                          ))
-                        ) : (
-                          <p>Không có hình ảnh phụ nào.</p>
-                        )}
-
+                        {hinhanhPhu?.map((img, index) => (
+                          <img
+                            key={index}
+                            // src={img.hinhanh}
+                            src={`${process.env.REACT_APP_BASEURL}/${img.hinhanh}`}
+                            className="img-thumbnail me-2"
+                            alt={`Hình ảnh phụ ${index + 1}`}
+                            style={{ width: "100px", height: "100px", cursor: "pointer" }}
+                            onClick={() => setLargeImage(img.hinhanh)} // Mở lightbox khi click vào
+                          />
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -265,16 +269,18 @@ const CuahangChitiet = () => {
                       </p>
                     ) : (
                       <>
-                        {laySoLuongKhaDung(sanPham) > 0 ? (
-                          <button
-                            onClick={() => addToCart(sanPham)}
-                            className="btn border border-secondary rounded-pill px-3 text-primary"
-                          >
-                            <i className="fa fa-shopping-bag me-2 text-primary" /> Thêm vào giỏ hàng
-                          </button>
-                        ) : (
-                          <span className="badge bg-danger py-2 px-3">Hết hàng</span>
-                        )}
+                        {
+                          laySoLuongKhaDung(sanPham) > 0 ? (
+                            <button
+                              onClick={() => addToCart(sanPham)}
+                              className="btn border border-secondary rounded-pill px-3 text-primary"
+                            >
+                              <i className="fa fa-shopping-bag me-2 text-primary" /> Thêm vào giỏ hàng
+                            </button>
+                          ) : (
+                            <span className="badge bg-danger py-2 px-3">Hết hàng</span>
+                          )
+                        }
                       </>
                       // <button
                       //   onClick={() => addToCart(sanPham)}
@@ -287,19 +293,7 @@ const CuahangChitiet = () => {
                 </div>
               </div>
             </div>
-
-            {/* Lightbox để hiển thị hình ảnh lớn */}
-            {/* {largeImage && (
-              <Lightbox
-              large={`${process.env.REACT_APP_BASEURL}/${largeImage}`}
-              alt="Hình ảnh sản phẩm"
-              onClose={() => setLargeImage(null)} // Đóng Lightbox
-             
-              hideZoom={false} // Hiển thị nút phóng to/thu nhỏ
-               
-              />
-            )} */}
-
+          
             {/* Tabs để chọn xem chi tiết sản phẩm, bài viết hoặc đánh giá */}
             <div className="d-flex justify-content-start mb-3">
               <button
@@ -393,7 +387,7 @@ const CuahangChitiet = () => {
                     <span className="badge bg-info ms-2" style={{ fontSize: "0.8rem" }}>
                       <small className="text-muted">
                         Cập nhật lúc:{" "}
-                        <b>{new Date(chiTiet.updated_at).toLocaleString("vi-VN")}</b>
+                        <b>{new Date(chiTiet.updated_at).toLocaleDateString("vi-VN")}</b>
                       </small>
                     </span>
                   )}
@@ -439,7 +433,7 @@ const CuahangChitiet = () => {
             {tab === "danhGia" && (
               <div>
                 {/* Phần viết đánh giá */}
-                <div className="mt-4">
+                {/* <div className="mt-4">
                   <h4 className="fw-bold text-primary mb-3">
                     <i className="fa fa-pen me-2"></i> Viết Đánh Giá của bạn
                   </h4>
@@ -464,13 +458,13 @@ const CuahangChitiet = () => {
                       />
                     ))}
                   </div>
-                </div>
+                </div> */}
 
                 {/* Phần hiển thị danh sách đánh giá */}
                 {sanPham.danhgiakhachhangs && sanPham.danhgiakhachhangs.length > 0 ? (
                   <div
                     className="container border p-4 rounded mt-4 bg-light shadow-sm"
-                    data-aos="fade-up"
+                    // data-aos="fade-up"
                   >
                     <h4 className="fw-bold text-success mb-3">
                       <i className="fa fa-star me-2"></i> Đánh Giá Sản Phẩm
@@ -484,7 +478,7 @@ const CuahangChitiet = () => {
                         overflowY: "auto", // Thanh cuộn dọc
                       }}
                     >
-                      {sanPham.danhgiakhachhangs.map((dg, index) => (
+                      {sanPham.danhgiakhachhangs?.map((dg, index) => (
                         <div
                           key={index}
                           className="mb-4 p-3 bg-light border rounded shadow-sm"
@@ -630,7 +624,7 @@ const CuahangChitiet = () => {
             <Modal
               show={showModal}
               onHide={() => {
-                setShowModal(false); // Tắt modal khi ấn hủy
+                setShowModal(false);
                 setSoSao(0);
               }}
               centered
@@ -642,20 +636,6 @@ const CuahangChitiet = () => {
               </Modal.Header>
               <Modal.Body className="bg-light">
                 <Form>
-                  {/* Họ và tên */}
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-bold">Họ và Tên</Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={hoTen}
-                      onChange={(e) => setHoTen(e.target.value)}
-                      placeholder="Nhập họ và tên của bạn"
-                      className="shadow-sm"
-                      style={{ borderRadius: "10px" }}
-                      required
-                    />
-                  </Form.Group>
-
                   {/* Tiêu đề đánh giá */}
                   <Form.Group className="mb-3">
                     <Form.Label className="fw-bold">Tiêu đề Đánh Giá</Form.Label>

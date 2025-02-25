@@ -35,6 +35,9 @@ namespace CuahangtraicayAPI.Model
         [JsonIgnore]
         public ICollection<HoaDonChiTiet>? HoaDonChiTiets { get; set; }
 
+        [JsonIgnore]
+        public ICollection<DanhGiaKhachHang>? DanhGiaKhachHangs { get; set; }
+
         // THÊM mối quan hệ 1-1 với đơn hủy
 
         public HoaDonHuy? hoaDonHuy { get; set; }

@@ -8,18 +8,21 @@ import {
   FaLock,
   FaKey,
   FaEnvelope,
-  FaReceipt
+  FaReceipt,
+  FaStar
 } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 import Footerusers from "../Footerusers";
 import HeaderUsers from "../HeaderUsers";
-// import '../Lichsugd.css'; // Import CSS
-import { Button, Modal, Form } from "react-bootstrap"; // Import Modal and Form
+import { Button, Modal, Form, Rating } from "react-bootstrap";
 import CoppyOrder from "../CoppyStatus/CoppyOrder";
-// import { toast, ToastContainer } from "react-toastify"; // REMOVE
+import { Link } from "react-router-dom";
+import ReactStars from "react-rating-stars-component";
+import { toast, ToastContainer } from "react-toastify";
 
 const LichSuGiaoDich = () => {
+  // Các state giống như trước
   const [danhSachGiaoDich, setDanhSachGiaoDich] = useState([]);
   const [danhSachGiaoDichHienThi, setDanhSachGiaoDichHienThi] = useState([]);
   const [tongSoDonHang, setTongSoDonHang] = useState(0);
@@ -53,7 +56,21 @@ const LichSuGiaoDich = () => {
   const [confirmNewPasswordError, setConfirmNewPasswordError] = useState("");
 
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [selectedCustomer, setSelectedCustomer] = useState(null); // Thêm state để lưu thông tin khách hàng
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+  // State cho modal đánh giá
+  const [showDanhGiaModal, setShowDanhGiaModal] = useState(false);
+  const [danhGiaSanPhamId, setDanhGiaSanPhamId] = useState(null);
+  const [danhGiaHoadonId, setDanhGiaHoadonId] = useState(null);
+
+  const [danhGiaTieude, setDanhGiaTieude] = useState("");
+  const [danhGiaNoiDung, setDanhGiaNoiDung] = useState("");
+  const [danhGiaSoSao, setDanhGiaSoSao] = useState(0);
+
+  const [danhGiaLoi, setDanhGiaLoi] = useState("");
+  const [danhGiaThanhCong, setDanhGiaThanhCong] = useState(false);
+
+
 
   // Thêm mapping trạng thái GHN
   const ghnStatusMapping = {
@@ -453,13 +470,120 @@ const LichSuGiaoDich = () => {
     }
   };
 
+  //Xử lý mở modal đánh giá
+  const handleOpenDanhGiaModal = (sanphamId, hoadonId) => {
+    setDanhGiaSanPhamId(sanphamId);
+    setDanhGiaHoadonId(hoadonId);
+    setShowDanhGiaModal(true);
+    setDanhGiaLoi("");
+    setDanhGiaThanhCong(false);
+    setDanhGiaTieude("");
+    setDanhGiaNoiDung("");
+    setDanhGiaSoSao(0);
+  };
+  //Xử lý đóng modal đánh giá
+  const handleCloseDanhGiaModal = () => {
+    setShowDanhGiaModal(false);
+    setDanhGiaSanPhamId(null);
+    setDanhGiaHoadonId(null);
+  };
+  //Xử lý thay đổi tiêu đề đánh giá
+  const handleDanhGiaTieudeChange = (e) => {
+    setDanhGiaTieude(e.target.value);
+  };
+  //Xử lý thay đổi nội dung đánh giá
+  const handleDanhGiaNoiDungChange = (e) => {
+    setDanhGiaNoiDung(e.target.value);
+  };
+  //Xử lý thay đổi số sao đánh giá
+  const handleDanhGiaSoSaoChange = (rating) => {
+    setDanhGiaSoSao(rating);
+  };
+
+  const handleDanhGiaSanPham = async () => {
+    setDanhGiaLoi("");
+    setDanhGiaThanhCong(false);
+
+    if (!danhGiaTieude) {
+      setDanhGiaLoi("Vui lòng nhập tiêu đề đánh giá.");
+      return;
+    }
+
+    if (!danhGiaNoiDung) {
+      setDanhGiaLoi("Vui lòng nhập nội dung đánh giá.");
+      return;
+    }
+
+    if (danhGiaSoSao === 0) {
+      setDanhGiaLoi("Vui lòng chọn số sao đánh giá.");
+      return;
+    }
+
+    try {
+      const token = cookies.userToken;
+      if (!token) throw new Error("Không tìm thấy token.");
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASEURL}/api/DanhGiaKhachHang?hoadonId=${danhGiaHoadonId}`, // Sử dụng hoadonId
+        {
+          sanphams_id: danhGiaSanPhamId,
+          tieude: danhGiaTieude,
+          so_sao: danhGiaSoSao,
+          noi_dung: danhGiaNoiDung,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.message === "Success") {
+        setDanhGiaThanhCong(true);
+        // setDanhGiaLoi("Đánh giá sản phẩm thành công!");
+        toast.success("Đánh giá sản phẩm thành công",{
+          position:'top-right',
+          autoClose:3000
+        })
+
+        setSelectedOrder((prevOrder) => {
+          if (!prevOrder) return prevOrder;
+  
+          return {
+            ...prevOrder,
+            orderDetails: prevOrder.orderDetails.map((item) =>
+              item.sanpham_ids === danhGiaSanPhamId
+                ? {
+                    ...item,
+                    danhGiaKhachHangs: [{ so_sao: danhGiaSoSao }],
+                  }
+                : item
+            ),
+          };
+        });
+
+
+        handleCloseDanhGiaModal(); // Đóng modal sau khi đánh giá thành công
+      } else {
+        setDanhGiaLoi(response.data.message || "Có lỗi xảy ra khi đánh giá sản phẩm.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi đánh giá sản phẩm:", error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setDanhGiaLoi(error.response.data.message);
+      } else {
+        setDanhGiaLoi("Có lỗi xảy ra khi đánh giá sản phẩm. Vui lòng thử lại sau.");
+      }
+    }
+  };
+
+
   return (
     <>
 
       <HeaderUsers />
       <br />
       <br />
-      {/* <ToastContainer /> // REMOVE */}
       <div className="container py-5" style={{ marginTop: '80px' }}>
         <h2 className="text-center mb-4 text-primary fw-bold">
           <FaClipboardList className="me-2" /> Lịch Sử Giao Dịch
@@ -526,11 +650,11 @@ const LichSuGiaoDich = () => {
               </div>
             </div>
             <div className="d-flex align-items-center">
-            {hasPassword !== null && (
-              <Button variant="primary" onClick={handleOpenDoiMatKhauModal}>
-                {hasPassword ? "Đổi Mật Khẩu" : "Tạo Mật Khẩu"}
-              </Button>
-            )}
+              {hasPassword !== null && (
+                <Button variant="primary" onClick={handleOpenDoiMatKhauModal}>
+                  {hasPassword ? "Đổi Mật Khẩu" : "Tạo Mật Khẩu"}
+                </Button>
+              )}
             </div>
           </div>
 
@@ -583,9 +707,9 @@ const LichSuGiaoDich = () => {
                         <div className="card-body">
                           <div className="d-flex justify-content-between align-items-center mb-2">
                             <h6 className="card-title fw-bold">Mã: {donHang.order_code}
-                            <CoppyOrder orderCode={donHang.order_code}/></h6>
+                              <CoppyOrder orderCode={donHang.order_code} /></h6>
                             <span className={trangThaiBadgeClass(donHang.status)}>
-                              {getGhnStatusText(donHang.status)} {/* Sử dụng getGhnStatusText */}
+                              {getGhnStatusText(donHang.status)}
                             </span>
                           </div>
                           <p className="card-text small text-muted">
@@ -604,9 +728,9 @@ const LichSuGiaoDich = () => {
                           </p>
                           <p className="card-text text-muted">
                             <span className={`me-1 ${getStatusInfo(donHang.responseMessage).color}`} title={getStatusInfo(donHang.responseMessage).tooltip}>
-                              {getStatusInfo(donHang.responseMessage).icon} {/* Icon */}
+                              {getStatusInfo(donHang.responseMessage).icon}
                             </span>
-                            <span>{donHang.responseMessage}</span> {/* Response Message */}
+                            <span>{donHang.responseMessage}</span>
                           </p>
                           <Button variant="primary" onClick={() => handleShowOrderDetails(donHang)}>
                             <FaEye className="me-1" /> Xem Chi Tiết
@@ -647,7 +771,7 @@ const LichSuGiaoDich = () => {
       </div>
 
       {/* Change Password Modal */}
-      <Modal show={showDoiMatKhauModal} onHide={handleCloseDoiMatKhauModal} centered  backdrop="static">
+      <Modal show={showDoiMatKhauModal} onHide={handleCloseDoiMatKhauModal} centered backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{hasPassword ? "Đổi Mật Khẩu" : "Tạo Mật Khẩu"}</Modal.Title>
         </Modal.Header>
@@ -803,7 +927,7 @@ const LichSuGiaoDich = () => {
                 <div className="col-md-6">
                   <p>
                     <strong><FaReceipt className="me-1" /> Mã đơn hàng:</strong> {selectedOrder.order_code}
-                    <CoppyOrder orderCode={selectedOrder.order_code}/>
+                    <CoppyOrder orderCode={selectedOrder.order_code} />
                   </p>
                   <p>
                     <strong><FaFileInvoiceDollar className="me-1" /> Phương thức thanh toán:</strong> {selectedOrder.thanhtoan}
@@ -844,24 +968,50 @@ const LichSuGiaoDich = () => {
                         <th>Số lượng</th>
                         <th>Đơn giá</th>
                         <th>Thành tiền</th>
+                        <th>Đánh giá</th> {/* Thêm cột đánh giá */}
                       </tr>
                     </thead>
                     <tbody>
                       {selectedOrder.orderDetails.map((item, index) => (
                         <tr key={item.id}>
                           <td>{index + 1}</td>
-                          <td>{item.tieude}</td>
+                          <td>
+                            <Link to={`/sanpham/${item.tieude}/${item.sanpham_ids}`}>
+                              {item.tieude}
+                            </Link>
+                          </td>
                           <td>{item.quantity}</td>
                           <td>{parseFloat(item.price).toLocaleString("vi-VN")} VND</td>
                           <td>
                             {parseFloat(item.quantity * item.price).toLocaleString("vi-VN")} VND
+                          </td>
+                          <td>
+                            {item.danhGiaKhachHangs && item.danhGiaKhachHangs.length > 0 ? (
+                              // hiển thị số sao nếu đã đánh giá
+                              <ReactStars
+                                count={5}
+                                value={item.danhGiaKhachHangs[0]?.so_sao || 0}
+                                
+                                size={24}
+                                activeColor="#ffd700"
+                                edit={false} // không cho phép chỉnh sửa
+                                />
+                            ) : (
+                              <>
+                                <Button variant="outline-primary" size="sm" onClick={() => handleOpenDanhGiaModal(item.sanpham_ids,selectedOrder.id)}
+                                  disabled={selectedOrder.status !== 'delivered'} // ngăn chặn k cho sử dụng khi không khác này
+                                  >
+                                    <FaStar className="me-1"/>
+                                  </Button>
+                              </>
+                            )}
                           </td>
                         </tr>
                       ))}
                     </tbody>
                     <tfoot>
                       <tr className="fw-bold">
-                        <th colSpan="4" className="text-end">
+                        <th colSpan="5" className="text-end">
                           Tổng cộng:
                         </th>
                         <th>
@@ -894,8 +1044,70 @@ const LichSuGiaoDich = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Đánh giá sản phẩm Modal */}
+      <Modal show={showDanhGiaModal} onHide={handleCloseDanhGiaModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Đánh giá sản phẩm</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {danhGiaLoi && (
+            <div className="alert alert-danger" role="alert">
+              {danhGiaLoi}
+            </div>
+          )}
+          {danhGiaThanhCong && (
+            <div className="alert alert-success" role="alert">
+              {danhGiaLoi}
+            </div>
+          )}
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Tiêu đề</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nhập tiêu đề đánh giá"
+                value={danhGiaTieude}
+                onChange={handleDanhGiaTieudeChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Nội dung</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="Nhập nội dung đánh giá"
+                value={danhGiaNoiDung}
+                onChange={handleDanhGiaNoiDungChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Số sao</Form.Label>
+              <ReactStars
+                count={5}
+                onChange={handleDanhGiaSoSaoChange}
+                size={24}
+                activeColor="#ffd700"
+                value={danhGiaSoSao}
+                isHalf={false}
+                
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDanhGiaModal}>
+            Đóng
+          </Button>
+          <Button variant="primary" onClick={handleDanhGiaSanPham}>
+            Gửi đánh giá
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
       <Footerusers />
-      {/* <ToastContainer /> // REMOVE */}
+      <ToastContainer/>
     </>
   );
 };

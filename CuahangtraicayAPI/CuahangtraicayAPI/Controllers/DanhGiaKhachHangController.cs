@@ -7,6 +7,7 @@ using CuahangtraicayAPI.Model;
 using CuahangtraicayAPI.Model.DB;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using CuahangtraicayAPI.DTO;
 
 
 namespace CuahangtraicayAPI.Controllers
@@ -80,16 +81,99 @@ namespace CuahangtraicayAPI.Controllers
 
         // POST: api/DanhGiaKhachHang
         [HttpPost]
-        public async Task<ActionResult<DanhGiaKhachHang>> CreateDanhGiaKhachHang(DanhGiaKhachHang danhgia)
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult<BaseResponseDTO<DanhGiaKhachHang>>> CreateDanhGiaKhachHang([FromBody] DanhGiaKhachHangDTO dto, [FromQuery] int hoadonId)
         {
-            if (!_context.Sanpham.Any(sp => sp.Id == danhgia.sanphams_id))
+            // 1. Kiểm tra DTO hợp lệ
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // 2. Kiểm tra sản phẩm tồn tại
+            if (!_context.Sanpham.Any(sp => sp.Id == dto.sanphams_id))
+            {
                 return BadRequest(new { message = "Sản phẩm không tồn tại" });
+            }
+
+            // 3. Lấy thông tin người dùng từ token
+            var hotenToken = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null || hotenToken == null)
+            {
+                return BadRequest(new { message = "Không lấy được thông tin người dùng từ token." });
+            }
+
+            // 4. Tìm khách hàng theo userId
+            var khachhang = await _context.KhachHangs.FirstOrDefaultAsync(kh => kh.UserNameLogin == userId);
+            if (khachhang == null)
+            {
+                return BadRequest(new { message = "Khách hàng không tồn tại." });
+            }
+
+            // 5. Kiểm tra hóa đơn tồn tại và thuộc về khách hàng
+            var hoadon = await _context.HoaDons.Include(h => h.KhachHang)
+                .FirstOrDefaultAsync(hd => hd.Id == hoadonId && hd.KhachHang.UserNameLogin == userId);
+            if (hoadon == null)
+            {
+                return BadRequest(new { message = "Hóa đơn không tồn tại hoặc không thuộc về khách hàng này." });
+            }
+
+            // 6. Kiểm tra trạng thái hóa đơn (chỉ đánh giá nếu đã giao hàng)
+            if (hoadon.status != "delivered")
+            {
+                return BadRequest(new { message = "Hóa đơn chưa giao thành công." });
+            }
+
+            // 7. kiểm tra xem quá thời gian giao hàng dược phép đánh giá chưa
+
+            if (hoadon.Updated_at.HasValue && (DateTime.Now - hoadon.Updated_at.Value) > TimeSpan.FromHours(24))
+            {
+                return BadRequest(new { message = "Đã quá thời gian đánh giá (24h kể từ khi giao hàng)." });
+            }
+
+            // 8. Kiểm tra xem sản phẩm có trong chi tiết hóa đơn không
+            bool damuaSPtrongDonHang = await _context.HoaDonChiTiets.AnyAsync(hdct =>
+                hdct.sanpham_ids == dto.sanphams_id &&
+                hdct.bill_id == hoadon.Id);
+
+            if (!damuaSPtrongDonHang)
+            {
+                return BadRequest(new { message = "Sản phẩm không có trong đơn hàng này." });
+            }
+
+            // 9. Kiểm tra xem sản phẩm đã được đánh giá trong đơn hàng này chưa
+            bool danhGiaSanPhamDaTonTai = await _context.DanhGiaKhachHang.AnyAsync(dg =>
+                dg.hoadon_id == hoadonId && dg.sanphams_id == dto.sanphams_id);
+
+            if (danhGiaSanPhamDaTonTai)
+            {
+                return BadRequest(new { message = "Bạn đã đánh giá sản phẩm này trong đơn hàng này rồi." });
+            }
+          
+
+            // 10. Tạo đánh giá
+            var danhgia = new DanhGiaKhachHang
+            {
+                sanphams_id = dto.sanphams_id,
+                ho_ten = khachhang.Ho + " " + khachhang.Ten,
+                User_Id = userId,
+                tieude = dto.tieude,
+                so_sao = dto.so_sao,
+                noi_dung = dto.noi_dung,
+                hoadon_id = hoadonId
+            };
 
             _context.DanhGiaKhachHang.Add(danhgia);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetDanhGiaKhachHangById), new { id = danhgia.Id }, danhgia);
+            return new BaseResponseDTO<DanhGiaKhachHang>
+            {
+                Message = "Success",
+                Data = danhgia
+            };
         }
+
 
 
         /// <summary>
